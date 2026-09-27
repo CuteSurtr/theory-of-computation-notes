@@ -4096,7 +4096,7 @@ value of $\chi(K_{3,3})$.
 bipartite. (Use the part of Theorem~\ref{thm:bip@c2} relating bipartiteness to odd cycles.)
 
 \item For the bipartite graph with $U=\{u_1,u_2,u_3,u_4\}$, $W=\{w_1,w_2,w_3,w_4\}$ and edges
-$u_1w_1,u_1w_2,u_2w_2,u_2w_3,u_3w_3,u_3w_4,u_4w_4,u_4w_1$, draw the graph, exhibit a perfect
+$u_1w_1,\allowbreak u_1w_2,\allowbreak u_2w_2,\allowbreak u_2w_3,\allowbreak u_3w_3,\allowbreak u_3w_4,\allowbreak u_4w_4,\allowbreak u_4w_1$, draw the graph, exhibit a perfect
 matching, and verify Hall's condition for at least three different subsets $S\subseteq U$ including
 one of size $3$.
 
@@ -11641,7 +11641,8 @@ never outnumber $\str a$s.
 \end{wex}
 
 \begin{wex}{From a DFA to a grammar}
-The language $\Lang=\set{w\in\set{\str0,\str1}\kstar \st w\text{ has an even number of }\str1\text{s}}$
+The language
+\[\Lang=\set{w\in\set{\str0,\str1}\kstar \st w\text{ has an even number of }\str1\text{s}}\]
 is regular. Convert a DFA for it into an equivalent CFG.
 \wrec ``Regular'' is the trigger for technique~2: do not invent grammar rules by hand, build the
 two-state parity DFA and transcribe it. Each state becomes a variable; each arrow becomes a rule;
@@ -21001,7 +21002,9 @@ otherwise; a $\mathit{ALL}_{\mathsf{TM}}$ decider would therefore decide $\ATM$.
 \end{wex}
 
 \begin{wex}{Why triviality kills the theorem}
-Examine $P_{\mathrm{rec}}=\set{\enc{M}\st L(M)\text{ is Turing-recognizable}}$ and
+Examine
+\[P_{\mathrm{rec}}=\set{\enc{M}\st L(M)\text{ is Turing-recognizable}}\]
+and
 $P_{\es\text{-or-}}=\set{\enc{M}\st L(M)=\es\text{ or }L(M)\neq\es}$. Are these undecidable by
 Rice's theorem?
 \wrec Both are stated about $L(M)$, so they are language properties -- but Rice's theorem needs the
@@ -21211,7 +21214,7 @@ gives exactly the same string as reading all the bottom strings:
 
 \begin{definition}[Post Correspondence Problem]\label{def:pcp@c10}
 An instance of the \emph{Post Correspondence Problem} is a finite collection of dominos
-$P=\set{\left[\frac{t_1}{b_1}\right],\left[\frac{t_2}{b_2}\right],\dots,\left[\frac{t_k}{b_k}\right]}$
+$P=\bigset{\left[\frac{t_1}{b_1}\right],\left[\frac{t_2}{b_2}\right],\dots,\left[\frac{t_k}{b_k}\right]}$
 with each $t_i,b_i\in\Sigstar$. A \emph{match} for $P$ is a sequence of indices
 $i_1,i_2,\dots,i_\ell$ (with $\ell\ge 1$, repetitions allowed) for which
 $t_{i_1}\cdots t_{i_\ell}=b_{i_1}\cdots b_{i_\ell}$. The decision problem is
@@ -21226,8 +21229,8 @@ choose; the constraint is only that the concatenated top equal the concatenated 
 
 \begin{wex}{Finding a match by hand}
 Decide whether the instance
-$P=\set{\left[\frac{\str{b}}{\str{ca}}\right],\left[\frac{\str{a}}{\str{ab}}\right],
-\left[\frac{\str{ca}}{\str{a}}\right],\left[\frac{\str{abc}}{\str{c}}\right]}$
+\[P=\bigset{\left[\frac{\str{b}}{\str{ca}}\right],\left[\frac{\str{a}}{\str{ab}}\right],
+\left[\frac{\str{ca}}{\str{a}}\right],\left[\frac{\str{abc}}{\str{c}}\right]}\]
 has a match, and exhibit one if it does.
 \wrec This is a small instance, so we search directly. The trigger for ``search by hand'' is a
 collection with only a few dominos and short strings: track the running top/bottom difference and try
@@ -21264,7 +21267,7 @@ agree ($8=8$), a necessary condition we verify before trusting the match.
 \end{wex}
 
 \begin{wex}{An instance with no possible match}
-Show that $P=\set{\left[\frac{\str{abc}}{\str{ab}}\right],\left[\frac{\str{ca}}{\str{a}}\right],
+Show that $P=\bigset{\left[\frac{\str{abc}}{\str{ab}}\right],\left[\frac{\str{ca}}{\str{a}}\right],
 \left[\frac{\str{acc}}{\str{ba}}\right]}$ has no match.
 \wrec When every top is \emph{strictly longer} than its bottom, no concatenation can balance: a
 length count rules out a match before any search. The trigger is a uniform length inequality across
@@ -21602,12 +21605,12 @@ the order of tiles in the list is what you get to choose.
 
 \begin{exers}{Exercises.}
 \item For the instance
-$P=\set{\left[\frac{\str1}{\str{111}}\right],\left[\frac{\str{10111}}{\str{10}}\right],
+$P=\bigset{\left[\frac{\str1}{\str{111}}\right],\left[\frac{\str{10111}}{\str{10}}\right],
 \left[\frac{\str{10}}{\str0}\right]}$, find a match. (Hint: which domino must come first, and which
 must come last? Track how far ahead one side runs.)
 
 \item Decide whether
-$P=\set{\left[\frac{\str{ab}}{\str{abab}}\right],\left[\frac{\str b}{\str a}\right],
+$P=\bigset{\left[\frac{\str{ab}}{\str{abab}}\right],\left[\frac{\str b}{\str a}\right],
 \left[\frac{\str{aba}}{\str b}\right],\left[\frac{\str{aa}}{\str a}\right]}$ has a match. If it does,
 give one and verify both readings; if not, give a one-line reason.
 
@@ -21632,7 +21635,7 @@ $\trans(q_3,\str a)=(q_4,\str b,R)$ and $\trans(q_4,\str b)=(q_2,\str a,L)$ over
 $\set{\str a,\str b,\sqcup}$. (Remember group 3 produces one tile per possible left-neighbor symbol.)
 
 \item \emph{Find the bug.} A student claims the instance
-$P=\set{\left[\frac{\str a}{\str{aa}}\right],\left[\frac{\str{aa}}{\str a}\right]}$ has no match
+$P=\bigset{\left[\frac{\str a}{\str{aa}}\right],\left[\frac{\str{aa}}{\str a}\right]}$ has no match
 ``because the lengths can never balance.'' Find a match, and identify the exact flaw in the length
 argument.
 
@@ -23175,7 +23178,7 @@ $\Sigma_1$, so $\ETM$ sits cleanly on the $\Pi_1$ vertex (hence in $\Delta_2$).
 string is accepted'' (an $\exists$) -- are the trigger to bound a set from \emph{both} sides and pin
 it to a single rung rather than overcounting.
 \wsol ``$\lang{M}$ is empty'' says no input is accepted at any time:
-$\enc{M}\in\ETM\iff\forall w\,\forall t\,[\,M\text{ does not accept }w\text{ in }t\text{ steps}\,]$.
+\[\enc{M}\in\ETM\iff\forall w\,\forall t\,[\,M\text{ does not accept }w\text{ in }t\text{ steps}\,].\]
 The two adjacent $\forall$ blocks merge to one, so the prefix is a single $\forall$ over a decidable
 matrix: $\ETM\in\Pi_1$. Dually $\overline{\ETM}=\set{\enc{M}\st\exists w\,\exists t\,[\,M\text{
 accepts }w\text{ in }t\,]}\in\Sigma_1$ -- indeed $\overline{\ETM}$ is recognizable. So $\ETM$ is
@@ -24934,8 +24937,9 @@ checking, never re-solving the problem. The worked examples below are organized 
 pair of questions.
 
 \begin{wex}{$\HAMPATH$ is in $\classNP$}
-Let $\HAMPATH=\set{\enc{G,s,t}\st G\text{ is a digraph with a Hamiltonian path from }s\text{ to
-}t}$, where a \emph{Hamiltonian} path visits every node exactly once. Show $\HAMPATH\in\classNP$.
+Let
+\[\HAMPATH=\set{\enc{G,s,t}\st G\text{ is a digraph with a Hamiltonian path from }s\text{ to }t},\]
+where a \emph{Hamiltonian} path visits every node exactly once. Show $\HAMPATH\in\classNP$.
 \wrec We do not know a fast way to \emph{find} such a path, but a proposed path is trivial to
 \emph{check}: walk it and confirm each step is an edge and each node appears once. ``Easy to check a
 candidate'' is the trigger for the verifier definition.
@@ -28890,7 +28894,7 @@ so $t_{0}=2^{df(n)}$ upper-bounds the steps of any branch. We solve yieldability
 \begin{enumerate}[leftmargin=2.2em,topsep=2pt,itemsep=1pt]
   \item If $t=1$: accept if $c_{1}=c_{2}$ or $c_{1}$ yields $c_{2}$ in one step of $N$; else reject.
   \item If $t>1$: for each configuration $c_{m}$ on space $f(n)$:
-    run \textsc{Canyield}$(c_{1},c_{m},\lceil t/2\rceil)$ and \textsc{Canyield}$(c_{m},c_{2},\lceil t/2\rceil)$;
+    run \textsc{Canyield}$(c_{1},\allowbreak c_{m},\allowbreak\lceil t/2\rceil)$ and \textsc{Canyield}$(c_{m},\allowbreak c_{2},\allowbreak\lceil t/2\rceil)$;
     if both accept, accept.
   \item If no $c_{m}$ worked, reject.
 \end{enumerate}
@@ -31494,7 +31498,7 @@ $\mathit{EQREX}{\uparrow}\notin\PSPACE\supseteq\classP$.
 \end{proof}
 
 \begin{wex}{Locating $\mathit{EQREX}{\uparrow}$ on the class map}
-Place $\mathit{EQREX}{\uparrow}$ among $\classP,\PSPACE,\mathsf{EXPSPACE}$ and state, honestly,
+Place $\mathit{EQREX}{\uparrow}$ among $\classP,\allowbreak\PSPACE,\allowbreak\mathsf{EXPSPACE}$ and state, honestly,
 what is proved versus assumed.
 \wrec The trigger is ``a complete problem for the strictly larger class is outside the smaller
 one.'' Completeness transports the proven separation $\PSPACE\subsetneq\mathsf{EXPSPACE}$ down
