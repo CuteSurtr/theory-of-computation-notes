@@ -3675,7 +3675,7 @@ the root at top. (b)~List all leaves. (c)~Give the depth of each vertex and the 
 $2 + \sum_{v\ \text{internal}} (\deg v - 2)$. Interpret the formula: a tree starts with two leaves
 and gains one extra leaf for each unit of internal degree above $2$.
 
-\item \textbf{Find the bug.} A classmate claims the following procedure always returns a spanning
+\item \emph{Find the bug.} A classmate claims the following procedure always returns a spanning
 tree of a connected graph $G$: ``repeatedly delete any edge whose two endpoints both have degree
 $\ge 2$, until no such edge remains.'' Give a small connected graph on which this procedure either
 disconnects $G$ or fails to remove all cycles, and explain precisely which deletion goes wrong.
@@ -3688,7 +3688,7 @@ Proposition~\ref{prop:spanexist@c2}; the other uses Corollary~\ref{cor:onee@c2}.
 the parity of its depth; argue every edge joins an even-depth vertex to an odd-depth one. This
 previews the bipartite material of the next section.)
 
-\item \textbf{Find the bug.} Below is an attempted ``proof'' that every connected graph with
+\item \emph{Find the bug.} Below is an attempted ``proof'' that every connected graph with
 $m=n-1$ edges is acyclic. Locate the unjustified step.
 \emph{``Suppose $G$ is connected with $m=n-1$ but has a cycle $C$. Delete an edge of $C$; the graph
 stays connected, so it is still a tree, so it has $n-1$ edges. But we deleted an edge, so it has
@@ -6180,7 +6180,6 @@ shift $a_{n-k}$ gives $x^k\bigl(f(x)-\text{(its first $d-k$ terms)}\bigr)$, so t
 $q(x)f(x)$ minus a polynomial collecting all the subtracted low-order terms. Because every subtracted
 term has degree at most $d-1$, that polynomial -- call it $p(x)$ -- has $\deg p<d$, and the summed
 recurrence reads $q(x)f(x)-p(x)=0$, i.e. $f(x)=p(x)/q(x)$.
-\smallskip
 
 \noindent($\Leftarrow$) Conversely, suppose $f(x)=p(x)/q(x)$ with $q$ as displayed and $\deg p<d$.
 Clearing denominators, $q(x)f(x)=p(x)$. Comparing coefficients of $x^n$ for any $n\ge d$: the left
@@ -7690,7 +7689,7 @@ and $F_2$.
 (a) $(A\cup B)\kstar=A\kstar\cup B\kstar$;\ \ (b) $(A\circ B)\kstar=A\kstar\circ B\kstar$;\ \
 (c) $A\kstar\circ A\kstar=A\kstar$;\ \ (d) $\rev{(A\circ B)}=\rev{B}\circ\rev{A}$.
 
-\item \textbf{Find the bug.} A student claims the following DFA recognizes
+\item \emph{Find the bug.} A student claims the following DFA recognizes
 $A\cap B$, where $A=\set{w\st w \text{ ends in } \str{0}}$ and
 $B=\set{w\st w \text{ has even length}}$, over $\Sig=\set{\str{0},\str{1}}$. The student
 took the product of a correct $2$-state DFA for $A$ and a correct $2$-state DFA for $B$ but
@@ -7717,7 +7716,7 @@ length. Identify every accept state that should not be accepting for $A\cap B$, 
 corrected accept set, and exhibit a string this faulty machine accepts but that is not in
 $A\cap B$.
 
-\item \textbf{Find the bug.} Someone proposes to recognize $A\cup B$ by running a single
+\item \emph{Find the bug.} Someone proposes to recognize $A\cup B$ by running a single
 DFA that is the product of $M_1$ (for $A$) and $M_2$ (for $B$) but with accept set
 $F_1\times F_2$. Show by a small concrete example (give $A$, $B$, and one string) that this
 machine does \emph{not} recognize $A\cup B$, and name which language it actually recognizes.
@@ -8041,7 +8040,7 @@ The corollary is the practical payoff: from now on we may design the \emph{small
 
 The construction lists all $2^{\abs{Q}}$ subsets, but most are unreachable from the start subset and may be dropped. In practice we build the DFA \emph{lazily}: begin with $q_0'=E(\set{\qstart})$, and from each subset already discovered compute $\trans'(R,a)$ for every symbol $a$, adding any new subset to a worklist. We stop when no new subset appears. The reachable part is usually far smaller than $2^{\abs{Q}}$, and the empty set $\es$ -- reached when $\nfa$ has died on every branch -- is the dead state of the DFA.
 
-\begin{method}{Subset construction, run by hand (the worklist algorithm).}
+\begin{method}{Subset construction, run by hand (the worklist algorithm)}
 \textbf{1.} Compute the start subset $q_0'=E(\set{\qstart})$ (start state plus everything reachable by $\eps$-arrows). Put it on the worklist.\\
 \textbf{2.} Take an unprocessed subset $R$ from the worklist. For each input symbol $a\in\Sig$:\\
 \hspace*{2em}(a) form $S=\bigcup_{q\in R}\trans(q,a)$ -- the $a$-targets from every state in $R$;\\
@@ -10185,7 +10184,7 @@ contradiction. (Compare with the strictly-more-$\str0$s language from the sectio
 $\Lang=\set{\str0^n\str1^n\st n\ge 0}$ is nonregular. Explain why $s=\str0^p$ is not even a member of
 $\Lang$ (for $p\ge 1$), so the proof never starts, and state the correct choice of $s$.
 
-\item \textbf{Find the bug.} Here is a flawed ``proof'' that the regular language
+\item \emph{Find the bug.} Here is a flawed ``proof'' that the regular language
 $\Lang=\set{w\st \abs{w}\text{ is even}}$ is \emph{not} regular: ``Let $p$ be a pumping length and
 take $s=\str0^{2p}$. The lemma splits $s=xyz$. Pump to $i=2$, getting $xy^2z$ with
 $2p+\abs{y}$ symbols. Choosing $\abs{y}=1$ makes the length odd, so $xy^2z\notin\Lang$ -- a
@@ -16220,7 +16219,6 @@ $w=w_1\cdots w_n$ on a $k=3$ machine is
 \]
 -- tape~$1$'s contents with head on $w_1$, then two blank tapes each scanning a single blank.
 
-\smallskip
 $S$ runs as follows. To simulate one step of $M$: scan left to right from the first $\#$ to the
 last, reading the dotted symbol in each block to learn the $k$ symbols under $M$'s heads, and
 remember this $k$-tuple in $S$'s finite control. Now $S$ knows $\trans_M$ on that tuple, so it
@@ -16231,7 +16229,6 @@ block's $\#$ -- that head has reached new blank tape; $S$ writes a blank there a
 entire remaining tape one cell right to make room, then continues. $S$ accepts/rejects exactly
 when $M$ does.
 
-\smallskip
 Each block faithfully holds one of $M$'s tapes, and the dot faithfully holds one head position,
 so after every simulated step $S$'s tape encodes $M$'s full configuration. Hence $S$ accepts
 $w$ iff $M$ does, and $\lang{S}=\lang{M}$.
@@ -16705,7 +16702,7 @@ $s_j$, and print $s_j$ if it accepts'' \emph{fails} to enumerate $A$, and how th
 schedule of Theorem~\ref{thm:enum@c8} (round $i$: run each of $s_1,\dots,s_i$ for $i$ steps) repairs
 it.
 
-\item \textbf{Find the bug.} A classmate claims the following enumerator $E$ enumerates a language
+\item \emph{Find the bug.} A classmate claims the following enumerator $E$ enumerates a language
 $A$ recognized by a TM $M$: ``For $j=1,2,3,\dots$: run $M$ on $s_j$ until it halts; if it accepts,
 print $s_j$; then go to $j+1$.'' Identify the bug that makes $E$ incorrect for some $M$, give a
 concrete situation where $E$ fails to print a string of $A$, and state the one change that fixes
@@ -18546,7 +18543,6 @@ $\chi_D=0,0,1,1,\dots$, so $s_1\notin D$, $s_2\notin D$, $s_3\in D$, $s_4\in D$.
 $\chi_D$ differs from row $i$ at column $i$, hence $D\neq\lang{M_i}$ for \emph{every} $i$: no
 machine on the list recognizes $D$, and the list was \emph{all} machines.
 
-\medskip
 \noindent\emph{Takeaway.} List machines as rows and strings as columns; flipping the diagonal
 builds a language $D$ that disagrees with machine $M_i$ on string $s_i$, so $D$ is recognized by
 no machine -- there are more languages than machines.
@@ -19088,14 +19084,12 @@ recognizable.
 
 $(\Leftarrow)$ Suppose $M_1$ recognizes $\Lang$ and $M_2$ recognizes $\overline{\Lang}$. Define a
 two-tape machine $M$:
-\smallskip
 
 \noindent$M=$ ``On input $w$:
 \begin{enumerate}[leftmargin=2.2em,topsep=1pt,itemsep=0pt]
   \item Simulate $M_1$ and $M_2$ on $w$ \emph{in parallel}, advancing one step of each per round.
   \item If $M_1$ accepts, \textbf{accept}; if $M_2$ accepts, \textbf{reject}.''
 \end{enumerate}
-\smallskip
 
 \noindent Every string $w$ lies in exactly one of $\Lang$, $\overline{\Lang}$. If $w\in\Lang$ then
 $M_1$ accepts $w$ in finitely many steps, so the parallel simulation reaches that point and $M$
@@ -19138,7 +19132,6 @@ accepts $w$ in finite time and $M$ always halts with the right verdict; converse
 $\Lang$ yields recognizers for both sides by swapping accept/reject. Hence
 $\DEC=\REC\cap\mathrm{co}\REC$.
 
-\medskip
 \noindent\emph{Takeaway.} $\Lang$ is decidable iff both $\Lang$ and its complement are
 recognizable: dovetail the two recognizers on $w$; exactly one accepts, so the combined machine
 always halts with the right answer.
@@ -19387,7 +19380,6 @@ example pins down each strict boundary.
 The two upward arrows are \emph{proper} inclusions; $\ATM$ witnesses $\DEC\subsetneq\REC$ and
 $\overline{\ATM}$ witnesses that $\REC$ is properly inside ``all languages.''
 
-\medskip
 \noindent\emph{Takeaway.} The decidability landscape: decidable $=$ recognizable \emph{and}
 co-recognizable; $\ATM$ is recognizable but undecidable, and its complement is not even
 recognizable.
@@ -19489,7 +19481,6 @@ is undecidable.
 \begin{proof}
 Assume for contradiction that a TM $R$ decides $\HALT$. We build a decider $S$ for $\ATM$:
 
-\smallskip
 $S=$ ``On input $\enc{M,w}$:
 \begin{enumerate}[leftmargin=2.2em,topsep=1pt,itemsep=1pt,label=\arabic*.]
   \item Run $R$ on $\enc{M,w}$.
@@ -19498,7 +19489,6 @@ $S=$ ``On input $\enc{M,w}$:
   \item If that simulation accepted, \textsf{accept}; if it rejected, \textsf{reject}.''
 \end{enumerate}
 
-\smallskip
 $S$ always halts: step~1 halts because $R$ is a decider, and the simulation in step~3 is reached only
 when $R$ has \emph{guaranteed} that $M$ halts on $w$, so it cannot run forever. And $S$ is correct:
 $M$ accepts $w$ exactly when $M$ halts on $w$ and that halt is in the accept state, which is precisely
@@ -19555,14 +19545,12 @@ rejecting $\enc{M}$ tells us only that $M$ accepts \emph{something}, not that it
 $w$. The fix is to feed $R$ a \emph{modified} machine whose language is empty unless $M$ accepts $w$.
 Given $\enc{M,w}$, define the gadget
 
-\smallskip
 $M_w=$ ``On input $x$:
 \begin{enumerate}[leftmargin=2.2em,topsep=1pt,itemsep=1pt,label=\arabic*.]
   \item If $x\neq w$, \textsf{reject}.
   \item If $x=w$, run $M$ on $w$ and accept iff $M$ accepts.''
 \end{enumerate}
 
-\smallskip
 The string $w$ is hard-coded into $M_w$, and its description is computable from $\enc{M,w}$ by adding
 a few states that compare the input against $w$ symbol by symbol. By design, $M_w$ can accept only the
 single string $w$, and it accepts $w$ iff $M$ does. Hence
@@ -19626,14 +19614,12 @@ language is forced to be regular exactly when $M$ accepts $w$. The trick is to p
 known \emph{nonregular} set $\set{\str0^n\str1^n\st n\geq 0}$ in the failing case and to all of
 $\Sigstar$ (regular) in the succeeding case. Define
 
-\smallskip
 $M_{2}=$ ``On input $x$:
 \begin{enumerate}[leftmargin=2.2em,topsep=1pt,itemsep=1pt,label=\arabic*.]
   \item If $x$ has the form $\str0^n\str1^n$ for some $n\geq 0$, \textsf{accept}.
   \item Otherwise, run $M$ on $w$ and accept iff $M$ accepts $w$.''
 \end{enumerate}
 
-\smallskip
 Trace the two cases. If $M$ accepts $w$, then step~2 accepts \emph{every} string that fails step~1, so
 $\lang{M_2}=\Sigstar$, which is regular. If $M$ does not accept $w$, step~2 never accepts, so
 $\lang{M_2}=\set{\str0^n\str1^n\st n\geq 0}$, which is not regular. Hence $\lang{M_2}$ is regular iff
@@ -21164,7 +21150,7 @@ where $M'$ is a particular machine recognizing $\set{\str{0}^n\str{1}^n\st n\ge 
 language property? Is it nontrivial? Conclude whether Rice's theorem applies, and if so, what it
 tells you.
 
-\item \textbf{Find the bug.} A student writes: ``By Rice's theorem, the problem
+\item \emph{Find the bug.} A student writes: ``By Rice's theorem, the problem
 $\mathit{BLANK\text{-}HALT}=\{\,\enc{M}\mid M$ halts on the empty input$\,\}$ is undecidable,
 because halting is a nontrivial property of machines.'' The conclusion (undecidability) is correct,
 but the \emph{justification} is wrong. Identify precisely which hypothesis of Rice's theorem fails
@@ -21189,7 +21175,7 @@ witness $T$, and what is required of $L(T)$?
 L(M)=L(T_0)$. Show $P$ is a nontrivial language property and conclude it is undecidable. Then explain
 why the special case $L(T_0)=\Sigstar$ recovers $\mathit{ALL}_{\mathsf{TM}}$.
 
-\item \textbf{Find the bug.} Consider this attempted reduction proving
+\item \emph{Find the bug.} Consider this attempted reduction proving
 $\mathit{INFINITE}_{\mathsf{TM}}$ undecidable: ``On input $\enc{M,w}$, build $M_w$ that on input $x$
 \emph{first} simulates $T$ (a machine with infinite language) on $x$ and accepts if $T$ does, and
 \emph{then}, separately, simulates $M$ on $w$.'' Explain why this $M_w$ has $L(M_w)$ infinite
@@ -22322,7 +22308,7 @@ the fixed point $F$ is built so that both runs land on one and the same computed
 \end{tikzcd}
 \end{center}
 
-\noindent\textbf{Takeaway.} The recursion theorem makes self-reference legal: for any
+\noindent\emph{Takeaway.} The recursion theorem makes self-reference legal: for any
 transformation $t$ of code, some machine $F$ behaves exactly like $t(\enc{F})$, so a program
 may use its own description as data. The invariant preserved around the square is the
 \emph{computed behavior} -- the bottom edge is an equality of functions, not of strings.
@@ -22790,7 +22776,7 @@ Turing equivalent), and $\es'$ is the degree of the halting problem.
 \end{tikzpicture}
 \end{center}
 
-\noindent\textbf{Takeaway.} The Turing jump strictly climbs:
+\noindent\emph{Takeaway.} The Turing jump strictly climbs:
 $\es<_{\mathrm{T}}\es'<_{\mathrm{T}}\es''<_{\mathrm{T}}\cdots$, where $\es'$ is the degree of
 the halting problem; each jump is strictly harder under Turing reducibility. The invariant is
 \emph{relative computability}, and it increases strictly at every level.
@@ -22900,7 +22886,7 @@ $\ETM$ oracle about $\enc{M_w}$. State whether your decider negates the oracle's
 $\ATM$ already decides $\ETM$ by the text; combine emptiness tests, or reason directly about
 the symmetric difference $\lang{M_1}\triangle\lang{M_2}$.)
 
-\item \textbf{Find the bug.} A student claims to show $\overline{\ATM}\redm\ATM$ as follows:
+\item \emph{Find the bug.} A student claims to show $\overline{\ATM}\redm\ATM$ as follows:
 ``On input $\enc{M,w}$, output $\enc{M,w}$ unchanged; the $\ATM$-oracle answers, and we flip
 its bit, so we have decided $\overline{\ATM}$.'' Pinpoint the precise step that violates the
 definition of a mapping reduction, and name the reducibility under which the construction
@@ -26114,7 +26100,7 @@ contains a triangle}}$ and $\CLIQUE$ as in the text. Show $\textit{TRIANGLE}\red
 one-line map, and draw a small graph $G$ together with the instance $\enc{G,k}$ your reduction
 produces.
 
-\item \textbf{Find the bug.} A student claims to prove $\CLIQUE$ is $\classNP$-hard by giving a
+\item \emph{Find the bug.} A student claims to prove $\CLIQUE$ is $\classNP$-hard by giving a
 polynomial-time reduction $\CLIQUE\redp\CSAT$ (CLIQUE instances rewritten as formulas).
 Identify the flaw in the student's plan, and state precisely which reduction would actually
 establish $\classNP$-hardness of $\CLIQUE$.
@@ -27099,8 +27085,7 @@ Drop any one group and the equivalence breaks (e.g.\ without $\varphi_{\mathrm{m
 ``assignment'' could jump to an accepting row that no transition reaches), which is why all four are
 conjoined.
 
-\medskip
-\noindent\textit{Takeaway.} Cook--Levin turns an NTM computation into a tableau, the tableau into
+\noindent\emph{Takeaway.} Cook--Levin turns an NTM computation into a tableau, the tableau into
 Boolean variables $x_{i,j,s}$ (``cell $(i,j)$ holds $s$''), and legality into four clause groups;
 $\nfa$ accepts $w$ iff $\varphi=\varphi_{\mathrm{cell}}\wedge\varphi_{\mathrm{start}}\wedge
 \varphi_{\mathrm{move}}\wedge\varphi_{\mathrm{accept}}$ is satisfiable, with $\abs{\varphi}$
@@ -27610,8 +27595,7 @@ conditions are literally the same statement read from opposite sides: ``no edge 
 ``every edge meets $V\setminus S$.'' The clique angle is one complementation away -- $S$ is a clique
 in $\overline{G}$ iff $S$ is independent in $G$.
 
-\medskip
-\noindent\textit{Takeaway.} In any graph, $S$ is an independent set iff $V\setminus S$ is a vertex
+\noindent\emph{Takeaway.} In any graph, $S$ is an independent set iff $V\setminus S$ is a vertex
 cover; $\CLIQUE$, $\mathit{IS}$, and $\VC$ are thus the same problem viewed three ways. Concretely:
 no edge has both endpoints in $S$ iff every edge has an endpoint in $V\setminus S$; and $S$ is a
 clique in $G$ iff $S$ is independent in the complement graph $\overline{G}$.
@@ -27794,8 +27778,7 @@ known-hard problem \emph{into} the target. \emph{Check.} If the arrow in step~(3
 way ($C\redp B$) it would only show $C$ is no harder than $B$ -- the opposite of what an
 $\classNP$-completeness proof needs.
 
-\medskip
-\noindent\textit{Takeaway.} To prove $C$ $\classNP$-complete: show $C\in\classNP$, then reduce a
+\noindent\emph{Takeaway.} To prove $C$ $\classNP$-complete: show $C\in\classNP$, then reduce a
 \emph{known} $\classNP$-complete $B$ to $C$ (that is $B\redp C$, the arrow pointing from $B$ into
 $C$); since every $\classNP$ problem $\redp B\redp C$, all of $\classNP$ reduces to $C$. With
 $C\in\classNP$ and $B$ $\classNP$-complete, $B\redp C$ gives $C$ $\classNP$-complete because $\redp$
@@ -28903,7 +28886,6 @@ let $c_{\mathrm{start}}$ be the start configuration on input $w$. By
 Proposition~\ref{prop:configcount@c14} pick a constant $d$ with at most $2^{df(n)}$ configurations,
 so $t_{0}=2^{df(n)}$ upper-bounds the steps of any branch. We solve yieldability recursively.
 
-\medskip
 \noindent\textsc{Canyield}$(c_{1},c_{2},t)$ -- ``can $N$ go from $c_{1}$ to $c_{2}$ in $\le t$ steps?''
 \begin{enumerate}[leftmargin=2.2em,topsep=2pt,itemsep=1pt]
   \item If $t=1$: accept if $c_{1}=c_{2}$ or $c_{1}$ yields $c_{2}$ in one step of $N$; else reject.
@@ -30593,13 +30575,13 @@ $i$ (in binary, separated by commas) at which $w_i=\str1$. Argue that $f$ is log
 computable by describing a transducer for it, and explain why the (possibly long) comma-list on
 the output tape does \emph{not} violate the $\bigO(\log n)$ work-space bound.
 
-\item \textbf{Find the bug.} A student claims $PATH\in\Lclass$ as follows: ``Do a deterministic
+\item \emph{Find the bug.} A student claims $PATH\in\Lclass$ as follows: ``Do a deterministic
 depth-first search from $s$; keep a list of the vertices on the current DFS stack so you never
 revisit one; accept if you ever reach $t$. The stack is the only memory, so it is small.''
 Identify precisely why this does \emph{not} fit the $\bigO(\log n)$ work-space budget, and state
 what is and is not currently known about whether $PATH\in\Lclass$.
 
-\item \textbf{Find the bug.} Another student claims a log-space decider for
+\item \emph{Find the bug.} Another student claims a log-space decider for
 $A=\set{\str0^k\str1^k}$ that ``copies the block of $\str0$s onto the work tape, then deletes
 one work-tape $\str0$ for each $\str1$ read on the input.'' Explain why this machine is correct
 but is \emph{not} a log-space machine, and contrast it with the binary-counting decider that
@@ -31139,7 +31121,7 @@ $d=r_i$'' is weakened to ``reject unless $d\ge r_i$.'' Construct a small directe
 nondeterministic branch on which the weakened algorithm outputs the \emph{wrong} value of
 $r_{i+1}$. Explain precisely which reachable node the branch misses.
 
-\item \textbf{Find the bug.} A student proposes this ``simpler'' $\NL$ algorithm for
+\item \emph{Find the bug.} A student proposes this ``simpler'' $\NL$ algorithm for
 $\overline{\mathit{PATH}}$: ``On $\enc{G,s,t}$, nondeterministically guess, for each node, whether it
 is reachable from $s$; verify each guessed-reachable node by guessing a path; if $t$ was guessed
 unreachable and no contradiction arose, accept.'' Exhibit a graph and a guess pattern on which this
@@ -31149,7 +31131,7 @@ ingredient (compare with Lemma~\ref{lem:certify@c14}).
 \item Prove that if $A\redL B$ and $B\redL A$ both hold, and $B\in\Lclass$, then $A\in\Lclass$. Cite
 exactly which of Theorems~\ref{thm:closure@c14} and~\ref{thm:compose@c14} you use and where.
 
-\item \textbf{Find the bug.} To show $\redL$ composes, a student writes: ``Run $T_f$ on $w$, store
+\item \emph{Find the bug.} To show $\redL$ composes, a student writes: ``Run $T_f$ on $w$, store
 $f(w)$ on the work tape, then run $T_g$ on $f(w)$.'' Identify the resource that this violates, give a
 concrete family of inputs on which $f(w)$ has length exceeding any $\bigO(\log n)$ bound, and state
 the recomputation fix in one sentence.
@@ -33127,13 +33109,13 @@ coin strings. Explain in two sentences why the simulating machine still uses onl
 polynomial space despite performing exponentially many simulations, and identify the one
 piece of state that must persist across iterations.
 
-\item \textbf{Find the bug.} A student claims: ``Since $\mathrm{COMPOSITES}\in\mathsf{RP}$
+\item \emph{Find the bug.} A student claims: ``Since $\mathrm{COMPOSITES}\in\mathsf{RP}$
 with error $\le\tfrac12$, I can boost confidence by running the one-base test $t$ times and
 taking the \emph{majority} vote, accepting `composite' iff most runs say composite.''
 Explain why majority voting is the wrong amplifier for this one-sided algorithm, what can
 go wrong on a \emph{prime} input, and state the correct $\mathsf{RP}$ amplification rule.
 
-\item \textbf{Find the bug.} A note states: ``Theorem~\ref{thm:adleman@c15} shows
+\item \emph{Find the bug.} A note states: ``Theorem~\ref{thm:adleman@c15} shows
 $\mathsf{BPP}\subseteq\classP/\mathrm{poly}$ by fixing one good random string $\rho^{*}$;
 the same argument with error only $\le\tfrac13$ (no amplification) already finds a
 $\rho^{*}$ good for all inputs of length $n$.'' Identify the flaw: redo the union-bound
@@ -36508,7 +36490,6 @@ those problems do not establish.
 
 This plan runs ten weeks at an upper-division pace, interleaving Graph Theory, Theory of Computability, and Combinatorics so that each subject continually supplies the objects, counting tools, and lower-bound arguments the others need. Four standing bridges recur throughout: \textbf{Bridge A} (graphs as binary relations and automata/Turing tableaux as labelled directed graphs), \textbf{Bridge B} (counting and generating functions as the bookkeeping for structures, runs, and state spaces), \textbf{Bridge C} (pigeonhole/Ramsey/extremal arguments as the engine behind both combinatorial existence proofs and computational lower bounds), and \textbf{Bridge D} (reductions and diagonalization as structure-preserving maps between graph problems, languages, and counting problems).
 
-\medskip
 \textbf{Week 1 -- Foundations: sets, relations, induction, and graphs as relations}
 \begin{itemize}
   \item \emph{Combinatorics/foundations:} sets, functions, equivalence and order relations, well-ordering, weak/\allowbreak strong induction, structural induction.
