@@ -1,0 +1,241 @@
+% ===== preamble =====
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning,arrows.meta,calc,fit,chains,
+  shapes.geometric,shapes.misc,decorations.pathreplacing,decorations.markings,
+  backgrounds,matrix,patterns}
+\usepackage{tikz-cd}
+\usepackage[hidelinks]{hyperref}
+
+\setlength{\parindent}{0pt}\setlength{\parskip}{3pt}
+% absorb hard-to-break lines (long inline-math lists) without global \sloppy
+\emergencystretch=3em
+\makeatletter
+\renewcommand*\l@section{\@dottedtocline{1}{0pt}{2.8em}}
+% running head: use the (short) chapter mark, do not let it overflow the line
+\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\chaptername\ \thechapter.\ #1}}{}}
+\makeatother
+
+% ---- theorem environments (results numbered chapter.section.k) ----
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+% ---- worked example (clean, no box; shares the result counter) ----
+\newenvironment{wex}[1]{%
+  \par\addvspace{\medskipamount}\refstepcounter{theorem}%
+  \noindent\textbf{Worked Example~\thetheorem.}\enspace\textit{#1.}\par\nobreak\smallskip}%
+  {\par\addvspace{\medskipamount}}
+\newcommand{\wrec}{\par\smallskip\noindent\textit{Recognition.}\enspace\ignorespaces}
+\newcommand{\wsol}{\par\smallskip\noindent\textit{Solution.}\enspace\ignorespaces}
+\newcommand{\whichrule}[1]{\par\smallskip\noindent$\blacktriangleright$\ \textbf{Which idea, and why?}\enspace #1\par}
+
+% ---- method / strategy block (rule-delimited, no color) ----
+\newenvironment{method}[1]{%
+  \par\addvspace{\medskipamount}\noindent\rule{\linewidth}{0.4pt}\par\nobreak\vskip2pt
+  \noindent\textbf{Method.}\enspace\textit{#1}\par\nobreak\smallskip}%
+  {\par\nobreak\vskip2pt\noindent\rule{\linewidth}{0.4pt}\par\addvspace{\medskipamount}}
+
+% ---- caution note (run-in, no color) ----
+\newenvironment{pitfall}{%
+  \par\addvspace{\smallskipamount}\noindent\textbf{\textit{Caution.}}\enspace\ignorespaces}%
+  {\par\addvspace{\smallskipamount}}
+
+% ---- exercise list ----
+\newenvironment{exers}[1]{\par\medskip\noindent\textbf{#1}\par\nopagebreak
+  \begin{enumerate}[leftmargin=*,labelsep=0.6em,itemsep=2pt,topsep=2pt]}
+  {\end{enumerate}}
+
+% ================= math shortcuts: Theory of Computation =================
+% ---- number systems / common sets ----
+\newcommand{\R}{\mathbb{R}}\newcommand{\Q}{\mathbb{Q}}\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}\newcommand{\C}{\mathbb{C}}\newcommand{\F}{\mathbb{F}}
+\newcommand{\es}{\varnothing}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\card}[1]{\left|#1\right|}
+\newcommand{\st}{\mid}
+\newcommand{\imp}{\implies}\newcommand{\eqv}{\iff}
+\newcommand{\inv}{^{-1}}
+\providecommand{\id}{\operatorname{id}}
+
+% ---- alphabets, strings, languages ----
+\newcommand{\Sig}{\Sigma}
+\newcommand{\Gam}{\Gamma}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\str}[1]{\mathtt{#1}}
+\newcommand{\lang}[1]{L(#1)}
+\newcommand{\Lang}{\mathcal{L}}
+\newcommand{\Sigstar}{\Sigma^{*}}
+\newcommand{\Gamstar}{\Gamma^{*}}
+\newcommand{\rev}[1]{#1^{\mathcal{R}}}
+\newcommand{\concat}{\cdot}
+\newcommand{\kstar}{^{*}}
+\newcommand{\kplus}{^{+}}
+\newcommand{\substr}{\sqsubseteq}
+
+% ---- automata data ----
+\newcommand{\trans}{\delta}
+\newcommand{\xtrans}{\widehat{\delta}}
+\newcommand{\qstart}{q_0}\newcommand{\Acc}{F}
+\newcommand{\pow}[1]{\mathcal{P}(#1)}
+\newcommand{\dfa}{M}\newcommand{\nfa}{N}
+\newcommand{\yields}{\vdash}
+\newcommand{\yieldstar}{\vdash^{*}}
+
+% ---- regular expressions ----
+\newcommand{\reor}{\cup}
+\newcommand{\restar}{^{*}}
+
+% ---- language / complexity classes ----
+\newcommand{\REG}{\mathsf{REGULAR}}
+\newcommand{\CFL}{\mathsf{CFL}}
+\newcommand{\classP}{\mathsf{P}}
+\newcommand{\classNP}{\mathsf{NP}}
+\newcommand{\coNP}{\mathsf{coNP}}
+\newcommand{\PSPACE}{\mathsf{PSPACE}}
+\newcommand{\NPSPACE}{\mathsf{NPSPACE}}
+\newcommand{\EXP}{\mathsf{EXPTIME}}
+\newcommand{\Lclass}{\mathsf{L}}
+\newcommand{\NL}{\mathsf{NL}}
+\newcommand{\TIME}{\mathrm{TIME}}\newcommand{\SPACE}{\mathrm{SPACE}}
+\newcommand{\NTIME}{\mathrm{NTIME}}\newcommand{\NSPACE}{\mathrm{NSPACE}}
+
+% ---- decision problems (Sipser bracket notation) ----
+\newcommand{\enc}[1]{\langle #1\rangle}
+\newcommand{\ATM}{A_{\mathsf{TM}}}
+\newcommand{\HALT}{\mathit{HALT}_{\mathsf{TM}}}
+\newcommand{\ETM}{E_{\mathsf{TM}}}
+\newcommand{\ADFA}{A_{\mathsf{DFA}}}\newcommand{\ANFA}{A_{\mathsf{NFA}}}
+\newcommand{\ACFG}{A_{\mathsf{CFG}}}
+\newcommand{\SAT}{\mathit{SAT}}\newcommand{\CSAT}{\mathit{3SAT}}
+\newcommand{\CLIQUE}{\mathit{CLIQUE}}\newcommand{\HAMPATH}{\mathit{HAMPATH}}
+\newcommand{\VC}{\mathit{VERTEX\text{-}COVER}}
+% ---- TM tape blank + emptiness/equivalence problems + decidability classes ----
+% (union of the per-chapter preambles: \blank from Ch.8; \E,\EQTM,\REC,\DEC from Ch.9)
+\newcommand{\blank}{\sqcup}                        % TM tape blank (Sipser open box)
+\newcommand{\E}{E}                                % emptiness-problem letter, e.g. \E_{\mathsf{DFA}}
+\newcommand{\EQTM}{\mathit{EQ}_{\mathsf{TM}}}
+\newcommand{\REC}{\mathsf{REC}}                   % Turing-recognizable class
+\newcommand{\DEC}{\mathsf{DEC}}                   % decidable class
+
+% ---- reductions / asymptotics ----
+\newcommand{\redm}{\leq_{\mathrm{m}}}
+\newcommand{\redp}{\leq_{\mathrm{p}}}
+\newcommand{\redT}{\leq_{\mathrm{T}}}
+\newcommand{\redL}{\leq_{\mathrm{L}}}
+\DeclareMathOperator{\bigO}{O}
+\newcommand{\bigOmega}{\Omega}\newcommand{\bigTheta}{\Theta}
+\DeclareMathOperator{\poly}{poly}
+
+% ---- graph theory (for the foundations + reductions) ----
+\newcommand{\Gr}{G}\newcommand{\Vset}{V}\newcommand{\Eset}{E}
+
+% ================= DIAGRAM HOUSE STYLES =================
+\tikzset{
+  >={Stealth[length=2.2mm]},
+  node distance=18mm and 22mm,
+  fa/.style={->,shorten >=0.5pt,auto,semithick},
+  every state/.style={draw=black,line width=0.7pt,minimum size=8.5mm,
+    inner sep=1pt,font=\small},
+  acc/.style={accepting by double},
+  st/.style={state},
+  stinit/.style={state,initial,initial text={}},
+  stacc/.style={state,accepting by double},
+  stinitacc/.style={state,initial,initial text={},accepting by double},
+  tredge/.style={font=\small,inner sep=1.5pt},
+  loop above/.append style={looseness=5},
+  tape/.style={matrix of nodes,nodes={draw,minimum size=6.5mm,font=\small,
+    anchor=center,inner sep=1pt},column sep=-\pgflinewidth,row sep=0pt},
+  head/.style={-{Stealth[length=2mm]},line width=0.8pt},
+  headlbl/.style={font=\footnotesize},
+  treenode/.style={font=\small,inner sep=1.5pt},
+  tedge/.style={line width=0.5pt,black!60},
+  procbox/.style={draw,rounded corners,minimum height=8mm,minimum width=16mm,
+    font=\small,inner sep=3pt,line width=0.6pt},
+  flow/.style={-{Stealth[length=2.2mm]},line width=0.7pt},
+  flowlbl/.style={font=\footnotesize,fill=white,inner sep=1.5pt},
+  gv/.style={circle,fill=black,inner sep=1.7pt},
+  gvlab/.style={circle,draw=black,line width=0.6pt,minimum size=6mm,
+    inner sep=0.5pt,font=\small},
+  gedge/.style={line width=0.7pt,black!75},
+  gvlbl/.style={font=\footnotesize,fill=white,inner sep=1.4pt},
+  ltdot/.style={circle,fill=black,inner sep=1.5pt},
+  ltedge/.style={black!50,line width=0.7pt},
+  ltlab/.style={font=\footnotesize,fill=white,inner sep=1.6pt},
+}
+
+% ================= additions to fold in the Integrated Framework appendix =================
+\usepackage{adjustbox}
+\usepackage{pdflscape}
+\definecolor{cFound}{HTML}{4A4A4A}
+\definecolor{cComb}{HTML}{1F6F8B}
+\definecolor{cGraph}{HTML}{2E7D32}
+\definecolor{cComp}{HTML}{8E44AD}
+\definecolor{cBridge}{HTML}{B5651D}
+\definecolor{cCore}{HTML}{8B0000}
+\tikzset{
+  clusterbox/.style={rounded corners=6pt,draw,line width=1pt,inner sep=10pt,
+    fill=#1!4,draw=#1!70},
+  clusterlbl/.style={font=\bfseries\small,text=#1!75},
+  topic/.style={rounded corners=3pt,draw=#1!75,line width=0.8pt,fill=#1!6,
+    text=black,align=center,font=\footnotesize,inner sep=3.4pt,
+    minimum height=7mm,text width=26mm},
+  topicw/.style={topic=#1,text width=34mm},
+  core/.style={rounded corners=4pt,draw=cCore,line width=1.4pt,fill=cCore!8,
+    text=black,align=center,font=\small\bfseries,inner sep=5pt,text width=52mm},
+  egchip/.style={draw=black!35,line width=0.4pt,fill=black!3,rounded corners=2pt,
+    font=\scriptsize,inner sep=2pt,align=center,text=black!75},
+  pre/.style={-{Stealth[length=2.2mm]},line width=0.8pt,draw=black!70},
+  xlink/.style={-{Stealth[length=2mm]},line width=0.6pt,draw=black!45,densely dashed},
+  brid/.style={{Stealth[length=2.2mm]}-{Stealth[length=2.2mm]},line width=1pt,draw=cBridge!85},
+  edgelbl/.style={font=\scriptsize,fill=white,inner sep=1.3pt,text=black!70},
+}
+\theoremstyle{definition}
+\newtheorem{bridgeprob}{Bridge Problem}
+\newtheorem{capstone}{Capstone}
+\newcommand{\lkey}[2]{\tikz[baseline=-0.5ex]{\draw[#1] (0,0)--(0.7,0);}~\,{\footnotesize #2}}
+
+% ---- structure-preserving squares, local concept maps, reduction graphs ----
+% ---- commutative diagrams (tikz-cd line/tip styles; arrow LABELS given inline) ----
+% usage: \arrow[r, pres, "{preserves }L"]  /  \arrow[d, quot]  /  \arrow[r, inc]
+\tikzcdset{
+  pres/.style={dashed},            % meaning/language-preserving transformation
+  quot/.style={two heads},         % quotient / minimization (surjection)
+  inc/.style={hook},               % inclusion / embedding (injection)
+}
+
+\tikzset{
+  % ---- local concept-map nodes / edges (light grayscale) ----
+  cnode/.style={rounded corners=2pt,draw=black!72,line width=0.6pt,align=center,
+    font=\footnotesize,inner sep=3pt,text width=23mm,minimum height=7mm},
+  cnodew/.style={cnode,text width=32mm},
+  croot/.style={cnode,line width=1pt,draw=black,font=\footnotesize\bfseries,fill=black!4},
+  cedge/.style={-{Stealth[length=2.2mm]},line width=0.6pt,draw=black!70},
+  cbidir/.style={{Stealth[length=2.2mm]}-{Stealth[length=2.2mm]},line width=0.6pt,draw=black!70},
+  cdash/.style={-{Stealth[length=2mm]},line width=0.6pt,draw=black!55,densely dashed},
+  cedgelbl/.style={font=\scriptsize,fill=white,inner sep=1.2pt,text=black!75},
+  % ---- structure-preserving square in plain TikZ (when tikz-cd is awkward) ----
+  smnode/.style={align=center,font=\small,inner sep=2pt},
+  smmap/.style={-{Stealth[length=2.4mm]},line width=0.7pt},
+  smpres/.style={-{Stealth[length=2.4mm]},line width=0.9pt,densely dashed},
+  smlbl/.style={font=\footnotesize,fill=white,inner sep=1.3pt},
+  % ---- reduction-graph arrows: point FROM the known-hard problem TO the target ----
+  redarrow/.style={-{Stealth[length=2.8mm]},line width=1pt,draw=black!82},
+  redlbl/.style={font=\footnotesize,fill=white,inner sep=1.4pt},
+  % ---- quotient / two-headed map in plain TikZ ----
+  quotarrow/.style={-{Stealth[length=2.4mm]Stealth[length=2.4mm]},line width=0.8pt},
+}
+
