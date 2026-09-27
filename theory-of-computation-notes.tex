@@ -27205,7 +27205,7 @@ whose ``yes'' answer is equivalent -- in both directions -- to the formula being
 
 \subsection*{Polynomial-time reducibility and $\CSAT$}
 
-\begin{definition}[Polynomial-time mapping reduction]\label{def:redp@c13}
+\begin{definition}[Polynomial-time mapping reduction]\label{def:redp-b@c13}
 A function $f\colon\Sigstar\to\Sigstar$ is \emph{polynomial-time computable} if some deterministic
 Turing machine, on every input $w$, halts in time $\bigO(\abs{w}^c)$ for a constant $c$ with $f(w)$
 alone on its tape. A language $A$ is \emph{polynomial-time (mapping) reducible} to a language $B$,
@@ -28321,7 +28321,7 @@ hard, and reduce it \emph{to} the target. Stringing those individual reductions 
 produces a directed graph whose arrows are the relation $\redp$. Reading it is a skill in its
 own right, so we draw it first.
 
-\begin{definition}[Polynomial-time mapping reducibility]\label{def:redp@c13}
+\begin{definition}[Polynomial-time mapping reducibility]\label{def:redp-c@c13}
 A function $f\colon\Sigstar\to\Sigstar$ is \emph{polynomial-time computable} if some
 deterministic Turing machine, running in time $n^{\bigO(1)}$, halts on every input $w$ with
 exactly $f(w)$ written on its tape. A language $A$ is \emph{polynomial-time mapping reducible}
@@ -28332,7 +28332,7 @@ to a language $B$, written $A\redp B$, if there is a polynomial-time computable 
 We call $f$ a \emph{polynomial-time reduction} of $A$ to $B$.
 \end{definition}
 
-\begin{definition}[NP-completeness]\label{def:npc@c13}
+\begin{definition}[NP-completeness]\label{def:npc-b@c13}
 A language $B$ is \emph{NP-complete} if (1) $B\in\classNP$, and (2) every $A\in\classNP$
 satisfies $A\redp B$. A language satisfying only (2) is called \emph{NP-hard}.
 \end{definition}
