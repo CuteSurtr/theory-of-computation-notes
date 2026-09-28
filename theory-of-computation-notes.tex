@@ -36630,7 +36630,7 @@ problems are grouped, each with one example quoted from a specific problem.
        {\textbf{B.\ Graph $+$ Comp.}\\$3\textsc{SAT}\redp\HAMPATH$} (comp.north);
   \draw[brid] (comb.east) to[out=0,in=180]
      node[edgelbl,align=center,pos=0.5]
-       {\textbf{C.\ Comb. $+$ Comp.}\\countably many programs,\\uncountably many languages} (comp.west);
+       {\textbf{C.\ Comb.\ $+$ Comp.}\\countably many programs,\\uncountably many languages} (comp.west);
 
   % --- bridge D: all three meet at the shared ground ---
   \draw[brid,draw=cCore!75] (graph.south) -- (gnd.north);
@@ -36710,7 +36710,7 @@ This plan runs ten weeks at an upper-division pace, interleaving Graph Theory, T
   \item \emph{Graph theory:} bipartite matchings, Hall's marriage theorem, K\"onig's theorem, augmenting paths, vertex/edge connectivity, Menger's theorem.
   \item \emph{Combinatorics:} systems of distinct representatives, Latin-rectangle completion as a matching problem.
   \item \emph{Computability (preview):} matching is in P via augmenting paths --- a tractable contrast to the hard problems of Week 10.
-  \item \emph{Bridge worked:} \textbf{Bridge A} reused --- alternating/augmenting paths are walks in a derived graph; min-max duality (Hall/K\"onig/Menger) previews reduction thinking (Bridge D).
+  \item \emph{Bridge worked:} \textbf{Bridge A} reused --- alternating/augmenting paths are walks in a derived graph; min--max duality (Hall/K\"onig/Menger) previews reduction thinking (Bridge D).
   \item \emph{Deliverables:} (1) prove Hall's theorem; (2) reduce an SDR existence question to a bipartite matching and solve it.
   \item \emph{Why together:} matchings show an efficiently solvable graph problem and a min--max duality that reductions later exploit.
 \end{itemize}
@@ -36983,7 +36983,7 @@ is $\#\classP$-complete. (c) Contrast with the case of a single
 read-once / disjoint-clause formula, where the count factors and is
 computable in polynomial time. State precisely the relationship between
 $\textsc{SAT} \in \classNP$ and $\#\textsc{SAT} \in \#\classP$.
-\textit{Hint: let $B_i$ be the set of assignments violating clause $C_i$ (all literals false); then $\#$falsifying $= |\bigcup_i B_i|$ by inclusion--exclusion, and each $|B_{i_1}\cap\cdots\cap B_{i_t}|$ is $0$ or a power of two.}
+\textit{Hint: let $B_i$ be the set of assignments violating clause $C_i$ (all literals false); then $\#$falsifying~$= |\bigcup_i B_i|$ by inclusion--exclusion, and each $|B_{i_1}\cap\cdots\cap B_{i_t}|$ is $0$ or a power of two.}
 \end{bridgeprob}
 
 \begin{bridgeprob}
@@ -36999,7 +36999,7 @@ the apparent paradox: $\Sigma$ is a perfectly well-defined total function
 $\mathbb{N}\to\mathbb{N}$ defined by a finite max at each input, yet
 $\Sigma$ is \emph{uncomputable} and grows faster than every computable
 function. Reconcile ``finite at each $n$'' with ``uncomputable overall.''
-\textit{Hint: each (state,symbol) pair has $4n+1$ possible actions ($2$ symbols $\times$ $2$ directions $\times$ $n$ next-states, plus halt), so $T(n) = (4n+1)^{2n}$; finiteness per $n$ does not give a uniform halting decider.}
+\textit{Hint: each (state, symbol) pair has $4n+1$ possible actions ($2$ symbols~$\times$ $2$ directions~$\times$ $n$ next-states, plus halt), so $T(n) = (4n+1)^{2n}$; finiteness per $n$ does not give a uniform halting decider.}
 \end{bridgeprob}
 
 % ----------------------------------------------------------------------
@@ -37183,7 +37183,7 @@ predicted growth from $\bigTheta(n\log n)$ to $\bigTheta(n^{3/2})$ or similar.
 \textbf{Expander and Cayley-Graph Construction with a Derandomization Demo.}
 How well can explicitly constructed expander graphs replace true randomness in a
 simple randomized algorithm? Combinatorics and algebra enter through Cayley
-graphs of groups such as $\Z/p\Z$ and $SL_2(\F_p)$ and the spectral gap that
+graphs of groups such as $\Z/p\Z$ and $\mathrm{SL}_2(\F_p)$ and the spectral gap that
 certifies expansion; graph theory enters through eigenvalues of the adjacency
 matrix, edge expansion, and random-walk mixing time; theory of computability
 enters through the role of expanders in derandomization and randomness-efficient
