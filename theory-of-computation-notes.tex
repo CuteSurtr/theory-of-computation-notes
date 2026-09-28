@@ -813,7 +813,7 @@ colliding pair, leaving three distinct strings.
 \end{wex}
 
 \begin{wex}{Star of a finite language, layer by layer}
-Let $A=\set{\str{ab},\str b}$ over $\set{\str a,\str b}$. Describe $A\kstar$ by length, and decide
+Let $A=\set{\str{ab},\str b}$ over $\set{\str a,\str b}$. Describe $A\kstar$ layer by layer, and decide
 whether $\str{abb}$ and $\str{aab}$ are in $A\kstar$.
 \wrec Star is \emph{all finite concatenations} of members of $A$ (Def.~\ref{def:langops@c1}). The trigger
 ``is this string in $A\kstar$?'' becomes a \emph{tiling} question: can the string be cut into a
@@ -9591,19 +9591,19 @@ $\trans(1,\str b)=1$, and $\trans(2,\str a)=\trans(2,\str b)=2$. Find a regular 
 $\lang{\dfa}$.
 \wrec The trigger is ``DFA $\to$ regex,'' so run state elimination. Two real states plus the two
 fresh endpoints gives a four-state GNFA; two eliminations finish it.
-\wsol Normalize: add $s\xrightarrow{\eps}1$ and $2\xrightarrow{\eps}a$ (writing $a$ for
+\wsol Normalize: add $s\xrightarrow{\eps}1$ and $2\xrightarrow{\eps}f$ (writing $f$ for
 $q_{\mathrm{acc}}$). State $1$ self-loops on $\str b$; the $1\to2$ edge is $\str a$; state $2$
-self-loops on $\str a\reor\str b$. Now eliminate state $2$. For the pair $(1,a)$ take
-$q_i=1,\ q_{\mathrm{rip}}=2,\ q_j=a$, so $R_1=\str a$ (edge $1\to2$),
-$R_2=\str a\reor\str b$ (loop at $2$), $R_3=\eps$ (edge $2\to a$), and $R_4=\es$ (no direct
-$1\to a$). The new label is $R_1R_2\restar R_3\reor R_4=\str a(\str a\reor\str b)\restar\eps\reor
+self-loops on $\str a\reor\str b$. Now eliminate state $2$. For the pair $(1,f)$ take
+$q_i=1,\ q_{\mathrm{rip}}=2,\ q_j=f$, so $R_1=\str a$ (edge $1\to2$),
+$R_2=\str a\reor\str b$ (loop at $2$), $R_3=\eps$ (edge $2\to f$), and $R_4=\es$ (no direct
+$1\to f$). The new label is $R_1R_2\restar R_3\reor R_4=\str a(\str a\reor\str b)\restar\eps\reor
 \es=\str a(\str a\reor\str b)\restar$.
 \begin{center}
 \begin{tikzpicture}[fa,node distance=12mm and 20mm]
   \node[stinit] (s) {$s$};
   \node[st,right=of s] (o) {$1$};
   \node[st,right=of o] (t) {$2$};
-  \node[stacc,right=of t] (a) {$a$};
+  \node[stacc,right=of t] (a) {$f$};
   \path (s) edge node{$\eps$} (o)
         (o) edge[loop above] node{$b$} (o)
         (o) edge node{$a$} (t)
@@ -9612,14 +9612,14 @@ $1\to a$). The new label is $R_1R_2\restar R_3\reor R_4=\str a(\str a\reor\str b
   \node at ($(a)+(12mm,0)$) {};
   \node[stinit,below=14mm of s] (s2) {$s$};
   \node[st,right=20mm of s2] (o2) {$1$};
-  \node[stacc,right=30mm of o2] (a2) {$a$};
+  \node[stacc,right=30mm of o2] (a2) {$f$};
   \path (s2) edge node{$\eps$} (o2)
         (o2) edge[loop above] node{$b$} (o2)
         (o2) edge node{$a(a\reor b)\restar$} (a2);
 \end{tikzpicture}
 \end{center}
-Now eliminate state $1$: for the pair $(s,a)$ we have $R_1=\eps$ (edge $s\to1$),
-$R_2=\str b$ (loop at $1$), $R_3=\str a(\str a\reor\str b)\restar$ (edge $1\to a$), and
+Now eliminate state $1$: for the pair $(s,f)$ we have $R_1=\eps$ (edge $s\to1$),
+$R_2=\str b$ (loop at $1$), $R_3=\str a(\str a\reor\str b)\restar$ (edge $1\to f$), and
 $R_4=\es$. The final label is $\eps\,\str b\restar\,\str a(\str a\reor\str b)\restar\reor\es=
 \str b\restar\str a(\str a\reor\str b)\restar$.
 \whichrule{State elimination is a systematic DFA-to-regex method; each removed state
@@ -9638,7 +9638,7 @@ $\trans(C,\str0)=C$, $\trans(C,\str1)=C$. Give a regular expression for $\lang{\
 \wrec State $C$ is a non-accepting trap (both symbols loop and it is never accepting), so it can
 never contribute to the surviving start-accept edge. The trigger ``a trap state'' tells us to
 eliminate $C$ first; its outgoing label to the accept side is $\es$, which annihilates its term.
-\wsol Normalize with $s\xrightarrow{\eps}A$ and $A\xrightarrow{\eps}a$ (since $A$ is the only
+\wsol Normalize with $s\xrightarrow{\eps}A$ and $A\xrightarrow{\eps}f$ (since $A$ is the only
 accept). Eliminating $C$: every edge \emph{into} $C$ followed by $C$'s loop and \emph{out} of $C$
 contributes $R_1R_2\restar R_3$, but $C$ has no edge to any surviving state ($R_3=\es$), so each
 such term is $\es$ and vanishes; we simply delete $C$ and its incoming $B\xrightarrow{0}C$ edge.
@@ -9647,7 +9647,7 @@ such term is $\es$ and vanishes; we simply delete $C$ and its incoming $B\xright
   \node[stinit] (s) {$s$};
   \node[st,right=18mm of s] (A) {$A$};
   \node[st,below=14mm of A] (B) {$B$};
-  \node[stacc,right=26mm of A] (a) {$a$};
+  \node[stacc,right=26mm of A] (a) {$f$};
   \path (s) edge node{$\eps$} (A)
         (A) edge[loop above] node{$0$} (A)
         (A) edge[bend right=14] node[swap,pos=0.45]{$1$} (B)
@@ -9660,7 +9660,7 @@ $A\xrightarrow{1}B\xrightarrow{1}A$. Eliminate $B$: the only nontrivial pair is 
 $R_1=\str1$ ($A\to B$), $R_2=\es$ (no loop at $B$), $R_3=\str1$ ($B\to A$), and $R_4=\str0$ (the
 existing $A$-loop). The new $A$-self-loop label is
 $R_1R_2\restar R_3\reor R_4=\str1\,\es\restar\,\str1\reor\str0=\str1\eps\str1\reor\str0=
-\str{11}\reor\str0$. Finally eliminate $A$: for $(s,a)$ we have $R_1=\eps$, $R_2=\str{11}\reor
+\str{11}\reor\str0$. Finally eliminate $A$: for $(s,f)$ we have $R_1=\eps$, $R_2=\str{11}\reor
 \str0$, $R_3=\eps$, $R_4=\es$, giving
 \[
   R=(\str0\reor\str{11})\restar .
@@ -9693,8 +9693,8 @@ self-loop $\str a$, a $\str b$-edge $p\to q$, and $q$ accepting.
         (p) edge node{$b$} (q);
 \end{tikzpicture}
 \end{center}
-Now state-eliminate. Add $s\xrightarrow{\eps}p$ and $q\xrightarrow{\eps}a$. Eliminate $q$ (label
-out is $\eps$): the $(p,a)$ edge becomes $\str b\cdot\eps=\str b$. Eliminate $p$: for $(s,a)$ take
+Now state-eliminate. Add $s\xrightarrow{\eps}p$ and $q\xrightarrow{\eps}f$. Eliminate $q$ (label
+out is $\eps$): the $(p,f)$ edge becomes $\str b\cdot\eps=\str b$. Eliminate $p$: for $(s,f)$ take
 $R_1=\eps,\ R_2=\str a$ (the loop), $R_3=\str b,\ R_4=\es$, giving
 $\eps\,\str a\restar\,\str b\reor\es=\str a\restar\str b$.
 \whichrule{Thompson and state elimination are inverse \emph{at the level of languages}: applying
@@ -10189,7 +10189,7 @@ $xy^3z$ explicitly, and confirm by tracing that each is accepted by the machine.
 Identify the first repeated state, give the resulting $x,y,z$ (as positions $s_k$ of the input), and
 describe in words the infinite family of strings the lemma certifies belong to the language.
 
-\item Let $\Lang=\set{\str0^n\str1^{\,2n}\st n\ge 0}$. Using the method box, choose a string $s$ of
+\item Let $\Lang=\set{\str0^n\str1^{\,2n}\st n\ge 0}$. Using the Method, choose a string $s$ of
 length $\ge p$, explain why condition (3) forces $y$ to be all $\str0$s, and pick an exponent $i$
 that produces a string outside $\Lang$. Conclude that $\Lang$ fails the pumping property.
 
@@ -12214,7 +12214,7 @@ Convert to CNF:
 \[
   S\to \str{0}S\str{1}\mid T,\qquad T\to TT\mid\eps .
 \]
-\wrec All four obstacles are present: $S$ is the start variable that could end up on a right side,
+\wrec All four obstacles are present: $S$ is the start variable and appears on a right side,
 $T\to\eps$ is an $\eps$-rule, $S\to T$ is a unit rule, and $S\to\str0 S\str1$ is long and mixes
 terminals with a variable. The trigger is simply ``a general CFG,'' so we run all four stages in
 order.
@@ -13912,7 +13912,7 @@ becomes the left terminal, the letter $b$ read while popping that same $u$ becom
 terminal, and the inner variable $A_{rs}$ generates whatever happened in between.}
 \emph{Check.} $P$ on $\str{ab}$: from $p$ read $a$ and push $u$ to reach $q$; read $b$ and pop $u$,
 reaching $f$ with empty stack -- accept. The grammar derives $A_{pf}\Rightarrow aA_{qq}b\Rightarrow ab$.
-Both accept exactly $\str{ab}$.
+$P$ accepts, and the grammar generates, exactly $\str{ab}$.
 \end{wex}
 
 \begin{wex}{The matched-ends rule on a counting PDA: deriving $a^{n}b^{n}$}
@@ -14665,7 +14665,7 @@ context-free.
 This is the contrapositive of the pumping lemma. If $A$ were context-free it would have some pumping
 length $p$, and the lemma would furnish, for the string $s$ we chose at that $p$, a single division
 $s=uvxyz$ meeting $\abs{vy}>0$ and $\abs{vxy}\le p$ for which \emph{all} pumped strings
-$uv^{\,i}xy^{\,i}z$ stay in $A$. That directly contradicts the displayed hypothesis. Hence $A$ is
+$uv^{\,i}xy^{\,i}z$ stay in $A$. That directly contradicts the hypothesis of the theorem. Hence $A$ is
 not context-free.
 \end{proof}
 
@@ -16154,7 +16154,7 @@ $w\in\set{\str0,\str1}\kstar$ is a palindrome, i.e.\ $w=w\rev{}$. Give a tape sn
 $\str{0110}$ at the moment the two outer symbols have just been matched, and explain why the
 machine compares the \emph{outermost} uncrossed pair on each pass rather than adjacent symbols.
 
-\item For each of three sweeping patterns named in the Method box (cross-off matching,
+\item For each of three sweeping patterns named in the Method (cross-off matching,
 zig-zag comparison, in-place rewriting), give one short language or task from this section's
 exercises that it solves, and in one sentence justify why that pattern fits.
 \end{exers}
@@ -16332,8 +16332,8 @@ A language is Turing-recognizable if and only if some multitape Turing machine r
 \begin{proof}
 A one-tape TM is the special case $k=1$ of a multitape TM, giving one direction. Conversely a
 $k$-tape recognizer is converted to a one-tape recognizer by Theorem~\ref{thm:multi@c8}. The
-same construction preserves halting, so it also holds with ``recognizable'' replaced by
-``decidable.''
+same construction preserves halting, so the corollary also holds with ``recognizable'' and
+``recognizes'' replaced by ``decidable'' and ``decides.''
 \end{proof}
 
 \begin{wex}{Using a second tape to recognize $\set{\str{0}^n\str{1}^n\st n\ge 0}$ in one pass}
@@ -17829,7 +17829,7 @@ Two DFAs $A,B$ are claimed equivalent. Explain, using a Venn picture, why testin
   \node[font=\footnotesize] at (0,-1.7) {shaded $=\lang{A}\,\triangle\,\lang{B}$};
 \end{tikzpicture}
 \end{center}
-\whichrule{$\mathit{EQ}_{\mathsf{DFA}}$ reduces to $\E_{\mathsf{DFA}}$: build a DFA for the shaded set using closure under $\cap,\cup,\overline{\;\;}$, then ask the emptiness decider whether the shaded set is empty.}
+\whichrule{$\mathit{EQ}_{\mathsf{DFA}}$ reduces to $\E_{\mathsf{DFA}}$: build a DFA for the shaded set using closure under intersection, union and complement, then ask the emptiness decider whether the shaded set is empty.}
 \emph{Check.} A string $x$ in the left crescent lies in $\lang{A}$ but not $\lang{B}$ -- a witness that the machines \emph{disagree}, hence are not equivalent. No such witness exists iff the crescents are empty iff the circles coincide.
 \end{wex}
 
@@ -18008,7 +18008,7 @@ A \emph{decider} is a machine for which the dashed branch never happens: every i
 on accept or reject. A \emph{recognizer} is allowed the dashed branch, but only for strings
 \emph{outside} the language -- it must never loop on, or wrongly reject, a member. Deciding
 is strictly harder, so every decidable language is recognizable; the converse is the central
-open question we resolve negatively later.
+question we resolve negatively later.
 
 \begin{remark}
 A recognizer's silence is ambiguous. If you run a recognizer $M$ on $w$ and it has not
@@ -18982,8 +18982,8 @@ and only then let $U$ finish the simulation safely.}
 A student proposes deciding $\HALT$ by running $M$ on $w$ for a fixed budget of $10^{6}$ steps:
 accept if $M$ halts within the budget, reject otherwise. Explain why this does not decide
 $\HALT$.
-\wrec This is the classic ``timeout in place of a decision'' error. The trigger is that any fixed
-or input-independent step bound cannot certify non-halting.
+\wrec This is the classic ``timeout in place of a decision'' error. The trigger is that no step bound, whether fixed or
+computed from the input, can certify non-halting.
 \wsol The proposed machine $T$ is a perfectly good \emph{decider} -- it always halts -- but it
 decides the wrong language. Take a machine $M_0$ that halts on $w_0$ only after $10^{6}+1$ steps.
 Then $M_0$ does halt on $w_0$, so $\enc{M_0,w_0}\in\HALT$, yet $T$ rejects because the budget ran
@@ -19064,10 +19064,10 @@ even when allowed to loop on rejects.
 \end{pitfall}
 
 \begin{pitfall}
-The proof of Theorem~\ref{thm:atm@c9} does not exhibit a specific input on which $H$ goes wrong; it
-shows that the \emph{machine} $H$ cannot exist at all. Do not look for ``the hard instance'' of
-$\ATM$. The hardness is global: every candidate decider is defeated by the single tailored input
-$\enc{D}$ built from that very decider, and $D$ changes when $H$ changes.
+The proof of Theorem~\ref{thm:atm@c9} does not exhibit one fixed input on which every candidate $H$
+goes wrong; it shows that the \emph{machine} $H$ cannot exist at all. Do not look for ``the hard
+instance'' of $\ATM$. The hardness is global: each candidate decider $H$ is defeated on the tailored
+input $\enc{D,\enc{D}}$, where $D$ is built from that very decider, and $D$ changes when $H$ changes.
 \end{pitfall}
 
 \begin{pitfall}
@@ -20531,7 +20531,7 @@ reduction and an $\overline{\ATM}$ reduction sits at the very top, in ``neither.
 Let $\HALT=\set{\enc{M,w}\st M\text{ halts on }w}$. Show $\HALT$ is undecidable by a mapping
 reduction $\ATM\redm\HALT$.
 \wrec A Template~U task: source $\ATM$, target $\HALT$. The trigger is ``$M$ accepts'' versus ``$M$
-halts'': accepting is halting-and-saying-yes, so we must convert a halting machine into one whose
+halts'': accepting is halting-and-saying-yes, so we must convert $M$ into a machine whose
 halting alone already encodes acceptance.
 \wsol Define $f(\enc{M,w})=\enc{M',w}$ where $M'$ is built from $M$ as follows.
 \begin{quote}\small
@@ -20832,8 +20832,8 @@ same $f$), prove that the class of Turing-recognizable languages is \emph{not} c
 operation $A\mapsto\overline{A}$, by exhibiting a recognizable language whose complement is
 unrecognizable. Name the language and cite the relevant reduction.
 
-\item Let $\mathit{INF}_{\mathsf{TM}}=\set{\enc{M}\st\lang{M}\text{ is infinite}}$. Give a reduction
-$\ATM\redm\mathit{INF}_{\mathsf{TM}}$ that constructs a machine whose language is infinite exactly
+\item Let $\mathit{INFINITE}_{\mathsf{TM}}=\set{\enc{M}\st\lang{M}\text{ is infinite}}$. Give a reduction
+$\ATM\redm\mathit{INFINITE}_{\mathsf{TM}}$ that constructs a machine whose language is infinite exactly
 when $M$ accepts $w$, and finite (indeed empty) otherwise. State your witness infinite language.
 
 \item \emph{Find the bug.} A student writes: ``To prove $\ETM$ is undecidable, reduce $\ETM$ to
@@ -25629,7 +25629,7 @@ logically possible pictures are drawn below.
 In the left picture, problems such as $\CLIQUE$ and $\HAMPATH$ live in the unshaded gap $\classNP
 \setminus\classP$: verifiable but not decidable in polynomial time. In the right picture there is no
 gap, and every fast verifier could be replaced by a fast decider. No one knows which holds, though the
-best deterministic algorithms known for $\classNP$ problems run in exponential time, and the
+best deterministic algorithms known for such problems run in exponential time, and the
 containment $\classNP\subseteq\EXP$ is proved while no smaller deterministic time bound is known.
 
 It helps to place $\classNP$ in the chain of containments that \emph{are} proved, while marking
@@ -31697,7 +31697,7 @@ The two theorems are not symmetric: space allows $o(f)$, but time only allows
 $o(t/\log t)$. The missing $\log$ factor is real -- it is the cost of dragging a step counter
 alongside the head on a single tape, and no constant-overhead single-tape clock is known.
 Writing ``$\TIME(o(t))\subsetneq\TIME(t)$'' as the time analogue of the space statement
-overclaims a theorem nobody has proved.
+claims more than the diagonal argument above delivers.
 \end{pitfall}
 
 \begin{pitfall}
@@ -32950,7 +32950,7 @@ our self-contained bound is deliberately loose.)
 
 \subsection*{Randomized primality testing}
 
-We owe a coin to the most famous probabilistic algorithm. Recall Fermat's little
+We now turn to the most famous probabilistic algorithm. Recall Fermat's little
 theorem: if $p$ is prime and $1\le a\le p-1$, then $a^{p-1}\equiv 1\pmod p$. Read
 contrapositively, finding one $a$ with $a^{p-1}\not\equiv 1\pmod p$ \emph{certifies}
 that $p$ is composite -- without exhibiting a factor. Call such an $a$ a \emph{Fermat
@@ -36065,7 +36065,8 @@ three. The bridges between the fields are not analogies; they are equalities, an
 now.
 
 \begin{theorem}[The synthesis dictionary]\label{thm:dict@c16}
-The following correspondences hold, each proved in this chapter or in Ch.~1--13.
+The following correspondences hold, each proved in this chapter or in Ch.~1--13 (except the
+expander facts behind (4), which \S16.4 states without proof).
 \begin{enumerate}[leftmargin=2.2em,topsep=2pt,itemsep=1pt]
   \item (Algebra $\leftrightarrow$ computation) A language $L\subseteq\Sigstar$ is regular iff
   some finite monoid recognizes it, namely the syntactic monoid $M(L)$
@@ -36087,7 +36088,7 @@ The following correspondences hold, each proved in this chapter or in Ch.~1--13.
 \end{theorem}
 
 \begin{proof}
-Items (1)--(5) are theorems established in the cited sections; here we only record that each
+Items (1)--(5) are results from the cited sections; here we only record that each
 is a genuine biconditional or transfer, not a loose parallel. (1) is the algebraic
 Myhill--Nerode theorem, an ``iff''. (2) is the contrapositive of a union bound:
 $\#\{\text{bad}\}<\#\{\text{all}\}$ leaves a good object, since ${\#\{\text{good}\}=
@@ -37059,8 +37060,9 @@ high-probability upper bound on the clique number. (b) Graph theory: relate
 this to $\CLIQUE$ as a graph property. (c) Computability/complexity:
 discuss the (conjectured) hardness of \emph{finding} a clique of size
 $(1+\varepsilon)\log_2 n$ in $G(n,1/2)$ (an open problem posed by Karp in 1976,
-related to the planted-clique problem) versus the easy first-moment \emph{existence} bound, and
-connect this gap to the broader non-constructiveness theme.
+related to the planted-clique problem) versus the fact that cliques of size nearly $2\log_2 n$
+\emph{exist} w.h.p.\ (part (a) gives the matching upper bound; existence needs a second-moment
+argument), and connect this gap to the broader non-constructiveness theme.
 \textit{Hint: $\mathbb{E}[\#\text{$k$-cliques}] = \binom{n}{k}2^{-\binom{k}{2}}$; when this is $o(1)$, Markov's inequality says no $k$-clique exists w.h.p.}
 \end{bridgeprob}
 
