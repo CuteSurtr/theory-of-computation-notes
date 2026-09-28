@@ -2595,7 +2595,7 @@ arrowheads.
 \end{array}
 \]
 \whichrule{In a digraph the two degree notions are genuinely different per vertex (here $q$ has
-$d^{+}=2,d^{-}=1$), but each arc has exactly one tail and one head, so both columns must total the
+$d^{+}=2,d^{-}=1$), but each arc has exactly one tail and one head, so both rows must total the
 arc count.}
 \emph{Check.} There are $5$ arcs; both $\sum_v d^{+}(v)$ and $\sum_v d^{-}(v)$ equal $5=\card{\Eset}$,
 as the proposition requires. Note $d^{+}(q)\ne d^{-}(q)$, so the equality of the two sums does not
@@ -2950,7 +2950,7 @@ still-unvisited vertex.
   \draw[gedge] (e)--(f);
 \end{tikzpicture}
 \end{center}
-Start at $a$: reachable set grows $a\to\set{a,b,c}\to\set{a,b,c,d}$ and then stops, since no edge
+Start at $a$: reachable set grows $\set{a}\to\set{a,b,c}\to\set{a,b,c,d}$ and then stops, since no edge
 leaves $\set{a,b,c,d}$. That is the first component. Now pick the unvisited $e$: reachability
 gives $\set{e,f}$ and stops. Finally $g$ has no incident edge, so it is an \emph{isolated vertex}
 and a component by itself. Three components: $\set{a,b,c,d}$, $\set{e,f}$, and $\set{g}$.
@@ -3141,7 +3141,7 @@ closing.
 \end{wex}
 
 \begin{wex}{Reachability in a digraph: when direction breaks symmetry}
-In the directed graph below, decide for each ordered pair whether $u$ can reach the other vertex
+In the directed graph below, decide for each pair of vertices $u,v$ whether $u$ can reach $v$
 and vice versa, and explain why connectivity in digraphs is subtler than in graphs.
 \wrec Directed reachability follows arrows \emph{one way}, so the relation ``$u$ reaches $v$'' is
 no longer symmetric. Test reachability separately in each direction by tracing forward along
@@ -3395,7 +3395,7 @@ Read any double arrow as ``$\Leftrightarrow$'': the ring says the four condition
 so each one alone defines the same class (the hub ``tree''), and one may verify whichever clause is
 cheapest on the graph at hand.
 \emph{Check.} On an $n$-vertex graph, any two of $\set{\text{connected},\text{acyclic},\card{E}=n-1}$
-force the third (Lemma~\ref{lem:edges@c2} and clauses (iii),(iv) of Theorem~\ref{thm:treechar@c2}), and a
+force the third (Lemma~\ref{lem:edges@c2} and clauses (iii), (iv) of Theorem~\ref{thm:treechar@c2}), and a
 tree has a unique simple path between any two vertices (clause (ii)); hence T1--T4 are equivalent.
 
 \begin{wex}{Recognizing a tree from a drawing}
@@ -3961,7 +3961,7 @@ the verdict.
 \end{wex}
 
 \begin{corollary}[Regular bipartite graphs have perfect matchings]\label{cor:kreg@c2}
-Every $k$-regular bipartite graph with $k\ge 1$ has a perfect matching.
+Every $k$-regular bipartite graph (every vertex of degree $k$) with $k\ge 1$ has a perfect matching.
 \end{corollary}
 
 \begin{proof}
@@ -4051,8 +4051,8 @@ of the book maps out.
 \begin{method}{How to find the chromatic number of a small graph}
 \begin{enumerate}[leftmargin=2em,topsep=2pt,itemsep=1pt]
   \item \textbf{Get a lower bound.} Find the largest clique you can; it forces that many colors.
-  A single edge gives $2$, a triangle gives $3$. An odd cycle (no clique larger than $2$) still
-  forces $3$ by Theorem~\ref{thm:bip@c2}, so check parity of cycles too.
+  A single edge gives $2$, a triangle gives $3$. An odd cycle of length at least $5$ (no clique
+  larger than $2$) still forces $3$ by Theorem~\ref{thm:bip@c2}, so check parity of cycles too.
   \item \textbf{Get an upper bound by coloring.} Order the vertices (high-degree first often helps)
   and color greedily with the smallest legal color. The number of colors used is an upper bound; by
   Proposition~\ref{prop:bounds@c2} you never need more than $\Delta+1$.
@@ -4257,9 +4257,9 @@ actually decides.
   % node B: the encoding <G>
   \node[cnodew] (B) at (5.4,0.55) {encoding $\enc{\Gr}$\\(adjacency matrix or list\\$\to$ a binary string)};
   % node C: the decision problem / language
-  \node[cnodew] (C) at (3.0,-3.0) {decision problem\\$\mathrm{CONN}=\set{\enc{\Gr}\st \Gr\text{ connected}}$};
+  \node[cnodew,text width=40mm] (C) at (3.0,-3.0) {decision problem\\$\mathrm{CONN}=\set{\enc{\Gr}\st \Gr\text{ connected}}$};
   % arrows around the triangle
-  \draw[smmap] (A.east) -- node[smlbl,above]{encode} (B.west);
+  \draw[smmap] (A.east) -- node[smlbl,above=4pt]{encode} (B.west);
   \draw[smmap] (B.south) to[bend left=14] node[smlbl,right]{$\enc{\Gr}\in\Lang$?} (C.east);
   \draw[smmap] (C.west) to[bend left=18] node[smlbl,below left]{$\Gr$ connected?} (A.south);
 \end{tikzpicture}
@@ -4368,8 +4368,8 @@ its BFS distance from $s$.
 \wrec A source-to-target reachability question; the trigger is Definition~\ref{def:path@c2}, so run BFS
 and read off the distance layers.
 \wsol Wave $0$ is $\set{s}$. Wave $1$ is the out-neighbours of $s$, namely $a$ and $b$. Wave $2$ is
-the new out-neighbours of those, namely $c$ (from $a$) and $t$ (from $b$). The vertex $d$ has only
-incoming-from-$d$ arcs to the rest, so it is never reached.
+the new out-neighbours of those, namely $c$ (from $a$) and $t$ (from $b$). The vertex $d$ has no
+incoming arc (its only arc, $d\to b$, points away from it), so it is never reached.
 \begin{center}
 \begin{tikzpicture}[scale=1.0,every node/.style={font=\small}]
   \node[gvlab] (s) at (0,0) {$s$};
@@ -4567,7 +4567,7 @@ forbid drawing implied (non-covering) inclusions.
 
 \begin{pitfall}
 Do not conflate \emph{reachable} with \emph{Hamiltonian}. Reachability asks only for some directed
-path from $s$ to $t$ and is decided in polynomial time by one BFS. Requiring the path to visit every
+path from $s$ to $t$ and is decided in polynomial time by one BFS\@. Requiring the path to visit every
 vertex exactly once is the $\HAMPATH$ condition, an apparently exponentially harder question and one
 of the standard $\classNP$-complete problems. The two phrasings differ by a single clause, but they
 sit on opposite sides of the $\classP$-versus-$\classNP$ divide.
