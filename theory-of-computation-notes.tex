@@ -36712,7 +36712,7 @@ This plan runs ten weeks at an upper-division pace, interleaving Graph Theory, T
   \item \emph{Computability:} decidable vs.\ recognizable languages, the halting problem via diagonalization, mapping reductions $\redm$, Rice's theorem.
   \item \emph{Graph theory:} graph decision problems ($s$--$t$ reachability decidable; emptiness/equivalence of automata as graph questions).
   \item \emph{Combinatorics:} reductions as structure-preserving maps --- the same bijective discipline from Week 3, now between problems.
-  \item \emph{Bridge worked:} \textbf{Bridge D} at full strength --- a reduction is a map that preserves yes-instances, the computational analogue of a bijection.
+  \item \emph{Bridge worked:} \textbf{Bridge D} at full strength --- a reduction is a map that preserves yes-instances and no-instances, the computational analogue of a bijection.
   \item \emph{Deliverables:} (1) prove $\ATM$ undecidable, then reduce it to show $\HALT$ undecidable; (2) classify two automaton properties via Rice's theorem.
   \item \emph{Why together:} reductions are the unifying morphism --- bijections count, reductions transfer (un)solvability, and both preserve structure.
 \end{itemize}
@@ -36838,7 +36838,7 @@ Consider the language
 First prove $\textsc{Conn}$ is decidable and in fact in $\classP$ by
 describing a BFS/DFS-based decider and bounding its running time in terms
 of $|V|$ and $|E|$. Next, prove $\textsc{Conn} \in \textsf{L}$
-(logarithmic space) is equivalent to Reingold's theorem $\textsf{SL}=\textsf{L}$,
+(logarithmic space) follows from Reingold's theorem $\textsf{SL}=\textsf{L}$,
 and at minimum show $\textsc{Conn} \in \textsf{NL}$ by giving a
 nondeterministic logspace algorithm that guesses a path. Contrast the
 \emph{decidability} of graph connectivity with the \emph{undecidability}
@@ -36902,7 +36902,7 @@ reduction and verify it is computable in logspace.
 \begin{bridgeprob}
 \textbf{[Combinatorics + Computability]}
 Prove that undecidable languages over $\{0,1\}$ exist by a counting
-argument. (a) Show that the set of all Turing machines (equivalently, all
+argument. (a) Show that the set of all Turing machines (and hence all
 decidable languages) is countable, by encoding each machine as a finite
 binary string and listing $\Sigstar$ in length-lexicographic order.
 (b) Show that the set of all languages $2^{\Sigstar}$ is uncountable by a
@@ -37003,7 +37003,7 @@ decides $\HAMPATH$ in time $O(2^n \cdot n^2)$ by indexing subproblems on
 (visited vertex subset, current endpoint); count the number of DP states.
 (c) Computability: explain why $\HAMPATH$ is $\classNP$-complete and
 $\textsc{HamCount}$ is $\#\classP$-complete, and why the Held--Karp
-$2^n$ state count is exponential yet far better than the $n!$ brute-force
+$\Theta(2^n n)$ state count is exponential yet far better than the $n!$ brute-force
 permutation count.
 \textit{Hint: the DP table has one entry per (subset $S \ni s$, endpoint $v \in S$) pair, giving $\Theta(2^n n)$ states, each filled by a min/OR over predecessors.}
 \end{bridgeprob}
@@ -37231,7 +37231,7 @@ method, where powers of the transition matrix count walks and yield the
 generating function of digit-sum and pattern statistics. Implement an
 automaton-driven generator for sequences such as Thue--Morse and Rudin--Shapiro,
 build the transfer matrix, and compute occurrence counts of factors via
-matrix powers. The stretch goal is to decide algorithmically whether a candidate
+matrix powers. The stretch goal is to test, on a long prefix, whether a candidate
 sequence is automatic by minimizing the conjectured automaton and checking the
 finiteness of its kernel, then compare the predicted and measured asymptotic
 density of a chosen pattern.
