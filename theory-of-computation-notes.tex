@@ -19806,7 +19806,7 @@ check this, $B$ verifies the three local conditions of Definition~\ref{def:histo
 with $\#\qstart w\#$, ends with a $\#$-block containing the accept state, and that each consecutive
 pair of blocks is consistent with $M$'s transition function. Every check only zig-zags between adjacent
 blocks of the \emph{already written} input, so $B$ never needs space beyond its input -- it is a
-genuine LBA. Now $\lang{B}$ contains a string iff $M$ has an accepting history on $w$, i.e.\ iff $M$
+genuine LBA\@. Now $\lang{B}$ contains a string iff $M$ has an accepting history on $w$, i.e.\ iff $M$
 accepts $w$. So a decider $R$ for $E_{\mathsf{LBA}}$ gives a decider for $\ATM$ via ``build $B$; run
 $R$ on $\enc{B}$; accept iff $R$ \emph{rejects},'' a contradiction.
 \end{proof}
@@ -20011,7 +20011,7 @@ If $A\redm B$ and $B$ is decidable, then $A$ is decidable.
 Let $M$ be a decider for $B$ and let $f$ be the reduction, computed by a transducer $F$. Build a
 TM $N$:
 \[
-  N=\text{``on input }w:\ \text{compute }f(w)\text{ using }F;\ \text{run }M\text{ on }f(w)
+  N=\text{``on input }w\text{: compute }f(w)\text{ using }F;\ \text{run }M\text{ on }f(w)
   \text{ and copy its answer.''}
 \]
 Both $F$ and $M$ halt on every input, so $N$ halts on every input -- it is a decider. And
@@ -20077,11 +20077,11 @@ behaviour mirrors $M$'s \emph{accepting} behaviour. The trigger is ``make reject
 halting,'' so that halting on $w$ becomes the same event as accepting $w$.
 \wsol The transducer edits $M$ into $M'$ that loops wherever $M$ rejects:
 \[
-  M'=\text{``on input }x:\ \text{run }M\text{ on }x;\ \text{if }M\text{ accepts, accept};\
+  M'=\text{``on input }x\text{: run }M\text{ on }x;\ \text{if }M\text{ accepts, accept};\
   \text{if }M\text{ rejects, enter an infinite loop.''}
 \]
 Set $f(\enc{M,w})=\enc{M',w}$; malformed inputs map to a fixed string outside $\HALT$. The map
-$f$ is computable -- building $M'$ only redirects $M$'s reject transitions into a new looping
+$f$ is computable~-- building $M'$ only redirects $M$'s reject transitions into a new looping
 state, pure text editing.
 \begin{center}
 \begin{tikzpicture}[node distance=7mm and 14mm]
@@ -20191,7 +20191,7 @@ undecidable, with no need to reduce $\ATM$ to $\mathit{PCP}$ directly.}
 
 \begin{wex}{Using the complement symmetry to prove unrecognizability}
 You are told $\overline{\ATM}$ is not Turing-recognizable. Show that any target $B$ with
-$\ATM\redm B$ is not co-recognizable, i.e. $\overline{B}$ is not recognizable.
+$\ATM\redm B$ is not co-recognizable, i.e.\ $\overline{B}$ is not recognizable.
 \wrec The cue is ``not recognizable,'' which Theorem~\ref{thm:rec@c10} handles -- but only through a
 reduction \emph{into} the non-recognizable language. We must route $\overline{\ATM}$ to
 $\overline{B}$, and the complement symmetry of mapping reductions does exactly that.
@@ -20229,13 +20229,13 @@ square \emph{commutes}: the two routes from a string to a yes/no verdict always 
   \node[smnode] (w)   {$w$};
   \node[smnode,right=of w] (fw) {$f(w)$};
   \node[smnode,below=of w]  (aw) {is $w\in A$?\\[1pt]\footnotesize yes / no};
-  \node[smnode,below=of fw] (bw) {is $f(w)\in B$?\\[1pt]\footnotesize yes / no};
+  \node[smnode] (bw) at (aw -| fw) {is $f(w)\in B$?\\[1pt]\footnotesize yes / no};
   \draw[smpres] (w)  -- node[smlbl,above]{$f$ computable} (fw);
   \draw[smmap]  (w)  -- node[smlbl,left]{membership in $A$} (aw);
   \draw[smmap]  (fw) -- node[smlbl,right] (dB) {decider for $B$} (bw);
   \draw[cbidir] (aw) -- node[smlbl,below]{same verdict} (bw);
   \node[draw,dashed,rounded corners,fit=(fw)(bw)(dB),inner sep=8pt,
-        label={[smlbl]right:\footnotesize decider for $A$}] {};
+        label={[smlbl,align=left]right:\footnotesize decider for $A$\\\footnotesize (after computing $f$)}] {};
 \end{tikzpicture}
 \end{center}
 
@@ -20263,8 +20263,8 @@ transfer implications under the standing hypothesis $A\redm B$:
 
 \begin{method}{How to present a reduction as a mapping reduction $A\redm B$}
 \begin{enumerate}[leftmargin=2em,topsep=2pt,itemsep=1pt]
-  \item \textbf{Fix the instance types.} Write down what an instance of $A$ looks like (e.g.
-  $\enc{M,w}$) and what an instance of $B$ looks like (e.g. $\enc{M'}$ or a pair). Your $f$ maps
+  \item \textbf{Fix the instance types.} Write down what an instance of $A$ looks like
+  (e.g.\ $\enc{M,w}$) and what an instance of $B$ looks like (e.g.\ $\enc{M'}$ or a pair). Your $f$ maps
   the first kind of string to the second.
   \item \textbf{Describe the transducer $F$.} Give the editing rule that builds the output
   \emph{description} from the input description. Use only operations a TM can do to text: add
@@ -20298,7 +20298,7 @@ separately.
 \begin{pitfall}
 Direction matters for unrecognizability. Theorem~\ref{thm:rec@c10} pushes non-recognizability from the
 \emph{source} $A$ to the \emph{target} $B$ along $A\redm B$. To prove $B$ unrecognizable you must
-reduce a known non-recognizable language (typically $\overline{\ATM}$) \emph{to} $B$, i.e. show
+reduce a known non-recognizable language (typically $\overline{\ATM}$) \emph{to} $B$, i.e.\ show
 $\overline{\ATM}\redm B$ -- not $B\redm\overline{\ATM}$. Reducing in the wrong direction proves
 nothing.
 \end{pitfall}
@@ -20449,13 +20449,13 @@ to the seed that already asks it.
 \begin{center}
 \begin{tikzpicture}[node distance=6mm and 13mm]
   \node[croot] (root) {target's flavour?};
-  \node[cnode,above right=7mm and 20mm of root] (acc)
+  \node[cnode,text width=26mm,above right=7mm and 20mm of root] (acc)
     {accept / run a machine\\\footnotesize ``does $M$ accept?''};
-  \node[cnode,below=4mm of acc] (halt)
+  \node[cnode,text width=26mm,below=4mm of acc] (halt)
     {halting\\\footnotesize ``does $M$ halt?''};
-  \node[cnode,below=4mm of halt] (emp)
+  \node[cnode,text width=26mm,below=4mm of halt] (emp)
     {emptiness / property of $\lang{M}$};
-  \node[cnode,below=4mm of emp] (equ)
+  \node[cnode,text width=26mm,below=4mm of emp] (equ)
     {equivalence\\\footnotesize ``$\lang{M_1}=\lang{M_2}$?''};
   \node[cnode,right=26mm of acc]  (sa) {use $\ATM$};
   \node[cnode,right=26mm of halt] (sh) {use $\HALT$};
@@ -20773,7 +20773,7 @@ $\ATM$, and no $\overline{\ATM}$ reduction into them can exist. Conversely $\ove
 \begin{pitfall}
 The arrow direction is the whole ballgame. To prove $B$ is hard you reduce a known-hard language
 \emph{into} $B$ ($\text{hard}\redm B$), never $B$ into something hard. Writing
-``$B\redm\ATM$'' proves nothing about $B$'s hardness --- in fact every recognizable language reduces
+``$B\redm\ATM$'' proves nothing about $B$'s hardness~--- in fact every recognizable language reduces
 to $\ATM$, so that arrow is satisfied by easy languages too. Always read $A\redm B$ as ``$A$ is no
 harder than $B$,'' and put the known-hard problem on the \emph{left}.
 \end{pitfall}
@@ -20875,7 +20875,7 @@ A \emph{language property} is a set $P$ of Turing-machine encodings that respect
 whenever $L(M_1)=L(M_2)$, we have $\enc{M_1}\in P \iff \enc{M_2}\in P$. Equivalently, $P$ is
 determined by a collection $\mathcal{C}$ of languages, with $\enc{M}\in P \iff L(M)\in\mathcal{C}$.
 A property is \emph{semantic} if it is a language property in this sense, and \emph{syntactic} if it
-can depend on \emph{how} the machine is written (number of states, whether it ever moves left, etc.)
+can depend on \emph{how} the machine is written (number of states, whether it ever moves left, etc.\@)
 rather than only on the set of strings it accepts.
 \end{definition}
 
@@ -21056,7 +21056,7 @@ otherwise; an $\mathit{ALL}_{\mathsf{TM}}$ decider would therefore decide $\ATM$
 Examine
 \[P_{\mathrm{rec}}=\set{\enc{M}\st L(M)\text{ is Turing-recognizable}}\]
 and
-$P_{\es\text{-or-}}=\set{\enc{M}\st L(M)=\es\text{ or }L(M)\neq\es}$. Are these undecidable by
+$P_{\es\text{-or-not-}\es}=\set{\enc{M}\st L(M)=\es\text{ or }L(M)\neq\es}$. Are these undecidable by
 Rice's theorem?
 \wrec Both are stated about $L(M)$, so they are language properties -- but Rice's theorem needs the
 \emph{second} hypothesis, nontriviality. The trigger is to test for two witnesses, one in and one
@@ -21137,7 +21137,7 @@ Theorem~\ref{thm:rice@c10}: $L(M_w)=\Sigstar$ (nonempty) iff $M$ accepts $w$, el
   \path (sim) edge[flow] node[flowlbl,left]{accepted?} (mw)
         (mw) edge[flow] node[flowlbl,right]{then run} (T);
   \node[right=22mm of mw,align=left,font=\footnotesize] (o)
-        {$M$ acc.\ $w\Rightarrow L(M_w){=}\Sigstar$\\$M$ rej./loop$\Rightarrow L(M_w){=}\es$};
+        {$M$ acc.\ $w\Rightarrow L(M_w){=}\Sigstar$\\$M$ rej./loop${}\Rightarrow L(M_w){=}\es$};
 \end{tikzpicture}
 \end{center}
 \whichrule{Emptiness is nontrivial and semantic, so Rice applies; the $\es$-in-$P$ orientation is
@@ -21242,7 +21242,7 @@ the two simulations and why order matters.
 \section{The Post Correspondence Problem}
 Undecidability is not a disease of self-referential machine problems alone. In this section we
 exhibit a problem about plain strings -- no Turing machines mentioned in its statement -- that is
-nevertheless undecidable: the \emph{Post Correspondence Problem} (PCP). The one key idea is that a
+nevertheless undecidable: the \emph{Post Correspondence Problem} (PCP)\@. The one key idea is that a
 match in a carefully built tile puzzle can be \emph{forced} to spell out an accepting computation
 history of a Turing machine, so deciding whether the puzzle has a match would decide whether the
 machine accepts. We first state PCP as a concrete domino game, express it as a language, and then
@@ -21364,13 +21364,13 @@ $\mathit{MPCP}\redm\mathit{PCP}$; consequently if PCP were decidable, so would M
 
 \begin{proof}
 Fix a fresh symbol $\ast$ not in the alphabet. For a string $u=u_1u_2\cdots u_n$ write
-$\mathord{\ast} u=\ast u_1\ast u_2\cdots\ast u_n$ (a $\ast$ before each symbol),
-$u\mathord{\ast}=u_1\ast u_2\ast\cdots u_n\ast$ (a $\ast$ after each symbol), and
-$\mathord{\ast}u\mathord{\ast}=\ast u_1\ast u_2\ast\cdots\ast u_n\ast$ (both). Given an MPCP instance
+$\mathord{\ast} u=\ast u_1{\ast}u_2\cdots{\ast}u_n$ (a $\ast$ before each symbol),
+$u\mathord{\ast}=u_1{\ast}u_2{\ast}\cdots u_n\ast$ (a $\ast$ after each symbol), and
+$\mathord{\ast}u\mathord{\ast}=\ast u_1{\ast}u_2{\ast}\cdots{\ast}u_n\ast$ (both). Given an MPCP instance
 $P'=\left[\frac{t_1}{b_1}\right],\dots,\left[\frac{t_k}{b_k}\right]$ with designated first domino
 $\left[\frac{t_1}{b_1}\right]$, output the PCP instance
 \[
- P:\quad
+ P\colon\quad
  \left[\frac{\ast t_1}{\ast b_1\ast}\right],\
  \left[\frac{\ast t_1}{b_1\ast}\right],\
  \left[\frac{\ast t_2}{b_2\ast}\right],\ \dots,\
@@ -21390,7 +21390,7 @@ $\mathit{PCP}$ is undecidable.
 \end{theorem}
 
 \begin{proof}[Proof sketch via $\ATM\redm\mathit{MPCP}\redm\mathit{PCP}$]
-By Lemma~\ref{lem:mpcp-pcp@c10} it suffices to reduce $\ATM$ to MPCP. Given $\enc{M,w}$ we build an MPCP
+By Lemma~\ref{lem:mpcp-pcp@c10} it suffices to reduce $\ATM$ to MPCP\@. Given $\enc{M,w}$ we build an MPCP
 instance $P'$ whose matches are exactly the accepting computation histories of $M$ on $w$. We may
 assume $M$ never moves left off the tape, and (if $w=\eps$) that the blank $\sqcup$ stands in for the
 input. The dominos come in seven groups, displayed and explained in the worked examples below; their
@@ -21650,7 +21650,7 @@ is undecidable.
 
 \begin{pitfall}
 The match condition is about \emph{strings}, not multisets or lengths alone. Equal total length is
-necessary but never sufficient: $\left[\frac{\str{ab}}{\str{ba}}\right]$ used alone has equal lengths
+necessary but not sufficient: $\left[\frac{\str{ab}}{\str{ba}}\right]$ used alone has equal lengths
 yet $\str{ab}\ne\str{ba}$. Always confirm the two concatenations agree symbol-by-symbol, and remember
 the order of tiles in the list is what you get to choose.
 \end{pitfall}
