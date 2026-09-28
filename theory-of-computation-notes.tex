@@ -18341,7 +18341,8 @@ $B$ and vice versa.
 Sets $A$ and $B$ have the \emph{same size} if some correspondence $f\colon A\to B$ exists. A set $A$
 is \emph{countable} if it is finite or has the same size as $\N=\set{1,2,3,\dots}$; otherwise $A$ is
 \emph{uncountable}. A correspondence with $\N$ is the same thing as an \emph{enumeration}
-$a_1,a_2,a_3,\dots$ that lists every element of $A$ exactly once.
+$a_1,a_2,a_3,\dots$ that lists every element of $A$ exactly once. (In this section $\N$ starts at
+$1$, to match the enumeration indices; elsewhere in the book $\N=\set{0,1,2,\dots}$.)
 \end{definition}
 
 The slogan ``countable = listable'' is worth fixing in mind: $A$ is countable exactly when you can
@@ -19109,7 +19110,8 @@ For $\Lang\subseteq\Sigstar$ the \emph{complement} is $\overline{\Lang}=\Sigstar
 the set of strings \emph{not} in $\Lang$. A language is \emph{Turing-recognizable} if some TM
 accepts exactly its strings (and on the others rejects or loops). A language is
 \emph{co-Turing-recognizable} if its complement $\overline{\Lang}$ is Turing-recognizable. We
-write $\REC$ for the class of recognizable languages and $\DEC$ for the decidable ones.
+write $\REC$ for the class of recognizable languages and $\DEC$ for the decidable ones (the classes
+written $\mathsf{RE}$ and $\mathsf{R}$ in Definition~\ref{def:classes@c8}).
 \end{definition}
 
 Recognizable and co-recognizable are genuinely different requirements. A recognizer for $\Lang$
