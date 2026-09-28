@@ -6952,7 +6952,7 @@ accepted.
 \end{wex}
 
 \begin{wex}{A fixed two-symbol suffix $\str{01}$}
-Design a DFA over $\set{0,1}$ recognizing $\Lang=\set{w\st w\text{ ends in }\str{01}}$.
+Design a DFA over $\set{0,1}$ recognizing $\Lang={\set{w\st w\text{ ends in }\str{01}}}$.
 \wrec Again a suffix condition, but now of length two. The machine must remember enough of the
 recent past to know whether the last two symbols were $\str0$ then $\str1$. The trigger is ``ends in
 a fixed string of length $k$,'' which calls for states tracking \emph{how much of that suffix has
@@ -7388,8 +7388,8 @@ and $a\in\Sig$, then by the definition of $\xtrans$ and of $\trans$,
 \]
 completing the induction. Now $w\in\lang{M}$ iff the pair
 $(\xtrans_1(s_1,w),\xtrans_2(s_2,w))$ lies in $F$. With $F=F_{\cap}$ this says
-$\xtrans_1(s_1,w)\in F_1$ \emph{and} $\xtrans_2(s_2,w)\in F_2$, i.e. $w\in A$ and $w\in B$,
-i.e. $w\in A\cap B$. With $F=F_{\cup}$ it says $w\in A$ \emph{or} $w\in B$, i.e.
+$\xtrans_1(s_1,w)\in F_1$ \emph{and} $\xtrans_2(s_2,w)\in F_2$, i.e.\ $w\in A$ and $w\in B$,
+i.e.\ $w\in A\cap B$. With $F=F_{\cup}$ it says $w\in A$ \emph{or} $w\in B$, i.e.\
 $w\in A\cup B$. Both target languages are recognized by a DFA, hence regular.
 \end{proof}
 
@@ -7467,7 +7467,7 @@ but has odd length. Correct on both.
 The strength of the construction is that the \emph{same} state set and transitions also
 recognize the union -- only the double circles move. We redraw the product once more
 with the union accept set to make the contrast concrete: every pair whose first or
-second coordinate accepts, i.e. every pair except $(o,z)$.
+second coordinate accepts, i.e.\ every pair except $(o,z)$.
 
 \begin{wex}{Same product, union accept set: even length OR ends in 1}
 Using the two machines of the previous example, build a DFA for $A\cup B$.
@@ -7492,7 +7492,7 @@ $(e,z),(e,u),(o,u)$ -- all except $(o,z)$ (odd length and not ending in $\str{1}
 \end{tikzpicture}
 \end{center}
 \whichrule{Union of two regular languages is the \emph{same} product DFA with accept
-set $F_{\cup}=\set{(p,q)\st p\in F_1 \text{ or } q\in F_2}$; only the double circles move.}
+set $F_{\cup}={\set{(p,q)\st p\in F_1 \text{ or } q\in F_2}}$; only the double circles move.}
 \emph{Check.} The single non-accepting state is $(o,z)$. Trace $\str{10}$:
 $(e,z)\xrightarrow{1}(o,u)\xrightarrow{0}(e,z)$, accepting -- $\str{10}$ has even length
 (in $A$), so it belongs to $A\cup B$. Trace $\str{0}$:
@@ -7628,8 +7628,8 @@ It is tempting to try a product-style trick for $A\circ B$ as well, but there is
 obstacle. To accept $xy$ with $x\in A$ and $y\in B$, a machine must decide \emph{where}
 to stop reading the $A$-part and start the $B$-part -- and a DFA reading left to right
 gets no second look. Concretely, on the string $\str{abab}$ a machine for
-$A\circ B$ might need to treat the prefix $\str{ab}$ as the $A$-part on one input and
-the prefix $\str{a}$ as the $A$-part on another; a deterministic device cannot pursue
+$A\circ B$ might have to choose between the prefix $\str{ab}$ and
+the prefix $\str{a}$ as the $A$-part; a deterministic device cannot pursue
 both splits at once. The clean fix is to let the machine \emph{guess} the split point
 and explore all guesses in parallel -- exactly the power of a nondeterministic finite
 automaton, introduced in Section~4.3. We therefore postpone the proofs that $\REG$ is
@@ -7665,8 +7665,8 @@ $A\cup B$,\ \ $A\circ B$,\ \ $B\circ A$,\ \ and $A\cap B$. Confirm in writing wh
 $A\circ B=B\circ A$.
 
 \item For each language below, decide whether $\eps$ is a member, and justify in one line:
-(a) $\es\kstar$;\ \ (b) $\es\kplus$;\ \ (c) $\set{\str{ab}}\kstar$;\ \
-(d) $\set{\eps,\str{a}}\kplus$;\ \ (e) $\big(\set{\str{0}}\cup\es\big)\kstar$.
+(a)~$\es\kstar$;\ \ (b)~$\es\kplus$;\ \ (c)~$\set{\str{ab}}\kstar$;\ \
+(d)~$\set{\eps,\str{a}}\kplus$;\ \ (e)~$\big(\set{\str{0}}\cup\es\big)\kstar$.
 
 \item Let $A=\set{\str{0}}$ and $B=\set{\str{1}}$ over $\Sig=\set{\str{0},\str{1}}$.
 Describe in words the languages $(A\cup B)\kstar$ and $A\kstar\circ B\kstar$, then give a
@@ -7682,19 +7682,19 @@ the product, and mark the accept states for the intersection.
 DFA for the \emph{union} (odd length \emph{or} contains a $\str{0}$). State exactly which
 product states are non-accepting, and explain why in one sentence.
 
-\item Let $A$ be the set of binary strings whose value is $\equiv 1\pmod 2$ (i.e. ending in
+\item Let $A$ be the set of binary strings whose value is $\equiv 1\pmod 2$ (i.e.\ ending in
 $\str{1}$) and $B$ the set of binary strings of length divisible by $3$. Give the state
 sets $Q_1$ and $Q_2$ of natural DFAs for $A$ and $B$, state how many states the product DFA
 has, and identify the start state and the accept set $F_{\cap}$ for $A\cap B$ as a set of
 pairs.
 
 \item Prove that $\REG$ is closed under \emph{set difference}: if $A$ and $B$ are regular,
-then $A\setminus B=\set{w\st w\in A,\ w\notin B}$ is regular. (Hint: $A\setminus B=
+then $A\setminus B=\set{w\st {w\in A,\ w\notin B}}$ is regular. (Hint: $A\setminus B=
 A\cap\overline{B}$; combine two closure results already in this section.)
 
 \item Prove the \emph{symmetric difference} $A\,\triangle\,B=(A\setminus B)\cup(B\setminus A)$
 of two regular languages is regular. Then describe the accept set of a single product DFA
-that recognizes $A\triangle B$ directly (no detour through complement), in terms of $F_1$
+that recognizes $A\,\triangle\,B$ directly (no detour through complement), in terms of $F_1$
 and $F_2$.
 
 \item Decide, with a one-line proof or counterexample, whether each statement holds for
@@ -7787,7 +7787,7 @@ The same string may be accepted by one branch and rejected by another, and that 
 \subsection*{Reading an NFA by tracking active states}
 
 \begin{wex}{A two-state NFA for ``ends in $\str{1}$'' over $\set{0,1}$}\label{wex:nfa-ends1@c4}
-Build a small NFA for $\Lang=\set{w \st w \text{ ends in } \str{1}}$ and trace it on $\str{011}$.
+Build a small NFA for $\Lang={\set{w \st w \text{ ends in } \str{1}}}$ and trace it on $\str{011}$.
 \wrec The pattern fixes only the \emph{last} symbol, so a guess-the-end strategy fits: loop on everything, then guess that the current $\str{1}$ is the final one.
 \wsol Take states $\set{q_0,q_1}$ with $q_0$ the start and $q_1$ accepting. Let $q_0$ loop on $0$ and $1$ (stay put while the string runs), and add a $1$-arrow $q_0\to q_1$. State $q_1$ has no outgoing arrows, so a branch that lands there must immediately reach the end of input to survive in an accept state.
 \begin{center}
@@ -7872,7 +7872,7 @@ Over the one-symbol alphabet $\set{a}$, let $\Lang=\set{a^n \st n\text{ is a mul
 \subsection*{When a fixed-length tail forces a small guess}
 
 \begin{wex}{The $k$th symbol from the end is $\str{1}$}
-For a fixed $k=3$, recognize $\Lang=\set{w\in\set{0,1}\kstar \st \abs{w}\ge 3\text{ and the }3\text{rd symbol from the end is }\str{1}}$.
+For a fixed $k=3$, recognize $\Lang=\set{{w\in\set{0,1}\kstar} \st \abs{w}\ge 3\text{ and the }3\text{rd symbol from the end is }\str{1}}$.
 \wrec ``Counts from the end'' is the signature of guess-the-end nondeterminism: idle, then guess that exactly $3$ symbols remain and verify the window.
 \wsol Loop at the start state $r_0$ on $0,1$. On a $\str{1}$, guess that this is the $3$rd-from-last symbol and step into a chain $r_1\to r_2\to r_3$ that consumes exactly two more symbols (any of $0,1$), landing on the accept state $r_3$ precisely at end of input.
 \begin{center}
@@ -7914,7 +7914,7 @@ Each downward edge consumes one symbol of $\str{011}$. After $\str{0}$ only $q_0
 \subsection*{Nondeterminism does not need $\eps$ to help}
 
 \begin{wex}{A branching machine with two accept routes}
-Over $\set{a,b}$, recognize $\Lang=\set{w \st w\text{ ends in }\str{aa}\text{ or }w\text{ ends in }\str{bb}}$ with one start state and two guessed tails -- no $\eps$-arrows.
+Over $\set{a,b}$, recognize $\Lang={\set{w \st w\text{ ends in }\str{aa}\text{ or }w\text{ ends in }\str{bb}}}$ with one start state and two guessed tails -- no $\eps$-arrows.
 \wrec Two suffix patterns again: guess which one will close out the string. We can branch directly on the symbol read instead of an $\eps$-arrow.
 \wsol The start state $c_0$ loops on $a,b$. On an $a$ it may move to $d_1$ (guessing the tail will be $\str{aa}$) or keep idling; from $d_1$ a final $a$ reaches the accept state $d_2$. Symmetrically, a $b$ may move to $e_1$, and a final $b$ reaches accept state $e_2$. The loop at $c_0$ keeps the ``not yet'' branch alive.
 \begin{center}
@@ -7981,7 +7981,7 @@ Over $\set{a,b}$, recognize $\Lang=\set{w \st w\text{ ends in }\str{aa}\text{ or
 
 \item Write the formal five-tuple $(Q,\Sig,\trans,\qstart,\Acc)$ for the ``contains $\str{101}$'' NFA from this section, giving $\trans$ as an explicit table over $Q\times(\Sig\cup\set{\eps})$ with power-set values.
 
-\item Find the bug. A student claims the NFA below recognizes $\set{w\in\set{0,1}\kstar \st w\text{ ends in }\str{1}}$. Exhibit a string the machine accepts that does \emph{not} end in $\str{1}$ (or one it rejects that does), and describe the smallest fix.
+\item \emph{Find the bug.} A student claims the NFA below recognizes $\set{w\in\set{0,1}\kstar \st w\text{ ends in }\str{1}}$. Exhibit a string the machine accepts that does \emph{not} end in $\str{1}$ (or one it rejects that does), and describe the smallest fix.
 \begin{center}
 \begin{tikzpicture}[fa]
   \node[stinit] (s0) {$s_0$};
@@ -8036,7 +8036,7 @@ A subset $R$ is accepting exactly when it contains at least one of $\nfa$'s acce
 \]
 Note $\trans'$ consumes only \emph{real} symbols; the $\eps$-arrows are folded silently into $E(\cdot)$. The start state already absorbs the $\eps$-moves available before any input is read.
 
-\emph{Correctness.} By induction on $\abs{w}$ we show that after $M$ reads $w$, the subset it occupies is precisely the set of states $\nfa$ could be in after reading $w$, i.e. $\xtrans'(q_0',w)=E\big(\set{q\st \nfa \text{ can reach } q \text{ on } w}\big)$. The base case $w=\eps$ holds because $q_0'=E(\set{\qstart})$ is by definition the set of states reachable before any symbol. For the step, suppose the claim holds for $w$ and read one more symbol $a$. The states $\nfa$ can occupy after $wa$ are exactly those reached by taking an $a$-arrow from a current state and then any $\eps$-arrows -- which is precisely $E\big(\bigcup_{q\in R}\trans(q,a)\big)=\trans'(R,a)$ for the current subset $R$. So the invariant is preserved. Finally $M$ accepts $w$ iff its final subset meets $\Acc$, iff $\nfa$ could end in an accept state, iff $\nfa$ accepts $w$. Thus $\lang{M}=\lang{\nfa}$.
+\emph{Correctness.} By induction on $\abs{w}$ we show that after $M$ reads $w$, the subset it occupies is precisely the set of states $\nfa$ could be in after reading $w$, i.e.\ $\xtrans'(q_0',w)=E\big(\set{q\st \nfa \text{ can reach } q \text{ on } w}\big)$. The base case $w=\eps$ holds because $q_0'=E(\set{\qstart})$ is by definition the set of states reachable before any symbol. For the step, suppose the claim holds for $w$ and read one more symbol $a$. The states $\nfa$ can occupy after $wa$ are exactly those reached by taking an $a$-arrow from a current state and then any $\eps$-arrows -- which is precisely $E\big(\bigcup_{q\in R}\trans(q,a)\big)=\trans'(R,a)$ for the current subset $R$. So the invariant is preserved. Finally $M$ accepts $w$ iff its final subset meets $\Acc$, iff $\nfa$ could end in an accept state, iff $\nfa$ accepts $w$. Thus $\lang{M}=\lang{\nfa}$.
 \end{proof}
 
 \begin{corollary}\label{cor:nfa-reg@c4}
@@ -8053,7 +8053,7 @@ The corollary is the practical payoff: from now on we may design the \emph{small
 
 The construction lists all $2^{\abs{Q}}$ subsets, but often most are unreachable from the start subset and may be dropped. In practice we build the DFA \emph{lazily}: begin with $q_0'=E(\set{\qstart})$, and from each subset already discovered compute $\trans'(R,a)$ for every symbol $a$, adding any new subset to a worklist. We stop when no new subset appears. The reachable part is usually far smaller than $2^{\abs{Q}}$, and the empty set $\es$ -- reached when $\nfa$ has died on every branch -- is the dead state of the DFA.
 
-\begin{method}{Subset construction, run by hand (the worklist algorithm)}
+\begin{method}{Subset construction, run by hand (the worklist algorithm)}\\
 \textbf{1.} Compute the start subset $q_0'=E(\set{\qstart})$ (start state plus everything reachable by $\eps$-arrows). Put it on the worklist.\\
 \textbf{2.} Take an unprocessed subset $R$ from the worklist. For each input symbol $a\in\Sig$:\\
 \hspace*{2em}(a) form $S=\bigcup_{q\in R}\trans(q,a)$ -- the $a$-targets from every state in $R$;\\
@@ -8127,7 +8127,7 @@ recognized language is unchanged: $\lang{\nfa}=\lang{M}$.
 Theorem~\ref{thm:subset@c4}, the subset DFA after reading $w$ sits in the state
 $E\big(\set{q\st \nfa \text{ can reach } q \text{ on } w}\big)$ -- the
 $\eps$-closure of the reachable set -- and this subset meets $\Acc$ iff $\nfa$ accepts
-$w$. Hence $M$ accepts exactly the strings $\nfa$ accepts, i.e. $\lang{M}=\lang{\nfa}$:
+$w$. Hence $M$ accepts exactly the strings $\nfa$ accepts, i.e.\ $\lang{M}=\lang{\nfa}$:
 the two downward $L(\cdot)$ legs land on the same language.
 
 \begin{wex}{An NFA with an $\eps$-arrow: closures matter}
@@ -8213,7 +8213,7 @@ From $\set{1,2}$ on $1$: $\trans(1,1)\cup\trans(2,1)=\set{1}\cup\set{3}=\set{1,3
 \end{tikzpicture}
 \end{center}
 \whichrule{Each reachable subset records the relevant suffix state -- ``$2$ alive'' means a $\str{0}$ is pending, ``$3$ alive'' means $\str{01}$ just completed -- so the DFA needs one state per distinct ``how close are we to ending in $\str{01}$'' situation.}
-\emph{Check.} The DFA accepts iff its final subset contains $3$, i.e. iff the last two symbols were $\str{01}$. Trace $\str{1001}$ (ends in $\str{01}$): $\set{1}\xrightarrow{1}\set{1}\xrightarrow{0}\set{1,2}\xrightarrow{0}\set{1,2}\xrightarrow{1}\set{1,3}$, accept. Trace $\str{010}$ (ends in $\str{10}$): $\set{1}\xrightarrow{0}\set{1,2}\xrightarrow{1}\set{1,3}\xrightarrow{0}\set{1,2}$, reject. Correct.
+\emph{Check.} The DFA accepts iff its final subset contains $3$, i.e.\ iff the last two symbols were $\str{01}$. Trace $\str{1001}$ (ends in $\str{01}$): $\set{1}\xrightarrow{1}\set{1}\xrightarrow{0}\set{1,2}\xrightarrow{0}\set{1,2}\xrightarrow{1}\set{1,3}$, accept. Trace $\str{010}$ (ends in $\str{10}$): $\set{1}\xrightarrow{0}\set{1,2}\xrightarrow{1}\set{1,3}\xrightarrow{0}\set{1,2}$, reject. Correct.
 \end{wex}
 
 \begin{wex}{Two $\eps$-arrows feeding one start: a fuller closure}
@@ -8304,7 +8304,7 @@ From $\set{x}$ on $1$: $\trans(x,1)=\set{x,y}$, then $E(\set{x,y})=\set{x,y,z}$ 
 The number of states never exceeds $2^{\abs{Q}}$, and this bound is essentially tight: there are languages whose smallest NFA has $n+1$ states but whose smallest DFA has $2^{n}$ states. The standard witness is ``the $n$-th symbol from the end is $1$.''
 
 \begin{wex}{The $2^{n}$ blow-up, illustrated for $n=2$}
-The language $\Lang_2=\set{w \st \text{the second symbol from the end of } w \text{ is } 1}$ over $\Sig=\set{0,1}$ has a tiny $3$-state NFA but needs $2^2=4$ DFA states.
+The language \[\Lang_2=\set{w \st \text{the second symbol from the end of } w \text{ is } 1}\] over $\Sig=\set{0,1}$ has a tiny $3$-state NFA but needs $2^2=4$ DFA states.
 \wrec This is the witness for the exponential gap; we exhibit both machines to see the gap concretely at $n=2$.
 \wsol The NFA guesses where the second-from-last symbol is:
 \begin{center}
@@ -8384,7 +8384,7 @@ Do not confuse ``the set of states currently active'' with ``the set of all stat
 \end{exers}
 
 
-\section{Closure of the Regular Languages under the Regular Operations}
+\section[Closure of the Regular Languages under the Regular Operations]{Closure of the Regular Languages under the\\ Regular Operations}
 Back in Section~4.2 we listed the three regular operations -- union, concatenation, and
 star -- and promised that the class of regular languages is \emph{closed} under each of
 them: feed in regular languages, get a regular language back out. The product construction
@@ -8419,7 +8419,7 @@ and $\trans$ agreeing with $\trans_A$ on $Q_A$, with $\trans_B$ on $Q_B$, with
 $\trans(s,\eps)=\set{q_A,q_B}$, and $\trans(s,a)=\es$ for every $a\in\Sig$. On input $w$,
 the very first move is a free $\eps$-step that commits the computation to either $\nfa_A$ or
 $\nfa_B$; thereafter $\nfa$ behaves exactly like the machine it entered. Hence some branch
-accepts $w$ iff $\nfa_A$ accepts $w$ or $\nfa_B$ accepts $w$, i.e. iff $w\in A\cup B$. So
+accepts $w$ iff $\nfa_A$ accepts $w$ or $\nfa_B$ accepts $w$, i.e.\ iff $w\in A\cup B$. So
 $\lang{\nfa}=A\cup B$, and by the equivalence of NFAs and DFAs this language is regular.
 \end{proof}
 
@@ -8557,9 +8557,9 @@ $a_1$ to non-accepting, and keep $b_0$ accepting:
 \whichrule{Concatenation glues accept-of-$A$ to start-of-$B$ with $\eps$: the free jump
 guesses that the $A$-part has ended and the $B$-part begins, and only $B$-accepts count.}
 \emph{Check.} On \str{abb}: read \str{a} ($a_0\to a_1$), take the $\eps$-jump to $b_0$, then
-loop on each \str{b}, finishing in the accepting $b_0$ -- accepted. On \str{ba}: the first
+loop on each \str{b}, finishing in the accepting $b_0$~-- accepted. On \str{ba}: the first
 symbol is \str{b}, but $a_0$ has no \str{b}-move, so the only branch dies -- rejected,
-correctly, since \str{ba}$\notin A\concat B$. On \str{a}: read \str{a}, $\eps$-jump,
+correctly, since $\str{ba}\notin A\concat B$. On \str{a}: read \str{a}, $\eps$-jump,
 accept (the $n=0$ case).
 \end{wex}
 
@@ -8599,7 +8599,7 @@ to the old start $q_A$, and an $\eps$-arrow from every accept of $\nfa_A$ back t
 all other transitions inherited from $\nfa_A$. The new accepting start $s$ gives $\eps$ with
 no input read ($k=0$). For nonempty input, the machine runs $\nfa_A$ once; each time it
 reaches an accept it may $\eps$-loop back to $q_A$ to begin another block. Thus it accepts
-iff the input is a concatenation of zero or more strings of $A$, i.e. iff $w\in A\kstar$.
+iff the input is a concatenation of zero or more strings of $A$, i.e.\ iff $w\in A\kstar$.
 \end{proof}
 
 \begin{remark}
@@ -8654,7 +8654,7 @@ each accept back to the start (to repeat the block), exactly the gadget above.}
 \emph{Check.} The empty string is accepted by stopping in $s$. On \str{abab}: $s\to a_0$
 ($\eps$), read \str{ab} to $a_2$, $\eps$-loop to $a_0$, read \str{ab} again to $a_2$ --
 accept. On \str{aba}: after the second \str{a} the machine sits in $a_1$, no further input,
-$a_1$ not accepting -- rejected, correct since \str{aba}$\notin A\kstar$.
+$a_1$ not accepting -- rejected, correct since $\str{aba}\notin A\kstar$.
 \end{wex}
 
 \begin{wex}{Two readings of the empty string}
@@ -8854,8 +8854,8 @@ Goal: show that if the inputs are regular then the output is regular.
   labelling each state with its pair of component states.
 
 \item Let $\Lang$ be recognized by the DFA with states $\set{p,q,r}$, start $p$, accept
-  $\set{q}$, and transitions $\trans(p,0)=q,\trans(p,1)=r,\trans(q,0)=q,\trans(q,1)=r,
-  \trans(r,0)=r,\trans(r,1)=r$. Draw a DFA for $\overline{\Lang}$ and describe $\overline{\Lang}$
+  $\set{q}$, and transitions $\trans(p,0)=q$, $\trans(p,1)=r$, $\trans(q,0)=q$, $\trans(q,1)=r$,
+  $\trans(r,0)=r$, $\trans(r,1)=r$. Draw a DFA for $\overline{\Lang}$ and describe $\overline{\Lang}$
   in words. (First confirm the DFA is total.)
 
 \item Use the closure theorems to argue that
