@@ -15381,7 +15381,7 @@ Example~\ref{wex:dpda-anbn@c7}.
 
 % ================= Chapter 8: Turing Machines and the Church-Turing Thesis =================
 
-\chapter[Turing Machines]{Turing Machines and the Church-Turing Thesis}
+\chapter[Turing Machines]{Turing Machines and the Church--Turing Thesis}
 
 \section{The Turing Machine Model}
 A Turing machine is the model we reach for once finite automata and pushdown automata run out of
@@ -15424,7 +15424,7 @@ on the leftmost cell, the head simply stays put -- it cannot fall off the left e
   \draw[head] (ctrl.south) -- (T-1-2.north);
   \node[headlbl,right=1pt of T-1-6.east] {tape};
 \end{tikzpicture}
-\\[3pt]{\footnotesize The finite control points a read/write head at one cell of a one-way-infinite
+\\*[3pt]{\footnotesize The finite control points a read/write head at one cell of a one-way-infinite
 tape; here the head reads $\str1$ in state $q$.}
 \end{center}
 
@@ -15488,7 +15488,7 @@ yes/no answer on every input.
 \end{pitfall}
 
 \begin{wex}{Reading a computation off the yields relation}
-Let $\dfa$ have the rule $\trans(q_1,\str0)=(q_1,\str0,R)$, $\trans(q_1,\str1)=(q_2,\str1,R)$, and
+Let $\dfa$ have the rules $\trans(q_1,\str0)=(q_1,\str0,R)$, $\trans(q_1,\str1)=(q_2,\str1,R)$, and
 $\trans(q_2,\sqcup)=(q_{\mathrm{acc}},\sqcup,R)$. Trace $\dfa$ on input $\str{001}$ as a chain of
 configurations.
 \wrec A trace is just repeated application of the \emph{yields} relation from
@@ -16468,7 +16468,7 @@ some NTM decides it (an NTM \emph{decides} a language if it recognizes it and ev
 
 \begin{proof}
 Every deterministic TM is a (degenerate) NTM, giving one direction. Conversely
-Theorem~\ref{thm:ntm@c8} converts an NTM recognizer to a DTM. For deciders, modify $D$ to also
+Theorem~\ref{thm:ntm@c8} converts an NTM recognizer to a DTM\@. For deciders, modify $D$ to also
 detect when \emph{all} branches of $N$ have halted at the current depth and no deeper nodes
 exist; if $N$ halts on every branch of every input, $D$ then halts too, rejecting if no branch
 accepted.
@@ -16751,18 +16751,18 @@ is decidable. (Describe the decider and argue it always halts.)
 \end{exers}
 
 
-\section{The Church-Turing Thesis, Encodings, and the Universal TM}
+\section{The Church--Turing Thesis, Encodings, and the Universal TM}
 Sections~8.1 through~8.3 built the Turing machine and then showed how astonishingly
 \emph{robust} it is: multitape, nondeterministic, and enumerator variants all recognize the
 same class of languages. This section draws the philosophical conclusion of that robustness
--- the \emph{Church-Turing thesis}, which identifies ``algorithm'' with ``Turing machine'' --
+-- the \emph{Church--Turing thesis}, which identifies ``algorithm'' with ``Turing machine'' --
 and then cashes it out technically. The one key idea is that a Turing machine takes a
 \emph{string} as input, so to feed it a graph, a polynomial, an automaton, or even another
 Turing machine, we must first \emph{encode} that object as a string $\enc{O}$. Encoding lets a
 single fixed machine -- the \emph{universal} Turing machine -- read a description $\enc{M,w}$
 and simulate $M$ on $w$, which is the seed of everything in the next chapter.
 
-\subsection*{The Church-Turing thesis}
+\subsection*{The Church--Turing thesis}
 
 Every reasonable model of unrestricted computation proposed since 1936 -- Turing machines,
 Church's $\lambda$-calculus, general recursive functions, register machines, cellular
@@ -16777,12 +16777,12 @@ What we have instead is a sweeping empirical convergence, elevated to a working 
   \node[right=22mm of intu,procbox,minimum width=30mm] (tm) {\footnotesize Turing machine};
   \draw[flow] (intu) -- node[flowlbl]{$=$ (thesis)} (tm);
 \end{tikzpicture}
-\\[2pt]{\footnotesize The Church-Turing thesis equates the informal notion of an effective
+\\[2pt]{\footnotesize The Church--Turing thesis equates the informal notion of an effective
 procedure with what a Turing machine can do.}
 \end{center}
 
-\begin{definition}[Church-Turing thesis]\label{def:ct@c8}
-The \emph{Church-Turing thesis} asserts that a problem can be solved by \emph{some} effective
+\begin{definition}[Church--Turing thesis]\label{def:ct@c8}
+The \emph{Church--Turing thesis} asserts that a problem can be solved by \emph{some} effective
 mechanical procedure (an ``algorithm'' in the intuitive sense) if and only if it can be solved
 by a Turing machine. It is not a mathematical theorem -- one side of the claimed equivalence,
 the informal notion, is not formally defined -- but a thesis about the adequacy of the formal
@@ -16837,7 +16837,7 @@ string $\enc{G}$, and describe how a machine recovers $G$.
 systematic, decodable layout -- a vertex list followed by an edge list -- and write it down in
 binary.
 \wsol List the vertices, then the edges as unordered pairs. Writing each number in binary
-($1{=}\str1,2{=}\str{10},3{=}\str{11},4{=}\str{100}$) and using ``$\#$'' to separate fields:
+($1{=}\str1,\allowbreak 2{=}\str{10},\allowbreak 3{=}\str{11},\allowbreak 4{=}\str{100}$) and using ``$\#$'' to separate fields:
 \[
   \enc{G}\;=\;\underbrace{\str{1}\#\str{10}\#\str{11}\#\str{100}}_{\text{vertices}}
   \;\#\#\;
@@ -17047,7 +17047,7 @@ three blocks of $U$'s memory. The trigger is ``what does $U$ \emph{do}, concrete
 writes $M$'s start state to the state block.
 \[
 \begin{array}{c|c|c|c}
- \text{$U$'s phase} & \text{state block} & \text{work tape (head $\downarrow$)} & \text{action}\\\hline
+ \text{$U$'s phase} & \text{state block} & \text{work tape (head underlined)} & \text{action}\\\hline
  \text{init} & q_0 & \underline{\str a}\,\sqcup & \text{copied }w,\ \text{set }q_0\\
  \text{sim step 1} & q_0 & \underline{\str a}\,\sqcup & \text{rule }\trans(q_0,\str a)=(q_{\mathrm{acc}},\str a,R)\\
  \text{after step 1} & q_{\mathrm{acc}} & \str a\,\underline{\sqcup} & \text{state is accept}\\
@@ -17119,7 +17119,7 @@ of numbers is decidable under (a) versus under (b)?
 \item Design (as an implementation-level description, no formal 7-tuple) a Turing machine that,
 given $\enc{G}$ for an undirected graph $G$ in the format of the section, decides whether $G$
 has an \emph{isolated} vertex (a vertex appearing in the vertex list but in no edge). Then
-appeal to the Church-Turing thesis to justify the single phrase ``and we can clearly do this.''
+appeal to the Church--Turing thesis to justify the single phrase ``and we can clearly do this.''
 
 \item Explain precisely why the universal machine $U$ \emph{recognizes} $\ATM=\set{\enc{M,w}\st
 M\text{ accepts }w}$ but is not known to \emph{decide} it. Identify the exact step in the
@@ -17144,7 +17144,7 @@ $100$-step bound rescue it from the looping problem that afflicts $U$ on $\ATM$?
 \item Give an encoding $\enc{P}$ of a single-variable integer polynomial $p(x)=c_k x^k+\dots+
 c_1 x+c_0$ as a string over a finite alphabet, allowing negative coefficients. Then describe a
 Turing machine that, on input $\enc{P}$ and a binary integer $\enc{n}$, computes $p(n)$ and
-halts. (You may use high-level steps; cite the Church-Turing thesis for the arithmetic.)
+halts. (You may use high-level steps; cite the Church--Turing thesis for the arithmetic.)
 
 \item ``Find the bug.'' A classmate writes: ``The universal machine $U$ decides $\ATM$, because
 on input $\enc{M,w}$ it simulates $M$ on $w$; if the simulation accepts, $U$ accepts, and if the
@@ -17158,7 +17158,7 @@ claim that \emph{each individual object} has a faithful (injective, decodable) e
 claim about \emph{all languages} being encodable, and identify the genuine fact that the
 counting argument really establishes.
 
-\item Argue, using the Church-Turing thesis, that the class of decidable languages is closed
+\item Argue, using the Church--Turing thesis, that the class of decidable languages is closed
 under \emph{decodable re-encoding}: if $\Lang$ over alphabet $\Sig$ is decidable and
 $f\colon\Sigstar\to\Delta^{*}$ is a computable, algorithmically invertible encoding, then
 $f(\Lang)=\set{f(w)\st w\in\Lang}$ is decidable. Sketch the decider for $f(\Lang)$.
@@ -17378,7 +17378,7 @@ counts as a $\str0$, and marks the left end); $q_2,q_3,q_4$ make one sweep, cros
 $\str0$ ($q_2$: one $\str0$ seen, $q_3$: an even number, $q_4$: an odd number $>1$); $q_5$ returns to
 the left end. A sweep that meets a lone $\str0$ accepts; an odd count $>1$ rejects.}
 \end{center}
-\whichrule{Each sweep halves the number of $\str0$s, so the tape strictly shrinks and the number of
+\whichrule{Each sweep halves the number of $\str0$s, so that count strictly shrinks and the number of
 sweeps is at most $1+\log_2$ of the input length; a strictly decreasing quantity bounded below forces
 halting on \emph{every} input, which is exactly the decider requirement.}
 \emph{Check.} On $\str{0000}$ ($n=4=2^2$): sweep one crosses two, leaving two $\str0$s (even); sweep
