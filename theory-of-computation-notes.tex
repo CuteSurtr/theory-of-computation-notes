@@ -15371,7 +15371,7 @@ Example~\ref{wex:dpda-anbn@c7}.
 \section{The Turing Machine Model}
 A Turing machine is the model we reach for once finite automata and pushdown automata run out of
 power. It keeps the finite-control idea -- a machine sits in one of finitely many states -- but it
-trades the one-way input for a single, doubly infinite \emph{tape} that the machine may both read
+trades the one-way input for a single, one-way-infinite \emph{tape} that the machine may both read
 and write, with a head that moves left or right one cell at a time. The one key idea of this section
 is that unrestricted read/write access to unlimited memory is exactly what was missing: with it the
 control can store, revisit, and overwrite scratch work, and the resulting model captures every
@@ -15529,21 +15529,20 @@ overwritten, so we write $a\to a,R$.
 \whichrule{When acceptance is fixed by a bounded prefix of the input, a TM can decide it by reading
 that prefix and jumping to a halting state; because every branch reaches $q_{\mathrm{acc}}$ or
 $q_{\mathrm{rej}}$ after finitely many steps, the machine halts on all inputs and is a decider.}
-\emph{Check.} On $\str{011}$: $\qstart\str{011}\yields q_{\mathrm{acc}}\dots$ accepted. On $\str{101}$:
-$\qstart\str{101}\yields q_{\mathrm{rej}}\dots$ rejected. On $\eps$: the head reads $\sqcup$ and
+\emph{Check.} On $\str{011}$: $\qstart\str{011}\yields\str0\,q_{\mathrm{acc}}\,\str{11}$ accepted. On $\str{101}$:
+$\qstart\str{101}\yields\str1\,q_{\mathrm{rej}}\,\str{01}$ rejected. On $\eps$: the head reads $\sqcup$ and
 rejects. All three halt.
 \end{wex}
 
-\begin{wex}{A decider that rewrites the tape: $\Lang=\set{\str0\kstar}$}
+\begin{wex}{A one-sweep decider: $\Lang=\set{\str0\kstar}$}
 Build a Turing machine over $\Sig=\set{\str0,\str1}$ deciding
 $\Lang=\set{w \st w\text{ is all }\str0\text{s}}$ (including $\eps$), and show two tape snapshots of its
-run on $\str{000}$. Use a left-end marker so the head can find home.
+run on $\str{000}$.
 \wrec A scan-and-verify task: walk left to right checking that no $\str1$ ever appears, then halt.
 The trigger ``check a property of every cell, then stop'' calls for a single rightward sweep that
 rejects on the first violating symbol and accepts at the trailing blank.
-\wsol State $q_s$ marks the left end then sweeps right; we overwrite the first cell with a marker
-$\rhd$ only to record where home is (it is not needed for this language, but it shows the standard
-device). In $q_s$, reading $\str0$ writes $\str0$ and moves right; reading $\str1$ goes to
+\wsol State $q_s$ sweeps right; no left-end marker is needed, since the head never has to return
+home. In $q_s$, reading $\str0$ writes $\str0$ and moves right; reading $\str1$ goes to
 $q_{\mathrm{rej}}$; reading $\sqcup$ (end of input, no $\str1$ ever seen) goes to $q_{\mathrm{acc}}$.
 \begin{center}
 \begin{tikzpicture}[fa,node distance=14mm and 30mm]
@@ -15723,7 +15722,7 @@ An \emph{implementation-level description} of a Turing machine $M$ is a finite l
 each a finite sequence of primitive head actions -- read the current symbol, write a symbol,
 move one cell left or right, and branch on what was read -- that together determine, for every
 configuration, the next configuration. It is a faithful description of a Turing machine
-provided each stage uses only finitely many distinct head positions ``in mind'' at once, so
+provided each stage keeps only a bounded amount of information ``in mind'' at once, so
 that the bookkeeping can be folded into a finite set of control states.
 \end{definition}
 
@@ -15780,8 +15779,9 @@ $M_{=}=$ ``On input $w$:
   \item If the current symbol is $\blank$, the input is empty; \emph{accept}.
   \item Cross off the leftmost $\str0$ (write $\str x$). If instead the leftmost symbol is
   $\str1$, \emph{reject} (a $\str1$ precedes every $\str0$).
-  \item Scan right past $\str0$s and $\str x$s to the first $\str1$; cross it off. If a
-  $\blank$ is reached first, there are unmatched $\str0$s; \emph{reject}.
+  \item Scan right to the last uncrossed symbol (just before the next $\str x$ or $\blank$) and
+  cross it off if it is a $\str1$. If it is a $\str0$, or no uncrossed symbol is left, there are
+  unmatched $\str0$s; \emph{reject}.
   \item Scan left back to the leftmost uncrossed symbol.
   \item If an uncrossed $\str0$ remains, go to stage~2. If none remains, scan right: if any
   $\str1$ is still uncrossed, \emph{reject}; otherwise \emph{accept}.''
@@ -15818,13 +15818,15 @@ state and its incoming edges are suppressed, as is standard.
   \node[stinit] (q1) {$q_1$};
   \node[st,right=of q1] (q2) {$q_2$};
   \node[st,right=of q2] (q3) {$q_3$};
-  \node[stacc,below=of q2] (qa) {$q_{\mathrm{acc}}$};
+  \node[st,below=of q2] (q4) {$q_4$};
+  \node[stacc,below=of q1] (qa) {$q_{\mathrm{acc}}$};
   \path (q1) edge node{$\str0\!\to\!\str x,R$} (q2)
-        (q1) edge node[swap,pos=0.45]{$\sqcup\!\to\!R$} (qa)
-        (q2) edge[loop above] node{$\str0,\str x\!\to\!R$} (q2)
-        (q2) edge node{$\str1\!\to\!\str x,L$} (q3)
-        (q3) edge[loop above] node{$\str0,\str1,\str x\!\to\!L$} (q3)
-        (q3) edge node[swap,pos=0.5]{$\str x\!\to\!R$ (leftmost)} (qa);
+        (q1) edge node[swap]{$\str x,\sqcup\!\to\!R$} (qa)
+        (q2) edge[loop above] node{$\str0,\str1\!\to\!R$} (q2)
+        (q2) edge node{$\str x,\sqcup\!\to\!L$} (q3)
+        (q3) edge node{$\str1\!\to\!\str x,L$} (q4)
+        (q4) edge[loop below] node{$\str0,\str1\!\to\!L$} (q4)
+        (q4) edge node[swap]{$\str x\!\to\!R$} (q1);
 \end{tikzpicture}
 \end{center}
 \whichrule{Pairing two equal-size blocks is a cross-off-matching job: mark one symbol from each
@@ -15950,13 +15952,14 @@ the \emph{least} significant end, so first run the head to the right end.
 \begin{quote}
 $M_{+1}=$ ``On input $w$:
 \begin{enumerate}[leftmargin=2.2em,topsep=2pt,itemsep=1pt,label=\arabic*.]
-  \item Scan right to the first $\blank$, then move one cell left, onto the
-  least-significant bit.
+  \item Scan right to the first $\blank$, noting in the control whether any $\str0$ was seen,
+  then move one cell left, onto the least-significant bit.
   \item While the current symbol is $\str1$: write $\str0$ and move left (propagating the
   carry).
-  \item If the current symbol is $\str0$, write $\str1$ and \emph{halt}. If instead the head
-  has moved left off every digit (it now reads the cell just left of the numeral), the input
-  was all $\str1$s: write $\str1$ there and \emph{halt}, lengthening the numeral by one digit.''
+  \item The current symbol is now $\str0$: write $\str1$. If the input was all $\str1$s (as
+  noted in stage~1), this $\str0$ is the first cell, flipped by the carry -- the head stays
+  there, since there is no cell to its left -- so also write $\str0$ on the first blank,
+  lengthening the numeral by one digit. \emph{Halt}.''
 \end{enumerate}
 \end{quote}
 Snapshots on input $\str{1011}$ (value $11$, successor $12=\str{1100}$): the head arrives at the
@@ -15985,15 +15988,14 @@ $\str0$ becomes $\str1$.
 \whichrule{Computing a function ``in place'' uses the head's read--write power directly: the
 carry of binary addition is a right-to-left rewrite, so the head seeks the least-significant
 bit first and flips digits until the carry is absorbed.}
-\emph{Check.} On $\str{111}$ (value $7$) the carry flips all three to $\str0$, the head steps
-off the left end, and stage~3 writes a leading $\str1$, giving $\str{1000}=8$. On $\str{100}$
+\emph{Check.} On $\str{111}$ (value $7$) the carry flips all three to $\str0$, the first cell
+included, so stage~3 writes $\str1$ there and $\str0$ on the first blank, giving $\str{1000}=8$. On $\str{100}$
 the low bit is $\str0$, immediately rewritten to $\str1$: $\str{101}=5$, the successor of $4$.
 \end{wex}
 
 \begin{wex}{Finding the left end with a sentinel}\label{wex:sentinel@c8}
 Many designs (like $M_{2}$ above) say ``return to the left end.'' Show how a machine \emph{finds}
-the left end of its tape, given that the blank that originally preceded the input is
-indistinguishable from blanks far to the right.
+the left end of its tape, given that nothing on the tape marks cell~$1$ as the end.
 \wrec The right end of the input is marked for free -- the first $\blank$ past the
 last input symbol -- but the left end has no terminator. The trigger ``need a left landmark''
 calls for planting a \emph{sentinel}: at start-up, mark the leftmost cell with a special symbol
@@ -16129,7 +16131,7 @@ $w\in\set{\str0,\str1}\kstar$ is a palindrome, i.e.\ $w=w\rev{}$. Give a tape sn
 $\str{0110}$ at the moment the two outer symbols have just been matched, and explain why the
 machine compares the \emph{outermost} uncrossed pair on each pass rather than adjacent symbols.
 
-\item For each of the three sweeping patterns named in the Method box (cross-off matching,
+\item For each of three sweeping patterns named in the Method box (cross-off matching,
 zig-zag comparison, in-place rewriting), give one short language or task from this section's
 exercises that it solves, and in one sentence justify why that pattern fits.
 \end{exers}
@@ -16185,7 +16187,7 @@ remaining results are larger instances of the same idea.
 \subsection*{Multitape Turing machines}
 
 \begin{definition}[Multitape Turing machine]\label{def:multi@c8}
-A \emph{$k$-tape Turing machine} ($k\ge 1$) is a Turing machine with $k$ two-way infinite tapes,
+A \emph{$k$-tape Turing machine} ($k\ge 1$) is a Turing machine with $k$ one-way-infinite tapes,
 each with its own independent read/write head. The input is written on tape~$1$; tapes
 $2,\dots,k$ start blank. The transition function reads all $k$ heads, writes all $k$ heads, and
 moves each head independently:
@@ -16195,7 +16197,7 @@ moves each head independently:
 A single instruction $\trans(q,a_1,\dots,a_k)=(r,b_1,\dots,b_k,D_1,\dots,D_k)$ means: in state
 $q$ with head~$i$ scanning $a_i$, go to state $r$, write $b_i$ under head~$i$, and move head~$i$
 in direction $D_i\in\set{L,R,S}$, for every $i$ at once. Acceptance is as before: the
-machine halts in $q_{\text{accept}}$.
+machine halts in $q_{\mathrm{acc}}$.
 \end{definition}
 
 A second work tape is a genuine convenience: it gives the machine scratch space to copy,
@@ -16284,7 +16286,7 @@ blank.}
 The encoding above shows the layout on $S$'s single tape; the square below states the invariant
 it buys -- not the tape contents but the \emph{language}.
 \begin{center}
-\begin{tikzcd}[row sep=11mm, column sep=18mm]
+\begin{tikzcd}[row sep=11mm, column sep=38mm]
   k\text{-tape } M \arrow[r, pres, "{\text{interleave tapes, mark heads}}"]
     \arrow[d, "{\lang{\cdot}}"']
   & \text{single-tape } S \arrow[d, "{\lang{\cdot}}"] \\
@@ -16297,7 +16299,7 @@ positions, recognizing the same language.}
 \emph{Check} (Theorem~\ref{thm:multi@c8}). The single-tape simulator $S$ faithfully reproduces each
 multitape step, so $\lang{S}=\lang{M}$ and the square commutes. The price is paid in
 \emph{time}, not recognizability: each step of $M$ costs $S$ a sweep across all $k$ blocks, so a
-$T(n)$-time multitape machine becomes an $O(T(n)^2)$-time single-tape machine -- a polynomial
+$T(n)$-time multitape machine (with $T(n)\ge n$) becomes an $O(T(n)^2)$-time single-tape machine -- a polynomial
 slowdown that changes the running time but not the language recognized.
 
 \begin{corollary}\label{cor:multi-rec@c8}
@@ -16331,7 +16333,7 @@ reading the input $\str{0011}$:
   \node[font=\small,left=2mm of t0] {tape $1$:};
   \draw[head] (t4.south) ++(0,-3.5mm) -- (t4.south);
   \node[headlbl,below=3mm of t4] {$q$};
-  \foreach \i/\s in {0/X,1/X,2/{\blank},3/{\blank}} {
+  \foreach \i/\s in {0/{\blank},1/{\blank},2/{\blank},3/{\blank}} {
     \node[draw,minimum size=7mm,inner sep=1pt,font=\small] (w\i) at (\i,-0.8) {$\s$};}
   \node[font=\small,left=2mm of w0] {tape $2$:};
   \draw[head] (w2.south) ++(0,-3.5mm) -- (w2.south);
@@ -16341,12 +16343,12 @@ reading the input $\str{0011}$:
 The two marks written in phase~$1$ are both erased by the two $\str1$s in phase~$2$, and the
 input ends together with the marks, so $\str{0011}$ is accepted.
 \whichrule{A second tape turns ``compare two equal-length blocks'' into ``produce a counter,
-then consume it,'' which is a single left-to-right pass on each tape; Theorem~\ref{thm:multi@c8}
+then consume it,'' which is a single left-to-right pass over the input; Theorem~\ref{thm:multi@c8}
 guarantees a one-tape machine exists, at the cost of the head shuttling that the second tape let
 us avoid.}
 \emph{Check.} $\str{0011}$: two marks made, two erased, input exhausted -- accept. $\str{001}$: two
 marks made, one erased, one mark left -- reject. $\str{0101}$: a $\str0$ follows a $\str1$ -- reject
-in phase~$1$. Correct.
+in phase~$2$. Correct.
 \end{wex}
 
 \subsection*{Nondeterministic Turing machines}
@@ -16433,7 +16435,7 @@ Here is the three-tape simulator at a glance.
   \foreach \i/\s in {0/0,1/1,2/{\blank},3/{\blank}} {
     \node[draw,minimum size=6.5mm,inner sep=1pt,font=\small] (b\i) at (\i,0.2) {$\s$};}
   \node[font=\footnotesize,left=2mm of b0] {tape $2$ (simulate $N$):};
-  \draw[head] (b1.south) ++(0,-3mm) -- (b1.south);
+  \draw[head] (b1.south) ++(0,-2.2mm) -- (b1.south);
   % tape 3
   \foreach \i/\s in {0/2,1/3,2/1,3/{\blank}} {
     \node[draw,minimum size=6.5mm,inner sep=1pt,font=\small] (c\i) at (\i,-1.1) {$\s$};}
@@ -16521,7 +16523,7 @@ effectively trial division -- which still recognizes $\Lang$, just without the g
 determinization (Theorem~\ref{thm:ntm@c8}) turns the single guessed branch into an exhaustive
 search over all candidate witnesses, preserving the recognized language.}
 \emph{Check.} $n=9$: branch $(3,3)$ accepts, so $\str1^9\in\Lang$ (correct, $9=3\cdot3$). $n=7$:
-no pair $p,q\ge2$ multiplies to $7$, every branch rejects, $\str1^7\notin\Lang$ (correct, $7$ is
+no pair $p,q\ge2$ multiplies to $7$, no branch accepts, $\str1^7\notin\Lang$ (correct, $7$ is
 prime).
 \end{wex}
 
@@ -16548,9 +16550,9 @@ strings that ever appear matters.
     {$s_1=\str{\eps}$\\ $s_2=\str{0}$\\ $s_3=\str{1}$\\ $s_4=\str{00}$\\ $\vdots$};
   \node[draw,minimum width=22mm,minimum height=6mm,below=8mm of ctrl,font=\footnotesize] (work)
     {work tape (no input)};
-  \path[flow] (ctrl) -- node[flowlbl]{print $s$} (print);
-  \path[flow] (print) -- (list);
-  \path[flow] (ctrl) -- (work);
+  \draw[flow] (ctrl) -- node[flowlbl]{print $s$} (print);
+  \draw[flow] (print) -- (list);
+  \draw[flow] (ctrl) -- (work);
 \end{tikzpicture}
 \\[2pt]{\footnotesize An enumerator: a Turing machine that, instead of accepting an input, prints
 an ever-growing list. Its language is the set of strings that ever appear.}
@@ -16735,7 +16737,7 @@ is decidable. (Describe the decider and argue it always halts.)
 
 
 \section{The Church-Turing Thesis, Encodings, and the Universal TM}
-Sections~1 through~3 built the Turing machine and then showed how astonishingly
+Sections~8.1 through~8.3 built the Turing machine and then showed how astonishingly
 \emph{robust} it is: multitape, nondeterministic, and enumerator variants all recognize the
 same class of languages. This section draws the philosophical conclusion of that robustness
 -- the \emph{Church-Turing thesis}, which identifies ``algorithm'' with ``Turing machine'' --
@@ -16783,7 +16785,7 @@ failure to find one.
 \begin{remark}
 The thesis runs in both directions and both are used. ``Algorithm $\Rightarrow$ TM'' lets us
 describe machines in plain English (an \emph{implementation-level} or \emph{high-level}
-description) and trust that a formal 7-tuple exists; we did exactly this in Section~2. ``TM
+description) and trust that a formal 7-tuple exists; we did exactly this in Section~8.2. ``TM
 $\Rightarrow$ algorithm'' lets us treat anything a Turing machine does as a legitimate
 effective procedure when we reason informally.
 \end{remark}
@@ -16812,7 +16814,7 @@ $\enc{O}$ \emph{implicitly first checks} that its input is a well-formed encodin
 junk, so we never have to worry about ill-formed inputs. Third, encoding is cheap: it never
 turns a decidable problem into an undecidable one, because decoding is itself an algorithm.
 
-\begin{wex}{Encoding a finite graph as a string}
+\begin{wex}{Encoding a finite graph as a string}\label{wex:graph@c8}
 Fix the alphabet $\Sig=\set{0,1,\#,(,),{,}}$ (commas written ``$\#$''). Encode the undirected
 graph $G$ with vertices $\set{1,2,3,4}$ and edges $\set{\set{1,2},\set{2,3},\set{2,4}}$ as a
 string $\enc{G}$, and describe how a machine recovers $G$.
@@ -16945,7 +16947,7 @@ loops on $w$. Consequently $\lang{U}=\set{\enc{M,w}\st M\text{ is a TM that acce
 \end{theorem}
 
 \begin{proof}
-$U$ keeps three blocks of information, which by Theorem (multitape $=$ single-tape) we may put
+$U$ keeps three blocks of information, which by Theorem~\ref{thm:multi@c8} we may put
 on three tapes: tape~1 holds the (never-altered) description $\enc{M}$; tape~2 holds the
 simulated contents of $M$'s tape; tape~3 holds the current simulated state of $M$. On input
 $\enc{M,w}$, $U$ first parses $\enc{M}$ and verifies it is a legal machine encoding (rejecting
@@ -17088,7 +17090,7 @@ machine relies on.
 \end{pitfall}
 
 \begin{exers}{Exercises.}
-\item Fix the alphabet of Worked Example on graph encodings. Write down $\enc{H}$ for the
+\item Fix the alphabet of Worked Example~\ref{wex:graph@c8} on graph encodings. Write down $\enc{H}$ for the
 directed graph $H$ with vertices $\set{1,2,3}$ and directed edges $1\to 2$, $2\to 3$,
 $3\to 1$, using ordered pairs in the edge list. Then describe, in one or two sentences, the
 algorithm that decodes your string back into $H$.
@@ -17216,11 +17218,11 @@ the language classes built so far.
   \node[font=\small] at (-1.5,-0.45) {$\REG$};
   \node[font=\small,fill=white,inner sep=2pt] at (-0.55,1.05) {$\CFL$};
   \node[font=\small,fill=white,inner sep=2pt] at (0.5,1.95) {$\mathsf{R}$ (decidable)};
-  \node[font=\small,fill=white,inner sep=2pt] at (1.15,2.95) {$\mathsf{RE}$ (recognizable)};
+  \node[font=\small,fill=white,inner sep=2pt] at (0.6,2.9) {$\mathsf{RE}$ (recognizable)};
   % a point outside everything
-  \node[font=\small] at (4.0,-2.55) {non-RE};
-  \node[gv] at (3.6,-1.9) {};
-  \node[font=\footnotesize,anchor=west] at (3.7,-1.9) {$\overline{\ATM}$};
+  \node[font=\small] at (4.8,-2.3) {non-RE};
+  \node[gv] at (4.3,-2.85) {};
+  \node[font=\footnotesize,anchor=west] at (4.4,-2.85) {$\overline{\ATM}$};
 \end{tikzpicture}
 \\[2pt]{\footnotesize The language classes nested so far: every regular language is context-free,
 every context-free language is decidable, every decidable language is recognizable, and some
@@ -17316,10 +17318,10 @@ first to halt -- is worth a picture, because the same trick reappears constantly
   \node[procbox,above right=of in] (m1) {$\dfa_1$ recognizes $\Lang$};
   \node[procbox,below right=of in] (m2) {$\dfa_2$ recognizes $\overline{\Lang}$};
   \node[procbox,right=34mm of in] (out) {decide};
-  \path[flow] (in) -- (m1);
-  \path[flow] (in) -- (m2);
-  \path[flow] (m1) -- node[flowlbl]{accept $\Rightarrow$ \textsf{accept}} (out);
-  \path[flow] (m2) -- node[flowlbl]{accept $\Rightarrow$ \textsf{reject}} (out);
+  \draw[flow] (in) -- (m1);
+  \draw[flow] (in) -- (m2);
+  \draw[flow] (m1) -- node[flowlbl]{accept $\Rightarrow$ \textsf{accept}} (out);
+  \draw[flow] (m2) -- node[flowlbl]{accept $\Rightarrow$ \textsf{reject}} (out);
 \end{tikzpicture}
 \\[2pt]{\footnotesize Parallel simulation: feed $w$ to both recognizers a step at a time. Exactly one
 halts in ``accept''; its identity decides $w$.}
@@ -17330,28 +17332,39 @@ Sketch a decider for $A=\set{\str0^{n}\st n\text{ is a power of }2}$ and confirm
 \wrec ``Decider'' means we must guarantee halting, not merely accepting. The trigger is that the
 machine must \emph{make progress} on every input so that no computation runs forever.
 \wsol Repeatedly sweep across the tape crossing off every other $\str0$ and remembering the parity of
-the count seen. After a sweep: if a single $\str0$ remains, accept; if more than one remains and the
-count was odd, reject; otherwise return to the left end and sweep again.
+the count seen. After a sweep: if no $\str0$ remains (the input was empty), reject; if a single $\str0$
+remains, accept; if more than one remains and the count was odd, reject; otherwise return to the left
+end and sweep again.
 \begin{center}
-\begin{tikzpicture}[fa,node distance=16mm and 24mm]
+\begin{tikzpicture}[fa,node distance=18mm and 26mm]
   \node[stinit] (q1) {$q_1$};
   \node[st,right=of q1] (q2) {$q_2$};
   \node[st,right=of q2] (q3) {$q_3$};
-  \node[stacc,above=18mm of q2] (qa) {$q_{\mathrm{acc}}$};
-  \node[st,below right=18mm and 18mm of q3] (qr) {$q_{\mathrm{rej}}$};
-  \path (q1) edge node{$\str0\!\to\!\str x,R$} (q2)
+  \node[st,above=of q3] (q5) {$q_5$};
+  \node[st,below=of q3] (q4) {$q_4$};
+  \node[stacc,below=of q2] (qa) {$q_{\mathrm{acc}}$};
+  \node[st,below=of q1] (qr) {$q_{\mathrm{rej}}$};
+  \path (q1) edge node{$\str0\!\to\!\sqcup,R$} (q2)
+        (q1) edge node[swap]{$\str x,\sqcup\!\to\!R$} (qr)
         (q2) edge[loop above] node{$\str x\!\to\!R$} (q2)
-        (q2) edge node[pos=0.45]{$\str0\!\to\!R$} (q3)
-        (q3) edge[loop above] node{$\str x\!\to\!R$} (q3)
-        (q3) edge[bend left=35] node{$\str0\!\to\!\str x,R$} (q2)
-        (q2) edge[bend left=18] node[swap,pos=0.55]{$\sqcup\!\to\!L$} (qa)
-        (q3) edge node{$\sqcup\!\to\!L$} (qr);
+        (q2) edge node{$\str0\!\to\!\str x,R$} (q3)
+        (q2) edge node{$\sqcup\!\to\!R$} (qa)
+        (q3) edge[loop right] node{$\str x\!\to\!R$} (q3)
+        (q3) edge[bend left=20] node{$\str0\!\to\!R$} (q4)
+        (q4) edge[bend left=20] node{$\str0\!\to\!\str x,R$} (q3)
+        (q4) edge[loop right] node{$\str x\!\to\!R$} (q4)
+        (q4) edge[bend left=30] node{$\sqcup\!\to\!R$} (qr)
+        (q3) edge node{$\sqcup\!\to\!L$} (q5)
+        (q5) edge[loop right] node{$\str0,\str x\!\to\!L$} (q5)
+        (q5) edge node[swap]{$\sqcup\!\to\!R$} (q2);
 \end{tikzpicture}
-\\[2pt]{\footnotesize One sweep (states $q_1,q_2,q_3$): cross off alternate $\str0$s; even count with a
-lone $\str0$ left accepts, an odd count $>1$ rejects.}
+\\[2pt]{\footnotesize The whole machine: $q_1$ overwrites the first $\str0$ with $\sqcup$ (it still
+counts as a $\str0$, and marks the left end); $q_2,q_3,q_4$ make one sweep, crossing off every other
+$\str0$ ($q_2$: one $\str0$ seen, $q_3$: an even number, $q_4$: an odd number $>1$); $q_5$ returns to
+the left end. A sweep that meets a lone $\str0$ accepts; an odd count $>1$ rejects.}
 \end{center}
 \whichrule{Each sweep halves the number of $\str0$s, so the tape strictly shrinks and the number of
-sweeps is at most $\log_2$ of the input length; a strictly decreasing quantity bounded below forces
+sweeps is at most $1+\log_2$ of the input length; a strictly decreasing quantity bounded below forces
 halting on \emph{every} input, which is exactly the decider requirement.}
 \emph{Check.} On $\str{0000}$ ($n=4=2^2$): sweep one crosses two, leaving two $\str0$s (even); sweep
 two crosses one, leaving one $\str0$; accept. On $\str{000}$ ($n=3$): sweep one leaves two but the
@@ -17383,8 +17396,8 @@ next $\str a$. Accept iff every $\str c$ is crossed off exactly when the $\str a
 (uncrossed $\str a$s, then uncrossed $\str c$s) strictly decreases, so the machine halts on every
 input; a halting yes/no test is precisely a decider, putting $C\in\mathsf{R}$.}
 \emph{Check.} On $\str{aabbbcccccc}$ ($i=2,j=3,k=6$) the crossing-off ends with all $\str c$s gone as
-the last $\str a$ is consumed: accept. On $\str{aabbbccccc}$ ($k=5\ne 6$) one $\str c$ is left over:
-reject. Both halt.
+the last $\str a$ is consumed: accept. On $\str{aabbbccccc}$ ($k=5\ne 6$) the $\str c$s run out one
+short: reject. Both halt.
 \end{wex}
 
 \begin{wex}{Closure in action: building a decider for an intersection}
@@ -17401,11 +17414,11 @@ reject. Otherwise run $\dfa_2(w)$ to its halt and copy its verdict. Schematicall
   \node[procbox,right=22mm of m1] (m2) {run $\dfa_2$};
   \node[procbox,above right=8mm and 14mm of m2] (acc) {\textsf{accept}};
   \node[procbox,below=16mm of m2] (rej) {\textsf{reject}};
-  \path[flow] (in) -- (m1);
-  \path[flow] (m1) -- node[flowlbl]{accept} (m2);
-  \path[flow] (m1) |- node[flowlbl,pos=0.25]{reject} (rej);
-  \path[flow] (m2) -- node[flowlbl]{accept} (acc);
-  \path[flow] (m2) -- node[flowlbl,swap]{reject} (rej);
+  \draw[flow] (in) -- (m1);
+  \draw[flow] (m1) -- node[flowlbl]{accept} (m2);
+  \draw[flow] (m1) |- node[flowlbl,pos=0.25]{reject} (rej);
+  \draw[flow] (m2) -- node[flowlbl]{accept} (acc);
+  \draw[flow] (m2) -- node[flowlbl,swap]{reject} (rej);
 \end{tikzpicture}
 \\[2pt]{\footnotesize Sequential composition of two deciders: both halt, so the combination halts and
 accepts iff both accept.}
@@ -17467,8 +17480,8 @@ pass, accepting iff all three blocks empty simultaneously. This always halts, so
   \node[font=\footnotesize] at (-0.55,0.95) {$\CFL$};
   \node[font=\footnotesize] at (0.35,1.7) {$\mathsf{R}$};
   \node[font=\footnotesize] at (1.7,2.35) {$\mathsf{RE}$};
-  \node[gv] at (1.15,1.05) {};
-  \node[font=\footnotesize,anchor=west] at (1.25,1.05) {$\str a^n\str b^n\str c^n$};
+  \node[gv] at (0.85,1.05) {};
+  \node[font=\footnotesize,anchor=west] at (0.95,1.05) {$\str a^n\str b^n\str c^n$};
 \end{tikzpicture}
 \\[2pt]{\footnotesize $\str a^n\str b^n\str c^n$ sits in $\mathsf{R}\setminus\CFL$: decidable but not
 context-free.}
@@ -17554,7 +17567,7 @@ to recognize $\Lang_1\cup\Lang_2$ by ``run $\dfa_1(w)$ to completion; if it acce
 run $\dfa_2(w)$ and copy its verdict.'' Exhibit a concrete $w$, $\Lang_1$, $\Lang_2$ for which this
 procedure gives the wrong answer, and state the one-word fix.
 
-\item Using only Theorem (decidable $=$ recognizable and co-recognizable), prove: if both $\Lang$ and
+\item Without quoting Theorem~\ref{thm:sandwich@c8}, prove directly: if both $\Lang$ and
 $\overline{\Lang}$ are Turing-recognizable, then $\Lang$ is decidable. Draw the parallel-simulation
 schematic (two recognizer boxes feeding one ``decide'' box) and label which box's acceptance produces
 \textsf{accept} and which produces \textsf{reject}.
