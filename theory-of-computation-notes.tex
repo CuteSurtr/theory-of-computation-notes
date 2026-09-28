@@ -21725,7 +21725,7 @@ the tape and reassembles the whole.
   \node[below=12mm of b] (tp) {tape: $\enc{B}$};
   \draw[flow] (a) -- node[flowlbl]{writes $\enc{B}$} (b);
   \draw[flow] (b) -- node[flowlbl]{prints} (out);
-  \draw[flow] (a.south) |- node[flowlbl,pos=0.75]{} (tp.west);
+  \draw[flow] (a.south) |- (tp.west);
   \draw[flow] (tp) -- node[flowlbl]{reads $\enc{B}$} (b);
 \end{tikzpicture}
 \\[2pt]{\footnotesize The two-part trick: $A$ leaves $\enc{B}$ on the tape; $B$ reads it back, recomputes $\enc{A}$, and prints $\enc{AB}$.}
@@ -21840,9 +21840,9 @@ produces $t(\enc{R},w)=r(w)$, as claimed.
   \node[procbox,right=44mm of B] (T) {$T$};
   \draw[flow] (A) -- node[flowlbl]{$A$ appends $\enc{BT}$} (B);
   \draw[flow] (B) -- node[flowlbl]{$B$: glue $\to\enc{R}$} (T);
-  \node[below=9mm of A,font=\small] (i) {$w$};
-  \node[below=9mm of B,font=\small] (m) {$w\,\enc{BT}$};
-  \node[below=9mm of T,font=\small] (o) {$\enc{R},w\ \to\ t(\enc{R},w)$};
+  \node[below=9mm of A,font=\small,text height=0.75em,text depth=0.25em] (i) {$w$};
+  \node[below=9mm of B,font=\small,text height=0.75em,text depth=0.25em] (m) {$w\,\enc{BT}$};
+  \node[below=9mm of T,font=\small,text height=0.75em,text depth=0.25em] (o) {$\enc{R},w\ \to\ t(\enc{R},w)$};
   \draw[flow] (i) -- (m);
   \draw[flow] (m) -- (o);
 \end{tikzpicture}
@@ -21984,8 +21984,8 @@ machines -- contradiction.
 \begin{center}
 \begin{tikzpicture}[node distance=8mm]
   \node[procbox] (c) {$\enc{C}$};
-  \node[procbox,right=12mm of c] (e) {wait for $D$};
-  \node[procbox,right=12mm of e] (sim) {simulate $D$ on $w$};
+  \node[procbox,right=24mm of c] (e) {wait for $D$};
+  \node[procbox,right=24mm of e] (sim) {simulate $D$ on $w$};
   \draw[flow] (c) -- node[flowlbl]{length $\ell$} (e);
   \draw[flow] (e) -- node[flowlbl]{$\abs{\enc{D}}>\ell$} (sim);
 \end{tikzpicture}
@@ -22186,11 +22186,12 @@ B=\text{``On input }w\colon
 \text{3. if }H\text{ accepts, \emph{reject}; if }H\text{ rejects, \emph{accept}.''}
 \end{array}
 \]
-By the recursion theorem such a $B$ exists. Now fix any $w$ and ask whether $B$ accepts $w$.
-If $B$ accepts $w$, then $H$ accepted $\enc{B,w}$ (that is what step~2 saw), so by
-correctness of $H$ the machine $B$ accepts $w$ -- but step~3 then made $B$ reject $w$, a
-contradiction. If $B$ rejects $w$, then $H$ rejected $\enc{B,w}$, so $B$ does \emph{not}
-accept $w$; yet step~3 made $B$ accept, again a contradiction. Either way $B$ does the
+By the recursion theorem such a $B$ exists. Now fix any $w$; since $H$ halts, so does $B$, and
+we ask whether $B$ accepts $w$.
+If $B$ accepts $w$, then by correctness of $H$ the run of $H$ on $\enc{B,w}$ in step~2
+accepts -- but then step~3 makes $B$ reject $w$, a
+contradiction. If $B$ rejects $w$, then $B$ does \emph{not} accept $w$, so by correctness
+$H$ rejects $\enc{B,w}$; yet then step~3 makes $B$ accept, again a contradiction. Either way $B$ does the
 opposite of what $H$ predicts about $B$, so $H$ does not decide $\ATM$.
 \end{proof}
 
@@ -22237,7 +22238,7 @@ Suppose for contradiction that an enumerator $E$ prints exactly the strings in
 $\mathit{MIN}_{\mathsf{TM}}$, in some order. There are arbitrarily long minimal machines --
 for instance a machine recognizing a sufficiently complicated finite language cannot be
 compressed below a length growing with the language -- so $\mathit{MIN}_{\mathsf{TM}}$ is
-infinite and $E$'s list contains descriptions of every length beyond some point. Build:
+infinite and $E$'s list contains arbitrarily long descriptions. Build:
 \[
 C=\text{``On input }w\colon
 \begin{array}[t]{l}
@@ -22268,7 +22269,7 @@ printed it. The enumerator cannot exist, so $\mathit{MIN}_{\mathsf{TM}}$ is not 
 \end{tikzpicture}
 \end{center}
 
-\begin{wex}{Why the same trick does not show $\mathit{MIN}_{\mathsf{TM}}$ undecidable directly}
+\begin{wex}{Why the proof refutes an enumerator rather than a decider}
 Explain why the proof of Theorem~\ref{thm:min@c11} attacks \emph{recognizability} rather than
 mere \emph{decidability}, and what would change if we only assumed a decider for
 $\mathit{MIN}_{\mathsf{TM}}$.
@@ -22276,19 +22277,22 @@ $\mathit{MIN}_{\mathsf{TM}}$.
 \emph{enumerator}, which is exactly the witness for recognizability. Whenever a proof's
 self-referential machine \emph{searches a list} rather than \emph{queries a yes/no box}, it
 is refuting an enumerator, hence recognizability.
-\wsol A decider for $\mathit{MIN}_{\mathsf{TM}}$ answers ``is $\enc{M}$ minimal?'' but does
-not hand us minimal machines of every length on demand. The machine $C$ needs an actual
-description $\enc{D}$ longer than itself that it can then \emph{simulate}; a decider gives no
-such $D$. The enumerator does: it streams the members out, so $C$ waits for one longer than
-$\abs{\enc{C}}$. The unrecognizability conclusion is strictly stronger than undecidability
-(non-recognizable implies undecidable), so we get the sharper result for free.
+\wsol The machine $C$ needs an actual description $\enc{D}$ longer than itself that it can
+then \emph{simulate}. The enumerator supplies one: it streams the members out, so $C$ waits for
+one longer than $\abs{\enc{C}}$. A decider for $\mathit{MIN}_{\mathsf{TM}}$, which only answers
+``is $\enc{M}$ minimal?'', would supply one too, but only by being turned into an enumerator:
+test the strings longer than $\abs{\enc{C}}$ in order until it accepts one. Since every decider
+yields an enumerator in this way, assuming only an enumerator is the \emph{weaker} hypothesis,
+and refuting it gives the unrecognizability conclusion, which is strictly stronger than
+undecidability (non-recognizable implies undecidable) -- so we get the sharper result for free.
 \whichrule{Refuting an enumerator yields ``not Turing-recognizable''; refuting a decider
 yields only ``undecidable.'' Choose the assumed object to match the strongest conclusion the
 self-referential machine can contradict.}
-\emph{Check.} If instead we had assumed a decider $R$ and built $C$ to ask $R$ whether
-$\enc{C}$ is minimal, $C$ could learn a yes/no fact about itself but could not obtain a
-\emph{longer equivalent} machine to clone, so no contradiction arises -- confirming the
-enumerator is essential.
+\emph{Check.} If instead we had assumed a decider $R$, the same $C$ works with step~2 replaced
+by ``test the strings longer than $\abs{\enc{C}}$ in order until $R$ accepts one''; the
+contradiction arises exactly as before, but it refutes only a decider, so it shows only that
+$\mathit{MIN}_{\mathsf{TM}}$ is undecidable. (Merely asking $R$ whether $\enc{C}$ itself is
+minimal is not enough: that gives $C$ no \emph{longer equivalent} machine to clone.)
 \end{wex}
 
 \textbf{Third payoff: a fixed-point theorem.} A \emph{fixed point} of a transformation is an
@@ -22333,11 +22337,11 @@ the code transformation $t$, the two downward arrows are ``run the described mac
 the fixed point $F$ is built so that both runs land on one and the same computed function.
 
 \begin{center}
-\begin{tikzcd}[column sep=30mm,row sep=12mm]
+\begin{tikzcd}[column sep=42mm,row sep=12mm]
   \enc{F}
     \arrow[r, "{t\ \text{(transform code)}}"]
     \arrow[d, "{\text{run }F}"']
-  & \enc{t(\enc{F})}
+  & t(\enc{F})
     \arrow[d, "{\text{run }t(\enc{F})}"] \\
   \text{behavior of }F
     \arrow[r, dash, "{=\ \text{(same function on every }w)}"']
@@ -22529,7 +22533,7 @@ transformation, and count behaviorally distinct machines.)
 
 
 \section{Turing Reducibility and Oracle Machines}
-Mapping reducibility, from Chapter~5, captures one way to use a solution to $B$ as a
+Mapping reducibility, from Chapter~10, captures one way to use a solution to $B$ as a
 solution to $A$: transform the question about $A$ into a single question about $B$. But that
 is too rigid -- it forbids consulting $B$ more than once, and it cannot flip an answer, so a
 problem and its complement need not be mapping-reducible to each other even when each
@@ -22540,7 +22544,7 @@ it likes. The resulting notion, \emph{Turing reducibility} $A\redT B$, is the mo
 sense in which ``a solver for $B$ yields a solver for $A$,'' it subsumes mapping reducibility,
 and it repairs the asymmetry: a language and its complement are always Turing-equivalent. This
 connects directly to the previous section's undecidability results -- $\ATM$ reappears here as
-the canonical oracle, powerful enough to decide every problem we have so far proved
+the canonical oracle, powerful enough to decide many of the problems we have so far proved
 undecidable, yet (as the arithmetic hierarchy will show) still not powerful enough to decide
 everything.
 
@@ -22572,9 +22576,9 @@ program text $M$ becomes a different machine $M^{B}$ for each choice of $B$.
   \draw[flow] ([yshift=-2.5mm]O.west) -- node[flowlbl]{YES / NO}
         ([yshift=-2.5mm]M.east);
   \draw[flow] (M.south) ++(0,-7mm) coordinate (a)
-        node[below,font=\footnotesize]{may query repeatedly, with answers it computes}
+        node[below,font=\footnotesize]{may query repeatedly, computing with the answers}
         (M.south) -- (a);
-  \draw[flow] (O) -- (out);
+  \draw[flow] (M.north) -- ++(0,5mm) -| (out.north);
 \end{tikzpicture}
 \end{center}
 
@@ -22650,7 +22654,7 @@ $\overline{\ATM}$ recognizable -- false.
 \begin{center}
 \begin{tikzcd}[column sep=24mm,row sep=6mm]
   \ATM \arrow[r, "\redT", shift left=1.1ex]
-       \arrow[r, "\not\redm"', shift right=1.1ex, dashed]
+       \arrow[r, "\not\redm"', dashed, bend right=50]
   & \overline{\ATM} \arrow[l, "\redT", shift left=1.1ex]
 \end{tikzcd}
 \end{center}
@@ -22671,7 +22675,7 @@ $M$ accepts \emph{no} string. An $\ATM$ oracle answers about \emph{one} machine 
 encodes ``$M$ accepts \emph{something}.''
 \wsol Given $\enc{M}$, build a helper machine
 \[
-N=\text{``On any input: run }M\text{ in parallel on }\str0,\str1,\str{00},\str{01},\ldots\
+N=\text{``On any input: run }M\text{ in parallel on }\eps,\str0,\str1,\str{00},\ldots\
 \text{(all of }\Sigstar\text{); if }M\text{ accepts any string, accept.''}
 \]
 Then $\lang{N}=\Sigstar$ if $M$ accepts at least one string, and $\lang{N}=\es$ otherwise. In
@@ -22691,10 +22695,10 @@ oracle replies in one step. Hence $\ETM\redT\ATM$.
 \begin{center}
 \begin{tikzpicture}[node distance=6mm and 15mm,font=\small]
   \node[procbox,minimum width=21mm] (in) {$T^{\ATM}$ on $\enc{M}$};
-  \node[procbox,right=of in,minimum width=18mm] (build) {build $N$};
+  \node[procbox,right=10mm of in,minimum width=18mm] (build) {build $N$};
   \node[procbox,right=of build,minimum width=27mm] (q)
         {query $\ATM$: $\enc{N,\str0}$?};
-  \node[procbox,right=of q,minimum width=21mm,fill=black!4] (flip) {negate answer};
+  \node[procbox,right=20mm of q,minimum width=21mm,fill=black!4] (flip) {negate answer};
   \node[right=9mm of flip] (out) {decide $\ETM$};
   \node[below=10mm of q,font=\small] (note)
         {$N$ accepts $\str0\iff\lang{M}\neq\es$};
@@ -22919,9 +22923,12 @@ $\enc{M,w}$, a machine $M_w$ with $\lang{M_w}\neq\es$ iff $M$ accepts $w$, and q
 $\ETM$ oracle about $\enc{M_w}$. State whether your decider negates the oracle's answer.
 
 \item \textbf{Equal-language testing.} Recall $\mathit{EQ}_{\mathsf{TM}}=\set{\enc{M_1,M_2}\st
-\lang{M_1}=\lang{M_2}}$. Show $\mathit{EQ}_{\mathsf{TM}}\redT\ATM$. (Hint: an oracle for
-$\ATM$ already decides $\ETM$ by the text; combine emptiness tests, or reason directly about
-the symmetric difference $\lang{M_1}\triangle\lang{M_2}$.)
+\lang{M_1}=\lang{M_2}}$. Show $\mathit{EQ}_{\mathsf{TM}}\redT(\ATM)'$, the jump of $\ATM$
+(Definition~\ref{def:jump@c11}). (Hint: with an $\ATM$ oracle a machine can test whether $M_1$
+and $M_2$ agree on any one string, so it can search for a string in the symmetric difference
+$\lang{M_1}\triangle\lang{M_2}$; ask the jump whether that search succeeds. An $\ATM$ oracle
+alone does not suffice: $\mathit{EQ}_{\mathsf{TM}}$ lies in $\Pi_2$ but not in $\Delta_2$,
+Section~11.4.)
 
 \item \emph{Find the bug.} A student claims to show $\overline{\ATM}\redm\ATM$ as follows:
 ``On input $\enc{M,w}$, output $\enc{M,w}$ unchanged; the $\ATM$-oracle answers, and we flip
@@ -22938,9 +22945,9 @@ decidable relative to $\ATM$ using exactly \emph{two} oracle queries whose answe
 with a logical connective (e.g.\ ``$M$ accepts $\str0$ but rejects/loops on $\str1$''). Write
 the oracle program and state which connective you use.
 
-\item \textbf{Recognition, not decision, breaks transitivity.} Suppose $A$ is decidable
-relative to $B$ by an oracle machine that is only a \emph{recognizer} (it may loop on some
-non-members), and $B\redT C$. Explain with a concrete failure scenario why the transitivity
+\item \textbf{Recognition, not decision, breaks transitivity.} Suppose $A\redT B$, but $B$ is
+accepted relative to $C$ only by an oracle machine that is a \emph{recognizer} (it may loop on
+some non-members). Explain with a concrete failure scenario why the transitivity
 argument of Worked Example~\ref{wex:trans@c11} can break down, identifying the simulated query
 that may never return.
 
@@ -23005,11 +23012,12 @@ For every $n\ge 0$, $\;\Sigma_n\cup\Pi_n\subseteq\Sigma_{n+1}\cap\Pi_{n+1}=\Delt
 \begin{proof}
 Take $A\in\Sigma_n$, so $A=\set{x\st\exists y_1\cdots Q y_n\,R}$. Prepend a dummy unbounded
 $\forall y_0$ that does not occur in $R$: the formula $\forall y_0\,\exists y_1\cdots Q y_n\,R$ has
-$n{+}1$ alternating blocks and leads with $\forall$, so $A\in\Pi_{n+1}$. Prepending instead a dummy
-$\exists y_0$ and then merging it with $y_1$ keeps $n$ blocks but we may also pad to lead with
-$\exists$ at length $n{+}1$ by a dummy $\forall$ buried after, giving $A\in\Sigma_{n+1}$; the clean
-statement is that one dummy unbounded quantifier of \emph{either} kind, added at the front and
-ignored by $R$, raises the index by one without changing the defined set. Hence
+$n{+}1$ alternating blocks and leads with $\forall$, so $A\in\Pi_{n+1}$. Instead append, after
+$Q y_n$, a dummy unbounded quantifier $Q'y_{n+1}$ of the kind opposite to $Q$ (for $n=0$, a dummy
+$\exists y_1$), again not occurring in $R$: the formula $\exists y_1\cdots Q y_n\,Q'y_{n+1}\,R$ has
+$n{+}1$ alternating blocks and leads with $\exists$, so $A\in\Sigma_{n+1}$. (A dummy of the
+\emph{same} kind as its neighbor would merely merge into that block.) Neither dummy changes the
+defined set, since $R$ ignores it. Hence
 $\Sigma_n\subseteq\Sigma_{n+1}$ and $\Sigma_n\subseteq\Pi_{n+1}$; symmetrically for $\Pi_n$. The two
 together give $\Sigma_n\cup\Pi_n\subseteq\Delta_{n+1}$.
 \end{proof}
@@ -23086,12 +23094,12 @@ each level so the abstract rungs have concrete inhabitants.
         label=left:{\footnotesize $\Sigma_1$ (recognizable): $\ATM,\HALT$}] (s1) {};
   \node[ltdot,above right=14mm and 22mm of d1,
         label=right:{\footnotesize $\Pi_1$ (co-recog.): $\ETM\ (\lang{M}=\es)$}] (p1) {};
-  \node[ltdot,above=18mm of d1,label={[label distance=1pt]right:{\footnotesize $\Delta_2$}}] (d2) {};
+  \node[ltdot,above=28mm of d1,label={[label distance=5pt]right:{\footnotesize $\Delta_2$}}] (d2) {};
   \node[ltdot,above left=14mm and 22mm of d2,
         label=left:{\footnotesize $\Sigma_2$: $\overline{\mathit{TOT}}$}] (s2) {};
   \node[ltdot,above right=14mm and 22mm of d2,
         label=right:{\footnotesize $\Pi_2$: $\mathit{TOT},\ \mathit{EQ}_{\mathsf{TM}}$}] (p2) {};
-  \node[above=14mm of d2,font=\footnotesize] (dots) {$\vdots$};
+  \node[above=26mm of d2,font=\footnotesize] (dots) {$\vdots$};
   \draw[ltedge] (d1) -- (s1);
   \draw[ltedge] (d1) -- (p1);
   \draw[ltedge] (s1) -- (d2);
@@ -23164,7 +23172,7 @@ $\Delta_1$.
         label=above:{\footnotesize $\Pi_1\ni\overline{\ATM}$}] (p1) {};
   \draw[ltedge] (d1) -- (s1);
   \draw[ltedge] (d1) -- (p1);
-  \node[below right=2mm and 1mm of s1,font=\footnotesize,text=black!60]{not in $\Pi_1$};
+  \node[below left=2mm and 1mm of s1,font=\footnotesize,text=black!60]{not in $\Pi_1$};
 \end{tikzpicture}
 \end{center}
 \whichrule{A set with a one-existential definition is at worst $\Sigma_1$; if it were also $\Pi_1$
@@ -23221,10 +23229,10 @@ co-recognizable but not recognizable: the $\Pi_1$ vertex.
 \begin{tikzpicture}[node distance=12mm and 22mm]
   \node[ltdot,label=below:{\footnotesize $\Delta_1$}] (d1) {};
   \node[ltdot,above left=14mm and 22mm of d1,
-        label=above:{\footnotesize $\Sigma_1\ni\overline{\ETM}$}] (s1) {};
+        label=left:{\footnotesize $\Sigma_1\ni\overline{\ETM}$}] (s1) {};
   \node[ltdot,above right=14mm and 22mm of d1,
-        label=above:{\footnotesize $\Pi_1\ni\ETM$}] (p1) {};
-  \node[ltdot,above right=14mm and 4mm of s1,label=right:{\footnotesize $\Delta_2$}] (d2) {};
+        label=right:{\footnotesize $\Pi_1\ni\ETM$}] (p1) {};
+  \node[ltdot,above=28mm of d1,label=above:{\footnotesize $\Delta_2$}] (d2) {};
   \draw[ltedge] (d1) -- (s1);
   \draw[ltedge] (d1) -- (p1);
   \draw[ltedge] (s1) -- (d2);
@@ -23251,21 +23259,21 @@ problem relative to $\es'$, so writing ``$M^{\es'}$ accepts'' unfolds the oracle
 universal check over computations consistent with $\es'$ membership, landing one block higher:
 $\es''$ is $\Sigma_2$-complete. By Post's theorem (Theorem~\ref{thm:strict@c11}'s engine), $\Sigma_2
 \ne\Pi_2$, so $\es''\notin\Pi_2$, hence $\es''$ is strictly above level $1$. The tower of jumps
-$\es\subsetneq\es'\subsetneq\es''\subsetneq\cdots$ marches up one rung per jump.
+$\es<_{\mathrm{T}}\es'<_{\mathrm{T}}\es''<_{\mathrm{T}}\cdots$ marches up one rung per jump.
 \begin{center}
 \begin{tikzcd}[column sep=2.0em,row sep=tiny,ampersand replacement=\&]
   \es \ar[r,"{(\cdot)'}"] \&
   \es'\!=\ATM \ar[r,"{(\cdot)'}"] \&
   \es'' \ar[r,"{(\cdot)'}"] \& \cdots \\
-  \Delta_1 \ar[u,phantom,"\in" sloped] \&
-  \Sigma_1 \ar[u,phantom,"\in" sloped] \&
-  \Sigma_2 \ar[u,phantom,"\in" sloped] \&
+  \Delta_1 \ar[u,phantom,"\ni" sloped] \&
+  \Sigma_1 \ar[u,phantom,"\ni" sloped] \&
+  \Sigma_2 \ar[u,phantom,"\ni" sloped] \&
 \end{tikzcd}
 \end{center}
 \whichrule{Relativizing the $\Sigma_1$ halting definition over a $\Sigma_n$-complete oracle adds one
 alternating block, so the jump is exactly $\Sigma_{n+1}$-complete -- the jump and the hierarchy step
 in lockstep.}
-\emph{Check.} The chain of strict inclusions $\es\subsetneq\es'\subsetneq\es''$ matches strictness
+\emph{Check.} The chain of strict reductions $\es<_{\mathrm{T}}\es'<_{\mathrm{T}}\es''$ matches strictness
 of $\Delta_1\subsetneq\Sigma_1\subsetneq\Sigma_2$; if any jump failed to climb, a rung would
 collapse, contradicting Post's theorem.
 \end{wex}
@@ -23287,8 +23295,8 @@ $\Pi_1$.
   \node[stacc,right=of q0] (acc) {prime};
   \node[st,below=of q0] (rej) {composite};
   \path (q0) edge[loop above] node{$d\nmid x,\ d{+}{+}\ (d<x)$} (q0)
-        (q0) edge node{$d\ge x$} (acc)
-        (q0) edge[swap] node{$d\mid x$} (rej);
+        (q0) edge node{$d=x$} (acc)
+        (q0) edge[swap] node{$d\mid x,\ d<x$} (rej);
 \end{tikzpicture}
 \end{center}
 \whichrule{A quantifier bounded by a term in the input ranges over a finite, computable set, so it
@@ -23312,9 +23320,9 @@ mattered.
   \item \textbf{Read off the upper bound.} Leading $\exists\Rightarrow\Sigma_n$, leading $\forall
   \Rightarrow\Pi_n$, where $n$ is the number of alternating blocks.
   \item \textbf{Get a matching lower bound} (for completeness/exactness) by reducing a known
-  complete set for that level to $A$, or by exhibiting a defining formula for the \emph{complement}
-  and using $A\in\Sigma_n\iff\bar A\in\Pi_n$. If both $A$ and $\bar A$ reach level $n$, then
-  $A\in\Delta_n$.
+  complete set for that level to $A$. A defining formula for the \emph{complement} gives a second
+  \emph{upper} bound instead, via $A\in\Sigma_n\iff\bar A\in\Pi_n$: if both $A$ and $\bar A$ are in
+  $\Sigma_n$, then $A\in\Delta_n$.
 \end{enumerate}
 \end{method}
 
@@ -23358,7 +23366,7 @@ and finite intersections. (Hint: rename the quantified variables apart, then mer
 $\Sigma_n$ prefix one quantifier at a time, and use it to conclude $\Delta_n$ is closed under
 complement.
 
-\item Classify $\mathit{REG}_{\mathrm{TM}}=\set{\enc{M}\st \lang{M}\text{ is a regular language}}$ as
+\item Classify $\mathit{REGULAR}_{\mathsf{TM}}=\set{\enc{M}\st \lang{M}\text{ is a regular language}}$ as
 high in the hierarchy as you can by writing a quantifier prefix over a decidable matrix. (You do not
 need to prove completeness; aim for a correct upper bound and explain each alternation.)
 
@@ -23366,7 +23374,7 @@ need to prove completeness; aim for a correct upper bound and explain each alter
 under inclusion, with edges only for \emph{covering} relations (no edge that is implied by
 transitivity). Mark on it where $\ATM$, $\ETM$, and $\mathit{TOT}$ live.
 
-\item Let $\mathit{EQ}_{\mathrm{TM}}=\set{\enc{M_1,M_2}\st\lang{M_1}=\lang{M_2}}$. Give an
+\item Let $\mathit{EQ}_{\mathsf{TM}}=\set{\enc{M_1,M_2}\st\lang{M_1}=\lang{M_2}}$. Give an
 arithmetical formula for it and show it is in $\Pi_2$. (Hint: two languages are equal iff every
 string is in both or in neither; express ``string $w$ is accepted'' as a $\Sigma_1$ event and watch
 the alternation.)
@@ -23384,7 +23392,7 @@ cofiniteness, and what alternation the correct formula needs.
     \item if $A\in\Sigma_1$ and $B\in\Pi_1$ then $A\cap B\in\Delta_2$.
   \end{enumerate}
 
-\item Using $A\redm B\Rightarrow(B\in\Sigma_n\Rightarrow A\in\Sigma_n)$, prove that $\Sigma_n$ is
+\item Prove $A\redm B\Rightarrow(B\in\Sigma_n\Rightarrow A\in\Sigma_n)$, that is, that $\Sigma_n$ is
 closed downward under mapping reducibility. Then explain why this makes a $\Sigma_n$-complete set a
 single ``hardest'' representative of the whole rung.
 
@@ -23405,12 +23413,12 @@ quantifier that this collapses away, and state the correct level with the correc
 
 \section{Decidability of Logical Theories and Kolmogorov Complexity}
 This section samples two corners of computability where the abstract machinery of
-Chapters~4--5 pays off in concrete, surprising ways. First we treat a mathematical theory
+Chapters~9--10 pays off in concrete, surprising ways. First we treat a mathematical theory
 as a language of true sentences and ask whether a machine can decide membership: the
 arithmetic of addition alone, $\mathrm{Th}(\N,+)$, turns out to be decidable, while adding
 multiplication to get $\mathrm{Th}(\N,+,\times)$ makes the theory undecidable -- so ``is this
 arithmetic statement true?'' has no algorithm. Second we ask how much \emph{information} a
-single binary string carries, and answer with its shortest self-printing program; this
+single binary string carries, and answer with the shortest program that prints it; this
 descriptive (Kolmogorov) complexity gives a clean notion of randomness as incompressibility.
 The single idea linking the two halves is that a string can describe a computation, and the
 length or decidability of such descriptions is itself a computability question.
@@ -23482,7 +23490,7 @@ $y$ on $x$ is exactly what a decision procedure must track.
 \subsection*{$\mathrm{Th}(\N,+)$ is decidable: automata that recognize true tuples}
 
 The pleasant surprise is that pure additive arithmetic can be decided by the finite automata of
-Chapter~1. The trick is to feed several numbers to one automaton \emph{in parallel}, one bit of
+Chapter~4. The trick is to feed several numbers to one automaton \emph{in parallel}, one bit of
 each per input symbol, and to model each quantifier by an automaton operation: $\exists$ becomes
 nondeterministic guessing (projection), $\forall$ becomes complement--guess--complement.
 
@@ -23502,7 +23510,7 @@ first). Stacking gives the grid below; its four columns are the four input symbo
 \begin{center}
 \begin{tikzpicture}[x=10mm,y=8mm]
   \foreach \r/\lab in {0/$a{=}5$,1/$b{=}3$,2/$c{=}8$} {
-    \node[anchor=east,font=\small] at (-0.15,-\r) {\lab};}
+    \node[anchor=east,font=\small] at (-0.45,-\r) {\lab};}
   \foreach \c/\A/\B/\C in {0/0/0/1, 1/1/0/0, 2/0/1/0, 3/1/1/0} {
     \node[draw,minimum size=7mm] at (\c,0) {\A};
     \node[draw,minimum size=7mm] at (\c,-1){\B};
@@ -23521,7 +23529,7 @@ carry $1$; leftmost $0+0+1=1$. The sum row reads $\str{1000}=8$, matching $c$.
 \end{wex}
 
 \begin{wex}{A DFA that recognizes the addition relation}\label{wex:addauto@c11}
-Build a finite automaton over $\Sig_2'=\set{0,1}^3$ (columns $(a\text{-bit},b\text{-bit},
+Build a finite automaton over $\Sig_3=\set{0,1}^3$ (columns $(a\text{-bit},b\text{-bit},
 s\text{-bit})$) accepting exactly the column-strings, read \emph{least significant bit first},
 for which $a+b=s$.
 \wrec The trigger is ``binary addition with carry'': scanning from the low end, the only memory
@@ -23538,8 +23546,8 @@ carry must be $0$, so only $C_0$ accepts.
   \node[st] (bot) at ($(c0)!0.5!(c1) + (0,-20mm)$) {$\bot$};
   \path (c0) edge[loop above] node{$\substack{000,\,011,\\101}$} (c0)
         (c0) edge[bend left] node{$110$} (c1)
-        (c1) edge[bend left] node[swap]{$\substack{001,\,010,\\100}$} (c0)
-        (c1) edge[loop above] node{$111$} (c1)
+        (c1) edge[bend left] node[swap]{$001$} (c0)
+        (c1) edge[loop above] node{$\substack{010,\,100,\\111}$} (c1)
         (c0) edge node[swap,pos=0.5]{others} (bot)
         (c1) edge node[pos=0.5]{others} (bot)
         (bot) edge[loop below] node{all} (bot);
@@ -23585,11 +23593,11 @@ effective automaton construction, so the whole procedure is an algorithm.
 \end{proof}
 
 \begin{center}
-\begin{tikzpicture}[procbox,node distance=7mm and 16mm]
+\begin{tikzpicture}[node distance=7mm and 16mm]
   \node[procbox] (al) {$A_\ell=\psi$};
-  \node[procbox,right=of al] (am) {$A_{i+1}$};
-  \node[procbox,right=of am] (ai) {$A_i$};
-  \node[procbox,right=of ai] (a0) {$A_0$};
+  \node[procbox,right=12mm of al] (am) {$A_{i+1}$};
+  \node[procbox,right=24mm of am] (ai) {$A_i$};
+  \node[procbox,right=12mm of ai] (a0) {$A_0$};
   \node[right=10mm of a0,font=\small] (out) {accept $\Leftrightarrow A_0$ takes $\eps$};
   \path (al) edge[flow] node[flowlbl]{$\cdots$} (am)
         (am) edge[flow] node[flowlbl,align=center]{$\exists$: project\\$\forall$: $\neg$proj$\neg$} (ai)
@@ -23599,12 +23607,12 @@ effective automaton construction, so the whole procedure is an algorithm.
 \end{center}
 
 \begin{remark}
-The same idea decides several relatives: $\mathrm{Th}(\N,<)$ and $\mathrm{Th}(\N,+)$ are
-decidable, and so is $\mathrm{Th}(\R,+,\times)$ (real-closed fields, by Tarski). The line is
-crossed precisely when \emph{both} $+$ and $\times$ act on $\N$.
+The same idea decides relatives such as $\mathrm{Th}(\N,<)$, and $\mathrm{Th}(\R,+,\times)$
+is decidable too (real-closed fields, by Tarski, via quantifier elimination rather than
+automata). The line is crossed when \emph{both} $+$ and $\times$ act on $\N$.
 \end{remark}
 
-\subsection*{$\mathrm{Th}(\N,+,\times)$ is undecidable, and Godel's incompleteness}
+\subsection*{$\mathrm{Th}(\N,+,\times)$ is undecidable, and G\"odel's incompleteness}
 
 Multiplication breaks the automaton method, because once both operations are available the
 language can encode arbitrary computation.
@@ -23626,7 +23634,7 @@ $\ATM\redm\mathrm{Th}(\N,+,\times)$. Since $\ATM$ is undecidable, so is
 $\mathrm{Th}(\N,+,\times)$.
 \end{proof}
 
-A short chain of consequences gives a computability-flavoured Godel incompleteness theorem.
+A short chain of consequences gives a computability-flavoured G\"odel incompleteness theorem.
 Assume a proof system that is \emph{checkable} (the set $\set{\enc{\varphi,\pi}\st\pi\text{ proves
 }\varphi}$ is decidable) and \emph{sound} (provable $\Rightarrow$ true).
 
@@ -23662,13 +23670,13 @@ true sentence is unprovable.
 Using the recursion theorem (Section~11.1) one can exhibit an \emph{explicit} true-but-unprovable
 sentence $\psi$ that asserts ``no proof of me exists.'' If $\psi$ were provable it would be false
 (it would have a proof), violating soundness; so $\psi$ is unprovable and therefore true. This is
-the self-reference at the heart of Godel's original argument.
+the self-reference at the heart of G\"odel's original argument.
 \end{remark}
 
 \subsection*{Descriptive (Kolmogorov) complexity}
 
-We now measure the information in a single binary string by the length of its shortest
-self-printing program. We use the encoding $\enc{M,w}=\enc{M}w$ -- the binary code of a TM $M$
+We now measure the information in a single binary string by the length of the shortest
+program that prints it. We use the encoding $\enc{M,w}=\enc{M}w$ -- the binary code of a TM $M$
 followed by an input $w$ -- with a prefix-free coding of $\enc{M}$ so the boundary between $M$ and
 $w$ is recoverable. A standard trick doubles each bit of $\enc{M}$ and ends it with $\str{01}$.
 
@@ -23806,8 +23814,8 @@ $K(x)\ge n$'' would, on input $n$, print an incompressible string $x_n$ of lengt
 machine plus the short input $n$ \emph{is} a description of $x_n$ of length
 $\bigO(1)+\log_2 n\ll n$, so $K(x_n)\ll n$ -- contradicting $K(x_n)\ge n$. (This is the
 Berry-paradox argument: ``the first string with no short description'' just described it.)
-Deciding incompressibility would let us compute $K$ by searching for the threshold, so that set
-is undecidable too.
+The same argument needs only a decider for incompressibility (to test ``$K(x)\ge n$'' for each
+$x$ of length $n$), so that set is undecidable too.
 \end{proof}
 
 \begin{theorem}[Minimal descriptions are themselves incompressible]\label{thm:dincomp@c11}
@@ -23827,7 +23835,7 @@ contradicting minimality of $d(x)$. Hence $d(x)$ is incompressible by $b$.
 \end{proof}
 
 \begin{center}
-\begin{tikzpicture}[procbox,node distance=8mm and 17mm,>={Stealth[length=2.2mm]}]
+\begin{tikzpicture}[node distance=8mm and 17mm,>={Stealth[length=2.2mm]}]
   \node[procbox] (ddx) {$d(d(x))$};
   \node[procbox,right=of ddx] (dx) {$d(x)$};
   \node[procbox,right=of dx] (x) {$x$};
@@ -23917,7 +23925,7 @@ existence of length-$n$ strings $q$ having $K(q)\ge n$. (This subsumes the $\str
 any computable infinite string has logarithmic-length prefixes' descriptions.)
 
 \item Using Corollary~\ref{cor:mostincomp@c11}, compute a lower bound on the fraction of length-$n$
-strings that are incompressible by $c=5$, and show this fraction exceeds $0.96$ for all
+strings that are incompressible by $c=5$, and show this fraction exceeds $0.93$ for all
 sufficiently large $n$. Interpret the result as ``almost every string is essentially random.''
 
 \item Prove that there is a constant $c$ such that $K(xy)\le 2K(x)+K(y)+c$ for all strings $x,y$.
