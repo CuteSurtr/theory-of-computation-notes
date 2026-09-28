@@ -21888,7 +21888,7 @@ the recursion theorem: design $T$ to do the easy job assuming the code is handed
 theorem supply the code.
 \wsol Take $T$ to be the trivial machine that, given a pair, prints its first component:
 \[
-  T=\text{``On input }\enc{M,w}:\ \text{print }\enc{M}\text{ and halt.''}
+  T=\text{``On input }\enc{M,w}\text{: print }\enc{M}\text{ and halt.''}
 \]
 By Theorem~\ref{thm:rec@c11} there is a machine $R$ with $r(w)=t(\enc{R},w)=\enc{R}$ for every $w$. So
 $R$ ignores its input and prints $\enc{R}$ -- it is exactly $\textsf{SELF}$. Phrased directly:
@@ -21964,7 +21964,7 @@ no explicit diagonalization.
 asks $H$ about \emph{itself}'' is the recursion-theorem signal.
 \wsol Suppose $H$ decides $\ATM$. Build
 \[
-  B=\text{``On input }w:\ \text{(1) obtain }\enc{B}\text{; (2) run }H\text{ on }\enc{B,w};\ (3)\text{ do the \emph{opposite} of }H\text{'s answer.''}
+  B=\text{``On input }w\text{: (1) obtain }\enc{B}\text{; (2) run }H\text{ on }\enc{B,w};\ (3)\text{ do the \emph{opposite} of }H\text{'s answer.''}
 \]
 Then for every $w$: $B$ accepts $w$ iff $H$ says ``$B$ rejects $w$'' iff (since $H$ is correct) $B$
 \emph{rejects} $w$ -- a contradiction. So no such $H$ exists.
@@ -22022,7 +22022,7 @@ Let $t\colon\Sigstar\to\Sigstar$ be computable (think: a compiler optimizer, a c
 is the fixed-point engine. The trigger is that $t$ rewrites \emph{descriptions} of machines.
 \wsol Define
 \[
-  F=\text{``On input }w:\ \text{(1) obtain }\enc{F}\text{; (2) compute }t(\enc{F})=\enc{G};\ (3)\text{ simulate }G\text{ on }w.''
+  F=\text{``On input }w\text{: (1) obtain }\enc{F}\text{; (2) compute }t(\enc{F})=\enc{G};\ (3)\text{ simulate }G\text{ on }w\text{.''}
 \]
 Then $F$ runs exactly as $G$ does, so $\lang{F}=\lang{G}$; that is, $\enc{F}$ and $t(\enc{F})=\enc{G}$
 describe equivalent machines. (We read any non-machine string $t(\enc{F})$ as a machine that rejects
@@ -22404,23 +22404,23 @@ because $F$ may loop on the very inputs where flipping would have mattered.
 \end{wex}
 
 \begin{wex}{A program that prints its own source, via the design pattern}
-Use the ``obtain own description'' primitive to specify $\mathit{SELF}$, a machine that on
-every input halts with $\enc{\mathit{SELF}}$ written on its tape.
+Use the ``obtain own description'' primitive to specify $\textsf{SELF}$, a machine that on
+every input halts with $\enc{\textsf{SELF}}$ written on its tape.
 \wrec The trigger is ``output a copy of yourself.'' Self-output is the canonical use of
 step~1; everything after step~1 is an ordinary program acting on the data $\enc{M}$.
 \wsol Specify
 \[
-\mathit{SELF}=\text{``On any input: 1. obtain own description }\enc{\mathit{SELF}};\ 2.\
-\text{print }\enc{\mathit{SELF}}\text{ and halt.''}
+\textsf{SELF}=\text{``On any input: 1. obtain own description }\enc{\textsf{SELF}};\ 2.\
+\text{print }\enc{\textsf{SELF}}\text{ and halt.''}
 \]
 To see this is legitimate under Theorem~\ref{thm:rec-design@c11}, let $T$ be the machine
 $T(\enc{M},w)=\enc{M}$ (print the first component, ignore $w$). The recursion theorem
-delivers $R$ with $R(w)=T(\enc{R},w)=\enc{R}$, and this $R$ is $\mathit{SELF}$. The tape after
+delivers $R$ with $R(w)=T(\enc{R},w)=\enc{R}$, and this $R$ is $\textsf{SELF}$. The tape after
 halting holds the encoding and nothing else:
 \begin{center}
 \begin{tikzpicture}
   \matrix[tape] (t) {
-    $\langle$ & $\mathit{S}$ & $\mathit{E}$ & $\mathit{L}$ & $\mathit{F}$ & $\rangle$
+    $\langle$ & $\textsf{S}$ & $\textsf{E}$ & $\textsf{L}$ & $\textsf{F}$ & $\rangle$
       & $\sqcup$ & $\sqcup$ \\
   };
   \draw[head] ($(t-1-1.south)+(0,-3mm)$) -- (t-1-1.south);
@@ -22429,7 +22429,7 @@ halting holds the encoding and nothing else:
 \end{center}
 \whichrule{``Print own description'' is the recursion theorem with $t(\enc{M},w)=\enc{M}$;
 the self-reference that a naive quine struggles with is supplied wholesale by step~1.}
-\emph{Check.} Replacing step~2 by ``count the states of $\enc{\mathit{SELF}}$ and print that
+\emph{Check.} Replacing step~2 by ``count the states of $\enc{\textsf{SELF}}$ and print that
 number'' is equally valid -- once $\enc{M}$ is data, any computation on it is allowed; the
 print-a-copy version is just the simplest.
 \end{wex}
@@ -22438,12 +22438,12 @@ print-a-copy version is just the simplest.
 Sketch why a self-replicating program (a virus) is an instance of the recursion theorem, and
 identify the part that plays the role of step~1.
 \wrec The trigger is ``a program that writes a copy of itself elsewhere.'' Any
-self-replication is self-output plus a side effect, so it is the $\mathit{SELF}$ pattern with
+self-replication is self-output plus a side effect, so it is the $\textsf{SELF}$ pattern with
 extra work appended.
 \wsol Model the virus as
 \[
 \begin{aligned}
-V=\text{``On any input: 1. obtain own description }&\enc{V};\ 2.\ \text{write }\enc{V}\\
+V=\text{``On any input: }&\text{1. obtain own description }\enc{V};\ 2.\ \text{write }\enc{V}\\
 &\text{into a fresh host; 3. run the payload.''}
 \end{aligned}
 \]
@@ -22452,7 +22452,7 @@ a literal self-pointer. Steps~2--3 are an ordinary program over the data $\enc{V
 theorem certifies that genuine self-replicators exist; the ``machine cannot be more complex
 than itself'' paradox dissolves because $V$ never \emph{builds} a richer machine, it merely
 \emph{copies a description it was handed}.
-\whichrule{Self-replication is $\mathit{SELF}$ with a propagation payload bolted on after
+\whichrule{Self-replication is $\textsf{SELF}$ with a propagation payload bolted on after
 step~2; the existence of the self-copy is exactly Theorem~\ref{thm:rec-design@c11}.}
 \emph{Check.} Remove step~1 and hard-code a string $s$ to copy: then the copy is $s$, not
 $V$, unless $s$ happens to equal $\enc{V}$ -- and arranging that by hand is the quine puzzle
@@ -22541,7 +22541,7 @@ unrecognizability proof) is missing here.
 \item Combine two applications: assuming a decider $H$ for $\ATM$, use the recursion theorem
 to build a machine $M$ that obtains $\enc{M}$, asks $H$ whether $M$ accepts the string
 $\str{0}$, and then \emph{accepts} $\str{0}$ exactly when $H$ says it does not, while looping
-on all other inputs. State the contradiction and the language $L(M)$ would have to satisfy.
+on all other inputs. State the contradiction and the condition the language $L(M)$ would have to satisfy.
 
 \item The fixed-point theorem yields one fixed point. Show that in fact \emph{infinitely
 many} pairwise inequivalent machines $F$ satisfy ``$t(\enc{F})$ is equivalent to $F$'' for a
@@ -22752,7 +22752,7 @@ $M^{C}$ accepts exactly when $M_1^{B}$ does, i.e.\ exactly on $A$. Hence $A\redT
 \begin{tikzpicture}[node distance=9mm and 14mm]
   \node[procbox,minimum width=20mm] (m1) {$M_1$ (decides $A$)};
   \node[procbox,right=22mm of m1,minimum width=22mm] (m2) {$M_2$ (decides $B$)};
-  \node[procbox,right=18mm of m2,minimum width=20mm,fill=black!4] (c) {oracle for $C$};
+  \node[procbox,right=22mm of m2,minimum width=20mm,fill=black!4] (c) {oracle for $C$};
   \draw[flow] ([yshift=2mm]m1.east) -- node[flowlbl]{``$u\in B$?''} ([yshift=2mm]m2.west);
   \draw[flow] ([yshift=-2mm]m2.west) -- node[flowlbl]{YES/NO} ([yshift=-2mm]m1.east);
   \draw[flow] ([yshift=2mm]m2.east) -- node[flowlbl]{``$v\in C$?''} ([yshift=2mm]c.west);
@@ -22824,7 +22824,7 @@ Turing equivalent), and $\es'$ is the degree of the halting problem.
 \begin{center}
 \begin{tikzpicture}[node distance=11mm,every node/.style={align=center}]
   \node[cnode] (z)  {$\es$\\{\scriptsize decidable problems}};
-  \node[cnode,above=of z]  (j1) {$\es'\equiv_{\mathrm{T}}\ATM\equiv_{\mathrm{T}}\HALT$\\{\scriptsize halting-problem degree}};
+  \node[cnode,text width=35mm,above=of z] (j1) {$\es'\equiv_{\mathrm{T}}\ATM\equiv_{\mathrm{T}}\HALT$\\{\scriptsize halting-problem degree}};
   \node[cnode,above=of j1] (j2) {$\es''$\\{\scriptsize jump of $\es'$}};
   \node[cnode,above=of j2] (j3) {$\es'''$\\{\scriptsize jump of $\es''$}};
   \node[above=7mm of j3,font=\footnotesize] (top) {$\vdots$};
@@ -23217,8 +23217,8 @@ $\forall$, so $\mathit{TOT}\in\Pi_2$. The inner $\exists t$ cannot be merged out
 $\forall w$ (they alternate), and it cannot be bounded, because no computable bound on the halting
 time holds for all inputs -- that is exactly why $\mathit{TOT}$ does not drop to $\Pi_1$.
 \begin{center}
-\begin{tikzcd}[column sep=2.4em,row sep=tiny,ampersand replacement=\&]
-  \ATM:\ \exists t\,[\,\cdots] \ar[r,Rightarrow,"{\text{add }\forall w}"] \&
+\begin{tikzcd}[column sep=3.6em,row sep=tiny,ampersand replacement=\&]
+  \ATM\colon\exists t\,[\,\cdots] \ar[r,Rightarrow,"{\text{add }\forall w}"] \&
   \forall w\,\exists t\,[\,\cdots] \ar[r,equal] \&
   \mathit{TOT}\in\Pi_2
 \end{tikzcd}
@@ -23241,7 +23241,7 @@ it to a single rung rather than overcounting.
 \[\enc{M}\in\ETM\iff\forall w\,\forall t\,[\,M\text{ does not accept }w\text{ in }t\text{ steps}\,].\]
 The two adjacent $\forall$ blocks merge to one, so the prefix is a single $\forall$ over a decidable
 matrix: $\ETM\in\Pi_1$. Dually $\overline{\ETM}=\set{\enc{M}\st\exists w\,\exists t\,[\,M\text{
-accepts }w\text{ in }t\,]}\in\Sigma_1$ -- indeed $\overline{\ETM}$ is recognizable. So $\ETM$ is
+accepts }w\text{ in }t\text{ steps}\,]}\in\Sigma_1$ -- indeed $\overline{\ETM}$ is recognizable. So $\ETM$ is
 co-recognizable but not recognizable: the $\Pi_1$ vertex.
 \begin{center}
 \begin{tikzpicture}[node distance=12mm and 22mm]
@@ -23519,7 +23519,7 @@ spells the $r$th number. Pad shorter numbers with leading $0$s so all rows have 
 \end{definition}
 
 \begin{wex}{Encoding a single addition as one input string}
-Exhibit the $\Sig_3$-string that presents the triple $(a,b,c)=(\str{5},\str{3},\str{8})$ to an
+Exhibit the $\Sig_3$-string that presents the triple $(a,b,c)=(5,3,8)$ to an
 automaton checking $a+b=c$, and confirm it is a valid addition.
 \wrec The trigger is ``feed numbers in parallel'': stack the three binary numerals as rows of a
 grid and read the columns left to right. Each column is one symbol of $\Sig_3$.
@@ -23920,11 +23920,11 @@ one true and one false two-quantifier sentence and justify each truth value in a
 
 \item In the parallel-encoding scheme of Definition~\ref{def:parallel@c11}, write out the
 $\Sig_3$-string (as a sequence of column symbols, most significant bit first) that presents the
-triple $(a,b,c)=(\str{6},\str{5},\str{11})$, and verify column by column that $a+b=c$.
+triple $(a,b,c)=(6,5,11)$, and verify column by column that $a+b=c$.
 
 \item Draw a finite automaton over the column alphabet $\set{0,1}^2$ that, reading two numbers
 $a,b$ \emph{least significant bit first}, accepts exactly when $a=b$. State what each state
-remembers, and trace your machine on $(a,b)=(\str{5},\str{5})$ and on $(\str{5},\str{7})$.
+remembers, and trace your machine on $(a,b)=(5,5)$ and on $(5,7)$.
 
 \item Using the projection idea from the proof of Theorem~\ref{thm:thnplus@c11}, describe (in words,
 with a small diagram if helpful) how to turn an automaton recognizing the truth set of
