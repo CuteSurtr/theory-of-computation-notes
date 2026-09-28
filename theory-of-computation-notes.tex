@@ -17719,10 +17719,10 @@ Show how $A_{\mathsf{REX}}$, $\ANFA$, and $\ADFA$ stack: a single instance $\enc
   \node[procbox,right=of nfa] (dfa) {$M_1$: simulate $C$ on $w$};
   \node[left=14mm of rex] (in) {$\enc{R,w}$};
   \node[right=14mm of dfa] (out) {accept / reject};
-  \draw[flow] (in) -- (rex);
-  \draw[flow] (rex) -- node[flowlbl]{$\enc{A,w}$} (nfa);
-  \draw[flow] (nfa) -- node[flowlbl]{$\enc{C,w}$} (dfa);
-  \draw[flow] (dfa) -- (out);
+  \path[flow] (in) -- (rex);
+  \path[flow] (rex) -- node[flowlbl]{$\enc{A,w}$} (nfa);
+  \path[flow] (nfa) -- node[flowlbl]{$\enc{C,w}$} (dfa);
+  \path[flow] (dfa) -- (out);
 \end{tikzpicture}%
 }
 \end{center}
@@ -17913,7 +17913,7 @@ For $\E_{\mathsf{DFA}}$ and $E_{\mathsf{CFG}}$, the decider \emph{accepts} when 
 \end{pitfall}
 
 \begin{pitfall}
-The reduction in Theorem~\ref{thm:eqdfa@c9} relies on the regular languages being closed under complement, union, and intersection. Do not transplant it to context-free grammars: those closure properties fail for CFLs, and $\mathit{EQ}_{\mathsf{CFG}}$ is in fact undecidable. ``$E_X$ is decidable'' does \emph{not} imply ``$\mathit{EQ}_X$ is decidable'' -- the bridge between them is the closure properties, and that bridge exists only for the regular world.
+The reduction in Theorem~\ref{thm:eqdfa@c9} relies on the regular languages being closed under complement, union, and intersection. Do not transplant it to context-free grammars: CFLs are not closed under complement or intersection, and $\mathit{EQ}_{\mathsf{CFG}}$ is in fact undecidable. ``$E_X$ is decidable'' does \emph{not} imply ``$\mathit{EQ}_X$ is decidable'' -- the bridge between them is the closure properties, and that bridge exists only for the regular world.
 \end{pitfall}
 
 \begin{exers}{Exercises.}
@@ -17944,7 +17944,7 @@ are decidable, by reduction to $\ADFA$. What conversion does each reduction perf
 
 \item \emph{Spot the flaw.} A student claims $E_{\mathsf{CFG}}$ can be decided ``by checking whether the start variable appears on the left of any rule.'' Give a grammar on which this test gives the wrong answer, and explain what it misses.
 
-\item \emph{Spot the flaw.} Another student decides $EQ_{\mathsf{CFG}}=\set{\enc{G_1,G_2}\st \lang{G_1}=\lang{G_2}}$ ``the same way as $EQ_{\mathsf{DFA}}$, via symmetric difference.'' Identify the single closure property that fails for context-free languages and breaks this plan.
+\item \emph{Spot the flaw.} Another student decides $EQ_{\mathsf{CFG}}=\set{\enc{G_1,G_2}\st \lang{G_1}=\lang{G_2}}$ ``the same way as $EQ_{\mathsf{DFA}}$, via symmetric difference.'' Identify the closure properties that fail for context-free languages and break this plan.
 \end{exers}
 
 
@@ -18022,8 +18022,8 @@ rejects $w$, and loops if $M$ loops on $w$. Consequently $\lang{U}=\ATM$.
 \end{theorem}
 
 \begin{proof}
-The input $\enc{M,w}$ is a finite string encoding $M$'s five-tuple
-$(Q,\Sig,\Gam,\trans,q_0)$ together with its accept and reject states and the input $w$.
+The input $\enc{M,w}$ is a finite string encoding $M$'s $7$-tuple
+$(Q,\Sig,\Gam,\trans,q_0,q_{\mathrm{acc}},q_{\mathrm{rej}})$ together with the input $w$.
 The machine $U$ keeps three blocks of information on its tape: a verbatim copy of $M$'s
 transition table $\trans$, the current state of $M$, and the current contents of $M$'s tape
 with a marker for $M$'s head position. $U$ first checks that the input is a well-formed
@@ -18137,8 +18137,8 @@ late. So $U_N$'s language is not $\ATM$. The schematic shows the fatal mislabell
 \begin{center}
 \begin{tikzpicture}[node distance=6mm and 18mm,>={Stealth[length=2.2mm]}]
   \node[procbox,minimum width=22mm] (sim) {simulate $\le N$ steps};
-  \node[above right=4mm and 20mm of sim] (a) {accept};
-  \node[below right=4mm and 20mm of sim] (r) {reject};
+  \node[above right=4mm and 40mm of sim] (a) {accept};
+  \node[below right=4mm and 40mm of sim] (r) {reject};
   \path (sim.east) edge[flow] node[flowlbl,above]{$M$ accepted in time} (a.west)
         (sim.east) edge[flow] node[flowlbl,below]{not yet accepted} (r.west);
   \node[headlbl,below=9mm of sim,align=center]
@@ -18715,7 +18715,7 @@ f(1)=0.2718\cdots,\quad f(2)=0.1414\cdots,\quad f(3)=0.5000\cdots,\quad f(4)=0.3
 
 \item Given the membership table below for three languages over $\set{0,1}$ (column $s_i$ is the
 shortlex enumeration), build the characteristic sequence of a language $C$ that differs from all
-three. Identify, for each $j\in\set{1,2,3}$, the string on which $C$ and $\Lang_j$ disagree.
+three. Identify, for each $j\in\set{1,2,3}$, a string on which $C$ and $\Lang_j$ disagree.
 \[
 \begin{array}{c|cccc}
         & s_1 & s_2 & s_3 & s_4\\\hline
@@ -19193,7 +19193,7 @@ recognizable and co-recognizable, hence decidable by Theorem~\ref{thm:dec-iff@c9
 undecidability. So $\overline{\ATM}$ is not recognizable.
 \end{proof}
 
-This is our first language provably outside $\REC$. Note the shape of the argument: we never built
+This is our first natural problem provably outside $\REC$. Note the shape of the argument: we never built
 a diagonal machine against $\overline{\ATM}$ directly; we \emph{reused} the undecidability of
 $\ATM$ and the new equivalence. That reuse is the lever, and the worked examples below drill it in
 several directions.
@@ -19443,7 +19443,7 @@ recognizable.
 
 \item Show there exist uncountably many Turing-unrecognizable languages over $\set{0,1}$. (Hint: there are uncountably many languages and only countably many recognizers; bound the recognizable ones.)
 
-\item Suppose $\Lang$ is recognizable and $\Lang\redm \overline{\Lang}$ via a computable function (i.e.\ the complement maps back into $\Lang$). What can you conclude about $\Lang$? Prove it.
+\item Suppose $\Lang$ is recognizable and $\Lang\redm \overline{\Lang}$ via a computable function $f$ (i.e.\ $w\in\Lang\iff f(w)\in\overline{\Lang}$; see Definition~\ref{def:redm@c10}). What can you conclude about $\Lang$? Prove it.
 
 \item Let $\Lang$ be recognized by $M$ and suppose additionally that $M$ halts on \emph{at least} every string \emph{not} in $\Lang$. Show $\Lang$ is decidable.
 
