@@ -15615,7 +15615,7 @@ input. Hence $\lang{\dfa}=\es$, but the machine witnesses this by looping, not b
 unreachable; every run cycles in $q_0$ forever.}
 \end{center}
 \whichrule{$\lang{\dfa}=\es$ is forced by ``$q_{\mathrm{acc}}$ unreachable,'' and the empty language is
-also recognized by a one-state machine that simply rejects; the example shows recognizers may
+also recognized by a machine that simply rejects; the example shows recognizers may
 \emph{loop} rather than reject, which is exactly why recognizability is weaker than decidability.}
 \emph{Check.} $\es$ is trivially Turing-recognizable (and decidable) -- replace the back-and-forth
 rule by $\trans(q_0,\sqcup)=(q_{\mathrm{rej}},\sqcup,R)$ and the same language is now \emph{decided},
@@ -16028,16 +16028,16 @@ sentinel is never erased, so the landmark persists for the whole computation.
   \node[headlbl,right=10mm of c3] {(blanks)};
 \end{tikzpicture}
 \end{center}
-An alternative, which avoids enlarging $\Gam$, exploits the rule that a left move off the tape's
-left end leaves the head in place (Section~8.1): write a temporary symbol, try to move left, and
-if the same temporary symbol is still under the head the move failed, so the head was already at
+An alternative, which adds only one special symbol to $\Gam$, exploits the rule that a left move off the tape's
+left end leaves the head in place (Section~8.1): write the special symbol, try to move left, and
+if the special symbol is still under the head the move failed, so the head was already at
 cell~$1$; then restore the original symbol.
 \whichrule{The tape has no left terminator, so ``go to the left end'' must be \emph{implemented}:
 either plant a permanent sentinel at start-up, or detect the boundary using the stay-put rule for
 left moves off the end.}
 \emph{Check.} With a sentinel, a leftward scan from anywhere halts exactly at cell~$1$ and never
 runs past it, because $\vdash\! a$ is the unique $\vdash$-marked cell. The stay-put method needs
-no extra alphabet but costs a write--test--restore at each boundary check.
+only one extra symbol but costs a write--test--restore at each boundary check.
 \end{wex}
 
 \begin{method}{How to design a Turing machine from a language description}
@@ -16463,7 +16463,7 @@ tape $3$'s address \texttt{231} selects which choice to take at each step.}
 
 \begin{corollary}\label{cor:ntm-rec@c8}
 A language is Turing-recognizable if and only if some NTM recognizes it. It is decidable iff
-some NTM decides it (an NTM \emph{decides} a language if every branch halts on every input).
+some NTM decides it (an NTM \emph{decides} a language if it recognizes it and every branch halts on every input).
 \end{corollary}
 
 \begin{proof}
@@ -16830,7 +16830,7 @@ junk, so we never have to worry about ill-formed inputs. Third, encoding is chea
 turns a decidable problem into an undecidable one, because decoding is itself an algorithm.
 
 \begin{wex}{Encoding a finite graph as a string}\label{wex:graph@c8}
-Fix the alphabet $\Sig=\set{0,1,\#,(,),{,}}$ (commas written ``$\#$''). Encode the undirected
+Fix the alphabet $\Sig=\set{0,1,\#,(,),{,}}$ (commas between list items written ``$\#$''). Encode the undirected
 graph $G$ with vertices $\set{1,2,3,4}$ and edges $\set{\set{1,2},\set{2,3},\set{2,4}}$ as a
 string $\enc{G}$, and describe how a machine recovers $G$.
 \wrec An object-to-string task. The trigger is Definition~\ref{def:enc@c8}: pick \emph{any}
@@ -17481,8 +17481,8 @@ Place $\Lang=\set{\str a^{n}\str b^{n}\str c^{n}\st n\ge 0}$ into the smallest c
 containing it, and justify each non-membership and membership.
 \wrec We are asked to locate a language in the $\REG\subseteq\CFL\subseteq\mathsf{R}\subseteq\mathsf{RE}$
 tower. The trigger is to test the cheap classes first and stop at the first that works.
-\wsol The language is \emph{not} regular and \emph{not} context-free (the standard pumping arguments
-fail for $\str a^n\str b^n\str c^n$), but it \emph{is} decidable: a TM checks the shape
+\wsol The language is \emph{not} regular and \emph{not} context-free (by the standard pumping arguments
+for $\str a^n\str b^n\str c^n$), but it \emph{is} decidable: a TM checks the shape
 $\str a\kstar\str b\kstar\str c\kstar$, then crosses off one $\str a$, one $\str b$, one $\str c$ per
 pass, accepting iff all three blocks empty simultaneously. This always halts, so $\Lang\in\mathsf{R}$.
 \begin{center}
