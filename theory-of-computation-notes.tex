@@ -31300,7 +31300,7 @@ machine in $\bigO(t(n))$ time.
 Every function you are likely to write down -- $\log n$, $n$, $n\log n$, $n^{2}$, $n^{3}$,
 $2^{n}$ -- is constructible in both senses (above their respective thresholds). The point of
 the definitions is not to exclude anything natural; it is to exclude pathological bounds that
-are too erratic to be measured, which is the loophole the next pitfall exploits.
+are too erratic to be measured, which is the loophole the second pitfall below exploits.
 
 \begin{wex}{$n^{2}$ is space constructible}
 Exhibit a machine showing that $f(n)=n^{2}$ is space constructible, and confirm the space it
@@ -31363,9 +31363,11 @@ $\bigO(f(n))$ space, so $A=\lang{D}\in\SPACE(f(n))$.
 Now suppose, for contradiction, some machine $M$ decides $A$ in space $g(n)=o(f(n))$. Because
 $D$'s fixed tape alphabet must encode $M$'s arbitrary alphabet, $D$ simulates $M$ with a
 constant blow-up: it uses $d\cdot g(n)$ space for a constant $d$ depending only on $M$. Since
-$g=o(f)$, there is an $n_{0}$ with $d\cdot g(n)<f(n)$ for all $n\ge n_{0}$. The padded inputs
-$\enc{M}\str1\str0^{k}$ make $\abs{w}$ as large as we like while still naming $M$; choose $k$
-so that $w=\enc{M}\str1\str0^{k}$ has length $\ge n_{0}$. On that input $D$'s simulation
+$g=o(f)$, there is an $n_{0}$ such that for all $n\ge n_{0}$ both $d\cdot g(n)<f(n)$ and $M$'s
+running time, at most $n\,2^{\bigO(g(n))}$ by the configuration count, is below the clock
+$n\,2^{f(n)}$. The padded inputs $\enc{M}\str1\str0^{k}$ make $\abs{w}$ as large as we like
+while still naming $M$; choose $k$ so that $w=\enc{M}\str1\str0^{k}$ has length $\ge n_{0}$.
+On that input $D$'s simulation
 fits inside the marked zone and runs to completion, so by stage~4, $D$ outputs the
 \emph{opposite} of $M$. Thus $w\in A \iff w\notin\lang{M}$, contradicting $\lang{M}=A$.
 Therefore no $o(f)$-space machine decides $A$.
@@ -31376,7 +31378,7 @@ still describes $M$, so even an $M$ whose asymptotics ``kick in'' late is eventu
 a long enough pad. The next diagram is the picture behind the whole argument.
 
 \begin{wex}{The diagonalization table for the space hierarchy}
-Lay out the table whose anti-diagonal $D$ contradicts, and read off why $A$ escapes every
+Lay out the table whose diagonal $D$ contradicts, and read off why $A$ escapes every
 $o(f)$-space machine.
 \wrec This is the same device that defeated $\ATM$: index the rows by machines, the columns by
 their (padded) descriptions, and have $D$ disagree with $M_{i}$ in the cell $(i,i)$.
@@ -31499,12 +31501,14 @@ time but not in time $o\!\bigl(t(n)/\log t(n)\bigr)$.
 The decider mirrors the space proof. On input $w$ of length $n$: compute $t(n)$ by time
 constructibility and load $\lceil t(n)/\log t(n)\rceil$ into a binary counter; reject if $w$
 is not $\enc{M}\str1\str0^{*}$; otherwise simulate $M$ on $w$, decrementing the counter before
-each simulated step and rejecting if it hits $0$; finally output the opposite of $M$'s verdict.
+each step $D$ itself takes in the simulation and rejecting if it hits $0$; finally output the
+opposite of $M$'s verdict.
 The simulation is run on a three-track tape: track~1 carries $M$'s tape, track~2 carries
 $M$'s state and a copy of its transition function kept beside the head, track~3 carries the
 counter, also dragged along beside the head. Because the second track travels with the head,
-looking up $M$'s next move costs $\bigO(1)$ per step, so a $g(n)$-time $M$ is simulated in
-$\bigO(g(n))$ time \emph{before} the clock. The counter has magnitude about $t/\log t$, hence
+looking up $M$'s next move costs $\bigO(1)$ per step (a constant depending on $M$), so a
+$g(n)$-time $M$ is simulated in $\bigO(g(n))$ time \emph{before} the clock. The counter has
+magnitude about $t/\log t$, hence
 length $\bigO(\log t)$, and moving it each step multiplies the cost by $\bigO(\log t)$. The
 total is $\bigO(t/\log t)\cdot\bigO(\log t)=\bigO(t)$, so $A=\lang{D}\in\TIME(t(n))$.
 
@@ -32818,8 +32822,8 @@ The containments $\classP\subseteq\mathsf{ZPP}\subseteq\mathsf{RP}\subseteq
 \mathsf{BPP}$ and $\mathsf{RP}\subseteq\classNP$ are immediate from the definitions
 (a deterministic decider is a machine that flips no coins; an $\mathsf{RP}$ accepting
 branch is an $\classNP$ certificate). The two constants $\tfrac13$ and $\tfrac12$ look
-arbitrary; the next lemma shows they are not -- \emph{any} gap from $\tfrac12$ is as
-good as any other.
+arbitrary; the next theorem (with the remark after it) shows the choice does not
+matter -- \emph{any} gap from $\tfrac12$ is as good as any other.
 
 \subsection*{Amplification}
 
@@ -33121,8 +33125,8 @@ circuit $C_n$. The family $(C_n)$ decides $A$.
 \end{proof}
 
 This is a probabilistic \emph{union bound}: amplify until each input's failure
-probability is below $2^{-n}$, then the failures cannot cover all $2^{n}$ inputs, so a
-universally good coin string survives to be baked in. Combined with
+probability is below $2^{-n}$, then the failures of all $2^{n}$ inputs together cannot cover
+every coin string, so a universally good coin string survives to be baked in. Combined with
 Theorem~\ref{thm:bpppspace@c15}, randomness keeps us inside the deterministic world
 ($\classP/\mathrm{poly}$ and $\PSPACE$); whether $\mathsf{BPP}=\classP$ -- the
 conjecture that randomness adds \emph{no} power -- is open but widely believed.
@@ -33616,16 +33620,17 @@ beyond our scope.
   bound $\Pr[V\text{ accepts}]\le\tfrac13$. The standard tool is to show the verifier's challenge is
   (nearly) independent of the secret $\widetilde P$ would need, so its best response is essentially a
   guess.
-  \item \textbf{Amplify.} If one round only gives error $\le\tfrac12$, repeat independently and accept
-  on unanimous success; $k$ rounds give error $2^{-k}$.
+  \item \textbf{Amplify.} If one round only gives error $\le\tfrac12$ (and completeness is perfect),
+  repeat independently and accept on unanimous success; $k$ rounds give error $2^{-k}$.
 \end{enumerate}
 \end{method}
 
 \subsection*{The grand map}
 
 We close by placing the classes of this chapter on one diagram. Solid containments are theorems;
-no containment shown is known to be \emph{strict} except the two endpoints, where the hierarchy
-theorems force $\Lclass\subsetneq\PSPACE$ and $\classP\subsetneq\EXP$.
+no single containment shown is known to be \emph{strict}, and the separations that the hierarchy
+theorems do give join classes farther apart, such as $\Lclass\subsetneq\PSPACE$ and
+$\classP\subsetneq\EXP$.
 
 \begin{center}
 \begin{tikzpicture}[node distance=7mm and 9mm,
