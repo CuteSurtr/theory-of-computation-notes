@@ -33904,7 +33904,7 @@ $\rho_b=(q_0,q_1)=\id$ ($b$ fixes both states) and $\rho_a=(q_1,q_0)$ (the swap)
 $\rho_{aa}=\rho_a\rho_a=\id=\rho_\eps$, and every $\rho_w$ depends only on the parity of
 the number of $a$'s. So
 \[
-  T(\dfa_1)=\set{\id,\ s}\quad\text{where } s=\rho_a=(q_1,q_0),\ s^2=\id .
+  T(\dfa_1)=\set{\id,\ s}\quad\text{where } s=\rho_a=(q_1,q_0),\ s^2={\id}.
 \]
 This is the two-element group $\Z/2\Z$. Its table:
 \begin{center}
@@ -33989,8 +33989,8 @@ it.
 \end{theorem}
 
 \begin{proof}
-$(\Rightarrow)$ Let $\dfa$ be a DFA with $L=\lang{\dfa}$. Take $M=T(\dfa)$, the transition
-monoid, and $\phi(w)=\rho_w$, a homomorphism by Definition~\ref{def:transmonoid@c16}. Put
+$(\Rightarrow)$ Let $\dfa$ be a DFA with $L=\lang{\dfa}$. Take the transition monoid
+$T(\dfa)$ as the finite monoid, and $\phi(w)=\rho_w$, a homomorphism by Definition~\ref{def:transmonoid@c16}. Put
 $S=\set{\rho_w \st \xtrans(\qstart,w)\in\Acc}$, the functions that carry the start state
 into the accept set. A string $w$ is accepted iff $\rho_w(\qstart)\in\Acc$ iff
 $\rho_w\in S$, so $L=\phi^{-1}(S)$.
@@ -34123,7 +34123,7 @@ A language $L$ is regular iff $M(L)$ is finite, in which case $M(L)$ is the smal
 \begin{proof}[Proof sketch]
 The classical Myhill--Nerode relation $u\sim_L v$ (``$uz\in L\Leftrightarrow vz\in L$ for
 all $z$,'' a \emph{right} congruence) has finitely many classes iff $L$ is regular, and
-those classes are the states of the minimal DFA. The two-sided $\equiv_L$ refines $\sim_L$
+those classes are the states of the minimal DFA\@. The two-sided $\equiv_L$ refines $\sim_L$
 (take $x=\eps$) but is itself refined by the relation $\rho_u=\rho_v$ on the states of the
 minimal DFA; so $\equiv_L$ has finitely many classes iff $\sim_L$ does, and finiteness of
 $M(L)$ is equivalent to regularity. Minimality and division: if $\phi\colon\Sigstar\to N$ recognizes
@@ -34138,7 +34138,7 @@ right-contexts, but the full two-sided structure assembles them into a \emph{mon
 that monoid is a canonical invariant of $L$ -- it does not depend on any chosen machine.
 
 \begin{wex}{The syntactic monoid of ``even number of $a$'s''}
-Over $\Sig=\set{a,b}$ let $L=\set{w \st \abs{w}_a\equiv0\pmod2}$, strings with an even
+Over $\Sig=\set{a,b}$ let ${L=\set{w \st \abs{w}_a\equiv0\pmod2}}$, strings with an even
 count of $a$. Build $M(L)$ from a DFA and identify it as a known group.
 \wrec ``Syntactic monoid'': take a DFA, form its transition monoid; for a minimal DFA the
 transition monoid \emph{is} the syntactic monoid. Trigger: ``count mod $2$'' is a parity,
@@ -35754,7 +35754,7 @@ identify it.
 \wrec ``Cayley graph of $\Z_2^n$ with the basis'': each generator $e_i$ flips coordinate
 $i$ (since $-e_i=e_i$ in characteristic $2$), so neighbors differ in exactly one bit --
 the Hamming structure of a cube.
-\wsol $G=\Z_2^3=\set{000,001,\dots,111}$ under coordinatewise XOR. The generators
+\wsol $G=\Z_2^3=\set{000,001,\dots,111}$ under coordinatewise XOR\@. The generators
 $e_1=100,\ e_2=010,\ e_3=001$ are each their own inverse, so $S$ is symmetric with
 $\card S=3$: the graph is $3$-regular. Adding $e_i$ to $g$ flips bit $i$, so $g$ is joined
 to the three strings at Hamming distance $1$. That is the $3$-cube $Q_3$:
@@ -36065,7 +36065,7 @@ three. The bridges between the fields are not analogies; they are equalities, an
 now.
 
 \begin{theorem}[The synthesis dictionary]\label{thm:dict@c16}
-The following correspondences hold, each proved in this chapter or in Ch.\ 1--13.
+The following correspondences hold, each proved in this chapter or in Ch.~1--13.
 \begin{enumerate}[leftmargin=2.2em,topsep=2pt,itemsep=1pt]
   \item (Algebra $\leftrightarrow$ computation) A language $L\subseteq\Sigstar$ is regular iff
   some finite monoid recognizes it, namely the syntactic monoid $M(L)$
@@ -36076,9 +36076,9 @@ The following correspondences hold, each proved in this chapter or in Ch.\ 1--13
   construction.
   \item (Graphs $\leftrightarrow$ reductions) An $\classNP$ problem reduces to a graph problem
   by a \emph{gadget}: a fixed finite subgraph encoding one clause or variable, glued into a
-  network whose global structure mirrors the formula (Ch.\ 13).
+  network whose global structure mirrors the formula (Ch.~13).
   \item (Expanders $\leftrightarrow$ randomness) A constant-degree expander lets a random walk
-  of length $O(\log n)$ mix to near-uniform, so it stretches few random
+  of length $\bigO(\log n)$ mix to near-uniform, so it stretches few random
   bits into many near-independent samples (\S16.4): the engine of derandomization.
   \item (Generating functions $\leftrightarrow$ analysis) A counting or cost recurrence
   $a_n=\sum_k c_k\,a_{n-k}$ becomes a rational generating function $A(x)=P(x)/Q(x)$, whose
@@ -36090,9 +36090,9 @@ The following correspondences hold, each proved in this chapter or in Ch.\ 1--13
 Items (1)--(5) are theorems established in the cited sections; here we only record that each
 is a genuine biconditional or transfer, not a loose parallel. (1) is the algebraic
 Myhill--Nerode theorem, an ``iff''. (2) is the contrapositive of a union bound:
-$\#\{\text{bad}\}<\#\{\text{all}\}$ leaves a good object, since $\#\{\text{good}\}=
-\#\{\text{all}\}-\#\{\text{bad}\}>0$. (3) is the definition of a many-one reduction realized
-in graph form; correctness is the gadget-gluing argument of Ch.\ 13. (4) is the expander mixing/hitting
+$\#\{\text{bad}\}<\#\{\text{all}\}$ leaves a good object, since ${\#\{\text{good}\}=
+\#\{\text{all}\}-\#\{\text{bad}\}>0}$. (3) is the definition of a many-one reduction realized
+in graph form; correctness is the gadget-gluing argument of Ch.~13. (4) is the expander mixing/hitting
 property. (5) is the exponential growth formula of analytic combinatorics: a rational $A(x)$ has
 $\limsup_n\abs{[x^n]A(x)}^{1/n}=1/r$ where $r$ is the smallest modulus of a pole. We assemble,
 not reprove.
@@ -36490,7 +36490,7 @@ always $\ge1$ the mean would be $\ge1$. Contradiction, so some coloring has coun
   defects, and conclude existence when the expectation is $<1$ (the first-moment method).
   \item \textbf{Is it a hardness or reduction question?} Use the \emph{graph} lens: design a
   gadget per variable/clause, glue into a network, and argue the global property holds iff the
-  formula is satisfiable (Ch.\ 13).
+  formula is satisfiable (Ch.~13).
   \item \textbf{Need to derandomize a probabilistic algorithm?} Use the \emph{expander} lens:
   replace independent samples by an expander walk to recycle randomness (\S16.4).
   \item \textbf{Cross-check.} A good answer survives translation: the same growth rate should
@@ -36563,9 +36563,9 @@ $\mathbb{E}[X]<1$, then $\Pr[X=0]>0$. Use only the definition of expectation for
 integer variable. Then state how this single line powers the Ramsey lower bound.
 
 \item Build a reduction gadget. Draw a small graph gadget that encodes one clause
-$(x\lor\bar y\lor z)$ of a $3\text{-}\mathit{SAT}$ instance for a reduction to
+$(x\lor\bar y\lor z)$ of a $\CSAT$ instance for a reduction to
 $\CLIQUE$, marking which vertices represent which literal and stating which vertices may be
-chosen together. (You may model it on the Ch.\ 13 clause-gadget pattern; the point is to
+chosen together. (You may model it on the Ch.~13 clause-gadget pattern; the point is to
 exhibit the gadget, not to reprove the reduction.)
 
 \item Two languages over $\set{a,b}$ have syntactic monoids $M_1=\Z/2\Z$ and $M_2=\set{1,c}$
@@ -36581,7 +36581,7 @@ random coloring' produces such a coloring.'' Identify precisely what is wrong wi
 an algorithm that \emph{produces} the object, and state what the theorem actually guarantees.
 
 \item Find the bug. A classmate claims the generating function for $L=\set{w\st\abs
-w_a\equiv0\pmod3}$ over $\set{a,b}$ is $\Lang(x)=\dfrac{1}{1-2x}$ ``because there are $2^n$
+w_a\equiv0\pmod3}$ over $\set{a,b}$ is $\Lang(x)=\dfrac{1}{3(1-2x)}$ ``because there are $2^n$
 strings of length $n$ and a third of them have $\abs w_a\equiv0$.'' Show by computing $\ell_0$
 and $\ell_1$ from the claimed series that it is wrong, and explain in one sentence why the
 ``exactly a third'' reasoning fails for small $n$ (relate it to the oscillating $2\cos(n\pi/3)$
