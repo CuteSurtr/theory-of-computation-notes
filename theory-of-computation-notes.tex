@@ -6110,7 +6110,7 @@ $\tfrac12=B(\tfrac12)$, so $B=1$. Thus
   \qquad a_n=2^n-1 .
 \]
 \whichrule{An additive constant in a linear recurrence contributes the ogf $\tfrac{x}{1-x}$ of the
-constant sequence; the denominator then factors as a product of distinct $(1-\alpha_i x)$, and
+constant sequence; the denominator here factors as a product of distinct $(1-\alpha_i x)$, and
 partial fractions split it into one geometric term per factor.}
 \emph{Check.} $a_1=2\cdot0+1=1=2^1-1$; $a_2=2\cdot1+1=3=2^2-1$; $a_3=2\cdot3+1=7=2^3-1$. The closed
 form $2^n-1$ matches, and $a_0=2^0-1=0$ recovers the boundary value.
@@ -6287,7 +6287,7 @@ A divide-and-conquer count satisfies $a_0=1$ and $a_n=3a_{n-1}+2^n$ for $n\ge1$.
 growth rate without fully solving, then confirm.
 \wrec The driving term $2^n$ is itself geometric, with ogf $\frac{1}{1-2x}$. The trigger ``constant
 coefficient recurrence plus a geometric forcing term'' tells us the ogf is rational with denominator
-$(1-3x)(1-2x)$; the \emph{smaller} reciprocal of a root -- equivalently the pole closest to the
+$(1-3x)(1-2x)$; the \emph{larger} reciprocal root -- equivalently the pole closest to the
 origin, at $x=\tfrac13$ -- controls the asymptotics.
 \wsol Multiply by $x^n$, sum over $n\ge1$. The left side is $f(x)-1$; the $3a_{n-1}$ part gives
 $3x f(x)$; the forcing part gives $\sum_{n\ge1}2^n x^n=\frac{1}{1-2x}-1=\frac{2x}{1-2x}$. So
@@ -6341,7 +6341,7 @@ $3^{n+1}-2^{n+1}$ gives $a_0=3-2=1$, the boundary value.
   (minus its missing low terms).
   \item \textbf{Solve algebraically.} Collect all $f(x)$ terms on one side and divide to get a closed
   expression for $f(x)$. For a \emph{linear} recurrence this is a rational function $p(x)/q(x)$ with
-  $\deg p<\deg q=d$; for a self-convolution it is a quadratic in $f(x)$ -- use the quadratic formula
+  $\deg p<\deg q$; for a self-convolution it is a quadratic in $f(x)$ -- use the quadratic formula
   and pick the root with the correct constant term.
   \item \textbf{Extract coefficients.} Factor $q(x)=\prod_i(1-r_i x)^{d_i}$, do a partial-fraction
   split, and expand each $1/(1-r_i x)^{j}$ via $[x^n](1-r_i x)^{-j}=\binom{n+j-1}{j-1}r_i^{\,n}$.
@@ -6419,7 +6419,7 @@ $\sum_{n\ge1}a_n x^n=2\sum_{n\ge1}a_{n-1}x^n$, then claim the left side equals $
 $f(x)=2x\,f(x)$, so that $f(x)=0$. Identify the exact step where they mishandled a boundary term,
 correct it, and give the right closed form.
 
-\item (Find the bug.) To solve $a_0=1$, $a_1=2$, $a_n=4a_{n-2}$ ($n\ge2$), a student factors the
+\item (Find the bug.) To solve $a_0=1$, $a_1=1$, $a_n=4a_{n-2}$ ($n\ge2$), a student factors the
 generating-function denominator as $1-4x^2=(1-2x)(1-2x)$ and writes the answer as a single term
 $A\cdot 2^n$. Explain what is wrong with the factorization, give the correct factorization of
 $1-4x^2$, and write the corrected closed form for $a_n$.
@@ -6680,8 +6680,9 @@ $\approx g\log g$ bits, giving $\approx 2^{g\log g}$ of them, while the targets 
 when targets exceed solvers, a hard target must exist, with no explicit construction.}
 \emph{Check.} For $n=5$ there are $2^{32}\approx 4.3\times 10^{9}$ functions; allowing only, say,
 $g=6$ gates gives at most $(3\cdot 11^{2})^{6}\approx 363^{6}\approx 2.3\times 10^{15}$ \emph{labelled}
-descriptions, but most collapse to far fewer distinct functions, and as $g$ shrinks toward the
-Shannon threshold the circuit count drops below $2^{2^{n}}$, forcing a hard function.
+descriptions, more than $2^{32}$, so at this size the count proves nothing. As $g$ shrinks the
+circuit count drops below $2^{2^{n}}$: at $g=4$ it is $(3\cdot 9^{2})^{4}=243^{4}\approx 3.5\times 10^{9}
+<2^{32}$, forcing a function of $5$ variables that needs more than $4$ gates.
 \end{wex}
 
 \subsection*{Counting up to symmetry: Burnside's lemma}
