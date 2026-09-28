@@ -9305,7 +9305,7 @@ denoted by regular expressions.
 We prove the two directions as separate lemmas, each carrying its own construction. Throughout,
 recall that a regular expression $R$ is built from the atoms $a\in\Sig$, $\eps$, and $\es$ by the
 operations union $R_1\reor R_2$, concatenation $R_1 R_2$, and star $R\restar$, and that
-$\lang{R}$ denotes the language it describes. Recall also (Corollary in Section~4.4) that a
+$\lang{R}$ denotes the language it describes. Recall also (Corollary~\ref{cor:nfa-reg@c4}) that a
 language is regular iff some \emph{NFA} recognizes it; we are free to target NFAs, which keeps
 the constructions small.
 
@@ -9397,13 +9397,13 @@ $2\abs{R}$ in total.
 \begin{enumerate}[leftmargin=2em,topsep=2pt,itemsep=1pt]
   \item \textbf{Parse} $R$ by precedence (star binds tightest, then concatenation, then union),
   giving a tree whose leaves are atoms $a,\eps,\es$ and whose internal nodes are
-  $\reor,\,\cdot\,,\restar$.
+  $\reor$, $\cdot$, $\restar$.
   \item \textbf{Base.} Draw the two-state atom machine for each leaf: an $a$-edge for $a$, an
   $\eps$-edge for $\eps$, no edge for $\es$.
   \item \textbf{Combine bottom-up.} At each internal node glue the child machines with the
   union / concatenation / star gadget above, always adding \emph{fresh} start/accept states so
   every subexpression keeps one entry and one exit.
-  \item \textbf{Stop} at the root: the machine for the whole tree is your NFA. Optionally
+  \item \textbf{Stop} at the root: the machine for the whole tree is your NFA\@. Optionally
   collapse obvious $\eps$-chains afterward, but the raw output is already correct.
 \end{enumerate}
 \end{method}
@@ -9487,7 +9487,7 @@ The top branch reads one $\str a$ then any number of $\str b$'s (the self-loop $
 the star); the bottom branch reads a single $\str b$.
 \whichrule{Precedence fixes the parse tree before any drawing happens; the star applies only to
 $\str b$, so the loop sits on the $\str b$-machine and the leading $\str a$ stays outside it.}
-\emph{Check.} $\str a$ is accepted (zero $\str b$'s): $s\to p_0\xrightarrow{a}p_1\xrightarrow{\eps}
+\emph{Check.} $\str a$ is accepted (zero $\str b$'s): $s\xrightarrow{\eps}p_0\xrightarrow{a}p_1\xrightarrow{\eps}
 p_2\xrightarrow{\eps}f$. So is $\str{abb}$ and the single $\str b$. But $\str{ba}$ is rejected,
 confirming the union is $\str a\str b\restar$ \emph{or} $\str b$, never $\str{ba}$.
 \end{wex}
@@ -10003,7 +10003,7 @@ $q_0,q_3,q_5,q_7,q_2$, so $p\ge 5$.
   integer and let the adversary fix it.
   \item \textbf{Choose one string $s$ in the language with $\abs{s}\ge p$,} written in terms of $p$.
   Pick $s$ to expose the language's ``essence'' -- the feature a finite memory cannot track. A
-  string whose length grows with $p$ (e.g. $\str0^p\str1^p$) is usually right.
+  string whose length grows with $p$ (e.g.\ $\str0^p\str1^p$) is usually right.
   \item \textbf{Invoke the decomposition.} The lemma hands you \emph{some} split $s=xyz$ with
   $\abs{y}>0$ and $\abs{xy}\le p$. You do not pick $x,y,z$; you must handle every legal split.
   \item \textbf{Use condition (3) to pin $y$ down.} Because $\abs{xy}\le p$, the loop $y$ sits
@@ -10054,7 +10054,7 @@ ones, also outside $\Lang$. Either direction contradicts the lemma.
 \end{wex}
 
 \begin{wex}{Pumping down: when only $i=0$ exposes the flaw}
-Show that $\Lang=\set{\str0^i\str1^j\st i>j\ge 0}$ fails the pumping property. Notice that pumping
+Show that $\Lang=\set{\str0^i\str1^j\st {i>j\ge 0}}$ fails the pumping property. Notice that pumping
 \emph{up} fails to help, so the loop must be removed instead.
 \wrec The language needs strictly more $\str0$s than $\str1$s. A string with a razor-thin margin,
 just one extra $\str0$, is fragile: removing even one $\str0$ should break it.
@@ -10065,7 +10065,7 @@ $\abs{xy}\le p$, so again $xy$ is inside the leading zeros and $y=\str0^k$, $1\l
 \begin{tikzpicture}[fa,node distance=14mm and 22mm]
   \node[st] (s0) {$s$};
   \node[st,right=34mm of s0] (s1) {$xz$};
-  \path (s0) edge[bend left] node{remove $y=\str0^k$ (i.e. $i=0$)} (s1);
+  \path (s0) edge[bend left] node{remove $y=\str0^k$ (i.e.\ $i=0$)} (s1);
 \end{tikzpicture}
 \end{center}
 Pumping \emph{up} to $i=2$ gives $\str0^{\,p+1+k}\str1^{\,p}$, which still has more $\str0$s than
@@ -10078,7 +10078,7 @@ fails the requirement $i>j$. Hence $xz\notin\Lang$, contradicting condition (1).
 \whichrule{When a language tolerates extra copies of the loop but not its absence, the right move is
 $i=0$: ``pumping down'' deletes $y$ and trips the strict-inequality margin that one $\str0$ was
 guarding.}
-\emph{Check.} If by accident $p+1-k=p$ (i.e. $k=1$) we still get $\#\str0=p\not> p=\#\str1$, so the
+\emph{Check.} If by accident $p+1-k=p$ (i.e.\ $k=1$) we still get $\#\str0=p\not> p=\#\str1$, so the
 string is excluded; the contradiction holds for every legal $k$.
 \end{wex}
 
@@ -10132,7 +10132,7 @@ detector.
 \end{tikzpicture}
 \end{center}
 It has $p=2$ states, so take any $s\in\Lang$ with $\abs{s}\ge 2$, say $s=\str{100}$. Its run is
-$e_1\xrightarrow{1}e_1\xrightarrow{0}e_0\xrightarrow{0}e_0$, i.e. $e_1,e_1,e_0,e_0$, whose first
+$e_1\xrightarrow{1}e_1\xrightarrow{0}e_0\xrightarrow{0}e_0$, i.e.\ $e_1,e_1,e_0,e_0$, whose first
 repeat is $e_1$ at positions $1,2$. So $x=\eps$, $y=\str1$, $z=\str{00}$. Pumping gives
 $\str1^{\,i}\str{00}$ for all $i\ge 0$, every one of which ends in $\str0$ and is accepted.
 \whichrule{For a regular language the lemma is simply true, and the loop it returns is an honest
@@ -10147,7 +10147,7 @@ You do \emph{not} choose the pumping length $p$, and you do \emph{not} choose th
 Both are handed to you adversarially: $p$ is some fixed-but-unknown positive integer, and the
 decomposition is whatever the lemma supplies, subject only to $\abs{y}>0$ and $\abs{xy}\le p$. A
 correct argument fixes the \emph{string} $s$ (your first free choice) and then defeats \emph{every}
-legal split. The two choices you actually make are $s$ and the pumping exponent $i$.
+legal split. The two choices you actually make are $s$ and the pumping exponent~$i$.
 \end{pitfall}
 
 \begin{pitfall}
@@ -10174,8 +10174,8 @@ smallest length $n$ guaranteeing that the run of $\dfa$ on \emph{every} input of
 revisit some state? Justify your answer with the pigeonhole count.
 
 \item Consider the DFA over $\set{0,1}$ with states $q_0,q_1,q_2$, start $q_0$, accept $\set{q_2}$,
-and transitions $\trans(q_0,0)=q_1$, $\trans(q_0,1)=q_0$, $\trans(q_1,0)=q_2$, $\trans(q_1,1)=q_0$,
-$\trans(q_2,0)=q_2$, $\trans(q_2,1)=q_2$. Draw its state diagram. Then run it on
+and transitions $\trans(q_0,\str0)=q_1$, $\trans(q_0,\str1)=q_0$, $\trans(q_1,\str0)=q_2$, $\trans(q_1,\str1)=q_0$,
+$\trans(q_2,\str0)=q_2$, $\trans(q_2,\str1)=q_2$. Draw its state diagram. Then run it on
 $s=\str{10010}$, list the full state sequence $r_1,\dots,r_6$, identify the \emph{first} repeated
 state, and write down the corresponding $x,y,z$. Verify $\abs{y}>0$ and $\abs{xy}\le p$.
 
@@ -10344,7 +10344,7 @@ cover every legal split.
 \end{wex}
 
 \begin{wex}{Equal counts, anywhere: $C=\set{w\st \#_0(w)=\#_1(w)}$}
-Prove that $C=\set{w\in\set{0,1}\kstar\st w\text{ has equally many }0\text{s and }1\text{s}}$
+Prove that $C=\set{{w\in\set{0,1}\kstar}\st w\text{ has equally many }0\text{s and }1\text{s}}$
 is not regular, and then reprove it in one line.
 \wrec Again an unbounded equality, but now the symbols may be interleaved, so a careless
 choice of $s$ can backfire. The trigger is the same counting equality; the lesson is that
@@ -10452,7 +10452,7 @@ strictly between $9=3^{2}$ and $16=4^{2}$ -- none a square.
 \end{wex}
 
 \begin{wex}{When you must pump down: $E=\set{0^{i}1^{j}\st i>j}$}
-Prove that $E=\set{0^{i}1^{j}\st i>j\ge 0}$ is not regular.
+Prove that $E=\set{0^{i}1^{j}\st {i>j\ge 0}}$ is not regular.
 \wrec A strict inequality between two unbounded counts. The instinct is to pump up, but
 adding $0$s only makes $i>j$ \emph{more} true, so up-pumping fails to escape. The trigger
 ``adding keeps me inside'' tells us to try $i=0$, i.e.\ pump \emph{down}.
@@ -10563,7 +10563,7 @@ give the pumping power $i$ you use.
 that traps the loop in the leading $a$-block, and say why pumping there breaks membership.
 
 \item Prove that the language of \emph{balanced} parenthesis strings over $\set{\str{(},
-\str{)}}$ (every prefix has at least as many $\str{(}$ as $\str{)}$, and the totals are
+\str{)}}$ (every prefix has at least as many~$\str{(}$~as~$\str{)}$, and the totals are
 equal) is not regular.
 
 \item Show that $\Lang=\set{1^{n}\st n\text{ is prime}}$ is not regular. (Hint: pick
@@ -10590,7 +10590,7 @@ move that works.
 I can take $p=1$, $s=01$, $x=0$, $y=1$, $z=\eps$; then $xy^{i}z=01^{i}\in\Lang$ only for
 $i=1$, but the lemma just needs \emph{some} split that pumps, so it is satisfied.'' Identify
 every misuse of the pumping lemma in this argument (direction of the implication, who
-chooses what, and the meaning of condition~1).
+chooses what, and the meaning of condition~(i)).
 
 \item \emph{Find the bug.} Another student proves $\set{ww\st w\in\set{0,1}\kstar}$
 nonregular by choosing $s=0^{2p}$ and pumping. Explain why this choice cannot yield a
@@ -10612,7 +10612,7 @@ other three.
 \end{exers}
 
 
-\section{Myhill-Nerode, the Syntactic Monoid, and Minimization}
+\section{Myhill--Nerode, the Syntactic Monoid, and Minimization}
 The pumping lemma told us a language can fail to be regular; it never told us how
 \emph{much} memory a regular language truly needs, nor whether a given DFA is wasteful. This
 section answers both at once. The single idea is that a language $\Lang$ induces, all by
@@ -10791,7 +10791,7 @@ exists.}
 ($\str1\in\Lang$, $\str0\notin\Lang$), so they need different states -- two is forced.
 \end{wex}
 
-\begin{wex}{An infinite index: $0^n1^n$ is not regular}
+\begin{wex}{An infinite index: $\str0^n\str1^n$ is not regular}
 Let $\Lang=\set{\str0^n\str1^n\st n\ge 0}$ over $\Sig=\set{0,1}$. Use Myhill--Nerode to show
 $\Lang$ is nonregular.
 \wrec Nonregularity via the index: find infinitely many pairwise-distinguishable strings, so
@@ -10846,7 +10846,7 @@ in $\Acc$. Otherwise $p,q$ are \emph{indistinguishable}, written $p\equiv q$.
 \end{enumerate}
 \end{method}
 
-\begin{wex}{Minimizing a four-state DFA with a redundant state}
+\begin{wex}{Minimizing a four-state DFA with two redundant states}
 Minimize the DFA $\dfa$ over $\Sig=\set{0,1}$ with states $\set{A,B,C,D}$, start $A$, accepts
 $\set{C,D}$, and
 \[
@@ -10863,7 +10863,7 @@ to one state. The trigger is ``two accept states that behave identically forever
 \wsol All four states are reachable ($A$ start; $\str0\!\to\!B$, $\str1\!\to\!C$, $\str{01}\!\to\!D$).
 Both $C$ and $D$ are sink-accepts: every symbol loops them and they are accepting, so no suffix
 ever leaves $\Acc$ from either -- they are indistinguishable, $C\equiv D$. The non-accepts $A,B$
-differ from $C,D$ at $z=\eps$. Do $A\equiv B$? On $\str1$, $A\to C$ (accept) but $B\to D$
+differ from $C,D$ at $z=\eps$. Is $A\equiv B$? On $\str1$, $A\to C$ (accept) but $B\to D$
 (accept), no split; on $\str0$, $A\to B$, $B\to A$, still unsplit; every continuation keeps both
 in the non-accept region until it first reads a $\str1$, after which both sit in the merged
 accept sink. So $A\equiv B$ as well. The table-filling grid (lower triangle; $\times$ = marked
@@ -11059,7 +11059,7 @@ nonregularity by infinite index; use $\approx_\Lang$ for the algebraic ``finite 
 \begin{pitfall}
 When minimizing, \emph{delete unreachable states first}. The table-filling algorithm only merges
 states that are present, and an unreachable accept state can masquerade as a class of its own,
-leaving the output larger than the true minimal DFA. Reachability and indistinguishability are
+leaving the output larger than the true minimal DFA\@. Reachability and indistinguishability are
 two separate prunings: unreachable states are removed, indistinguishable reachable states are
 merged. Skipping the first step is the most common way to report a ``minimal'' DFA that is not
 minimal.
@@ -11112,7 +11112,7 @@ equivalence.
 \begin{exers}{Exercises.}
 \item For $\Lang=\set{w\in\set{0,1}\kstar\st w\text{ ends in }\str{00}}$, list the
 Myhill--Nerode classes of $\sim_\Lang$ by describing the ``relevant memory'' each one records,
-give a distinguishing suffix for each pair of classes, and draw the minimal DFA. How many states
+give a distinguishing suffix for each pair of classes, and draw the minimal DFA\@. How many states
 does it have?
 
 \item Over $\Sig=\set{0,1}$ let $\Lang=\set{w\st w\text{ contains the substring }\str{101}}$.
@@ -11145,7 +11145,7 @@ pairs, merge the indistinguishable classes, and draw the minimal DFA.
 
 \item A DFA has states $\set{p,q,r}$, start $p$, accept set $\set{r}$, and an unreachable state
 $r$ (no transition from $p$ or $q$ ever enters $r$). A student runs table-filling and reports a
-two-state ``minimal'' DFA. Explain precisely what step was skipped, and give the correct
+two-state ``minimal'' DFA\@. Explain precisely what step was skipped, and give the correct
 minimal machine.
 
 \item Let $\Lang=\set{w\in\set{0,1}\kstar\st \text{the number of }\str1\text{s in }w\text{ is
