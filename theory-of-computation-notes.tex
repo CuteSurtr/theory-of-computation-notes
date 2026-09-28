@@ -33835,7 +33835,7 @@ function; multiply by composing.
 \end{tikzpicture}
 \end{center}
 Write a function on $Q$ as the pair $(\text{image of }q_0,\ \text{image of }q_1)$. Then
-$\rho_b=(q_0,q_1)=\id$ (b fixes both states) and $\rho_a=(q_1,q_0)$ (the swap). Composing:
+$\rho_b=(q_0,q_1)=\id$ ($b$ fixes both states) and $\rho_a=(q_1,q_0)$ (the swap). Composing:
 $\rho_{aa}=\rho_a\rho_a=\id=\rho_\eps$, and every $\rho_w$ depends only on the parity of
 the number of $a$'s. So
 \[
@@ -33964,7 +33964,7 @@ recognizes it, and the transition monoid $T(\dfa)$ (or the syntactic monoid $M(L
 a DFA furnishes such an $M$ -- the invariant displayed is the recognized language $L$
 itself, independent of which recognizer $M$ one chooses.
 
-\begin{wex}{A four-element monoid recognizes $(\str{ab})\kstar$}
+\begin{wex}{A six-element monoid recognizes $(\str{ab})\kstar$}
 Show that the language $L=(\str{ab})\kstar=\set{\eps,\str{ab},\str{abab},\dots}$ over
 $\Sig=\set{a,b}$ is recognized by a small finite monoid, and exhibit $\phi$ and $S$.
 \wrec ``Recognized by a monoid'': by Theorem~\ref{thm:monoidreg@c16} build a DFA, then take
@@ -33986,19 +33986,21 @@ dead state for any violation.
 \end{center}
 Write functions as triples $(p_0\!\mapsto?,\,p_1\!\mapsto?,\,d\!\mapsto?)$. Then
 $\rho_a=(p_1,d,d)$, $\rho_b=(d,p_0,d)$, $\rho_{ab}=(p_0,d,d)$ (do $a$ then $b$:
-$p_0\to p_1\to p_0$, $p_1\to d$, $d\to d$), and $\rho_{ba}=(d,d,d)$ the constant sink.
-Computing all products closes up at four elements:
+$p_0\to p_1\to p_0$, $p_1\to d$, $d\to d$), $\rho_{ba}=(d,p_1,d)$, and
+$\rho_{aa}=\rho_{bb}=(d,d,d)$ the constant sink.
+Computing all products closes up at six elements:
 \[
-  M=\set{\,1=\rho_\eps,\ \alpha=\rho_a,\ \beta=\rho_b,\ z=\rho_{ba}=(d,d,d)\,},
+  M=\set{\,1=\rho_\eps,\ \alpha=\rho_a,\ \beta=\rho_b,\ \alpha\beta=\rho_{ab},\ \beta\alpha=\rho_{ba},\
+  z=\rho_{aa}=(d,d,d)\,},
 \]
-where $z$ is a \emph{zero} ($zx=xz=z$ for all $x$), $\alpha\beta=\rho_{ab}=(p_0,d,d)$, and
-$\beta\alpha=z$. Define $\phi$ by $\phi(a)=\alpha,\ \phi(b)=\beta$ and set
+where $z$ is a \emph{zero} ($zx=xz=z$ for all $x$), $\alpha^2=\beta^2=z$,
+$\alpha\beta\alpha=\alpha$, and $\beta\alpha\beta=\beta$. Define $\phi$ by $\phi(a)=\alpha,\ \phi(b)=\beta$ and set
 $S=\set{1,\ \alpha\beta}$ -- the identity (for $\eps$) and the element $(p_0,d,d)$ that
 fixes the start state. Then $w\in L$ iff $\rho_w(p_0)=p_0$ iff $\rho_w\in S$, so
 $L=\phi^{-1}(S)$.
 \whichrule{Recognition by a monoid is Theorem~\ref{thm:monoidreg@c16} in action: the
 transition monoid of any DFA recognizes the DFA's language, with $S$ the functions sending
-start to an accept state. Here that monoid has just four elements.}
+start to an accept state. Here that monoid has just six elements.}
 \emph{Check.} $\str{abab}$: $\phi(abab)=\alpha\beta\alpha\beta=(\alpha\beta)(\alpha\beta)$;
 since $\alpha\beta=(p_0,d,d)$ fixes $p_0$, its square fixes $p_0$, lands in $S$, accepted.
 And $\str{aba}$: $\phi(aba)=\alpha\beta\alpha$; $\alpha\beta$ fixes $p_0$ then $\alpha$
@@ -34057,11 +34059,11 @@ A language $L$ is regular iff $M(L)$ is finite, in which case $M(L)$ is the smal
 The classical Myhill--Nerode relation $u\sim_L v$ (``$uz\in L\Leftrightarrow vz\in L$ for
 all $z$,'' a \emph{right} congruence) has finitely many classes iff $L$ is regular, and
 those classes are the states of the minimal DFA. The two-sided $\equiv_L$ refines $\sim_L$
-but is itself refined by the conjunction of a left and a right context condition; one
-checks $\equiv_L$ has finitely many classes iff $\sim_L$ does, so finiteness of $M(L)$ is
-equivalent to regularity. Minimality and division: if $\phi\colon\Sigstar\to N$ recognizes
+(take $x=\eps$) but is itself refined by the relation $\rho_u=\rho_v$ on the states of the
+minimal DFA; so $\equiv_L$ has finitely many classes iff $\sim_L$ does, and finiteness of
+$M(L)$ is equivalent to regularity. Minimality and division: if $\phi\colon\Sigstar\to N$ recognizes
 $L=\phi^{-1}(S)$, then $\phi(u)=\phi(v)$ implies $xuy\in L\Leftrightarrow xvy\in L$ for all
-$x,y$ (apply $\phi$ to both and use $\phi^{-1}(S)=L$), so $\phi$ factors through $\eta$;
+$x,y$ (apply $\phi$ to both and use $\phi^{-1}(S)=L$), so $\eta$ factors through $\phi$;
 hence $M(L)$ is a quotient of a submonoid of $N$ -- it ``divides'' $N$ -- and is therefore
 no larger than any recognizer.
 \end{proof}
@@ -34095,7 +34097,7 @@ syntactic monoid \emph{is a group}.
 \whichrule{For a minimal DFA the transition monoid equals the syntactic monoid; a
 mod-$k$ counting language has a cyclic group $\Z/k\Z$ as its syntactic monoid, the
 algebraic signature of genuine counting.}
-\emph{Check.} $\eta(abba)=s^{2}=\id\in S$ (two $a$'s, accepted); $\eta(aba)=s^{3}=s\notin S$
+\emph{Check.} $\eta(abba)=s^{2}=\id\in S$ (two $a$'s, accepted); $\eta(ababa)=s^{3}=s\notin S$
 (three $a$'s, rejected). The group element is literally the parity.
 \end{wex}
 
@@ -34115,7 +34117,7 @@ is a nontrivial group under $M$'s product.
 The equivalence is the reason for the name: $x^n=x^{n+1}$ says the cyclic submonoid
 generated by $x$ eventually becomes constant rather than cycling, so it cannot host a
 nontrivial cyclic group. The group $\Z/2\Z$ fails this ($s^n=s^{n+1}$ would force $s=\id$);
-the sink monoid of Worked Example~16.1.2 passes it ($\rho_a^2=\rho_a^3$, and every element
+the sink monoid of Worked Example~16.1.5 passes it ($\rho_a^2=\rho_a^3$, and every element
 satisfies $x^2=x^3$).
 
 \begin{definition}[Star-free language]\label{def:starfree@c16}
@@ -34127,7 +34129,7 @@ because it is the complement of ``contains a non-$a$ letter,'' but ``even length
 not.)
 \end{definition}
 
-\begin{theorem}[Schutzenberger]\label{thm:schutz@c16}
+\begin{theorem}[Sch\"utzenberger]\label{thm:schutz@c16}
 A regular language $L$ is star-free if and only if its syntactic monoid $M(L)$ is
 aperiodic.
 \end{theorem}
@@ -34140,7 +34142,7 @@ group?), which is decidable: compute $M(L)$, check $x^n=x^{n+1}$.
 
 \begin{wex}{Aperiodic vs.\ non-aperiodic: a star-free language and a counting language}
 Decide which of $L_1=\Sigstar\str a\Sigstar$ (``contains at least one $a$'') and
-$L_2=\set{w\st\abs{w}_a\equiv0\pmod2}$ is star-free, using Schutzenberger's criterion.
+$L_2=\set{w\st\abs{w}_a\equiv0\pmod2}$ is star-free, using Sch\"utzenberger's criterion.
 \wrec ``Star-free or not'': by Theorem~\ref{thm:schutz@c16} compute each syntactic monoid and
 test aperiodicity $x^n=x^{n+1}$. Trigger: ``contains an $a$'' smells star-free (a pattern),
 ``even number of $a$'s'' smells like counting (a group).
@@ -34157,9 +34159,9 @@ test aperiodicity $x^n=x^{n+1}$. Trigger: ``contains an $a$'' smells star-free (
 Functions on $\set{u,v}$: $\rho_\eps=\id=(u,v)$, $\rho_a=(v,v)$, $\rho_b=(u,v)=\id$. So
 $M(L_1)=\set{\id,\,c}$ with $c=(v,v)$ the constant map; $c^2=c$, hence $x^1=x^2$ for every
 element. \emph{Aperiodic} ($n=1$), so $L_1$ is star-free -- indeed
-$L_1=\overline{\,\overline{\Sigstar}\,}$ built as $\Sigstar\cdot\set a\cdot\Sigstar$ using
+$L_1=\Sigstar\cdot\set a\cdot\Sigstar$, built using
 $\Sigstar=\overline{\es}$, no star.
-\emph{$L_2$.} By Worked Example~16.1.5 its syntactic monoid is $\Z/2\Z=\set{\id,s}$ with
+\emph{$L_2$.} By Worked Example~16.1.13 its syntactic monoid is $\Z/2\Z=\set{\id,s}$ with
 $s^2=\id$. Then $s^1=s\ne\id=s^2$, and no $n$ gives $s^n=s^{n+1}$ (the powers cycle
 $s,\id,s,\id,\dots$). \emph{Not aperiodic}, so $L_2$ is \emph{not} star-free.
 \begin{center}
@@ -34170,13 +34172,13 @@ $\begin{array}{l|c|c|c}
  L_2=\text{even \#}a & \Z/2\Z,\ s^2=\id & \text{no} & \text{no}
 \end{array}$
 \end{center}
-\whichrule{Schutzenberger's theorem reduces ``star-free?'' to ``aperiodic syntactic
+\whichrule{Sch\"utzenberger's theorem reduces ``star-free?'' to ``aperiodic syntactic
 monoid?''. A constant-collapsing monoid is aperiodic (pattern-matching, no counting);
 a cyclic group inside the monoid is the obstruction, and modular counting puts one there.}
-\emph{Check.} $L_2$ \emph{cannot} be star-free: any star-free expression is a Boolean
-combination of pattern conditions, and no finite Boolean combination of ``contains
-substring $\sigma$'' conditions can decide parity -- exactly what the live group $\Z/2\Z$
-detects.
+\emph{Check.} Directly from Definition~\ref{def:syncong@c16}: for every $n$, exactly one
+of $a^n$ and $a^{n+1}$ has an even number of $a$'s, so the empty context separates them and
+$a^n\not\equiv_{L_2}a^{n+1}$ -- no power of $[a]$ ever stabilizes, exactly what the live
+group $\Z/2\Z$ detects.
 \end{wex}
 
 \begin{method}{How to build the syntactic monoid from a DFA}
@@ -34193,7 +34195,7 @@ detects.
   $S=\set{\rho_w\st\rho_w(\qstart)\in\Acc}$.
   \item \textbf{Read off structure.} Identify the identity, any zero (constant map), and
   test aperiodicity by checking $x^n=x^{n+1}$ for each element. A nontrivial cyclic block
-  means a group inside, hence (by Schutzenberger) the language is not star-free.
+  means a group inside, hence (by Sch\"utzenberger) the language is not star-free.
 \end{enumerate}
 \end{method}
 
@@ -34206,17 +34208,17 @@ syntactic monoid is illegitimate unless you have checked the element is a unit.
 
 \begin{pitfall}
 The identity element is the image of $\eps$, \emph{not} of any letter, and it must be
-included even when no single letter induces $\id$. In Worked Example~16.1.4 neither
+included even when no single letter induces $\id$. In Worked Example~16.1.8 neither
 $\rho_a$ nor $\rho_b$ equals $\id$, yet $\rho_\eps=\id$ is a genuine element of the monoid
 and lies in $S$ (because $\eps\in L$). Forgetting $\eps\mapsto1$ both miscounts the monoid
 and, when $\eps\in L$, breaks recognition.
 \end{pitfall}
 
 \begin{pitfall}
-Star-free does not mean ``no star in some expression'': it means \emph{some} expression
+Star-free does not mean ``no star in the given expression'': it means \emph{some} expression
 avoids star. And ``aperiodic'' is about the \emph{syntactic} monoid specifically -- the
 transition monoid of a non-minimal DFA can be larger and even contain spurious group
-elements, so always minimize (or pass to $M(L)$) before applying Schutzenberger's test.
+elements, so always minimize (or pass to $M(L)$) before applying Sch\"utzenberger's test.
 \end{pitfall}
 
 \begin{exers}{Exercises.}
@@ -34247,12 +34249,12 @@ subset $S$ with $L=\phi^{-1}(S)$. How many elements does your monoid have?
 \item Let $L=\Sigstar\str{ab}\Sigstar$ (``contains $ab$ as a substring'') over
 $\set{a,b}$. Build a minimal DFA, read off the syntactic monoid as the transition monoid,
 and verify $x^2=x^3$ holds for every element (so $L$ is aperiodic, hence star-free by
-Schutzenberger). Identify the zero element.
+Sch\"utzenberger). Identify the zero element.
 
 \item Compute the syntactic congruence classes of $L=\set{w\in\set a^{*}\st\abs w\equiv0
 \pmod3}$ directly from Definition~\ref{def:syncong@c16} (only the letter $a$ occurs, so
 contexts are powers of $a$). Show there are exactly three classes and that the syntactic
-monoid is $\Z/3\Z$. Is $L$ star-free? Justify with Schutzenberger's theorem.
+monoid is $\Z/3\Z$. Is $L$ star-free? Justify with Sch\"utzenberger's theorem.
 
 \item Prove that the syntactic monoid $M(L)$ recognizes $L$ via $S=\eta(L)$; that is, show
 $\eta^{-1}(\eta(L))=L$ using only the saturation property of $\equiv_L$ from
@@ -34265,8 +34267,8 @@ $\rho_w\rho_{w^{\mathcal R}}\ne\id$, and state the actual reason a transition mo
 fail to be a group.
 
 \item Find the bug. A student computes the transition monoid of the DFA in
-Worked Example~16.1.4 and reports $M=\set{\rho_a,\rho_b,\rho_{ab},\rho_{ba}}$ with four
-elements, concluding it recognizes $(\str{ab})\kstar$ with $S=\set{\rho_{ab}}$. Identify
+Worked Example~16.1.8 and reports $M=\set{\rho_a,\rho_b,\rho_{ab},\rho_{ba},\rho_{aa}}$ with
+five elements, concluding it recognizes $(\str{ab})\kstar$ with $S=\set{\rho_{ab}}$. Identify
 the element they dropped, explain why it must be in the monoid, and say why omitting it
 makes the recognition of $\eps$ wrong.
 
@@ -34283,7 +34285,7 @@ L_2$? Relate this to closure of the regular languages under intersection and uni
 \end{exers}
 
 
-\section{Group Actions and Counting: Burnside and Polya}
+\section{Group Actions and Counting: Burnside and P\'olya}
 Many counting problems in computation ask not ``how many objects'' but ``how many objects
 \emph{up to a symmetry}'' -- how many distinct circuits ignoring a relabeling of wires, how
 many states of a board ignoring rotation, how many colorings of a ring ignoring the rotation
@@ -34528,7 +34530,7 @@ $\begin{array}{c|c|c}
  r^5   & 1 & 2
 \end{array}$
 \end{center}
-The cyclic action on the labeled ring, and the way $r^2$ (which fixes the coloring iff opposite
+The cyclic action on the labeled ring, and the way $r^2$ (which fixes the coloring iff all three
 ``thirds'' agree) breaks the ring into two $3$-cycles:
 \begin{center}
 \begin{tikzpicture}[>={Stealth[length=2mm]}]
@@ -34593,8 +34595,8 @@ The grouping of residues by their gcd with $n$:
     \node[gvlab] (k\k) at (\k,1) {$\k$};
     \node[font=\footnotesize] at (\k,0.05) {$\d$};
   }
-  \node[font=\footnotesize,left] at (-0.2,1) {$k:$};
-  \node[font=\footnotesize,left] at (-0.2,0.05) {$\gcd(k,6):$};
+  \node[font=\footnotesize,left] at (-0.45,1) {$k:$};
+  \node[font=\footnotesize,left] at (-0.45,0.05) {$\gcd(k,6):$};
   \draw[ltedge] (-0.5,0.45) -- (5.7,0.45);
 \end{tikzpicture}
 \end{center}
@@ -34624,19 +34626,22 @@ two; an edge-midpoint reflection swaps both pairs):
 \begin{center}
 \begin{tikzpicture}[>={Stealth[length=1.8mm]}]
   % the square with labeled corners and the four mirror axes
-  \node[gvlab] (c1) at (-1,1) {$1$};
-  \node[gvlab] (c2) at (1,1) {$2$};
-  \node[gvlab] (c3) at (1,-1) {$3$};
-  \node[gvlab] (c4) at (-1,-1) {$4$};
+  \node[gvlab,fill=white] (c1) at (-1,1) {$1$};
+  \node[gvlab,fill=white] (c2) at (1,1) {$2$};
+  \node[gvlab,fill=white] (c3) at (1,-1) {$3$};
+  \node[gvlab,fill=white] (c4) at (-1,-1) {$4$};
   \draw[gedge] (c1)--(c2)--(c3)--(c4)--(c1);
+  \begin{scope}[on background layer]
   % diagonals (vertex reflections)
   \draw[black!55,dashed,line width=0.5pt] (-1.6,1.6)--(1.6,-1.6) node[right,font=\footnotesize]{$d_{13}$};
   \draw[black!55,dashed,line width=0.5pt] (1.6,1.6)--(-1.6,-1.6) node[left,font=\footnotesize]{$d_{24}$};
   % edge-midpoint mirrors
   \draw[black!35,dotted,line width=0.6pt] (0,1.7)--(0,-1.7) node[below,font=\footnotesize]{$v$};
   \draw[black!35,dotted,line width=0.6pt] (-1.7,0)--(1.7,0) node[right,font=\footnotesize]{$h$};
-  \node[font=\footnotesize] at (0,0) {$r$};
-  \draw[->,line width=0.5pt] (0.45,0) arc (0:300:0.45);
+  \end{scope}
+  \node[font=\footnotesize,fill=white,inner sep=1pt] at (0,0) {$r$};
+  % r is the clockwise quarter turn 1->2->3->4->1
+  \draw[->,line width=0.5pt] (0.45,0) arc (0:-300:0.45);
 \end{tikzpicture}
 \end{center}
 \begin{center}
@@ -34649,8 +34654,8 @@ $\begin{array}{l|c|c|c}
  r^3\ (270^\circ)& (1\,4\,3\,2)   & 1 & q\\
  d_{13}          & (1)(3)(2\,4)   & 3 & q^3\\
  d_{24}          & (2)(4)(1\,3)   & 3 & q^3\\
- h               & (1\,2)(3\,4)   & 2 & q^2\\
- v               & (1\,4)(2\,3)   & 2 & q^2
+ h               & (1\,4)(2\,3)   & 2 & q^2\\
+ v               & (1\,2)(3\,4)   & 2 & q^2
 \end{array}$
 \end{center}
 Averaging over the $8$ elements,
@@ -34862,7 +34867,7 @@ then average. Check the result against the formula $\frac14(q^4+q^2+2q)$ at $q=3
 
 \item Count the distinct $2$-color necklaces of length $6$ under the \emph{dihedral} group
 $D_6$ (order $12$), which adds the six reflections to the six rotations of Worked
-Example~\ref{thm:burnside@c16}'s setting. Tabulate the cycle count of each reflection (distinguish
+Example~16.2.10's setting. Tabulate the cycle count of each reflection (distinguish
 the reflections through two opposite beads from those through two opposite edge-midpoints),
 and compare your orbit count to the cyclic answer $14$.
 
@@ -35050,7 +35055,8 @@ $2^{n}-1$ internal nodes, one ``$+1$'' charged at each:
 \whichrule{A first-order linear recurrence with constant coefficients always yields a
 \emph{rational} OGF whose denominator factors into $(1-r_{i}x)$; partial fractions then turn
 each factor $1/(1-r_{i}x)$ into the geometric term $r_{i}^{n}$, so $a_{n}$ is a combination
-of the $r_{i}^{n}$, dominated by the largest $|r_{i}|$.}
+of the $r_{i}^{n}$ (with polynomial coefficients when a factor repeats), dominated by the
+largest $|r_{i}|$.}
 \emph{Check.} $T(0)=2^{0}-1=0$, $T(1)=1$, $T(2)=3$, $T(3)=7$ -- and indeed
 $2\cdot 7+1=15=2^{4}-1=T(4)$. The leading $2^{n}$ flags the algorithm as exponential, the
 hallmark of unmemoized doubling recursion.
@@ -35090,10 +35096,13 @@ naive routine, whose number of leaves is exactly $F_{n+1}$:
   \begin{scope}[xshift=2.0cm,level distance=8mm,treenode,
      level 1/.style={sibling distance=20mm},
      level 2/.style={sibling distance=10mm},
+     level 3/.style={sibling distance=7mm},
      edge from parent/.style={tedge,draw}]
     \node[gvlab] {$4$}
       child {node[gvlab] {$3$}
-        child {node[gvlab] {$2$}}
+        child {node[gvlab] {$2$}
+          child {node[gvlab] {$1$}}
+          child {node[gvlab] {$0$}}}
         child {node[gvlab] {$1$}}}
       child {node[gvlab] {$2$}
         child {node[gvlab] {$1$}}
@@ -35175,41 +35184,46 @@ $n$ and confirm agreement, then draw the objects the number counts.
 and $C_{4}=C_{0}C_{3}+C_{1}C_{2}+C_{2}C_{1}+C_{3}C_{0}=5+2+2+5=14$. The closed form agrees:
 $\tfrac{1}{1}\binom{0}{0}=1$, $\tfrac12\binom21=1$, $\tfrac13\binom42=2$, $\tfrac14\binom63=5$,
 $\tfrac15\binom84=14$. The five shapes counted by $C_{3}$ -- full binary trees with three
-internal nodes, equivalently the five parse trees of a length-three associative product --
+internal nodes, equivalently the five parse trees of a length-four associative product --
 are:
 \begin{center}
 \begin{tikzpicture}[x=1cm,y=1cm,every node/.style={gv,inner sep=1.4pt},tline/.style={tedge}]
   % five small binary-tree silhouettes
   \foreach \dx in {0,2.4,4.8,7.2,9.6}{}
-  % tree 1: left comb
+  % tree 1: left comb ((xx)x)x
   \begin{scope}[shift={(0,0)}]
-    \node (a) at (0.4,1.2){}; \node (b) at (0.0,0.7){}; \node (c) at (-0.1,0.2){};
-    \node (d) at (0.8,0.7){}; \node (e) at (0.3,0.2){};
-    \draw[tedge] (a)--(b) (b)--(c) (a)--(d) (b)--(e);
+    \node (a) at (0.6,1.2){}; \node (b) at (0.25,0.7){}; \node (c) at (0.95,0.7){};
+    \node (d) at (-0.05,0.2){}; \node (e) at (0.55,0.2){};
+    \node (f) at (-0.3,-0.3){}; \node (g) at (0.2,-0.3){};
+    \draw[tedge] (a)--(b) (a)--(c) (b)--(d) (b)--(e) (d)--(f) (d)--(g);
   \end{scope}
-  % tree 2
+  % tree 2: (x(xx))x
   \begin{scope}[shift={(2.4,0)}]
-    \node (a) at (0.4,1.2){}; \node (b) at (0.0,0.7){}; \node (d) at (0.8,0.7){};
-    \node (e) at (0.5,0.2){}; \node (f) at (1.0,0.2){};
-    \draw[tedge] (a)--(b) (a)--(d) (d)--(e) (d)--(f);
+    \node (a) at (0.6,1.2){}; \node (b) at (0.25,0.7){}; \node (c) at (0.95,0.7){};
+    \node (d) at (-0.05,0.2){}; \node (e) at (0.55,0.2){};
+    \node (f) at (0.3,-0.3){}; \node (g) at (0.8,-0.3){};
+    \draw[tedge] (a)--(b) (a)--(c) (b)--(d) (b)--(e) (e)--(f) (e)--(g);
   \end{scope}
-  % tree 3 (balanced)
+  % tree 3 (balanced): (xx)(xx)
   \begin{scope}[shift={(4.8,0)}]
-    \node (a) at (0.4,1.2){}; \node (b) at (0.0,0.7){}; \node (d) at (0.8,0.7){};
-    \node (c) at (-0.3,0.2){}; \node (f) at (1.1,0.2){};
-    \draw[tedge] (a)--(b) (a)--(d) (b)--(c) (d)--(f);
+    \node (a) at (0.5,1.2){}; \node (b) at (0.1,0.7){}; \node (c) at (0.9,0.7){};
+    \node (d) at (-0.15,0.2){}; \node (e) at (0.35,0.2){};
+    \node (f) at (0.65,0.2){}; \node (g) at (1.15,0.2){};
+    \draw[tedge] (a)--(b) (a)--(c) (b)--(d) (b)--(e) (c)--(f) (c)--(g);
   \end{scope}
-  % tree 4
+  % tree 4: x((xx)x)
   \begin{scope}[shift={(7.2,0)}]
-    \node (a) at (0.4,1.2){}; \node (b) at (0.0,0.7){}; \node (d) at (0.8,0.7){};
-    \node (c) at (-0.3,0.2){}; \node (g) at (0.3,0.2){};
-    \draw[tedge] (a)--(b) (a)--(d) (b)--(c) (b)--(g);
+    \node (a) at (0.4,1.2){}; \node (b) at (0.05,0.7){}; \node (c) at (0.75,0.7){};
+    \node (d) at (0.45,0.2){}; \node (e) at (1.05,0.2){};
+    \node (f) at (0.2,-0.3){}; \node (g) at (0.7,-0.3){};
+    \draw[tedge] (a)--(b) (a)--(c) (c)--(d) (c)--(e) (d)--(f) (d)--(g);
   \end{scope}
-  % tree 5: right comb
+  % tree 5: right comb x(x(xx))
   \begin{scope}[shift={(9.6,0)}]
-    \node (a) at (0.0,1.2){}; \node (d) at (0.4,0.7){}; \node (f) at (0.9,0.2){};
-    \node (e) at (0.5,0.2){}; \node (b) at (-0.4,0.7){};
-    \draw[tedge] (a)--(b) (a)--(d) (d)--(e) (d)--(f);
+    \node (a) at (0.4,1.2){}; \node (b) at (0.05,0.7){}; \node (c) at (0.75,0.7){};
+    \node (d) at (0.45,0.2){}; \node (e) at (1.05,0.2){};
+    \node (f) at (0.8,-0.3){}; \node (g) at (1.3,-0.3){};
+    \draw[tedge] (a)--(b) (a)--(c) (c)--(d) (c)--(e) (e)--(f) (e)--(g);
   \end{scope}
 \end{tikzpicture}
 \end{center}
@@ -35270,7 +35284,7 @@ The labelled split that drives the algebra, and the resulting coefficient table,
   \node[procbox] (perm) {permutation};
   \node[procbox,right=of perm] (fix) {fixed-point set};
   \node[procbox,right=of fix] (der) {derangement};
-  \node[font=\footnotesize] at ($(perm)!0.5!(fix)+(0,0.95)$) {$\dfrac{1}{1-x}$};
+  \node[font=\footnotesize] at (perm.north) [above=2pt] {$\dfrac{1}{1-x}$};
   \node[font=\footnotesize] at (fix.north) [above=2pt] {$e^{x}$};
   \node[font=\footnotesize] at (der.north) [above=2pt] {$\widehat{D}(x)$};
   \draw[flow] (perm) -- node[flowlbl]{$=$} (fix);
@@ -35376,7 +35390,7 @@ OGF is $A(x)=\dfrac{1}{1-5x+6x^{2}}$, factor the denominator as $(1-2x)(1-3x)$, 
 partial fractions to prove $a_{n}=A\cdot2^{n}+B\cdot3^{n}$ for constants you determine. Which
 term dominates the growth, and why?
 
-\item The denominator of an OGF need not have distinct roots. For $a_{0}=1,a_{1}=4$ and
+\item The denominator of an OGF need not have distinct roots. For $a_{0}=1,a_{1}=-4$ and
 $a_{n}=4a_{n-1}-4a_{n-2}$ ($n\ge2$), show $A(x)=\dfrac{1-8x}{(1-2x)^{2}}$, and using the
 expansion $\dfrac{1}{(1-2x)^{2}}=\sum_{n\ge0}(n+1)2^{n}x^{n}$ derive a closed form
 $a_{n}=(\alpha+\beta n)2^{n}$. (A repeated root produces a \emph{polynomial} coefficient in
@@ -35396,7 +35410,7 @@ binary trees instead).
 two consecutive $\str1$s. Show $b_{n}=b_{n-1}+b_{n-2}$ with $b_{0}=1,b_{1}=2$, derive the OGF
 $B(x)=\dfrac{1+x}{1-x-x^{2}}$, and explain in one sentence why $b_{n}=F_{n+2}$. (Tie this back
 to the regular language $L=\{\str0,\str1\}^{*}$ minus those containing the substring
-$\str{11}$ and sketch a small DFA recognizing $L$ using the $[fa]$ style.)
+$\str{11}$ and sketch a small DFA recognizing $L$.)
 
 \item Using the EGF $\dfrac{1}{1-x}$ for permutations and the EGF $e^{x}-1$ for a single
 nonempty block, explain why the EGF of set partitions is $e^{\,e^{x}-1}$. Then compute the
@@ -35407,7 +35421,7 @@ and check $B_{4}=15$.
 $2$ (equivalently, permutations with no fixed point). Argue $f_{n}=D_{n}$, the derangement
 number, and using the EGF $\widehat{D}(x)=\dfrac{e^{-x}}{1-x}$ derived in this section,
 extract the formula $D_{n}=n!\sum_{k=0}^{n}(-1)^{k}/k!$ by a Cauchy product. Verify $D_{4}=9$
-by listing three derangements of $\{1,2,3,4\}$ in two-line notation.
+by listing the nine derangements of $\{1,2,3,4\}$ in two-line notation.
 
 \item Find the bug. A student writes: ``The Catalan recurrence is linear, so its OGF is
 rational; hence $C_{n}$ grows like a constant times $r^{n}$ for a single base $r$.'' Identify
@@ -35497,10 +35511,10 @@ $\card{\partial S}/\card{S}=2/3$. No allowed set does better, hence $h(C_6)=2/3$
     \node[gv] (v\i) at ({90-60*\i}:1.15) {};
     \node[gvlbl] at ({90-60*\i}:1.45) {$\i$};}
   \begin{scope}[on background layer]
-    \foreach \i/\j in {0/1,1/2,2/3,3/4,4/5,5/0}{ \draw[gedge] (v\i)--(v\j);}
+    \foreach \i/\j in {0/1,1/2,3/4,4/5}{ \draw[gedge] (v\i)--(v\j);}
     % cut edges across the arc {0,1,2}
-    \draw[gedge,dashed,red!70] (v2)--(v3);
-    \draw[gedge,dashed,red!70] (v5)--(v0);
+    \draw[gedge,dashed] (v2)--(v3);
+    \draw[gedge,dashed] (v5)--(v0);
   \end{scope}
   % closed boundary enclosing the arc S = {0,1,2}; it crosses the two dashed
   % cut edges (5-0 and 2-3) and skirts the right side, well clear of 3,4,5
@@ -35720,7 +35734,7 @@ do give bounded-degree expansion.
 \begin{theorem}[Algebraic expanders exist, stated]\label{thm:cayexp@c16}
 There are explicit constant-size symmetric generating sets making families of Cayley graphs
 into expanders. For instance, on $G_p=\mathrm{SL}_2(\Z_p)$ (invertible $2\times2$ matrices
-of determinant $1$ over $\Z_p$, as $p$ ranges over primes) the three matrices
+of determinant $1$ over $\Z_p$, as $p$ ranges over primes) the two matrices
 \[
   \begin{pmatrix}1&1\\0&1\end{pmatrix},\quad
   \begin{pmatrix}1&0\\1&1\end{pmatrix}\quad\text{and their inverses}
@@ -35752,7 +35766,7 @@ vertex, stepping to a uniformly random neighbor; after $t$ steps the distributio
 $A^t/d^t$ applied to the start. Decomposing the start distribution along the eigenbasis,
 the uniform component (eigenvalue $d$) is preserved while every other component shrinks by
 a factor $\card{\lambda_i}/d\le \lambda/d$ per step, where $\lambda=\max_i|\lambda_i|$ over
-$i\ge2$. So the distance to uniform decays like $(\lambda/d)^t$: a constant spectral gap
+$i\ge2$. So the distance to uniform decays like $(\lambda/d)^t$: a constant gap $d-\lambda$
 forces mixing in $\bigO(\log n)$ steps.
 
 \begin{theorem}[Expander mixing lemma, stated]\label{thm:mixing@c16}
@@ -35810,13 +35824,13 @@ the slow estimate.
 
 \begin{wex}{Error reduction by a walk instead of independent samples}
 A randomized algorithm errs with probability $\le 1/4$ using $r$ random bits. Contrast the
-random bits needed to push error to $2^{-k}$ by (a) independent repetition and (b) an
+random bits needed to push error to $2^{-\bigOmega(k)}$ by (a) independent repetition and (b) an
 expander walk.
 \wrec ``Amplify a one-sided/bounded-error algorithm'': independent trials cost fresh
 randomness each time; an expander walk reuses one long string of correlated samples that,
 by the mixing lemma, behave almost independently.
 \wsol \emph{(a) Independent repetition.} Running the algorithm $k$ times and taking a
-majority vote drops the error below $2^{-k}$, but each run draws a \emph{fresh} block of
+majority vote drops the error to $2^{-\bigOmega(k)}$, but each run draws a \emph{fresh} block of
 $r$ bits, for $k\cdot r$ random bits total.
 \begin{center}
 \begin{tikzpicture}[scale=1.0]
@@ -35892,7 +35906,7 @@ $11$ to $S$ and redraw; what is the new degree and what graph results?
 
 \item For the cycle $C_8$, compute the edge expansion $h(C_8)$ by exhibiting the cheapest
 cut, and compute the spectral gap $d-\lambda_2$ from the circulant eigenvalue formula
-$\lambda_k=2\cos(2\pi k/8)$. Verify that your numbers obey the Cheeger inequality
+$2\cos(2\pi k/8)$, $k=0,\dots,7$. Verify that your numbers obey the Cheeger inequality
 $\tfrac{d-\lambda_2}{2}\le h\le\sqrt{2d(d-\lambda_2)}$.
 
 \item Let $S=\set{v_1,\dots,v_n}$ be a vertex set in a $d$-regular graph with edge boundary
@@ -35926,7 +35940,8 @@ double edge.
 \item Using the expander mixing lemma, show that in a $d$-regular graph on $n$ vertices with
 $\lambda<d/2$, every vertex subset $S$ with $\card S\le n/2$ has at least
 $\tfrac{d}{2}\card S\bigl(1-\tfrac{2\lambda}{d}\bigr)$ edges leaving it. (Apply the lemma
-with $T=\Vset\setminus S$ and bound $e(S,T)$ from below.) Conclude a lower bound on
+with $T=S$, where $e(S,S)$ counts each edge inside $S$ twice, bound $e(S,S)$ from above, and
+use $\card{\partial S}=d\card S-e(S,S)$.) Conclude a lower bound on
 $h(\Gr)$ in terms of $d$ and $\lambda$.
 
 \item Find the bug. A student writes: ``The single graph $\mathrm{Cay}(\Z_2^{10},
@@ -35989,16 +36004,16 @@ The following correspondences hold, each proved in this chapter or in Ch.\ 1--13
 \begin{enumerate}[leftmargin=2.2em,topsep=2pt,itemsep=1pt]
   \item (Algebra $\leftrightarrow$ computation) A language $L\subseteq\Sigstar$ is regular iff
   some finite monoid recognizes it, namely the syntactic monoid $M(L)$
-  (Theorem in \S16.1). The DFA \emph{is} the monoid, re-drawn as a graph on its states.
+  (Theorem~\ref{thm:myhill@c16}). The DFA \emph{is} the monoid, re-drawn as a graph on its states.
   \item (Counting $\leftrightarrow$ existence) If the number of objects with a forbidden
   property is strictly less than the total number of objects, an object \emph{without} the
-  property exists (the probabilistic method, \S16.2). Counting yields existence with no
+  property exists (the probabilistic method, \S16.5). Counting yields existence with no
   construction.
   \item (Graphs $\leftrightarrow$ reductions) An $\classNP$ problem reduces to a graph problem
   by a \emph{gadget}: a fixed finite subgraph encoding one clause or variable, glued into a
   network whose global structure mirrors the formula (Ch.\ 13).
   \item (Expanders $\leftrightarrow$ randomness) A constant-degree expander lets a random walk
-  of length $O(\log n)$ visit a $(1-\delta)$ fraction of vertices, so it stretches few random
+  of length $O(\log n)$ mix to near-uniform, so it stretches few random
   bits into many near-independent samples (\S16.4): the engine of derandomization.
   \item (Generating functions $\leftrightarrow$ analysis) A counting or cost recurrence
   $a_n=\sum_k c_k\,a_{n-k}$ becomes a rational generating function $A(x)=P(x)/Q(x)$, whose
@@ -36012,13 +36027,14 @@ is a genuine biconditional or transfer, not a loose parallel. (1) is the algebra
 Myhill--Nerode theorem, an ``iff''. (2) is the contrapositive of a union bound:
 $\#\{\text{bad}\}<\#\{\text{all}\}$ leaves a good object, since $\#\{\text{good}\}=
 \#\{\text{all}\}-\#\{\text{bad}\}>0$. (3) is the definition of a many-one reduction realized
-in graph form; correctness is the gadget-gluing lemma. (4) is the expander mixing/hitting
+in graph form; correctness is the gadget-gluing argument of Ch.\ 13. (4) is the expander mixing/hitting
 property. (5) is the transfer theorem of analytic combinatorics: a rational $A(x)$ has
-$[x^n]A(x)=\Theta(r^{-n})$ where $r$ is the smallest pole. We assemble, not reprove.
+$\limsup_n\abs{[x^n]A(x)}^{1/n}=1/r$ where $r$ is the smallest modulus of a pole. We assemble,
+not reprove.
 \end{proof}
 
 The next diagram is the chapter in one picture: the three fields as nodes, computation at the
-center, and the five labelled bridges as edges.
+center, and the six labelled bridges as edges.
 
 % REVISION 16R: de-clutter the synthesis concept map -- widen the triangle,
 % push the field corners apart and the center down so the inner spokes do not
@@ -36041,8 +36057,8 @@ center, and the five labelled bridges as edges.
      node[flowlbl,midway] {gadgets};
   % outer bridges (field -> field), bent wide to skirt the center box
   \draw[flow,<->] (alg) to[bend right=32] node[flowlbl,midway] {Cayley graph} (graph);
-  \draw[flow,<->] (comb) to[bend left=32] node[flowlbl,midway] {orbit counting} (graph);
-  \draw[flow,<->] (alg) to[bend left=20] node[flowlbl,midway,fill=white] {group $\to$ monoid} (comb);
+  \draw[flow,<->] (comb) to[bend left=32] node[flowlbl,midway] {walk counting} (graph);
+  \draw[flow,<->] (alg) to[bend left=20] node[flowlbl,midway,fill=white] {orbit counting} (comb);
 \end{tikzpicture}
 \end{center}
 
@@ -36050,8 +36066,8 @@ center, and the five labelled bridges as edges.
 Read the inner three edges (field-to-center) as ``what each field contributes to a
 computation,'' and the outer three (field-to-field) as ``how the fields translate into each
 other.'' A Cayley graph turns a \emph{group} into a \emph{graph} (\S16.4); orbit counting
-turns a group \emph{action} into a \emph{count} (\S16.2); the transition monoid turns an
-\emph{automaton} into an \emph{algebra} (\S16.1). The triangle commutes: every path from one
+turns a group \emph{action} into a \emph{count} (\S16.2); walk counting turns an automaton's
+\emph{graph} into a \emph{count} (Worked Example~16.5.5). The triangle commutes: every path from one
 corner to another lands on the same computational object.
 \end{remark}
 
@@ -36152,7 +36168,7 @@ geometry of the cube roots: summing $(1+\zeta)^n$ over the three roots $\zeta\in
 For the
 generating function, a string is a sequence of letters and we weight each $a$ by a marker;
 collapsing to lengths and keeping only $\abs w_a\equiv0$ gives a rational function. Directly:
-since $L$ is recognized by the $3$-state DFA above, transfer-matrix counting (\S16.3) yields
+since $L$ is recognized by the $3$-state DFA above, transfer-matrix counting (Lens 3 below) yields
 \[
   \Lang(x)=\sum_{n\ge0}\ell_n x^n=\frac{(1-x)^2}{(1-2x)\,(1-x+x^2)},
 \]
@@ -36180,7 +36196,7 @@ $\tfrac13(16+2\cos\tfrac{4\pi}3)=\tfrac13(16-1)=5$, matching the table.
 Re-read the same $L$ as a directed graph and express $\ell_n$ as a count of walks, recovering
 the cube-root-of-unity spectrum from the graph's eigenvalues.
 \wrec The trigger is ``count accepted strings'' $=$ ``count length-$n$ walks from start to an
-accept state.'' This is the transfer-matrix method (\S16.3) viewed graph-theoretically
+accept state.'' This is the transfer-matrix method viewed graph-theoretically
 (\S16.4): the automaton is a digraph, and $\ell_n=(A^n)_{\text{start},\text{accept-sum}}$ for
 the labelled adjacency matrix $A$.
 \wsol Treat the $3$-state DFA as a digraph on $\set{r_0,r_1,r_2}$; each state has a $b$-self-loop
@@ -36219,18 +36235,19 @@ decomposition gives back
 identical to Lens 2's closed form.
 \whichrule{An automaton is a labelled digraph; counting accepted strings is counting walks,
 which is powering the adjacency matrix, whose \emph{eigenvalues} are exactly the poles'
-reciprocals of the generating function and the eigenvalues of the group element from Lens 1.
+reciprocals of the generating function and, shifted by $1$, the eigenvalues of the group
+element from Lens 1.
 The same $\Z/3\Z$ shows up as a cyclic permutation matrix.}
 \emph{Check.} $A^1$ has $(A)_{00}=1$ (the single $b$-loop word of length $1$ that stays at
 $r_0$), matching $\ell_1=1$. $A^3$: direct multiplication gives $(A^3)_{00}=2$, matching
-$\ell_3=2$ from Lens 2's corrected count.
+$\ell_3=2$ from Lens 2's count.
 \end{wex}
 
 The three lenses are not three theories; they are one. The group $\Z/3\Z$ (algebra), the
 root-of-unity filter and the rational generating function (combinatorics), and the cyclic
 permutation matrix $C$ with its cube-root spectrum (graph) are the same structure photographed
 from three angles. The slogan of Definition~\ref{def:pillars@c16} is exactly this coincidence:
-finite structure ($\Z/3\Z$), finite description (a $3$-state machine / a $2\times$rational GF /
+finite structure ($\Z/3\Z$), finite description (a $3$-state machine / a rational GF /
 a $3\times3$ matrix), computation (run the DFA / extract a coefficient / power the matrix), and
 counting ($\ell_n$).
 
@@ -36271,14 +36288,14 @@ even state) and the homomorphism sends both to $\phi=0\in\Z/2$, the accepting cl
 \emph{Takeaway.} One language, three lenses: $L=\set{\text{even number of }a\text{'s}}$ is the
 homomorphism $\Sigstar\to\Z/2$ with $a\mapsto1,\ b\mapsto0$ and accepting class $0$
 (algebra), the two-state parity DFA (computation), and the generating-function count
-$\ell_n=2^{n-1}$, $\Lang(x)=(1-x)/(1-2x)$ (combinatorics) -- finite structure $+$ finite
+$\ell_n=2^{n-1}$ ($n\ge1$), $\Lang(x)=(1-x)/(1-2x)$ (combinatorics) -- finite structure $+$ finite
 description $+$ counting, the same regular object photographed three ways. The invariant is
 $L$ at the hub; the three rim descriptions are interchangeable presentations of it.
 
 \subsection*{Counting forces existence: a Ramsey lower bound}
 
 The second face of the synthesis is that \emph{counting alone can prove a combinatorial object
-exists}, even one no algorithm can build efficiently. We prove the classical probabilistic
+exists}, even one no known algorithm can build efficiently. We prove the classical probabilistic
 lower bound on the diagonal Ramsey number, an existence theorem with no construction.
 
 \begin{definition}[Ramsey number]\label{def:ramsey@c16}
@@ -36288,7 +36305,7 @@ color). Equivalently, every graph on $R(k,k)$ vertices contains a clique \emph{o
 independent set of size $k$.
 \end{definition}
 
-\begin{theorem}[Erdos: $R(k,k)>2^{k/2}$]\label{thm:ramsey@c16}
+\begin{theorem}[Erd\H{o}s: $R(k,k)>2^{k/2}$]\label{thm:ramsey@c16}
 For every $k\ge3$, $R(k,k)>2^{k/2}$. That is, there exists a $2$-coloring of the edges of
 $K_N$ with $N=\lfloor 2^{k/2}\rfloor$ having \emph{no} monochromatic $K_k$.
 \end{theorem}
@@ -36324,7 +36341,7 @@ therefore exists, and $N=\lfloor2^{k/2}\rfloor<R(k,k)$.
     \node[gv] (v\i) at ({90-60*\i}:1.5cm) {};
   }
   \begin{scope}[on background layer]
-    % a scattering of the two colors; no monochromatic triangle drawn here
+    % a scattering of the two colors (as R(3,3)=6 forces, {1,3,5} solid and {0,2,4} dashed are monochromatic triangles)
     \draw[gedge] (v0)--(v1);
     \draw[gedge,dashed] (v1)--(v2);
     \draw[gedge] (v2)--(v3);
@@ -36412,7 +36429,7 @@ always $\ge1$ the mean would be $\ge1$. Contradiction, so some coloring has coun
   \item \textbf{Need to derandomize a probabilistic algorithm?} Use the \emph{expander} lens:
   replace independent samples by an expander walk to recycle randomness (\S16.4).
   \item \textbf{Cross-check.} A good answer survives translation: the same growth rate should
-  appear as a monoid size, a pole, and an eigenvalue. Disagreement signals an error in one
+  appear as a reciprocal pole and as an eigenvalue. Disagreement signals an error in one
   lens.
 \end{enumerate}
 \end{method}
@@ -36451,16 +36468,17 @@ that every feature of one side survives to the other.
 lenses of this section: (a) draw the minimal DFA and identify its syntactic monoid as a known
 group; (b) write the closed form for $\ell_n=\card{L\cap\Sig^n}$ using a root-of-unity filter
 with a fourth root of unity; (c) write the labelled transfer matrix $A$, state its eigenvalues,
-and confirm they are the reciprocals of the poles of your generating function.
+and confirm that the nonzero ones are the reciprocals of the poles of your generating function.
 
 \item For the language $K=\set{w\in\set{a,b}^{*}\st\abs w_b\equiv1\pmod2}$ (odd number of
-$b$'s), build the syntactic monoid and decide, using Schutzenberger's criterion from \S16.1,
+$b$'s), build the syntactic monoid and decide, using Sch\"utzenberger's criterion from \S16.1,
 whether $K$ is star-free. Then give the rational generating function for $\card{K\cap\Sig^n}$
 and check the two answers describe the same growth.
 
 \item Use the first-moment method to prove: for $n$ large enough, there is a tournament (a
 complete graph with each edge oriented one way) on $n$ vertices in which no set of $\lceil
-2\log_2 n\rceil+1$ vertices is ``dominated'' by a single other vertex. Set up the random
+2\log_2 n\rceil+1$ vertices is \emph{transitive} (ordered so that each vertex beats every later
+one). Set up the random
 orientation, name the bad event, bound its expected count, and conclude existence. State clearly
 where the bound $\Pr[\text{bad}]<1$ is used.
 
@@ -36469,7 +36487,7 @@ the binary necklaces of length $6$ up to rotation. Label the three corners (whic
 which count you extract, which graph/orbit structure appears) and the bridge you cross from
 ``group action'' to ``count'' (name the lemma from \S16.2).
 
-\item Let $A$ be the $3\times3$ transfer matrix of Worked Example for Lens 3. Compute $A^2$ and
+\item Let $A$ be the $3\times3$ transfer matrix of Worked Example~16.5.5 (Lens 3). Compute $A^2$ and
 $A^3$ by hand, read off $(A^2)_{00}$ and $(A^3)_{00}$, and verify they equal $\ell_2$ and
 $\ell_3$ from the table. Then explain in one sentence why $(A^n)_{00}$ counts exactly the
 length-$n$ words of $L$.
@@ -36487,9 +36505,10 @@ exhibit the gadget, not to reprove the reduction.)
 
 \item Two languages over $\set{a,b}$ have syntactic monoids $M_1=\Z/2\Z$ and $M_2=\set{1,c}$
 with $c^2=c$. For each, decide (i) whether the language is star-free, and (ii) whether the
-length-counting sequence $\ell_n$ oscillates or grows monotonically toward $2^n/|M|$. Explain how
-the presence or absence of a nontrivial group inside the monoid is visible in the
-\emph{counting} lens, not just the algebra lens.
+length-counting sequence $\ell_n$ is determined by the monoid alone. (Compare
+$\set{w\st\abs w\text{ even}}$ with $\set{w\st\abs w_a\text{ even}}$, which both have
+syntactic monoid $\Z/2\Z$.) Is the presence of a nontrivial group inside the monoid always
+visible in the \emph{counting} lens?
 
 \item Find the bug. A student argues: ``Theorem~\ref{thm:ramsey@c16} gives a two-coloring of $K_N$
 with no monochromatic $K_k$ for $N=\lfloor2^{k/2}\rfloor$, so the algorithm `output a uniformly
