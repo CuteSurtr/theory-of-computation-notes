@@ -2259,7 +2259,7 @@ So $P(T)$ holds, and Theorem~\ref{thm:struct@c1} gives the claim for all full bi
 \begin{tikzpicture}[treenode,level distance=10mm,
    level/.style={sibling distance=30mm/#1},edge from parent/.style={tedge,draw}]
   \node[circle,draw,inner sep=1.5pt] {}
-    child {node[circle,draw,inner sep=1.5pt] {}
+    child {node[circle,draw=black,thin,inner sep=1.5pt] {}
       child {node[draw=black,thin,rectangle,inner sep=2pt] {\scriptsize leaf}}
       child {node[draw=black,thin,rectangle,inner sep=2pt] {\scriptsize leaf}}}
     child {node[draw=black,thin,rectangle,inner sep=2pt] {\scriptsize leaf}};
@@ -6269,8 +6269,8 @@ The decomposition that produces the convolution is the structural content of the
    level 1/.style={sibling distance=26mm},
    edge from parent/.style={tedge,draw}]
  \node[circle,draw,line width=0.6pt,minimum size=8mm,inner sep=1pt] {root}
-   child {node[draw,rounded corners,line width=0.6pt,inner sep=3pt,align=center] {left subtree\\$i$ internal}}
-   child {node[draw,rounded corners,line width=0.6pt,inner sep=3pt,align=center] {right subtree\\$n{-}1{-}i$ internal}};
+   child {node[draw=black,rounded corners,line width=0.6pt,inner sep=3pt,align=center] {left subtree\\$i$ internal}}
+   child {node[draw=black,rounded corners,line width=0.6pt,inner sep=3pt,align=center] {right subtree\\$n{-}1{-}i$ internal}};
  \node[font=\footnotesize,align=left,anchor=west] at (2.7,-0.5)
    {$\displaystyle C_n=\sum_{i=0}^{n-1}C_i\,C_{n-1-i}$};
 \end{tikzpicture}
@@ -16405,7 +16405,7 @@ Picture the tree -- each node a configuration, each downward edge one nondetermi
       child {node {$C_4{:}\,q_c$}}}
     child {node {$C_2\,{=}\,q_a'\dot w_2$}
       child {node {$\vdots$}}
-      child {node[draw,rounded corners,inner sep=2pt] {$q_{\mathrm{acc}}$ accept}}};
+      child {node[draw=black,thin,rounded corners,inner sep=2pt] {$q_{\mathrm{acc}}$ accept}}};
   \node[font=\footnotesize,align=left,anchor=west] at (2.6,-0.2)
     {each node $C_i$ = (state,\\ tape, head); root $C_0$\\ is the start config $q_0\dot w_1$;\\
      branching = $\trans$'s choices;\\ one accepting leaf $\Rightarrow$ accept.};
@@ -16500,7 +16500,7 @@ one step.
       child {node {$L_2$}
         child {node {$L_3$}
           child {node {$\vdots$ (infinite)}}}}}
-    child {node[draw,rounded corners,inner sep=2pt] {accept}};
+    child {node[draw=black,thin,rounded corners,inner sep=2pt] {accept}};
 \end{tikzpicture}
 \end{center}
 Depth-first search follows the leftmost child first: it walks $C_0\to L_1\to L_2\to L_3\to\cdots$
