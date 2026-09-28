@@ -28832,7 +28832,7 @@ and whose used length is the quantity we charge.
   \node[headlbl,below=4mm of WK-1-2] (hw) {work head};
   \draw[head] (hw.north) -- (WK-1-2.south);
   \draw[decorate,decoration={brace,amplitude=4pt},line width=0.6pt]
-    (WK-1-1.south west) -- (WK-1-3.south east) node[midway,below=5pt,font=\footnotesize] {charged: $3$ cells};
+    (WK-1-1.north west) -- (WK-1-3.north east) node[midway,above=5pt,font=\footnotesize] {charged: $3$ cells};
 \end{tikzpicture}
 \end{center}
 
@@ -28898,8 +28898,8 @@ $2^{m}$ of them like a binary odometer, evaluating $\varphi$ after each:
   \path (s) edge node{$a:=0^{m}$} (set)
         (set) edge node{} (ev)
         (ev) edge node{$\varphi(a)=1$} (acc)
-        (ev) edge node[swap]{$\varphi(a)=0$} (inc)
-        (inc) edge[bend left=18] node[swap]{next $a$} (ev)
+        (ev) edge node{$\varphi(a)=0$} (inc)
+        (inc) edge[bend left=18] node{next $a$} (ev)
         (inc) edge[loop below] node{$a=1^{m}$: reject} (inc);
 \end{tikzpicture}
 \end{center}
@@ -28910,7 +28910,7 @@ giving $\SAT\in\SPACE(n)$.
 \whichrule{Space is the \emph{maximum simultaneous} usage, not the sum over iterations: an
 exponential search reusing one $\bigO(n)$-cell slot costs $\bigO(n)$ space.}
 \emph{Check.} For $\varphi=(x_{1}\vee x_{2})\wedge(\overline{x_{1}}\vee x_{3})$, the odometer
-runs $a=000,001,\dots,111$; it stops and accepts at $a=101$ ($x_{1}{=}1,x_{2}{=}0,x_{3}{=}1$),
+runs $a=000,001,\dots,111$; it stops and accepts at $a=010$ ($x_{1}{=}0,x_{2}{=}1,x_{3}{=}0$),
 having ever stored just one $3$-bit string.
 \end{wex}
 
@@ -28928,8 +28928,8 @@ $c_{\mathrm{accept}}$ within $t$ steps'' may take $t=2^{d'f(n)}=n^{\bigO(1)}$.
 \begin{center}
 \begin{tikzpicture}
   \node[procbox] (cnt) {$c\,n\,f(n)\,g^{f(n)}$};
-  \node[procbox,right=14mm of cnt] (exp) {$2^{\bigO(f(n))}$};
-  \node[procbox,right=14mm of exp] (t) {$t=2^{\bigO(f(n))}$};
+  \node[procbox,right=24mm of cnt] (exp) {$2^{\bigO(f(n))}$};
+  \node[procbox,right=24mm of exp] (t) {$t=2^{\bigO(f(n))}$};
   \draw[flow] (cnt) -- node[flowlbl]{collect logs} (exp);
   \draw[flow] (exp) -- node[flowlbl]{time horizon} (t);
 \end{tikzpicture}
@@ -28974,8 +28974,10 @@ so $t_{0}=2^{df(n)}$ upper-bounds the steps of any branch. We solve yieldability
 The simulator $M$ outputs \textsc{Canyield}$(c_{\mathrm{start}},c_{\mathrm{accept}},t_{0})$.
 
 \emph{Correctness.} $N$ accepts $w$ iff some branch reaches $c_{\mathrm{accept}}$ from
-$c_{\mathrm{start}}$ in $\le t_{0}$ steps. A path of length $\le t$ from $c_{1}$ to $c_{2}$
-exists iff there is a midpoint $c_{m}$ with paths of length $\le\lceil t/2\rceil$ on each side;
+$c_{\mathrm{start}}$ in $\le t_{0}$ steps. Taking $t_{0}$ to be a power of $2$ (round $df(n)$ up to
+an integer), every $t>1$ that arises is a power of $2$, so $\lceil t/2\rceil=t/2$, and a path of
+length $\le t$ from $c_{1}$ to $c_{2}$
+exists iff there is a midpoint $c_{m}$ with paths of length $\le t/2$ on each side;
 the base case $t=1$ is decided directly. So \textsc{Canyield} returns exactly the yieldability
 answer, and $M$ accepts iff $N$ does.
 
@@ -29091,14 +29093,14 @@ while tracking the active-state set. What deterministic space bound does Savitch
 and why does this put $\Lang$ in $\PSPACE$?
 \wrec The trigger ``convert nondeterministic space to deterministic space'' is precisely
 Theorem~\ref{thm:savitch@c14}: feed $f(n)$ in, read $f(n)^{2}$ out.
-\wsol With $f(n)=n$, Savitch gives $\Lang\in\SPACE(n^{2})$. Tracking which subset of an
+\wsol With $f(n)=n$, Savitch gives $\Lang\in\SPACE(n^{2})$. Tracking which subset of a
 $q$-state NFA is active needs $q\le n$ marker bits, and the guessed symbol plus a step counter
 add $\bigO(n)$ more -- nondeterministic linear space. Determinizing by midpoint recursion
 squares it to $\bigO(n^{2})$:
 \begin{center}
 \begin{tikzpicture}
   \node[procbox] (n) {$\NSPACE(n)$};
-  \node[procbox,right=18mm of n] (s) {$\SPACE(n^{2})$};
+  \node[procbox,right=30mm of n] (s) {$\SPACE(n^{2})$};
   \node[procbox,right=18mm of s] (p) {$\PSPACE$};
   \draw[flow] (n) -- node[flowlbl]{Savitch: $f\mapsto f^{2}$} (s);
   \draw[flow] (s) -- node[flowlbl]{$n^{2}$ poly} (p);
@@ -29349,7 +29351,7 @@ quantifiers lifts the complete problem from $\classNP$ ($\SAT$) up to $\PSPACE$
 (alternation-free) $\mathit{TQBF}$; allowing $\forall$ yields the full,
 $\PSPACE$-complete $\mathit{TQBF}$ -- these being the complete problems for the two classes.
 
-\begin{wex}{Order of quantifiers changes the truth value}
+\begin{wex}{Order of quantifiers changes the truth value}\label{wex:quantorder@c14}
 Decide the truth of $\phi=\forall x\,\exists y\,[(x\vee y)\wedge(\neg x\vee\neg y)]$ and of
 the swapped sentence $\phi'=\exists y\,\forall x\,[(x\vee y)\wedge(\neg x\vee\neg y)]$.
 \wrec The matrix $(x\vee y)\wedge(\neg x\vee\neg y)$ is exactly ``$x\ne y$'' (XOR). The
@@ -29409,10 +29411,11 @@ $T(\phi)$: \\
 \end{tabular}
 \end{center}
 Correctness is the definition of the quantifiers. For space: the recursion depth equals the
-number $m$ of variables, and each frame stores one substituted value plus a pointer into
-$\enc{\phi}$, i.e.\ $\bigO(\abs{\enc{\phi}})$ bits. Crucially, the two recursive calls run
+number $m$ of variables, and each frame stores just one substituted value (a single bit),
+while evaluating the quantifier-free matrix at a leaf takes $\bigO(\abs{\enc{\phi}})$ further
+cells. Crucially, the two recursive calls run
 \emph{sequentially} and reuse the same work cells, so the total space is depth $\times$
-frame $=\bigO(m\cdot\abs{\enc{\phi}})$, polynomial (indeed linear) in the input.
+frame $+$ evaluation $=\bigO(m+\abs{\enc{\phi}})$, polynomial (indeed linear) in the input.
 The picture is a depth-first walk of the quantifier tree, never holding more than one
 root-to-leaf path:
 \begin{center}
@@ -29590,8 +29593,8 @@ $S(h)=\bigO(n\cdot n)=\bigO(n^{2})$ -- polynomial.
 \begin{tikzpicture}[x=1cm,y=0.6cm]
   \draw[->,line width=0.7pt] (0,0)--(6.4,0) node[right,font=\small]{$n$};
   \draw[->,line width=0.7pt] (0,0)--(0,4.4) node[above,font=\small]{size};
-  \draw[line width=1pt] plot[domain=0.3:6,samples=40] (\x,{0.12*\x*\x});
-  \node[fill=white,inner sep=1pt,font=\footnotesize] at (5.3,3.6) {folded $\sim n^{2}$};
+  \draw[line width=1pt] plot[domain=0.3:6,samples=40] (\x,{ln(1+\x)});
+  \node[fill=white,inner sep=1pt,font=\footnotesize] at (5.2,2.5) {folded $\sim n^{2}$};
   \draw[line width=1pt,dashed] plot[domain=0:4.2,samples=2] (\x,{0.95*\x});
   \node[fill=white,inner sep=1pt,font=\footnotesize] at (4.0,4.1) {unrolled $\sim 2^{n}$};
   \node[font=\footnotesize] at (3.1,-0.6) {(vertical axis log-compressed)};
@@ -29628,7 +29631,7 @@ x_m\,[\psi]$.
 But the reduction goes \emph{one way}. $\SAT$ is $\classNP$-complete and $\mathit{TQBF}$ is
 $\PSPACE$-complete; a reduction $\mathit{TQBF}\redp\SAT$ would put $\PSPACE\subseteq\classNP$,
 which is not believed. The expressive jump is the $\forall$ quantifier and the alternation
-of Worked Example with $\phi$ vs.\ $\phi'$: those cannot be flattened into a single
+of Worked Example~\ref{wex:quantorder@c14} ($\phi$ vs.\ $\phi'$): those cannot be flattened into a single
 existential search.
 \whichrule{$\SAT$ is the one-quantifier-type fragment of $\mathit{TQBF}$; the leap to full
 $\PSPACE$-hardness comes precisely from \emph{alternating} $\exists$ and $\forall$, which
@@ -29664,7 +29667,7 @@ Using only the existential midpoint, $\phi_{c_1,c_2,t}=\exists m\,[\phi_{c_1,m,t
 formula at every level, so after $\log h$ levels the size is $\sim h=2^{\bigO(n^{k})}$ and
 the ``reduction'' cannot finish in polynomial time. The universal quantifier is not a
 cosmetic rewrite -- it is the device that collapses the two halves into one copy, turning a
-doubling recurrence $S(t)=2S(t/2)+\bigO(1)$ into an additive one $S(t)=S(t/2)+\bigO(n^{k})$.
+doubling recurrence $S(t)=2S(t/2)+\bigO(n^{k})$ into an additive one $S(t)=S(t/2)+\bigO(n^{k})$.
 \end{pitfall}
 
 \begin{pitfall}
@@ -29832,32 +29835,30 @@ the eight leaves; then propagate $\max$ up through E-levels and $\min$ up throug
    lv/.style={font=\footnotesize,fill=white,inner sep=1pt}]
   \node[gv,label=left:{\footnotesize $\exists$ (E): max}] {}
     child {node[gv,label=left:{\scriptsize $\forall$:min}] {}
-      child {node[gv] {} child {node[gv,label=below:{\scriptsize $0$}] {}} child {node[gv,label=below:{\scriptsize $1$}] {}} }
       child {node[gv] {} child {node[gv,label=below:{\scriptsize $0$}] {}} child {node[gv,label=below:{\scriptsize $0$}] {}} }
+      child {node[gv] {} child {node[gv,label=below:{\scriptsize $0$}] {}} child {node[gv,label=below:{\scriptsize $1$}] {}} }
       edge from parent node[lv,left] {$x_1{=}0$} }
     child {node[gv,label=right:{\scriptsize $\forall$:min}] {}
       child {node[gv] {} child {node[gv,label=below:{\scriptsize $1$}] {}} child {node[gv,label=below:{\scriptsize $0$}] {}} }
-      child {node[gv] {} child {node[gv,label=below:{\scriptsize $1$}] {}} child {node[gv,label=below:{\scriptsize $0$}] {}} }
+      child {node[gv] {} child {node[gv,label=below:{\scriptsize $0$}] {}} child {node[gv,label=below:{\scriptsize $0$}] {}} }
       edge from parent node[lv,right] {$x_1{=}1$} };
   \node[font=\footnotesize] at (0,-4.6) {leaves show $\psi$; $x_2$ branches left$=0$/right$=1$, then $x_3$ left$=0$/right$=1$};
 \end{tikzpicture}
 \end{center}
 Read the leaves left to right as $(x_1,x_2,x_3)$. Under $x_1=0$: the $x_2=0$ subtree has leaves
-$\psi(0,0,0)=0,\ \psi(0,0,1)=1$ (max $=1$), and the $x_2=1$ subtree has $\psi(0,1,0)=0,\
-\psi(0,1,1)=0$ (max $=0$); Player A then takes the min over $x_2$, getting $\min(1,0)=0$. Under
+$\psi(0,0,0)=0,\ \psi(0,0,1)=0$ (max $=0$), and the $x_2=1$ subtree has $\psi(0,1,0)=0,\
+\psi(0,1,1)=1$ (max $=1$); Player A then takes the min over $x_2$, getting $\min(0,1)=0$. Under
 $x_1=1$: the $x_2=0$ subtree has $\psi(1,0,0)=1,\ \psi(1,0,1)=0$ (max $=1$), and the $x_2=1$
-subtree has $\psi(1,1,0)=1,\ \psi(1,1,1)=0$ (max $=1$); Player A's min is $\min(1,1)=1$. Finally
-Player E takes $\max(0,1)=1$, so \emph{Player E wins}, by opening $x_1=1$. Her strategy: play
-$x_1=1$; whatever Player A picks for $x_2$, answer $x_3=0$.
+subtree has $\psi(1,1,0)=0,\ \psi(1,1,1)=0$ (max $=0$); Player A's min is $\min(1,0)=0$. Finally
+Player E takes $\max(0,0)=0$, so Player E has no winning strategy: \emph{Player A wins}. His
+strategy: whatever Player E opens with, answer $x_2=x_1$.
 \whichrule{An $\exists\forall\exists$ formula is a game tree; minimax with $\exists=\max$ and
 $\forall=\min$ returns $1$ at the root exactly when the formula is true, and the maximizing child
 at each E-node is Player E's move.}
-\emph{Check.} With $x_1=1,x_3=0$ the clause $(\overline{x_1}\vee\overline{x_3})=(0\vee 1)=1$;
-$(x_1\vee x_2)=1$; and $(\overline{x_2}\vee x_3)=(\overline{x_2}\vee 0)=\overline{x_2}$, but
-note we must also check $x_2=1$: then $(\overline{x_2}\vee x_3)=0$. So $x_3=0$ fails when
-$x_2=1$ -- recompute: Player E should answer $x_3=\overline{x_2}$. Re-reading the leaves, the
-winning answers are $\psi(1,0,1)$? No: from the tree the winning leaves under $x_1=1$ are
-$\psi(1,0,0)=1$ and $\psi(1,1,0)=1$, so $x_3=0$ wins in both, confirming root value $1$.
+\emph{Check.} If $x_1=0$, the clause $(x_1\vee x_2)$ needs $x_2=1$, so Player A answers $x_2=0$
+and wins. If $x_1=1$, the clause $(\overline{x_1}\vee\overline{x_3})$ forces $x_3=0$, and then
+$(\overline{x_2}\vee x_3)$ needs $x_2=0$, so Player A answers $x_2=1$ and wins. Either way
+$\varphi$ is false, confirming root value $0$.
 \end{wex}
 
 \begin{wex}{The order of quantifiers decides the winner}
@@ -29889,7 +29890,7 @@ copies: set $y=x$, making $x=y$ true. Player E wins for every $x$, so $\varphi$ 
 Each E-node has a $1$-child, so both E-nodes return $1$, and Player A's $\min(1,1)=1$: the root is
 $1$, Player E wins. In $\varphi'$ Player E moves first (fixes $y$), then Player A picks $x$. Once
 $y$ is fixed Player A sets $x=\overline{y}$, making $x=y$ false. So whichever $y$ Player E commits
-to, Player A breaks it: the root is $\min$ over A of a constant-losing position, value $0$, Player
+to, Player A breaks it: each A-node has $\min=0$, so the root (an E-node) is $\max(0,0)=0$, Player
 A wins. Swapping the two quantifiers turned a Player-E win into a Player-A win.
 \whichrule{Whose turn it is encodes the quantifier, and the move order is the quantifier order;
 moving \emph{second} on the matched variable is a decisive advantage, which is why
@@ -29959,8 +29960,8 @@ encodes $x_i=\mathrm{TRUE}$, the right branch $x_i=\mathrm{FALSE}$.
   \node[gv,label=above:{$t_i$}] (t) at (0,0) {};
   \node[gv,label=left:{$\ell_i$ (T)}] (l) at (-1.1,-1.1) {};
   \node[gv,label=right:{$r_i$ (F)}] (r) at (1.1,-1.1) {};
-  \node[gv,label=below:{$h_i$}] (h) at (0,-2.2) {};
-  \node[gv,label=above:{$t_{i+1}$}] (tn) at (0,-3.3) {};
+  \node[gv,label=below right:{$h_i$}] (h) at (0,-2.2) {};
+  \node[gv,label=below:{$t_{i+1}$}] (tn) at (0,-3.3) {};
   \begin{scope}[on background layer]
     \draw[gedge,->] (t)--(l);
     \draw[gedge,->] (t)--(r);
@@ -29987,9 +29988,9 @@ $\overline{x_i}$ has an edge into $r_i$ (the FALSE side). Crucially these target
   \node[gv,label=above:{$c$}] (c) at (0,0) {};
   \node[gv,label=left:{$C_1$}] (c1) at (-1.6,-1.1) {};
   \node[gv,label=right:{$C_2$}] (c2) at (1.6,-1.1) {};
-  \node[gv,label=below:{lit $x_1$}] (L1) at (-2.6,-2.3) {};
-  \node[gv,label=below:{lit $\overline{x_2}$}] (L2) at (-0.6,-2.3) {};
-  \node[gv,label=below:{lit $x_2$}] (L3) at (1.6,-2.3) {};
+  \node[gv,label=below right:{lit $x_1$}] (L1) at (-2.6,-2.3) {};
+  \node[gv,label=below left:{lit $\overline{x_2}$}] (L2) at (-0.6,-2.3) {};
+  \node[gv,label=left:{lit $x_2$}] (L3) at (1.6,-2.3) {};
   \node[gv,draw,fill=none,label=right:{$\ell_1$}] (ell1) at (-3.2,-3.6) {};
   \node[gv,draw,fill=none,label=left:{$r_2$}] (r2) at (-0.2,-3.6) {};
   \node[gv,draw,fill=none,label=right:{$\ell_2$}] (ell2) at (2.0,-3.6) {};
@@ -30013,7 +30014,8 @@ Player I loses -- correct, since a false $\psi$ means Player A/II should win. If
 whichever clause $C_j$ Player II picks contains a true literal; Player I picks that literal's node,
 which points to the \emph{already-visited} side of its diamond, so Player II cannot move there and
 loses. Thus Player I wins iff $\psi$ is true iff Player E wins the formula game. The graph has
-$\bigO(k+m)$ nodes and is built in polynomial time, completing the reduction.
+$4k+1+m$ nodes plus one per literal occurrence, $\bigO(\abs{\enc{\varphi}})$ in all, and is built in
+polynomial time, completing the reduction.
 \end{proof}
 
 \begin{wex}{Deciding a small Generalized Geography board by minimax}
@@ -30059,7 +30061,7 @@ nodes (root is I's move), Player II owns odd-depth.
       edge from parent node[font=\footnotesize,right]{$1{\to}3$}};
 \end{tikzpicture}
 \end{center}
-Branch $1\to2$: Player II is forced $2\to4$, Player I is forced $4\to2$? but $2$ is already on the
+Branch $1\to2$: Player II is forced $2\to4$, and Player I's only edge is $4\to2$, but $2$ is already on the
 path, so Player I cannot move and loses. Branch $1\to3$: Player II forced $3\to5$, Player I forced
 $5\to3$, but $3$ is used, so Player I is stuck and loses. \emph{Both} of Player I's opening moves
 end in Player I being stuck, so Player I has no winning move: \emph{Player II has a winning
@@ -30079,7 +30081,9 @@ agrees with the formula's truth value.
 \wrec The trigger is ``turn a formula game into a geography graph,'' i.e.\ the reduction of
 Theorem~\ref{thm:ggcomplete@c14}: one diamond per variable chained $t_1\!\to\!h_1\!\to\!t_2$, then a
 hub $c$ to clause nodes to literal nodes wired into diamond sides.
-\wsol Two diamonds (for $x_1,x_2$) feed a hub $c$; the two clauses $C_1=(x_1\vee x_2)$ and
+\wsol The prefix $\exists\forall$ ends with $\forall$, so the construction first pads it with a dummy
+$\exists x_3$ ($x_3$ occurs in no clause). Three diamonds (for $x_1,x_2,x_3$) feed a hub $c$; the two
+clauses $C_1=(x_1\vee x_2)$ and
 $C_2=(\overline{x_1}\vee\overline{x_2})$ become clause nodes; literal nodes wire $x_1\to\ell_1$,
 $x_2\to\ell_2$, $\overline{x_1}\to r_1$, $\overline{x_2}\to r_2$.
 \begin{center}
@@ -30088,40 +30092,46 @@ $x_2\to\ell_2$, $\overline{x_1}\to r_1$, $\overline{x_2}\to r_2$.
    every node/.style={font=\scriptsize}]
   % diamond 1 (x1, owned by E/I)
   \node[gv,label=above:{$t_1$}] (t1) at (0,0) {};
-  \node[gvo,label=left:{$\ell_1$}] (l1) at (-0.9,-0.9) {};
-  \node[gvo,label=right:{$r_1$}] (r1) at (0.9,-0.9) {};
-  \node[gv,label={[inner sep=1pt]right:{$h_1$}}] (h1) at (0,-1.8) {};
+  \node[gvo,label=above left:{$\ell_1$}] (l1) at (-0.8,-0.8) {};
+  \node[gvo,label=above right:{$r_1$}] (r1) at (0.8,-0.8) {};
+  \node[gv,label={[inner sep=1pt]below right:{$h_1$}}] (h1) at (0,-1.6) {};
   % diamond 2 (x2, owned by A/II)
-  \node[gv,label={[inner sep=1pt]right:{$t_2$}}] (t2) at (0,-2.7) {};
-  \node[gvo,label=left:{$\ell_2$}] (l2) at (-0.9,-3.6) {};
-  \node[gvo,label=right:{$r_2$}] (r2) at (0.9,-3.6) {};
-  \node[gv,label={[inner sep=1pt]right:{$h_2$}}] (h2) at (0,-4.5) {};
+  \node[gv,label={[inner sep=1pt]above right:{$t_2$}}] (t2) at (0,-2.5) {};
+  \node[gvo,label=above left:{$\ell_2$}] (l2) at (-0.8,-3.3) {};
+  \node[gvo,label=above right:{$r_2$}] (r2) at (0.8,-3.3) {};
+  \node[gv,label={[inner sep=1pt]below right:{$h_2$}}] (h2) at (0,-4.1) {};
+  % diamond 3 (dummy x3, owned by E/I)
+  \node[gv,label={[inner sep=1pt]above right:{$t_3$}}] (t3) at (0,-5.0) {};
+  \node[gvo,label=left:{$\ell_3$}] (l3) at (-0.8,-5.8) {};
+  \node[gvo,label=right:{$r_3$}] (r3) at (0.8,-5.8) {};
+  \node[gv,label={[inner sep=1pt]below right:{$h_3$}}] (h3) at (0,-6.6) {};
   % hub + clauses + literals
-  \node[gv,label=left:{$c$}] (c) at (0,-5.4) {};
-  \node[gv,label=below:{$C_1$}] (C1) at (2.6,-2.6) {};
-  \node[gv,label=below:{$C_2$}] (C2) at (2.6,-5.4) {};
-  \node[gvo,label=right:{$x_1$}] (Lx1) at (4.4,-1.9) {};
-  \node[gvo,label=right:{$x_2$}] (Lx2) at (4.4,-3.0) {};
-  \node[gvo,label=right:{$\overline{x_1}$}] (Nx1) at (4.4,-4.8) {};
-  \node[gvo,label=right:{$\overline{x_2}$}] (Nx2) at (4.4,-5.9) {};
+  \node[gv,label=below:{$c$}] (c) at (0,-7.5) {};
+  \node[gv,label=below:{$C_1$}] (C1) at (-2.6,-7.5) {};
+  \node[gv,label=below:{$C_2$}] (C2) at (2.6,-7.5) {};
+  \node[gvo,label=left:{$x_1$}] (Lx1) at (-3.2,-2.0) {};
+  \node[gvo,label=left:{$x_2$}] (Lx2) at (-2.0,-4.3) {};
+  \node[gvo,label=right:{$\overline{x_1}$}] (Nx1) at (3.2,-2.0) {};
+  \node[gvo,label=right:{$\overline{x_2}$}] (Nx2) at (2.0,-4.3) {};
   \begin{scope}[on background layer]
     \draw[gedge,->] (t1)--(l1); \draw[gedge,->] (t1)--(r1);
     \draw[gedge,->] (l1)--(h1); \draw[gedge,->] (r1)--(h1); \draw[gedge,->] (h1)--(t2);
     \draw[gedge,->] (t2)--(l2); \draw[gedge,->] (t2)--(r2);
-    \draw[gedge,->] (l2)--(h2); \draw[gedge,->] (r2)--(h2); \draw[gedge,->] (h2)--(c);
+    \draw[gedge,->] (l2)--(h2); \draw[gedge,->] (r2)--(h2); \draw[gedge,->] (h2)--(t3);
+    \draw[gedge,->] (t3)--(l3); \draw[gedge,->] (t3)--(r3);
+    \draw[gedge,->] (l3)--(h3); \draw[gedge,->] (r3)--(h3); \draw[gedge,->] (h3)--(c);
     \draw[gedge,->] (c)--(C1); \draw[gedge,->] (c)--(C2);
     \draw[gedge,->] (C1)--(Lx1); \draw[gedge,->] (C1)--(Lx2);
     \draw[gedge,->] (C2)--(Nx1); \draw[gedge,->] (C2)--(Nx2);
     % wire literal nodes back to the diamond side they match (true side)
-    \draw[gedge,->] (Lx1) to[out=110,in=70,looseness=1.3] (l1);
-    \draw[gedge,->] (Lx2) to[out=130,in=60,looseness=0.9] (l2);
-    \draw[gedge,->] (Nx1) to[out=180,in=-20] (r1);
-    \draw[gedge,->] (Nx2) to[out=200,in=-30,looseness=0.8] (r2);
+    \draw[gedge,->] (Lx1)--(l1); \draw[gedge,->] (Lx2)--(l2);
+    \draw[gedge,->] (Nx1)--(r1); \draw[gedge,->] (Nx2)--(r2);
   \end{scope}
 \end{tikzpicture}
 \end{center}
 Start $b=t_1$. Diamond $1$ ($Q_1=\exists$) is owned by Player I; the forced $h_1\to t_2$ hands
-diamond $2$ ($Q_2=\forall$) to Player II. After both diamonds, $h_2\to c$ is forced and it is
+diamond $2$ ($Q_2=\forall$) to Player II, and the forced $h_2\to t_3$ hands the dummy diamond $3$
+($Q_3=\exists$) back to Player I. After it, $h_3\to c$ is forced and it is
 Player II's move at $c$. Is $\varphi$ true? It asks for a value of $x_1$ such that for both values
 of $x_2$ the matrix holds. Try $x_1$: $x_1=0$ forces $C_1=(0\vee x_2)=x_2$ to need $x_2=1$, but
 then $C_2=(1\vee 0)=1$ ok and $C_1$ ok -- yet $x_2=0$ makes $C_1=0$, failing $\forall$. Try
@@ -30131,8 +30141,9 @@ unsatisfied to strand Player I.
 \whichrule{The reduction is mechanical: one diamond per variable (owned by E or A as the quantifier
 dictates), one hub-clause-literal tree for the CNF matrix, with literal nodes wired to the diamond
 side that the literal makes true.}
-\emph{Check.} Node counts match $\bigO(k+m)$: $2$ diamonds ($8$ nodes), hub $c$, $2$ clause nodes,
-$4$ literal nodes $=15$ nodes, built directly from the $2$ variables and $2$ clauses.
+\emph{Check.} Node count $4k+1+m$ plus one per literal occurrence: $3$ diamonds ($12$ nodes), hub
+$c$, $2$ clause nodes, $4$ literal nodes $=19$ nodes, built directly from the $2$ variables (plus the
+dummy) and $2$ clauses.
 \end{wex}
 
 \begin{method}{Turning alternating quantifiers into a two-player game}
@@ -30216,7 +30227,7 @@ reply, naming exactly which literal node Player I selects and why Player II is l
 
 \item Find the bug. A student claims: ``In Generalized Geography the player who reaches a node of
 out-degree $0$ \emph{wins}, because they completed the longest path.'' Identify the error and state
-the correct rule, then show how the student's rule would flip the winner on the board of
+the correct rule, then decide whether the student's rule would flip the winner on the board of
 Exercise~5.
 
 \item Find the bug. A proposed reduction from $\mathit{FGAME}$ to $\mathit{GG}$ omits the
@@ -30232,9 +30243,10 @@ give \emph{different} winners, and exhibit the winning strategy under each rule.
 
 
 \section{The Classes L and NL}
-Every space bound so far has been at least linear, large enough to hold a copy of the
-input. This section drops below that line. The one key idea is a change of model: we split
-the tape in two, a \emph{read-only} input tape that we are allowed to scan but never write,
+Apart from a few sublinear examples, every space bound so far has been at least linear, large
+enough to hold a copy of the input. This section drops below that line. The one key idea is the
+split-tape model of Definition~\ref{def:space@c14}, now essential: a \emph{read-only} input tape
+that we are allowed to scan but never write,
 and a separate \emph{read/write} work tape whose cells are the only ones charged to the
 space budget. With only $\bigO(\log n)$ work cells -- just enough to hold a handful of
 pointers into the input -- we get the classes $\Lclass$ and $\NL$, the sublinear-space
@@ -30281,7 +30293,7 @@ this kind.
 
 The picture is the whole point. The input is long but untouchable; the work tape is short and
 ours. Because a pointer to a position in an $n$-symbol input is just a number $\le n$, and
-$\lceil\log_2 n\rceil$ bits suffice to write it in binary, $\bigO(\log n)$ work cells hold a
+$\lceil\log_2 n\rceil+1$ bits suffice to write it in binary, $\bigO(\log n)$ work cells hold a
 \emph{fixed number of pointers and counters} into the input. That single sentence -- ``log
 space $=$ a constant number of indices into the input'' -- is the intuition to carry through
 the section.
@@ -30301,8 +30313,9 @@ alphabet and reasonable changes of input encoding.
 
 \subsection*{Configurations and the time-from-space bound}
 
-The earlier bound ``$s(n)$ space forces $\le 2^{\bigO(s(n))}$ time'' assumed the input lived
-on the work tape. With a read-only input we must also remember where the \emph{input} head
+The earlier bound ``$s(n)$ space forces $\le 2^{\bigO(s(n))}$ time''
+(Proposition~\ref{prop:configcount@c14}) absorbed one factor into the exponent using
+$s(n)\ge\log n$: with a read-only input we must also remember where the \emph{input} head
 sits, which adds a factor of $n$.
 
 \begin{definition}[Configuration on $w$]\label{def:config@c14}
@@ -30388,7 +30401,7 @@ or it needs linear scratch to remember which cells are crossed. Find a genuinely
 n)$-space method.
 \wrec The trigger is ``decide a counting condition without storing the input.'' When the test
 is ``two quantities are equal,'' keep the quantities themselves as \emph{binary counters} on
-the work tape; a count up to $n$ fits in $\lceil\log_2 n\rceil$ cells.
+the work tape; a count up to $n$ fits in $\lceil\log_2 n\rceil+1$ cells.
 \wsol The machine $M_A$ never marks the input. It makes one left-to-right pass over the
 read-only tape:
 \begin{enumerate}[leftmargin=2em,topsep=2pt,itemsep=1pt]
@@ -30427,7 +30440,7 @@ $1,2,3$, and $3=3$ accepts. On $\str{00011}$: $a=3,b=2$, and $3\ne 2$ rejects --
 more than $2$ bits per counter.
 \end{wex}
 
-\begin{wex}{Why a third pointer decides $\{w\#w\}$ -- and why two are not enough}
+\begin{wex}{Why a third pointer decides $\{w\#w\}$}
 Sketch a log-space decider for $E=\set{w\#w\st w\in\set{\str0,\str1}^{*}}$ over alphabet
 $\set{\str0,\str1,\#}$, and say exactly what each log-space register holds.
 \wrec ``Compare position $i$ of the left copy with position $i$ of the right copy, for all
@@ -30565,7 +30578,7 @@ Designate $s=c_{\mathrm{start}}$ and (after merging accept states) a single $t=c
     \draw[gedge,-{Stealth[length=2mm]}] (b) -- (c);
     \draw[gedge,-{Stealth[length=2mm]}] (c) -- (t);
   \end{scope}
-  \node[font=\footnotesize,below=8mm of c]
+  \node[font=\footnotesize,below=4mm of b]
     {$N$ accepts $w$ $\iff$ $c_{\text{st}}\rightsquigarrow c_{\text{acc}}$};
 \end{tikzpicture}
 \end{center}
@@ -30576,8 +30589,8 @@ solve the reachability by breadth-first search in polynomial time.
 \whichrule{The configuration graph is the universal translation from ``nondeterministic
 computation'' to ``$PATH$.'' Its polynomial size (log space $\Rightarrow$ poly configurations)
 is precisely what proves $\NL\subseteq\classP$.}
-\emph{Check.} If $N$ is in fact deterministic, every vertex has out-degree $\le 1$, the graph
-is a simple chain, and reachability is just ``follow the unique successor'' -- recovering the
+\emph{Check.} If $N$ is in fact deterministic, every vertex has out-degree $\le 1$, the part
+reachable from $c_{\text{st}}$ is a simple chain, and reachability is just ``follow the unique successor'' -- recovering the
 ordinary deterministic run.
 \end{wex}
 
@@ -30635,7 +30648,7 @@ $t=7$: list one accepting branch as a table of $(\mathrm{cur},\mathrm{cnt})$ val
 identify one branch that rejects without reaching $t$.
 
 \item For the same graph $G$ of the previous exercise, argue that the procedure correctly
-\emph{rejects} $\enc{G,1,t}$ when $t$ is chosen to be a vertex unreachable from $1$ -- name such
+\emph{rejects} $\enc{G,3,t}$ when $t$ is chosen to be a vertex unreachable from $3$ -- name such
 a $t$ and explain why every branch eventually rejects via the step counter.
 
 \item Prove that $\NL\subseteq\classP$ by the configuration-graph argument: state the bound on
@@ -30683,7 +30696,7 @@ complement-closed shadow. Both are settled here. The key idea is that a log-spac
 little memory that the right notion of reduction must itself fit in log space -- it cannot even
 afford to write down its own output -- and once we adopt that notion, the configuration graph of a
 log-space machine turns \emph{every} $\NL$ problem into a single reachability query. That same
-configuration-graph picture, counted carefully, then yields the Immerman--Szelepcsenyi theorem
+configuration-graph picture, counted carefully, then yields the Immerman--Szelepcs\'enyi theorem
 $\NL=\mathsf{coNL}$, one of the most counterintuitive equalities in complexity theory. We continue to count
 \emph{only work-tape cells}; the read-only input tape is free.
 
@@ -30762,7 +30775,7 @@ If $A\redL B$ and $B\redL C$, then $A\redL C$.
 \end{theorem}
 
 \begin{proof}
-Let $f$ (transducer $T_f$) reduce $A$ to $B$ and $g$ (transducer $T_g$) reduce $C$'s side, i.e.\
+Let $f$ (transducer $T_f$) reduce $A$ to $B$ and $g$ (transducer $T_g$) reduce $B$ to $C$, i.e.\
 $x\in B\iff g(x)\in C$. We want a single log-space transducer for $g\circ f$. The obstacle is the
 same as before: $T_g$ expects $f(w)$ on its input tape, but $f(w)$ is too long to store. We run $T_g$
 on the virtual input $f(w)$. A pointer $p$ tracks $T_g$'s input-head position in $f(w)$; each time
@@ -30903,16 +30916,16 @@ self-loop, $3$ would be unreachable from $0$, and $N$ would never accept -- cons
 graph.
 \end{wex}
 
-\subsection*{The Immerman--Szelepcsenyi theorem: $\NL=\mathsf{coNL}$}
+\subsection*{The Immerman--Szelepcs\'enyi theorem: $\NL=\mathsf{coNL}$}
 
 By analogy with $\mathsf{coNP}$, define $\mathsf{coNL}=\set{\overline{A}\st A\in\NL}$ -- the languages whose
 \emph{complements} are in $\NL$. Since $\mathit{PATH}$ is $\NL$-complete, $\overline{\mathit{PATH}}$ is the canonical
 $\mathsf{coNL}$-complete problem, and the entire question $\NL\overset?=\mathsf{coNL}$ reduces to one challenge:
 \emph{can a nondeterministic log-space machine certify that $t$ is NOT reachable from $s$?} Guessing a
-``non-path'' makes no sense, so the certificate must be indirect. The Immerman--Szelepcsenyi idea is
+``non-path'' makes no sense, so the certificate must be indirect. The Immerman--Szelepcs\'enyi idea is
 to compute the \emph{exact count} of reachable nodes and use it as the certificate.
 
-\begin{theorem}[Immerman--Szelepcsenyi]\label{thm:isz@c14}
+\begin{theorem}[Immerman--Szelepcs\'enyi]\label{thm:isz@c14}
 $\NL=\mathsf{coNL}$. Equivalently, $\overline{\mathit{PATH}}\in\NL$.
 \end{theorem}
 
@@ -30989,20 +31002,20 @@ The pipeline of counts is the structural heart of the proof, and is worth drawin
   \node[procbox,right=of r0] (r1) {$r_1$};
   \node[procbox,right=of r1] (r2) {$r_2$};
   \node[right=6mm of r2] (dots) {$\cdots$};
-  \node[procbox,right=6mm of dots] (rm) {$r_m=r$};
+  \node[procbox,right=12mm of dots] (rm) {$r_m=r$};
   \node[procbox,right=of rm] (cert) {certify $t\notin R_m$};
-  \path[flow] (r0) -- node[flowlbl]{step} (r1);
-  \path[flow] (r1) -- node[flowlbl]{step} (r2);
-  \path[flow] (r2) -- (dots);
-  \path[flow] (dots) -- node[flowlbl]{step} (rm);
-  \path[flow] (rm) -- (cert);
+  \draw[flow] (r0) -- node[flowlbl]{step} (r1);
+  \draw[flow] (r1) -- node[flowlbl]{step} (r2);
+  \draw[flow] (r2) -- (dots);
+  \draw[flow] (dots) -- node[flowlbl]{step} (rm);
+  \draw[flow] (rm) -- (cert);
   \node[font=\footnotesize,below=5mm of r1] {Lemma~\ref{lem:step@c14}, applied $m$ times};
   \node[font=\footnotesize,below=5mm of cert] {Lemma~\ref{lem:certify@c14}};
 \end{tikzpicture}
 \end{center}
 
 \begin{wex}{One inductive-counting step: deriving $r_{i+1}$ from $r_i$ on a concrete graph}
-Take the $5$-node graph with edges $s\to a$, $s\to b$, $a\to c$, $b\to c$, and an isolated direction
+Take the $5$-node graph with edges $s\to a$, $s\to b$, $a\to c$, $b\to c$, and one more edge
 $c\to d$, source $s$. Suppose the algorithm has correctly reached level $i=1$ with $r_1=\abs{R_1}$.
 Compute $R_1$, then run the counting step to obtain $r_2=\abs{R_2}$, exhibiting the per-node verdicts.
 \wrec This is Lemma~\ref{lem:step@c14} on actual numbers: $R_{i+1}$ adds the nodes one edge beyond
@@ -31028,7 +31041,7 @@ $R_i$. The trigger is ``advance the reachable-within-$i$ frontier by one layer.'
 \end{center}
 The nodes within distance $1$ of $s$ are $R_1=\set{s,a,b}$, so $r_1=3$. Now the step recounts
 $R_2$: for each node $v$, scan all nodes $u$, confirm the members of $R_1$ (here $s,a,b$, giving
-$d=3=r_1$, so the branch survives), and mark $v$ into $R_2$ if $v\in R_1$ or some confirmed
+a tally of $3=r_1$, so the branch survives), and mark $v$ into $R_2$ if $v\in R_1$ or some confirmed
 $u\in R_1$ has $u\to v$.
 \begin{center}
 \renewcommand{\arraystretch}{1.2}
@@ -31045,7 +31058,7 @@ So $R_2=\set{s,a,b,c}$ and $r_2=4$. The verdict for $d$ is the delicate one: $d$
 \emph{only because} the branch first proved it had seen all $r_1=3$ members of $R_1$ and none of them
 points to $d$ -- exactly the ``certify a negative by counting'' move.
 \whichrule{$R_{i+1}$ is computed, not guessed: a node enters iff it is already in $R_i$ or is one
-confirmed edge past $R_i$, and the count check $d=r_i$ is what licenses trusting a ``no.''}
+confirmed edge past $R_i$, and the count check (tally $=r_i$) is what licenses trusting a ``no.''}
 \emph{Check.} Continuing, the step from $r_2=4$ adds $d$ (since $c\in R_2$ and $c\to d$), giving
 $r_3=5=m$; all five nodes are reachable, and indeed $t=d$ would be reachable -- so on this graph the
 $\overline{\mathit{PATH}}$ machine would correctly \emph{reject} the query $\enc{G,s,d}$.
@@ -31077,11 +31090,11 @@ path from $s$; it guesses ``not reachable'' for $d$ and never tries to confirm i
   \node[gvlbl,above=1pt of d] {$t$: not reached};
 \end{tikzpicture}
 \end{center}
-The branch confirms $d=r=4$ members ($s,a,b,c$), never confirms $t=d$ as a member, and finishes with
-$d$ equal to the count, so it accepts: $t\notin R_m$ is certified, and the machine declares
+The branch confirms $r=4$ members ($s,a,b,c$), never confirms $t=d$ as a member, and finishes with
+its tally equal to the count, so it accepts: $t\notin R_m$ is certified, and the machine declares
 $\enc{G,s,d}\in\overline{\mathit{PATH}}$. Any \emph{wrong} branch -- one that under-counts, or one that tries
-to verify $d$ as reachable -- rejects, because no length-$m$ path to $d$ exists and the final $d=r$
-test fails.
+to verify $d$ as reachable -- rejects, because no length-$m$ path to $d$ exists and the final
+tally $=r$ test fails.
 \whichrule{A negative (``$t$ unreachable'') becomes nondeterministically verifiable once you know how
 \emph{many} nodes are reachable: confirm that many, and everything left over is provably out.}
 \emph{Check.} If we instead asked about $\enc{G,s,c}$, the same count $r=4$ would force the procedure
@@ -31103,10 +31116,10 @@ Section~14.1) gives the canonical chain. Every inclusion shown is known; none is
   \node[procbox,right=of NL] (P)  {$\classP$};
   \node[procbox,right=of P]  (NP) {$\classNP$};
   \node[procbox,right=of NP] (PS) {$\PSPACE$};
-  \path[flow] (L)  -- node[flowlbl]{$\subseteq$} (NL);
-  \path[flow] (NL) -- node[flowlbl]{$\subseteq$} (P);
-  \path[flow] (P)  -- node[flowlbl]{$\subseteq$} (NP);
-  \path[flow] (NP) -- node[flowlbl]{$\subseteq$} (PS);
+  \draw[flow] (L)  -- node[flowlbl]{$\subseteq$} (NL);
+  \draw[flow] (NL) -- node[flowlbl]{$\subseteq$} (P);
+  \draw[flow] (P)  -- node[flowlbl]{$\subseteq$} (NP);
+  \draw[flow] (NP) -- node[flowlbl]{$\subseteq$} (PS);
 \end{tikzpicture}
 \end{center}
 
@@ -31121,10 +31134,10 @@ sitting in each band, makes the layering concrete.
   \node[anchor=north east,font=\footnotesize] at (8.6,3.2) {$\classNP$ (SAT)};
   \draw[rounded corners,line width=0.7pt] (0.6,0.6) rectangle (6.8,2.6);
   \node[anchor=north east,font=\footnotesize] at (6.7,2.5) {$\classP$};
-  \draw[rounded corners,line width=0.7pt] (1.0,1.0) rectangle (4.9,1.95);
-  \node[anchor=north west,font=\footnotesize] at (1.05,1.85) {$\NL{=}\mathsf{coNL}$ ($\mathit{PATH}$)};
-  \draw[rounded corners,line width=0.7pt] (1.2,1.15) rectangle (2.6,1.7);
-  \node[font=\footnotesize] at (1.9,1.42) {$\Lclass$};
+  \draw[rounded corners,line width=0.7pt] (1.0,0.9) rectangle (5.0,2.2);
+  \node[anchor=north west,font=\footnotesize] at (1.05,2.1) {$\NL{=}\mathsf{coNL}$ ($\mathit{PATH}$)};
+  \draw[rounded corners,line width=0.7pt] (1.2,1.05) rectangle (2.6,1.6);
+  \node[font=\footnotesize] at (1.9,1.32) {$\Lclass$};
 \end{tikzpicture}
 \end{center}
 
@@ -31146,7 +31159,7 @@ sitting in each band, makes the layering concrete.
 
 \begin{pitfall}
 The counting must be \emph{exact}, not an upper bound. If a branch is allowed to survive with
-$d\le r_i$ (``found at least the claimed members''), it could quietly miss a genuine member $u$ of
+$d\le r_i$ (``found no more than the claimed number of members''), it could quietly miss a genuine member $u$ of
 $R_i$, fail to follow $u\to v$, and wrongly brand a reachable $v$ as unreachable. The test is
 therefore strict equality $d=r_i$: a branch that under-counts has \emph{not} seen all of $R_i$ and
 must reject, while a branch that over-counts is impossible because every confirmed member is verified
@@ -31191,10 +31204,10 @@ acyclic by leveling it into $m$ copies before adding a back edge.) Argue the tra
 
 \item Using $\NL=\mathsf{coNL}$, show that $\overline{\mathit{CYCLE}}\in\NL$. Then state, in one sentence
 each, what $\overline{\mathit{CYCLE}}\in\NL$ means operationally and why the same fact was \emph{not}
-obvious before the Immerman--Szelepcsenyi theorem.
+obvious before the Immerman--Szelepcs\'enyi theorem.
 
 \item In the inductive counting step (Lemma~\ref{lem:step@c14}), suppose the strict test ``reject unless
-$d=r_i$'' is weakened to ``reject unless $d\ge r_i$.'' Construct a small directed graph and a
+$d=r_i$'' is weakened to ``reject unless $d\le r_i$.'' Construct a small directed graph and a
 nondeterministic branch on which the weakened algorithm outputs the \emph{wrong} value of
 $r_{i+1}$. Explain precisely which reachable node the branch misses.
 
