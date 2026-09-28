@@ -33803,8 +33803,8 @@ A group is a monoid in which every element has an inverse; a monoid need not be 
 The motivating example is purely combinatorial: for any alphabet $\Sig$, the set
 $\Sigstar$ of all finite strings, with concatenation as the product and the empty string
 $\eps$ as identity, is a monoid -- the \emph{free monoid} on $\Sig$. It is the universal
-host: every monoid we meet will receive strings from $\Sigstar$ through a structure-
-preserving map.
+host: every monoid we meet will receive strings from $\Sigstar$ through a
+structure-preserving map.
 
 \begin{definition}[Monoid homomorphism]\label{def:homo@c16}
 A \emph{homomorphism} of monoids $\phi\colon M\to N$ is a map with
@@ -34539,7 +34539,7 @@ A bead-$6$ necklace is a function $f\colon\Z/6\Z\to\set{B,W}$, two of them ident
 is a rotation of the other. Count the distinct necklaces with Burnside.
 \wrec The trigger is ``arrangements on a ring, equal up to rotation.'' The acting group is the
 cyclic group $C_6=\langle r\rangle$ of the $6$ rotations; by Lemma~\ref{lem:cycles@c16} each
-$\card{\mathrm{Fix}(r^k)}=2^{c(r^k)}$, and $c(r^k)=\gcd(k,6)$ for a single $n$-cycle rotated by
+$\card{\mathrm{Fix}(r^k)}=2^{c(r^k)}$, and $c(r^k)=\gcd(k,6)$ for a single $6$-cycle rotated by
 $k$.
 \wsol The rotation $r$ acts on the $6$ positions as one $6$-cycle; its power $r^k$ splits into
 $\gcd(k,6)$ cycles each of length $6/\gcd(k,6)$. Tabulate:
@@ -34919,7 +34919,7 @@ $\frac1n\sum_{d\mid n}\varphi(d)q^{n/d}$ formula by indicating where the two dif
 
 \item Count the distinct ways to color the four \emph{edges} of a square with $q$ colors up to
 the action of $D_4$. Set up the action of $D_4$ on the edge set (note the permutation a
-$90^\circ$ rotation induces on edges differs from its action on corners), build the cycle
+reflection induces on edges differs from its action on corners), build the cycle
 table, and give a closed formula in $q$.
 
 \item Find the bug. A student counts the $2$-colorings of the corners of a square under $D_4$ as
@@ -35480,16 +35480,15 @@ algebraically, through the second eigenvalue $\lambda_2$ of the adjacency matrix
 states the Cheeger-type inequality that ties the two together. The cleanest sparse graphs
 with provable expansion come from algebra: \emph{Cayley graphs} $\mathrm{Cay}(G,S)$ built
 from a finite group $G$ and a symmetric generating set $S$. We draw a few, read their
-degree and connectivity straight off the group, and close on why $\lambda_2$ controls how
-fast a walk forgets where it started -- the engine behind error reduction and Reingold's
+degree and connectivity straight off the group, and close on why $\max_{i\ge2}\card{\lambda_i}$
+controls how fast a walk forgets where it started -- the engine behind error reduction and Reingold's
 $\Lclass=\mathsf{SL}$.
 
 \subsection*{Expansion: the combinatorial side}
 
 Throughout, $\Gr=(\Vset,\Eset)$ is a finite \emph{$d$-regular} graph: every vertex has
 exactly $d$ neighbors. We allow multi-edges and self-loops where convenient (each
-self-loop contributing $1$ to the degree), since the Cayley graphs below sometimes
-generate them.
+self-loop contributing $1$ to the degree).
 
 \begin{definition}[Edge boundary and edge expansion]\label{def:edgeexp@c16}
 For $S\subseteq\Vset$ let $\partial S$ be the set of edges with exactly one endpoint in
@@ -35675,8 +35674,8 @@ $S$ is what makes the graph undirected: the edge from $g$ via $s$ is the edge fr
 $s^{-1}$.
 \end{definition}
 
-The group's multiplication \emph{is} the graph: walking an edge labelled $s$ is right-
-multiplication by $s$, and a walk spells a word in the generators. Two staple examples turn
+The group's multiplication \emph{is} the graph: walking an edge labelled $s$ is
+right-multiplication by $s$, and a walk spells a word in the generators. Two staple examples turn
 familiar algebra into familiar graphs.
 
 \begin{wex}{The cycle as a Cayley graph: $\mathrm{Cay}(\Z_6,\set{\pm1})$}
@@ -35800,7 +35799,8 @@ Let $\Gr$ be $d$-regular on $n$ vertices with $\lambda=\max(\card{\lambda_2},
 \[
   \left|\,e(S,T)-\frac{d\,\card S\,\card T}{n}\,\right|\;\le\;\lambda\sqrt{\card S\,\card T},
 \]
-where $e(S,T)$ counts edges with one endpoint in $S$ and one in $T$.
+where $e(S,T)=\sum_{u\in S,\,v\in T}A_{uv}$ counts edges with one endpoint in $S$ and one in
+$T$ (an edge with both endpoints in $S\cap T$ counted twice).
 \end{theorem}
 
 The lemma says an expander \emph{looks random}: the number of edges between any two sets is
@@ -35829,7 +35829,7 @@ $t\approx\log(10^{6})/\log(1/0.95)\approx 269$ steps. A diagram of the two decay
   \foreach \x in {5,10,15,20}{\node[below,font=\footnotesize] at (\x,0) {$\x$};}
   % fast: 0.1^t (drops to ~0 immediately)
   \draw[line width=1pt] plot[domain=0:20,samples=40] (\x,{pow(0.1,\x)});
-  \node[fill=white,inner sep=1pt,font=\footnotesize] at (4.2,0.22)
+  \node[fill=white,inner sep=1pt,font=\footnotesize] at (5.2,0.22)
     {$\lambda/d=0.1$ (expander)};
   % slow: 0.95^t
   \draw[line width=1pt,dashed] plot[domain=0:20,samples=40] (\x,{pow(0.95,\x)});
@@ -35911,8 +35911,8 @@ Definition~\ref{def:expfamily@c16} is \emph{asymptotic} -- a constant degree $d$
 \begin{pitfall}
 Combinatorial expansion ($h$, about cuts and boundaries) and spectral expansion (the gap
 $d-\lambda_2$) are equivalent only \emph{up to the quadratic Cheeger loss} of
-Theorem~\ref{thm:cheeger@c16}, not equal. A graph can have a moderate gap but, through the
-$\sqrt{\cdot}$ upper bound, only a modest combinatorial $h$; do not quote a spectral bound
+Theorem~\ref{thm:cheeger@c16}, not equal. A graph can have a moderate combinatorial $h$ but,
+through the $\sqrt{\cdot}$ upper bound, only a modest gap; do not quote a spectral bound
 as if it were the exact isoperimetric ratio. And do not confuse $\lambda_2$ (second
 \emph{largest}) with $\lambda_n$ (most negative): the mixing lemma needs
 $\lambda=\max(\card{\lambda_2},\card{\lambda_n})$, so a graph with $\lambda_n$ near $-d$
@@ -35934,7 +35934,7 @@ cut, and compute the spectral gap $d-\lambda_2$ from the circulant eigenvalue fo
 $2\cos(2\pi k/8)$, $k=0,\dots,7$. Verify that your numbers obey the Cheeger inequality
 $\tfrac{d-\lambda_2}{2}\le h\le\sqrt{2d(d-\lambda_2)}$.
 
-\item Let $S=\set{v_1,\dots,v_n}$ be a vertex set in a $d$-regular graph with edge boundary
+\item Let $S=\set{v_1,\dots,v_k}$ be a vertex set in a $d$-regular graph with edge boundary
 $\partial S$ and vertex boundary $N(S)\setminus S$. Prove the two inequalities
 $\card{N(S)\setminus S}\le\card{\partial S}$ and
 $\card{\partial S}\le d\,\card{N(S)\setminus S}$, and deduce $h(\Gr)/d\le h_V(\Gr)\le
@@ -35947,7 +35947,7 @@ $\lambda=\max(\card{\lambda_2},\card{\lambda_n})$ to explain why a random walk o
 does \emph{not} mix to uniform. (Hint: what is $\lambda_n$, and what does a step of the walk
 do to the bipartition?)
 
-\item A $3$-regular graph $\Gr$ on $n$ vertices has $\lambda=\max_{i\ge2}\card{\lambda_i}=1$.
+\item A $d$-regular graph $\Gr$ on $n$ vertices has $\lambda=\max_{i\ge2}\card{\lambda_i}\le d/3$.
 Using the rule that the deviation of a random walk from uniform shrinks by $\lambda/d$ per
 step, estimate the number of steps needed to bring the deviation below $2^{-20}$. Express
 your answer as a function of $n$ and argue it is $\bigO(1)$, hence $\bigO(\log n)$.
@@ -36019,7 +36019,7 @@ slogan of the chapter is the conjunction
 
 Each pillar is the home turf of one field. Finite structure is \emph{algebra} (Dummit \&
 Foote: monoids, groups, quotients). Counting is \emph{combinatorics} (Sagan: bijections,
-generating functions, the probabilistic method). Finite description-as-a-network is
+generating functions; Erd\H{o}s: the probabilistic method). Finite description-as-a-network is
 \emph{graph theory} (vertices, edges, gadgets). Computation is the spine that runs through all
 three. The bridges between the fields are not analogies; they are equalities, and we name them
 now.
@@ -36053,7 +36053,7 @@ Myhill--Nerode theorem, an ``iff''. (2) is the contrapositive of a union bound:
 $\#\{\text{bad}\}<\#\{\text{all}\}$ leaves a good object, since $\#\{\text{good}\}=
 \#\{\text{all}\}-\#\{\text{bad}\}>0$. (3) is the definition of a many-one reduction realized
 in graph form; correctness is the gadget-gluing argument of Ch.\ 13. (4) is the expander mixing/hitting
-property. (5) is the transfer theorem of analytic combinatorics: a rational $A(x)$ has
+property. (5) is the exponential growth formula of analytic combinatorics: a rational $A(x)$ has
 $\limsup_n\abs{[x^n]A(x)}^{1/n}=1/r$ where $r$ is the smallest modulus of a pole. We assemble,
 not reprove.
 \end{proof}
@@ -36401,7 +36401,7 @@ derandomization try to close.
 
 \begin{wex}{Reading the Ramsey bound at $k=4$}
 Use Theorem~\ref{thm:ramsey@c16} to certify that some $2$-coloring of $K_4$'s edges avoids a
-monochromatic $K_4$, and compare with the trivial upper bound $R(4,4)\le 18$.
+monochromatic $K_4$, and compare with the elementary upper bound $R(4,4)\le\binom63=20$.
 \wrec The trigger is ``does an object with no bad substructure exist?''. The probabilistic
 method (Theorem~\ref{thm:ramsey@c16}) answers via the inequality
 $\binom Nk 2^{1-\binom k2}<1$; just plug in.
