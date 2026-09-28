@@ -7231,8 +7231,8 @@ glued together: \emph{concatenation} and \emph{Kleene star}, together with union
 The central promise of this chapter is that the class $\REG$ of regular languages
 is \emph{closed} under all of these operations; this section defines the operations,
 computes them on small examples, and gives the first closure proof -- the product
-construction, which settles union and intersection in one stroke. The remaining
-operations need the machinery of Section~3, so we record them now as a goal.
+construction, which settles union and intersection in one stroke. The remaining regular
+operations need the machinery of Section~4.3, so we record them now as a goal.
 
 \subsection*{The operations on languages}
 
@@ -7313,10 +7313,10 @@ $\es\kstar=\es$. The empty product saves it.
 
 \subsection*{The goal: closure of $\REG$}
 
-Recall from Section~1 that a language is \textbf{regular} iff some DFA recognizes it,
+Recall from Section~4.1 that a language is \textbf{regular} iff some DFA recognizes it,
 and $\REG$ denotes the class of all regular languages. The organizing theorem of the
 chapter is the following; we state it now and discharge the pieces across this section
-and Section~5.
+and Section~4.5.
 
 \begin{theorem}[Closure of $\REG$ under the regular operations]\label{thm:closuregoal@c4}
 If $A$ and $B$ are regular languages over $\Sig$, then so are
@@ -7327,7 +7327,7 @@ Two of these -- union and intersection -- can be proved directly with DFAs by ru
 two machines side by side, and that is the subject of the rest of this section.
 Complement is an easy DFA trick we record below. Concatenation and star resist a clean
 DFA argument (a DFA cannot ``guess'' where to split a string), so they wait for the
-nondeterministic machines of Section~3 and the constructions of Section~5.
+nondeterministic machines of Section~4.3 and the constructions of Section~4.5.
 
 \begin{proposition}[Complement]\label{prop:complement@c4}
 If $A$ is regular then $\overline{A}$ is regular.
@@ -7345,7 +7345,7 @@ Complementation by swapping accept states works \emph{only} because a DFA is tot
 and deterministic -- every string has exactly one run, ending in exactly one state.
 The same swap on an \emph{NFA} does \emph{not} compute the complement, since a string
 may have both an accepting and a rejecting run; flipping the accept set then accepts
-strings that the original also accepted. Determinize first (Section~4), \emph{then} swap.
+strings that the original also accepted. Determinize first (Section~4.4), \emph{then} swap.
 \end{pitfall}
 
 \subsection*{The product construction}
@@ -7405,7 +7405,7 @@ are identical, so you can read both languages off the same diagram.
 \end{enumerate}
 \end{method}
 
-\begin{wex}{Intersection: a multiple of two AND ending in 1 (over $\set{0,1}$, binary value)}
+\begin{wex}{Intersection: even length AND ending in 1}
 Let $A=\set{w\st w \text{ has even length}}$ and
 $B=\set{w\st w \text{ ends in } \str{1}}$, both over $\Sig=\set{\str{0},\str{1}}$.
 Build a DFA for $A\cap B$.
@@ -7600,7 +7600,7 @@ one in $F_1\times F_2$.
 %   state (q,r). Invariant: the Boolean operation. Accept sets stated EXPLICITLY:
 %   F_A x F_B (intersection); (F_A x Q_B) cup (Q_A x F_B) (union). No NFA/complement claims.
 The same lockstep is the whole content of the product construction, and it is what makes
-the recognized language come out as a Boolean combination of $A=\lang{A}$ and $B=\lang{B}$.
+the recognized language come out as a Boolean combination of $\lang{A}$ and $\lang{B}$.
 Writing $A,B$ for the two input DFAs, the construction and its effect on languages commute:
 \begin{center}
 \begin{tikzcd}[column sep=24mm,row sep=15mm]
@@ -7630,8 +7630,8 @@ $A\circ B$ might need to treat the prefix $\str{ab}$ as the $A$-part on one inpu
 the prefix $\str{a}$ as the $A$-part on another; a deterministic device cannot pursue
 both splits at once. The clean fix is to let the machine \emph{guess} the split point
 and explore all guesses in parallel -- exactly the power of a nondeterministic finite
-automaton, introduced in Section~3. We therefore postpone the proofs that $\REG$ is
-closed under $\circ$ and $\kstar$ (Theorem~\ref{thm:closuregoal@c4}) to Section~5, where
+automaton, introduced in Section~4.3. We therefore postpone the proofs that $\REG$ is
+closed under $\circ$ and $\kstar$ (Theorem~\ref{thm:closuregoal@c4}) to Section~4.5, where
 the $\eps$-glue constructions make them short.
 
 \begin{pitfall}
@@ -7652,7 +7652,7 @@ is to claim a star-language excludes the empty string; it never does on its own.
 Theorem~\ref{thm:product@c4} multiplies transition functions symbol by symbol, so both
 machines must read the \emph{same} $\Sig$ and be total (a defined transition on every
 symbol from every state). If a source machine is missing transitions, complete it with a
-dead state first (Section~1), or the product transition $\trans$ is undefined on some pair.
+dead state first (Section~4.1), or the product transition $\trans$ is undefined on some pair.
 \end{pitfall}
 
 \begin{exers}{Exercises.}
@@ -7742,7 +7742,7 @@ drawing the machine.)
 
 
 \section{Nondeterministic Finite Automata}
-A deterministic machine has exactly one move available at every step, so reading a string traces out a single path through its states. We now relax that requirement. A \emph{nondeterministic} finite automaton may have several arrows for one symbol, may have none, and may even change state on the empty string. The payoff is design economy: an NFA can often capture a pattern with a handful of states where the corresponding DFA needs many more, because nondeterminism lets the machine "guess" which possibility will work out and accept as long as \emph{some} guess succeeds. This section defines NFAs, gives a precise meaning to acceptance via the set of states a machine can occupy, and works several small examples; the next section proves that this added freedom buys no new languages.
+A deterministic machine has exactly one move available at every step, so reading a string traces out a single path through its states. We now relax that requirement. A \emph{nondeterministic} finite automaton may have several arrows for one symbol, may have none, and may even change state on the empty string. The payoff is design economy: an NFA can often capture a pattern with a handful of states where the corresponding DFA needs many more, because nondeterminism lets the machine ``guess'' which possibility will work out and accept as long as \emph{some} guess succeeds. This section defines NFAs, gives a precise meaning to acceptance via the set of states a machine can occupy, and works several small examples; the next section proves that this added freedom buys no new languages.
 
 \subsection*{The formal definition}
 
@@ -7761,7 +7761,7 @@ Two features distinguish this from the DFA definition. First, the codomain is th
 For a set $S\subseteq Q$, the \emph{$\eps$-closure} $E(S)$ is the set of all states reachable from some state of $S$ by following zero or more $\eps$-arrows. Formally, $E(S)$ is the smallest set with $S\subseteq E(S)$ and $\trans(q,\eps)\subseteq E(S)$ whenever $q\in E(S)$.
 \end{definition}
 
-The $\eps$-closure is what lets us treat an NFA's $\eps$-arrows as "free" moves: before and after reading each real symbol, the machine may silently slide along any chain of $\eps$-arrows.
+The $\eps$-closure is what lets us treat an NFA's $\eps$-arrows as ``free'' moves: before and after reading each real symbol, the machine may silently slide along any chain of $\eps$-arrows.
 
 \subsection*{What it means to accept}
 
@@ -7784,7 +7784,7 @@ The same string may be accepted by one branch and rejected by another, and that 
 
 \subsection*{Reading an NFA by tracking active states}
 
-\begin{wex}{A two-state NFA for "ends in $\str{1}$" over $\set{0,1}$}
+\begin{wex}{A two-state NFA for ``ends in $\str{1}$'' over $\set{0,1}$}\label{wex:nfa-ends1@c4}
 Build a small NFA for $\Lang=\set{w \st w \text{ ends in } \str{1}}$ and trace it on $\str{011}$.
 \wrec The pattern fixes only the \emph{last} symbol, so a guess-the-end strategy fits: loop on everything, then guess that the current $\str{1}$ is the final one.
 \wsol Take states $\set{q_0,q_1}$ with $q_0$ the start and $q_1$ accepting. Let $q_0$ loop on $0$ and $1$ (stay put while the string runs), and add a $1$-arrow $q_0\to q_1$. State $q_1$ has no outgoing arrows, so a branch that lands there must immediately reach the end of input to survive in an accept state.
@@ -7801,7 +7801,7 @@ Read $\str{0}$: from $q_0$ only $q_0$, so $\set{q_0}$.
 Read $\str{1}$: $q_0$ goes to $q_0$ (loop) and to $q_1$, so $\set{q_0,q_1}$.
 Read $\str{1}$: $q_0$ goes to $\set{q_0,q_1}$ and $q_1$ goes nowhere, so $\set{q_0,q_1}$.
 The final set $\set{q_0,q_1}$ meets $\Acc=\set{q_1}$, so $\str{011}$ is accepted.
-\whichrule{Guess-the-suffix: nondeterminism lets the loop keep one branch alive while another branch commits to "this $\str{1}$ is the last symbol," so only two states are needed.}
+\whichrule{Guess-the-suffix: nondeterminism lets the loop keep one branch alive while another branch commits to ``this $\str{1}$ is the last symbol,'' so only two states are needed.}
 \emph{Check.} On $\str{010}$ the run is $\set{q_0}\to\set{q_0}\to\set{q_0,q_1}\to\set{q_0}$; the final set misses $q_1$, so $\str{010}$ is rejected, as it should be.
 \end{wex}
 
@@ -7837,7 +7837,7 @@ Design an NFA recognizing $\Lang=\set{w \st \str{101}\text{ is a substring of }w
 \end{center}
 A branch that guesses the start position wrongly simply dies when the next symbol does not match (e.g.\ at $p_1$ a $\str{1}$ has no arrow), while the looping branch at $p_0$ stays alive to try again at the next position.
 \whichrule{Substring search by guessing the start: an NFA need not track partial matches deterministically because a wrong guess kills only its own branch, leaving the idling branch free to retry.}
-\emph{Check.} On $\str{0101}$ one branch idles through $\str{0}$, then matches $\str{1},\str{0},\str{1}$ to reach $p_3$; the string is accepted. On $\str{1001}$ no position spells $\str{101}$, every committed branch dies, and only $p_0$ survives -- rejected.
+\emph{Check.} On $\str{0101}$ one branch idles through $\str{0}$, then matches $\str{1},\str{0},\str{1}$ to reach $p_3$; the string is accepted. On $\str{1001}$ no position spells $\str{101}$, so no branch reaches $p_3$ (the final active set is $\set{p_0,p_1}$) -- rejected.
 \end{wex}
 
 \subsection*{Using $\eps$-arrows: a union of two patterns}
@@ -7871,7 +7871,7 @@ Over the one-symbol alphabet $\set{a}$, let $\Lang=\set{a^n \st n\text{ is a mul
 
 \begin{wex}{The $k$th symbol from the end is $\str{1}$}
 For a fixed $k=3$, recognize $\Lang=\set{w\in\set{0,1}\kstar \st \abs{w}\ge 3\text{ and the }3\text{rd symbol from the end is }\str{1}}$.
-\wrec "Counts from the end" is the signature of guess-the-end nondeterminism: idle, then guess that exactly $3$ symbols remain and verify the window.
+\wrec ``Counts from the end'' is the signature of guess-the-end nondeterminism: idle, then guess that exactly $3$ symbols remain and verify the window.
 \wsol Loop at the start state $r_0$ on $0,1$. On a $\str{1}$, guess that this is the $3$rd-from-last symbol and step into a chain $r_1\to r_2\to r_3$ that consumes exactly two more symbols (any of $0,1$), landing on the accept state $r_3$ precisely at end of input.
 \begin{center}
 \begin{tikzpicture}[fa]
@@ -7892,7 +7892,7 @@ Only a guess made exactly three symbols before the end keeps a branch alive at $
 
 \subsection*{The computation tree}
 
-Acceptance is existential over branches, and the branches form a tree: the root is the start configuration, and a node for "in state $q$, input left $x$" has one child per state in $\trans(q,a)$ (reading the first symbol $a$ of $x$) plus children for each $\eps$-move. The string is accepted iff some leaf reaching end-of-input sits in an accept state. The next picture is the tree for the "ends in $\str{1}$" machine of Worked Example~\ref{def:nfa@c4} on input $\str{011}$ -- read top to bottom, each level consuming one symbol.
+Acceptance is existential over branches, and the branches form a tree: the root is the start configuration, and a node for ``in state $q$, input left $x$'' has one child per state in $\trans(q,a)$ (reading the first symbol $a$ of $x$) plus children for each $\eps$-move. The string is accepted iff some leaf reaching end-of-input sits in an accept state. The next picture is the tree for the ``ends in $\str{1}$'' machine of Worked Example~\ref{wex:nfa-ends1@c4} on input $\str{011}$ -- read top to bottom, each level consuming one symbol.
 
 \begin{center}
 \begin{tikzpicture}[treenode,level distance=10mm,
@@ -7914,7 +7914,7 @@ Each downward edge consumes one symbol of $\str{011}$. After $\str{0}$ only $q_0
 \begin{wex}{A branching machine with two accept routes}
 Over $\set{a,b}$, recognize $\Lang=\set{w \st w\text{ ends in }\str{aa}\text{ or }w\text{ ends in }\str{bb}}$ with one start state and two guessed tails -- no $\eps$-arrows.
 \wrec Two suffix patterns again: guess which one will close out the string. We can branch directly on the symbol read instead of an $\eps$-arrow.
-\wsol The start state $c_0$ loops on $a,b$. On an $a$ it may move to $d_1$ (guessing the tail will be $\str{aa}$) or keep idling; from $d_1$ a final $a$ reaches the accept state $d_2$. Symmetrically, a $b$ may move to $e_1$, and a final $b$ reaches accept state $e_2$. The loop at $c_0$ keeps the "not yet" branch alive.
+\wsol The start state $c_0$ loops on $a,b$. On an $a$ it may move to $d_1$ (guessing the tail will be $\str{aa}$) or keep idling; from $d_1$ a final $a$ reaches the accept state $d_2$. Symmetrically, a $b$ may move to $e_1$, and a final $b$ reaches accept state $e_2$. The loop at $c_0$ keeps the ``not yet'' branch alive.
 \begin{center}
 \begin{tikzpicture}[fa,node distance=14mm and 20mm]
   \node[stinit] (c0) {$c_0$};
@@ -7922,7 +7922,7 @@ Over $\set{a,b}$, recognize $\Lang=\set{w \st w\text{ ends in }\str{aa}\text{ or
   \node[stacc,right=of d1] (d2) {$d_2$};
   \node[st,below right=of c0] (e1) {$e_1$};
   \node[stacc,right=of e1] (e2) {$e_2$};
-  \path (c0) edge[loop left] node{$a,b$} (c0)
+  \path (c0) edge[loop above] node{$a,b$} (c0)
         (c0) edge node{$a$} (d1)
         (d1) edge node{$a$} (d2)
         (c0) edge node[swap]{$b$} (e1)
@@ -7930,12 +7930,12 @@ Over $\set{a,b}$, recognize $\Lang=\set{w \st w\text{ ends in }\str{aa}\text{ or
 \end{tikzpicture}
 \end{center}
 \whichrule{Direct symbol-branching: when the two alternatives are triggered by different symbols, the guess can be made on the first symbol of the tail, so no $\eps$-arrow is required.}
-\emph{Check.} On $\str{abaa}$ the idling branch reaches the last two $a$'s, takes $c_0\to d_1\to d_2$, and accepts. On $\str{abab}$ neither tail is $\str{aa}$ nor $\str{bb}$; every committed branch dies before the end and only $c_0$ survives -- rejected.
+\emph{Check.} On $\str{abaa}$ the idling branch reaches the last two $a$'s, takes $c_0\to d_1\to d_2$, and accepts. On $\str{abab}$ neither tail is $\str{aa}$ nor $\str{bb}$; no branch reaches $d_2$ or $e_2$ (the final active set is $\set{c_0,e_1}$) -- rejected.
 \end{wex}
 
 \begin{method}{Designing an NFA from a description}
 \begin{enumerate}[leftmargin=1.4em,nosep]
-\item Find the \emph{existential} structure: is the language "contains \dots", "ends in \dots one of these", "some position where \dots"? Each "some/or" is a place a guess can replace bookkeeping.
+\item Find the \emph{existential} structure: is the language ``contains \dots'', ``ends in \dots one of these'', ``some position where \dots''? Each ``some/or'' is a place a guess can replace bookkeeping.
 \item Put an idling start state that loops on the whole alphabet whenever the pattern may begin anywhere.
 \item For each alternative or fixed block, draw a short chain (or cycle) that verifies it; let a wrong guess die by simply omitting the missing arrows.
 \item Use an $\eps$-arrow to split into independent sub-machines when the alternatives are not distinguished by the next input symbol.
@@ -7944,7 +7944,7 @@ Over $\set{a,b}$, recognize $\Lang=\set{w \st w\text{ ends in }\str{aa}\text{ or
 \end{method}
 
 \begin{pitfall}
-\textbf{Missing arrows are not errors.} In a DFA every state needs an arrow for every symbol; an NFA may legitimately omit them, and a branch with no matching arrow simply dies. Do not "complete" an NFA by adding a dead state -- that only clutters the picture.
+\textbf{Missing arrows are not errors.} In a DFA every state needs an arrow for every symbol; an NFA may legitimately omit them, and a branch with no matching arrow simply dies. Do not ``complete'' an NFA by adding a dead state -- that only clutters the picture.
 \end{pitfall}
 
 \begin{pitfall}
@@ -7977,7 +7977,7 @@ Over $\set{a,b}$, recognize $\Lang=\set{w \st w\text{ ends in }\str{aa}\text{ or
 \end{tikzpicture}
 \end{center}
 
-\item Write the formal five-tuple $(Q,\Sig,\trans,\qstart,\Acc)$ for the "contains $\str{101}$" NFA from this section, giving $\trans$ as an explicit table over $Q\times(\Sig\cup\set{\eps})$ with power-set values.
+\item Write the formal five-tuple $(Q,\Sig,\trans,\qstart,\Acc)$ for the ``contains $\str{101}$'' NFA from this section, giving $\trans$ as an explicit table over $Q\times(\Sig\cup\set{\eps})$ with power-set values.
 
 \item Find the bug. A student claims the NFA below recognizes $\set{w\in\set{0,1}\kstar \st w\text{ ends in }\str{1}}$. Exhibit a string the machine accepts that does \emph{not} end in $\str{1}$ (or one it rejects that does), and describe the smallest fix.
 \begin{center}
@@ -7998,7 +7998,7 @@ Over $\set{a,b}$, recognize $\Lang=\set{w \st w\text{ ends in }\str{aa}\text{ or
 
 \item Design an NFA over $\set{0,1}$ for $\set{w \st \abs{w}\text{ is even}}\cup\set{w \st w\text{ contains }\str{11}}$. Identify which clause each branch of your machine verifies, and trace $\str{011}$.
 
-\item (Reversal by reflection.) Take the four-state "ends in $\str{aa}$ or $\str{bb}$" NFA of this section. Reverse every arrow, swap start and accept roles by adding a new start state with $\eps$-arrows to the old accept states and making the old start state accepting. Draw the result and describe, in one sentence, the language it now recognizes.
+\item (Reversal by reflection.) Take the five-state ``ends in $\str{aa}$ or $\str{bb}$'' NFA of this section. Reverse every arrow, swap start and accept roles by adding a new start state with $\eps$-arrows to the old accept states and making the old start state accepting. Draw the result and describe, in one sentence, the language it now recognizes.
 \end{exers}
 
 
@@ -8106,7 +8106,7 @@ From $\set{a}$ on $1$ we get $\trans(a,1)=\set{a,b}$, a new subset; from $\set{a
 %   L(N) == L(M) (double line / equal). Invariant: the recognized language.
 %   Lead-in frames it as "changes the machine model but not the language."
 %   Takeaway/caption states L(N)=L(M). Check explains why it commutes.
-The two worked examples above show the construction running on individual machines;
+The worked example above shows the construction running on an individual machine;
 the structural point is that it changes the machine \emph{model} -- from an NFA over
 state set $Q$ to a DFA over $\pow{Q}$ -- but leaves the recognized language untouched.
 That preservation is exactly the commuting of the following square.
@@ -8207,7 +8207,7 @@ From $\set{1,2}$ on $1$: $\trans(1,1)\cup\trans(2,1)=\set{1}\cup\set{3}=\set{1,3
         (B) edge[loop above] node{$0$} (B)
         (B) edge node{$1$} (C)
         (C) edge[bend left] node{$0$} (B)
-        (C) edge[bend left] node{$1$} (A);
+        (C) edge[bend left=40] node{$1$} (A);
 \end{tikzpicture}
 \end{center}
 \whichrule{Each reachable subset records the relevant suffix state -- ``$2$ alive'' means a $\str{0}$ is pending, ``$3$ alive'' means $\str{01}$ just completed -- so the DFA needs one state per distinct ``how close are we to ending in $\str{01}$'' situation.}
@@ -8273,7 +8273,7 @@ Given the NFA table below over $\Sig=\set{0,1}$ (start $x$, accept $\set{z}$), p
  z & \es & \es & \es\\
 \end{array}
 \]
-\wrec We are handed $\trans$ directly; the subset construction is purely mechanical from a table, so no diagram of $\nfa$ is required to start (though we draw one to check). The single $\eps$-arrow $y\to z$ is the wrinkle.
+\wrec We are handed $\trans$ directly; the subset construction is purely mechanical from a table, so no diagram of $\nfa$ is required to start. The single $\eps$-arrow $y\to z$ is the wrinkle.
 \wsol Since $y\to z$ is the only $\eps$-arrow, $E(\set{y})=\set{y,z}$, while $E(\set{x})=\set{x}$ and $E(\set{z})=\set{z}$. Start subset $q_0'=E(\set{x})=\set{x}$. Worklist, closing after every symbol:
 \[
 \begin{array}{c|c|c}
@@ -8294,7 +8294,7 @@ From $\set{x}$ on $1$: $\trans(x,1)=\set{x,y}$, then $E(\set{x,y})=\set{x,y,z}$ 
 \end{tikzpicture}
 \end{center}
 \whichrule{The construction depends only on $\trans$, the start state, and $\Acc$ -- so a transition table is enough input; the picture is a convenience, not a prerequisite. The mandatory closure after each symbol is what adds $z$ to the $1$-target.}
-\emph{Check.} The NFA reaches $z$ exactly when it has read at least one $1$ (guess that $1$, slide $y\to z$ by $\eps$), and once read the DFA stays in the accepting subset. So $\lang{\nfa}=\set{w\st w \text{ contains a } 1}$. Trace $\str{001}$: $\set{x}\xrightarrow{0}\set{x}\xrightarrow{0}\set{x}\xrightarrow{1}\set{x,y,z}$, accept. Trace $\str{00}$: stays at $\set{x}$, reject. Correct.
+\emph{Check.} The NFA can be in $z$ exactly when the last symbol read was a $1$ (guess that $1$, slide $y\to z$ by $\eps$); $z$ has no outgoing arrows, so a following $0$ sends the DFA back to $\set{x}$. So $\lang{\nfa}=\set{w\st w \text{ ends in } 1}$. Trace $\str{001}$: $\set{x}\xrightarrow{0}\set{x}\xrightarrow{0}\set{x}\xrightarrow{1}\set{x,y,z}$, accept. Trace $\str{00}$: stays at $\set{x}$, reject. Correct.
 \end{wex}
 
 \subsection*{How big can the DFA get?}
@@ -8338,7 +8338,7 @@ A state labelled $b_1b_0$ means ``the previous symbol was $b_1$, the current sym
 \end{wex}
 
 \begin{remark}
-The exponential is a \emph{worst case}, not the typical case. Most NFAs that arise in practice (and all the ones built by the closure constructions of the next section) convert to DFAs of modest size, because only a handful of subsets are reachable. Always build lazily from the start subset; never enumerate all $2^{\abs{Q}}$ subsets blindly.
+The exponential is a \emph{worst case}, not the typical case. Most NFAs that arise in practice convert to DFAs of modest size, because only a handful of subsets are reachable. Always build lazily from the start subset; never enumerate all $2^{\abs{Q}}$ subsets blindly.
 \end{remark}
 
 \begin{pitfall}
@@ -8383,7 +8383,7 @@ Do not confuse ``the set of states currently active'' with ``the set of all stat
 
 
 \section{Closure of the Regular Languages under the Regular Operations}
-Back in Section~2 we listed the three regular operations -- union, concatenation, and
+Back in Section~4.2 we listed the three regular operations -- union, concatenation, and
 star -- and promised that the class of regular languages is \emph{closed} under each of
 them: feed in regular languages, get a regular language back out. The product construction
 already settled union (and intersection) by gluing two DFAs together state by state, but it
@@ -8391,7 +8391,7 @@ has no comfortable analogue for concatenation or star. The clean tool is nondete
 An NFA may sprout extra start branches, jump on $\eps$ without reading input, and loop back
 to its own beginning, so the three constructions below are little more than a few
 $\eps$-arrows soldered between copies of machines we already have. Because every NFA has an
-equivalent DFA (Section~4), proving closure with NFAs proves it for regular languages.
+equivalent DFA (Section~4.4), proving closure with NFAs proves it for regular languages.
 
 Throughout, fix an alphabet $\Sig$ and let $A=\lang{\nfa_A}$ and $B=\lang{\nfa_B}$ be
 regular languages, recognized by NFAs
@@ -8594,7 +8594,7 @@ to the old start $q_A$, and an $\eps$-arrow from every accept of $\nfa_A$ back t
 \trans(s,\eps)=\set{q_A},\qquad
 \trans(q,\eps)\supseteq\set{q_A}\ \text{ for each }q\in F_A,
 \]
-all other transitions inherited from $\nfa_A$. The accepting-and-only $s$ gives $\eps$ with
+all other transitions inherited from $\nfa_A$. The new accepting start $s$ gives $\eps$ with
 no input read ($k=0$). For nonempty input, the machine runs $\nfa_A$ once; each time it
 reaches an accept it may $\eps$-loop back to $q_A$ to begin another block. Thus it accepts
 iff the input is a concatenation of zero or more strings of $A$, i.e. iff $w\in A\kstar$.
@@ -8615,7 +8615,7 @@ loop.
   \node[st,right=14mm of s] (qa) {$q_A$};
   \node[draw,dashed,rounded corners,minimum width=20mm,minimum height=12mm,
         right=6mm of qa,inner sep=2pt] (A) {$\nfa_A$};
-  \node[st,right=14mm of A] (fa) {$f_A$};
+  \node[stacc,right=14mm of A] (fa) {$f_A$};
   \path (s) edge node{$\eps$} (qa)
         (qa) edge[dashed] (A)
         (A) edge[dashed] (fa)
@@ -8688,7 +8688,7 @@ concatenation, and star describes a regular language, because each operation pre
 regularity and the single-string (finite) languages are trivially regular. The next worked
 example chains all three.
 
-\begin{wex}{Building $\lang{}=(\str{0}\reor\str{1}\str{1})\kstar$ piece by piece}
+\begin{wex}{Building $\Lang=(\str{0}\reor\str{1}\str{1})\kstar$ piece by piece}
 Over $\Sig=\set{0,1}$, recognize all strings that decompose into blocks each equal to \str{0}
 or to \str{11}.
 \wrec The language is described by an expression in the regular operations, so build it
@@ -8702,11 +8702,11 @@ start, back-edges) gives the language. Collapsing the chained $\eps$-arrows, one
   \node[st,above right=5mm and 16mm of s] (p) {$p$};
   \node[st,below right=5mm and 16mm of s] (r0) {$r_0$};
   \node[st,right=of r0] (r1) {$r_1$};
-  \path (s) edge node{$\str{0}$} (p)
+  \path (s) edge node[swap]{$\str{0}$} (p)
         (s) edge node[below]{$\str{1}$} (r0)
         (r0) edge node{$\str{1}$} (r1)
         (p) edge[bend right=20] node[above]{$\eps$} (s)
-        (r1) edge[bend left=20] node[below]{$\eps$} (s);
+        (r1) edge[bend left=50] node[below]{$\eps$} (s);
 \end{tikzpicture}
 \end{center}
 After reading a complete block (\str{0} into $p$, or \str{11} into $r_1$) an $\eps$-arrow
@@ -8730,8 +8730,8 @@ marks every block boundary.
 In fact this is the whole story: $\REG$ is the \emph{smallest} class of languages that
 contains every finite language and is closed under union, concatenation, and star. (One half
 is the closures above; the other half -- that everything regular is reachable this way -- is
-the content of regular expressions, taken up next.) The product construction of Section~2
-adds the Boolean operations: regular languages are closed under \emph{intersection} (run two
+the content of regular expressions, taken up next.) The constructions of Section~4.2
+add the Boolean operations: regular languages are closed under \emph{intersection} (run two
 DFAs in lockstep, accept when both accept) and under \emph{complement} (run one DFA, swap
 accepting and non-accepting states). Together these make $\REG$ closed under union,
 intersection, complement, concatenation, star, and reversal.
@@ -8766,7 +8766,7 @@ $q_0$, and indeed $\eps$ does not end in \str{1}.
 Swapping accept states computes the complement \emph{only for a DFA}. For an NFA the trick
 fails: an NFA may have both an accepting and a non-accepting branch on the same input, so
 flipping accept-status does \emph{not} flip the accept/reject verdict. To complement a language
-given by an NFA, first convert to a DFA (subset construction, Section~4), then swap. A second
+given by an NFA, first convert to a DFA (subset construction, Section~4.4), then swap. A second
 trap: the DFA must be \emph{total} -- every state needs an outgoing edge for every symbol -- or
 a missing edge silently becomes an implicit reject that swapping will not catch. Add the dead
 state first if needed.
@@ -8789,7 +8789,7 @@ Goal: show that if the inputs are regular then the output is regular.
         and every target string is accepted, usually by reading off what each $\eps$-jump
         commits the computation to.
   \item \textbf{Invoke equivalence.} An NFA recognizing the result certifies the result is
-        regular (Section~4). Done.
+        regular (Section~4.4). Done.
 \end{enumerate}
 \end{method}
 
