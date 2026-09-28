@@ -36560,13 +36560,13 @@ problems are grouped, each with one example quoted from a specific problem.
 \begin{tikzpicture}[node distance=10mm and 16mm]
 
   % --- shared ground (centre): what the bridge problems repeatedly use ---
-  \node[core,text width=52mm] (gnd)
+  \node[core,text width=62mm] (gnd)
      {\textbf{shared ground}\\finite structures, encoded as strings,\\with decision and counting problems};
 
   % --- the three fields ---
   \node[topic=cGraph,above=22mm of gnd] (graph) {Graph Theory};
-  \node[topicw=cComb,below left=22mm and 30mm of gnd] (comb) {Combinatorics};
-  \node[topicw=cComp,below right=22mm and 30mm of gnd] (comp) {Theory of\\Computation};
+  \node[topicw=cComb,below left=22mm and 25mm of gnd] (comb) {Combinatorics};
+  \node[topicw=cComp,below right=22mm and 25mm of gnd] (comp) {Theory of\\Computation};
 
   % --- bridge edges A,B,C: each pairing is a block of 5 bridge problems ---
   \draw[brid] (comb.north) to[out=80,in=190]
@@ -36581,9 +36581,9 @@ problems are grouped, each with one example quoted from a specific problem.
 
   % --- bridge D: all three meet at the shared ground ---
   \draw[brid,draw=cCore!75] (graph.south) -- (gnd.north);
-  \draw[brid,draw=cCore!75] (comb.east)   -- (gnd.south west);
-  \draw[brid,draw=cCore!75] (comp.west)   -- (gnd.south east);
-  \node[edgelbl,align=center,text=cCore!80,right=15mm of gnd]
+  \draw[brid,draw=cCore!75] (comb.north east) -- (gnd.south west);
+  \draw[brid,draw=cCore!75] (comp.north west) -- (gnd.south east);
+  \node[edgelbl,align=center,text=cCore!80] at ($(graph.south)!0.5!(gnd.north)$)
      {\textbf{D.\ all three.}\\count $3$-colorings $P_G(3)$:\\deciding $>0$ is NP-complete,\\counting is $\#$P-hard};
 
 \end{tikzpicture}
@@ -36600,15 +36600,15 @@ those problems do not establish.
 
 \section{A Ten-Week Integrated Study Plan}
 
-This plan runs ten weeks at an upper-division pace, interleaving Graph Theory, Theory of Computability, and Combinatorics so that each subject continually supplies the objects, counting tools, and lower-bound arguments the others need. Four standing bridges recur throughout: \textbf{Bridge A} (graphs as binary relations and automata/Turing tableaux as labelled directed graphs), \textbf{Bridge B} (counting and generating functions as the bookkeeping for structures, runs, and state spaces), \textbf{Bridge C} (pigeonhole/Ramsey/extremal arguments as the engine behind both combinatorial existence proofs and computational lower bounds), and \textbf{Bridge D} (reductions and diagonalization as structure-preserving maps between graph problems, languages, and counting problems).
+This plan runs ten weeks at an upper-division pace, interleaving Graph Theory, Theory of Computability, and Combinatorics so that each subject continually supplies the objects, counting tools, and lower-bound arguments the others need. Four standing bridges (thematic ones, not the field-pairings A--D of the concept map) recur throughout: \textbf{Bridge A} (graphs as binary relations and automata/Turing tableaux as labelled directed graphs), \textbf{Bridge B} (counting and generating functions as the bookkeeping for structures, runs, and state spaces), \textbf{Bridge C} (pigeonhole/Ramsey/extremal arguments as the engine behind both combinatorial existence proofs and computational lower bounds), and \textbf{Bridge D} (reductions and diagonalization as structure-preserving maps between graph problems, languages, and counting problems).
 
 \textbf{Week 1 -- Foundations: sets, relations, induction, and graphs as relations}
 \begin{itemize}
   \item \emph{Combinatorics/foundations:} sets, functions, equivalence and order relations, well-ordering, weak/\allowbreak strong induction, structural induction.
   \item \emph{Graph theory:} a (di)graph as a relation $E \subseteq V \times V$; symmetry $=$ undirected, reflexivity $=$ loops, transitive closure $=$ reachability; adjacency matrix.
-  \item \emph{Computability (preview):} a deterministic transition function $\delta$ is just a relation on (state, symbol) pairs --- foreshadow Bridge A.
+  \item \emph{Computability (preview):} a deterministic transition function $\delta$ is just a relation from (state, symbol) pairs to states --- foreshadow Bridge A.
   \item \emph{Bridge worked:} \textbf{Bridge A} introduced --- prove reachability $=$ transitive closure of $E$, and read $A^k$ entries as walk counts.
-  \item \emph{Deliverables:} (1) prove by induction $|2^S| = 2^{|S|}$; (2) show a relation is an equivalence relation iff its graph is a disjoint union of cliques.
+  \item \emph{Deliverables:} (1) prove by induction $|2^S| = 2^{|S|}$; (2) show a relation is an equivalence relation iff its graph is a disjoint union of cliques with a loop at every vertex.
   \item \emph{Why together:} every later object (graph, automaton, tableau) is a relation, so relational induction is the shared substrate.
 \end{itemize}
 
@@ -36645,7 +36645,7 @@ This plan runs ten weeks at an upper-division pace, interleaving Graph Theory, T
 \textbf{Week 5 -- Colorings, chromatic structure, and the Ramsey/extremal engine}
 \begin{itemize}
   \item \emph{Graph theory:} proper colorings, chromatic number, chromatic polynomial, bipartite $=$ 2-colorable $=$ no odd cycle.
-  \item \emph{Combinatorics:} Ramsey numbers $R(s,t)$, $R(3,3)=6$, probabilistic lower bound; extremal flavor via Turan's theorem.
+  \item \emph{Combinatorics:} Ramsey numbers $R(s,t)$, $R(3,3)=6$, probabilistic lower bound; extremal flavor via Tur\'an's theorem.
   \item \emph{Computability (preview):} $k$-coloring and clique as decision problems we will prove hard in Week 10.
   \item \emph{Bridge worked:} \textbf{Bridge C} fully developed --- pigeonhole generalizes to Ramsey; the same counting bound that proves $R(s,t)$ exists later forces computational structure.
   \item \emph{Deliverables:} (1) prove $R(3,3)=6$; (2) compute a chromatic polynomial and verify it counts proper colorings.
@@ -36654,10 +36654,10 @@ This plan runs ten weeks at an upper-division pace, interleaving Graph Theory, T
 
 \textbf{Week 6 -- Matchings, Hall's theorem, and connectivity}
 \begin{itemize}
-  \item \emph{Graph theory:} bipartite matchings, Hall's marriage theorem, Konig's theorem, augmenting paths, vertex/edge connectivity, Menger's theorem.
-  \item \emph{Combinatorics:} systems of distinct representatives, Latin-square completion as a matching problem.
+  \item \emph{Graph theory:} bipartite matchings, Hall's marriage theorem, K\"onig's theorem, augmenting paths, vertex/edge connectivity, Menger's theorem.
+  \item \emph{Combinatorics:} systems of distinct representatives, Latin-rectangle completion as a matching problem.
   \item \emph{Computability (preview):} matching is in P via augmenting paths --- a tractable contrast to the hard problems of Week 10.
-  \item \emph{Bridge worked:} \textbf{Bridge A} reused --- alternating/augmenting paths are walks in a derived graph; min-max duality (Hall/Konig/Menger) previews reduction thinking (Bridge D).
+  \item \emph{Bridge worked:} \textbf{Bridge A} reused --- alternating/augmenting paths are walks in a derived graph; min-max duality (Hall/K\"onig/Menger) previews reduction thinking (Bridge D).
   \item \emph{Deliverables:} (1) prove Hall's theorem; (2) reduce an SDR existence question to a bipartite matching and solve it.
   \item \emph{Why together:} matchings show an efficiently solvable graph problem and a min--max duality that reductions later exploit.
 \end{itemize}
@@ -36684,21 +36684,21 @@ This plan runs ten weeks at an upper-division pace, interleaving Graph Theory, T
 
 \textbf{Week 9 -- Decidability, reductions, and the halting problem}
 \begin{itemize}
-  \item \emph{Computability:} decidable vs.\ recognizable languages, the halting problem via diagonalization, mapping reductions $\le_m$, Rice's theorem.
+  \item \emph{Computability:} decidable vs.\ recognizable languages, the halting problem via diagonalization, mapping reductions $\redm$, Rice's theorem.
   \item \emph{Graph theory:} graph decision problems ($s$--$t$ reachability decidable; emptiness/equivalence of automata as graph questions).
   \item \emph{Combinatorics:} reductions as structure-preserving maps --- the same bijective discipline from Week 3, now between problems.
   \item \emph{Bridge worked:} \textbf{Bridge D} at full strength --- a reduction is a map that preserves yes-instances, the computational analogue of a bijection.
-  \item \emph{Deliverables:} (1) prove $A_{TM}$ undecidable, then reduce it to show $HALT_{TM}$ undecidable; (2) classify two automaton properties via Rice's theorem.
+  \item \emph{Deliverables:} (1) prove $\ATM$ undecidable, then reduce it to show $\HALT$ undecidable; (2) classify two automaton properties via Rice's theorem.
   \item \emph{Why together:} reductions are the unifying morphism --- bijections count, reductions transfer (un)solvability, and both preserve structure.
 \end{itemize}
 
 \textbf{Week 10 -- The complexity bridge: NP-completeness, SAT-to-graph, counting complexity (synthesis/capstone prep)}
 \begin{itemize}
   \item \emph{Complexity:} P vs.\ NP, polynomial-time reductions, Cook--Levin (SAT NP-complete), NP-complete graph problems (CLIQUE, INDEPENDENT-SET, VERTEX-COVER, $k$-COLORING, HAMILTONIAN).
-  \item \emph{Graph theory:} SAT-to-graph reductions (3-SAT $\le_p$ CLIQUE, $\le_p$ 3-COLOR) realized as explicit gadget graphs.
+  \item \emph{Graph theory:} SAT-to-graph reductions (3-SAT $\redp$ CLIQUE, $\redp$ 3-COLOR) realized as explicit gadget graphs.
   \item \emph{Combinatorics:} counting complexity --- \#P, permanent vs.\ determinant, \#-counting perfect matchings as the hard sibling of Week 6.
   \item \emph{Bridge worked:} all four converge --- \textbf{A} (gadgets are graphs), \textbf{B} (\#P counts the structures of Weeks 3--5), \textbf{C} (Ramsey-in-computation: unavoidable substructure forcing hardness), \textbf{D} (poly-time reductions complete the reduction story).
-  \item \emph{Deliverables:} (1) carry out the 3-SAT $\le_p$ CLIQUE reduction on a concrete formula and prove correctness; (2) capstone proposal --- pick one NP-complete graph problem and write its reduction, its \#P counting version, and its Ramsey/extremal flavor.
+  \item \emph{Deliverables:} (1) carry out the 3-SAT $\redp$ CLIQUE reduction on a concrete formula and prove correctness; (2) capstone proposal --- pick one NP-complete graph problem and write its reduction, its \#P counting version, and its Ramsey/extremal flavor.
   \item \emph{Why together:} the capstone shows a single problem wearing all three hats --- a graph, a count, and a computation --- which is the entire point of interleaving the subjects.
 \end{itemize}
 
@@ -36741,7 +36741,7 @@ where $c(S)$ is the number of connected components of the spanning
 subgraph $(V(G),S)$. Conclude that $P_G$ is a polynomial in $k$ of degree
 $|V(G)|$ (the chromatic polynomial). Compute $P_G(k)$ explicitly for the
 cycle $C_4$ and for $K_4$. Finally, explain the computational-complexity
-intuition: evaluating $P_G$ at a fixed integer is \#P-hard in general,
+intuition: evaluating $P_G$ at a fixed integer $k\ge 3$ is \#P-hard in general,
 even though the formula above is a finite sum.
 \textit{Hint: a coloring is proper iff it violates the constraint on $S=\emptyset$ and no nonempty $S$; expand $\prod_{e}(1-[\text{$e$ monochromatic}])$.}
 \end{bridgeprob}
@@ -36795,13 +36795,13 @@ digraph the Hamiltonian-path question is hard.
 Give a polynomial-time reduction $\CSAT \redp \textsc{3-Color}$, where
 $\textsc{3-Color}$ asks whether a given graph is properly $3$-colorable.
 Describe the standard gadget construction: a ``palette triangle'' with
-nodes True/False/Base, a variable gadget for each literal, and an OR-gadget
+nodes True/False/Base, a variable gadget for each variable, and an OR-gadget
 (the $5$-node gadget) for each clause. For a formula with $n$ variables
 and $m$ clauses, count exactly how many vertices and edges your reduced
 graph has as functions of $n$ and $m$, and verify the count is
 polynomial. Prove correctness in both directions (satisfying assignment
 $\Leftrightarrow$ proper $3$-coloring).
-\textit{Hint: the clause OR-gadget forces its output node to color ``True'' iff at least one input literal is colored ``True''.}
+\textit{Hint: the clause OR-gadget can be properly $3$-colored with its output node colored ``True'' iff at least one input literal is colored ``True''.}
 \end{bridgeprob}
 
 \begin{bridgeprob}
@@ -36829,8 +36829,8 @@ Define
 \HAMPATH = \{\,\langle G,s,t\rangle : G \text{ has a Hamiltonian
 path from } s \text{ to } t\,\}.
 \]
-(a) For the specific graph $G_0$ given
-below (the $3\times 3$ king graph, say) count by hand the number of
+(a) For a specific small graph $G_0$
+(the $3\times 3$ king graph, say, with $s$ and $t$ opposite corners) count by hand the number of
 Hamiltonian $s$--$t$ paths and exhibit one. (b) Prove
 $\HAMPATH \in \classNP$ by describing the certificate and the
 polynomial-time verifier. (c) Sketch the reduction $\textsc{3SAT}
@@ -36889,7 +36889,7 @@ $\aleph_0$ deciders but $2^{\aleph_0}$ languages.
 
 \begin{bridgeprob}
 \textbf{[Combinatorics + Computability]}
-Let $N$ be an NFA with state set $Q$, $|Q|=k$, over alphabet $\Sigma$.
+Let $N$ be an NFA without $\eps$-transitions, with state set $Q$, $|Q|=k$, over alphabet $\Sigma$.
 (a) For a fixed input string $w$ of length $n$, set up a transfer-matrix
 (generating-function) method: let $A_a$ be the $k\times k$ Boolean (or
 integer) transition matrix for symbol $a$. Show that the number of
@@ -36930,7 +36930,7 @@ is $\#\classP$-complete. (c) Contrast with the case of a single
 read-once / disjoint-clause formula, where the count factors and is
 computable in polynomial time. State precisely the relationship between
 $\textsc{SAT} \in \classNP$ and $\#\textsc{SAT} \in \#\classP$.
-\textit{Hint: let $B_i$ be the set of assignments violating clause $C_i$ (all literals false); then $\#$falsifying $= |\bigcup_i B_i|$ by inclusion--exclusion, and each $|B_{i_1}\cap\cdots\cap B_{i_t}|$ is a power of two.}
+\textit{Hint: let $B_i$ be the set of assignments violating clause $C_i$ (all literals false); then $\#$falsifying $= |\bigcup_i B_i|$ by inclusion--exclusion, and each $|B_{i_1}\cap\cdots\cap B_{i_t}|$ is $0$ or a power of two.}
 \end{bridgeprob}
 
 \begin{bridgeprob}
@@ -36956,10 +36956,10 @@ function. Reconcile ``finite at each $n$'' with ``uncomputable overall.''
 \begin{bridgeprob}
 \textbf{[Graph + Combinatorics + Computability]}
 Consider counting proper $3$-colorings of a graph $G$, i.e.\ evaluating
-the chromatic polynomial $P_G(3)$. (a) Combinatorics: using deletion--
-contraction $P_G = P_{G-e} - P_{G/e}$, compute $P_G(3)$ for the cycle
+the chromatic polynomial $P_G(3)$. (a) Combinatorics: using
+deletion--contraction $P_G = P_{G-e} - P_{G/e}$, compute $P_G(3)$ for the cycle
 $C_5$ and the wheel $W_4$ by hand. (b) Graph theory: relate $P_G(3) > 0$
-to $3$-colorability and exhibit the unique recursion tree of the
+to $3$-colorability and exhibit a recursion tree of the
 deletion--contraction expansion, bounding its size. (c) Computability:
 explain why \emph{deciding} $P_G(3)>0$ is $\classNP$-complete (it is
 $\textsc{3-Color}$) while \emph{computing} the exact value $P_G(3)$ is
@@ -36989,12 +36989,12 @@ Random graphs and the first-moment method. Let $G(n,1/2)$ be the
 Erd\H{o}s--R\'enyi random graph. (a) Combinatorics/probabilistic method:
 compute the expected number of cliques of size $k$ as
 $\binom{n}{k} 2^{-\binom{k}{2}}$ and find the threshold $k^\ast(n)\approx
-2\log_2 n$ at which this expectation drops below $1$, giving a high-
-probability upper bound on the clique number. (b) Graph theory: relate
+2\log_2 n$ at which this expectation drops below $1$, giving a
+high-probability upper bound on the clique number. (b) Graph theory: relate
 this to $\CLIQUE$ as a graph property. (c) Computability/complexity:
 discuss the (conjectured) hardness of \emph{finding} a clique of size
-$(1+\varepsilon)\log_2 n$ in $G(n,1/2)$ (the planted-clique / hidden-
-clique problem) versus the easy first-moment \emph{existence} bound, and
+$(1+\varepsilon)\log_2 n$ in $G(n,1/2)$ (an open problem posed by Karp in 1976,
+related to the planted-clique problem) versus the easy first-moment \emph{existence} bound, and
 connect this gap to the broader non-constructiveness theme.
 \textit{Hint: $\mathbb{E}[\#\text{$k$-cliques}] = \binom{n}{k}2^{-\binom{k}{2}}$; when this is $o(1)$, Markov's inequality says no $k$-clique exists w.h.p.}
 \end{bridgeprob}
@@ -37019,8 +37019,8 @@ strong connectivity of the DFA digraph relates to Perron--Frobenius.
 \textbf{[Graph + Combinatorics + Computability]}
 Tilings, the Domino problem, and matchings. (a) Graph + combinatorics:
 prove that the number of domino tilings (perfect matchings) of the
-$2 \times n$ grid graph is the Fibonacci number $F_{n+1}$, by a transfer-
-matrix recurrence on a $2$-state ``column profile.'' (b) Combinatorics:
+$2 \times n$ grid graph is the Fibonacci number $F_{n+1}$, by a
+transfer-matrix recurrence on a $2$-state ``column profile.'' (b) Combinatorics:
 state Kasteleyn's theorem that perfect matchings of a planar graph can be
 counted in polynomial time via a Pfaffian/determinant, contrasting with
 the $\#\classP$-hardness of the permanent (general bipartite matching
@@ -37051,22 +37051,22 @@ brute-force or ILP checker) and verify answers agree on thousands of random
 $3$-CNF instances at varied clause-to-variable ratios. The stretch goal is to
 fit the empirical blow-up curves, locate the phase-transition ratio where
 instances are hardest, and contrast clause-driven against variable-driven
-growth across the four reductions.
+growth across these reductions.
 \end{capstone}
 
 \begin{capstone}
-\textbf{Enumerating Small Graphs with Burnside and Polya, and the Complexity of
+\textbf{Enumerating Small Graphs with Burnside and P\'olya, and the Complexity of
 Their Properties.}
 How many non-isomorphic graphs on $n$ vertices have a given property, and is
 deciding that property easy or hard once the graph is in hand? Combinatorics
-enters through the Burnside lemma and Polya enumeration applied to the action
+enters through the Burnside lemma and P\'olya enumeration applied to the action
 of $S_n$ on the $\binom{n}{2}$ possible edges; graph theory enters through the
 properties tested (connectivity, planarity, $k$-colorability, Hamiltonicity);
 theory of computability enters by classifying each property's decision problem
 in $\classP$ versus $\classNP$ and contrasting that with the cost of the
 enumeration itself. Implement an orderly-generation or canonical-augmentation
-enumerator that lists all graphs on $n \le 8$ vertices up to isomorphism, cross-
-check the totals against the Polya cycle-index prediction, and tabulate how many
+enumerator that lists all graphs on $n \le 8$ vertices up to isomorphism,
+cross-check the totals against the P\'olya cycle-index prediction, and tabulate how many
 realize each property. The stretch goal is to push to $n = 10$ with a
 nauty-style canonical labeling and empirically estimate the proportion of graphs
 that are Hamiltonian, comparing the trend to known asymptotic results.
@@ -37078,11 +37078,11 @@ Counting Languages.}
 Which regular languages can be defined without counting modulo anything, and how
 does that algebraic boundary show up in the structure of their automata? Theory
 of computability provides the regular-expression $\to$ NFA $\to$ DFA $\to$
-syntactic-monoid pipeline and the Schutzenberger characterization of star-free
+syntactic-monoid pipeline and the Sch\"utzenberger characterization of star-free
 languages by aperiodic monoids; graph theory views each automaton as a labeled
 directed graph whose strongly connected components and cycle structure encode
 counting behavior; combinatorics counts the monoid elements, the distinct
-Myhill-Nerode classes, and the growth of accepted strings by length. Implement
+Myhill--Nerode classes, and the growth of accepted strings by length. Implement
 the full pipeline with Thompson construction, subset-construction
 determinization, Hopcroft minimization, and transition-monoid computation, then
 test each syntactic monoid for aperiodicity to decide star-freeness. The stretch
@@ -37095,9 +37095,9 @@ size.
 \textbf{Estimating Ramsey Numbers by the Probabilistic Method, and the
 Complexity of the Search.}
 For which $n$ does every red/blue edge-coloring of $K_n$ contain a monochromatic
-$K_k$, and how hard is it to find good colorings that push the lower bound? Combina-
-torics enters through the probabilistic method, the union bound, and the
-Lovasz Local Lemma that together yield existence proofs and lower bounds; graph
+$K_k$, and how hard is it to find good colorings that push the lower bound?
+Combinatorics enters through the probabilistic method, the union bound, and the
+Lov\'asz Local Lemma that together yield existence proofs and lower bounds; graph
 theory enters through complete graphs, their colorings, and monochromatic-clique
 detection; theory of computability enters through the complexity of verifying a
 coloring and the exponential blow-up of exhaustive search. Implement a
@@ -37149,12 +37149,12 @@ polynomial time, yet counting all of them is $\classNP$-hard and indeed
 $\#\classP$-complete. Graph theory enters through bipartite graphs, matchings,
 and Hall's theorem linking the existence of a perfect matching to a
 combinatorial neighborhood condition; combinatorics enters through the permanent
-of the biadjacency matrix as the exact count and through inclusion-exclusion
+of the biadjacency matrix as the exact count and through inclusion--exclusion
 formulas; theory of computability enters through counting complexity and the
 contrast between the easy decision problem and the hard counting problem.
-Implement Hopcroft-Karp for existence, exact permanent computation by Ryser's
-inclusion-exclusion formula for the count, and a Markov-chain or
-Godsil-Gutman estimator for approximation. The stretch goal is to benchmark the
+Implement Hopcroft--Karp for existence, exact permanent computation by Ryser's
+inclusion--exclusion formula for the count, and a Markov-chain or
+Godsil--Gutman estimator for approximation. The stretch goal is to benchmark the
 exact-versus-approximate gap on random bipartite graphs and visualize how Ryser's
 $\bigTheta(2^n n)$ cost makes the counting problem intractable well before the
 matching decision problem strains.
@@ -37169,9 +37169,9 @@ Kuratowski/Wagner forbidden minors, and the chromatic number; theory of
 computability enters through the $\classP$ planarity test, the linear-time
 $5$-coloring, and the $\classNP$-completeness of planar $3$-coloring via the
 crossing gadget; combinatorics enters through the chromatic polynomial and the
-deletion-contraction recurrence that counts colorings. Implement a planarity
+deletion--contraction recurrence that counts colorings. Implement a planarity
 tester, a constructive $5$-coloring driven by repeatedly removing a degree-$\le 5$
-vertex, and a chromatic-polynomial evaluator by deletion-contraction. The stretch
+vertex, and a chromatic-polynomial evaluator by deletion--contraction. The stretch
 goal is to add a planar $3$-coloring SAT-solver front end, generate the crossing
 gadgets automatically, and contrast solver runtime on planar versus general
 instances to make the complexity gap tangible.
@@ -37188,7 +37188,7 @@ runtime is $\bigO(f(k)\cdot n)$ rather than $\bigO(n^k)$; combinatorics enters
 through counting independent sets or colorings by aggregating partial solutions
 across the bags of the decomposition. Implement a heuristic tree-decomposition
 builder plus a dynamic program that solves maximum independent set and counts
-$k$-colorings over the decomposition. The stretch goal is to empirically plot
+$q$-colorings over the decomposition. The stretch goal is to empirically plot
 runtime against measured treewidth on random and structured graphs, confirming
 the exponential-in-$k$ but linear-in-$n$ behavior and locating where the
 heuristic decomposition degrades.
@@ -37204,7 +37204,7 @@ the automaton as a labeled digraph and reading sequence values as outputs of
 walks indexed by digit strings; combinatorics enters through the transfer-matrix
 method, where powers of the transition matrix count walks and yield the
 generating function of digit-sum and pattern statistics. Implement an
-automaton-driven generator for sequences such as Thue-Morse and Stern-Brocot,
+automaton-driven generator for sequences such as Thue--Morse and Rudin--Shapiro,
 build the transfer matrix, and compute occurrence counts of factors via
 matrix powers. The stretch goal is to decide algorithmically whether a candidate
 sequence is automatic by minimizing the conjectured automaton and checking the
@@ -37217,101 +37217,35 @@ density of a chosen pattern.
 The following is the Mermaid source for the integrated concept map, renderable at mermaid.live or with mermaid-cli.
 
 \begin{verbatim}
+%%{init: {"theme": "neutral"}}%%
 flowchart TB
-    CORE["Discrete structure + finite description + computation + counting"]
+    GT["Graph Theory"]
+    SG["shared ground
+finite structures, encoded as strings,
+with decision and counting problems"]
+    CB["Combinatorics"]
+    TC["Theory of Computation"]
 
-    subgraph Foundations
-        SET[Sets and functions]
-        LOGIC[Logic and proof]
-        REL[Relations and orders]
-        INDUCT[Induction and recursion]
-        CARD[Cardinality and countability]
-    end
+    GT <== "A. Graph + Comb.
+Cayley n^(n-2) trees
+(Prüfer bijection)" ==> CB
+    GT <== "B. Graph + Comp.
+3SAT <=p HAMPATH" ==> TC
+    CB <== "C. Comb. + Comp.
+countably many programs,
+uncountably many languages" ==> TC
+    GT <== "D. all three.
+count 3-colorings P_G(3):
+deciding > 0 is NP-complete,
+counting is #P-hard" ==> SG
+    SG <== "D" ==> CB
+    SG <== "D" ==> TC
 
-    subgraph Combinatorics
-        COUNT[Basic counting rules]
-        BINOM[Binomial coefficients]
-        CATALAN[Catalan numbers]
-        INCEXC[Inclusion-exclusion]
-        RAMSEY["Ramsey R k,k"]
-        GENFUN[Generating functions]
-    end
+    classDef field fill:#f0f0f0,stroke:#404040,color:#000;
+    classDef core fill:#ebebeb,stroke:#000,stroke-width:2px,color:#000,font-weight:bold;
 
-    subgraph GraphTheory
-        GRAPH[Graphs and adjacency]
-        TREE[Trees and spanning trees]
-        CL["Cayley: n^(n-2) trees"]
-        CONN[Connectivity and paths]
-        COLOR[Graph coloring]
-        MATCH[Matchings]
-    end
-
-    subgraph Computability
-        TM[Turing machines]
-        DIAG[Diagonalization]
-        HALT[Halting problem]
-        RICE[Rice's theorem]
-        PATHNL[PATH in NL]
-        CSATCLQ["3SAT -> CLIQUE"]
-        NPC[NP-completeness]
-    end
-
-    SET --> LOGIC --> INDUCT --> REL --> CARD
-    COUNT --> BINOM --> CATALAN
-    COUNT --> INCEXC
-    BINOM --> RAMSEY
-    BINOM --> GENFUN
-    GRAPH --> TREE --> CL
-    GRAPH --> CONN --> COLOR
-    CONN --> MATCH
-    TM --> DIAG --> HALT --> RICE
-    TM --> PATHNL
-    CSATCLQ --> NPC
-
-    A{{"Bridge A: counting structures"}}
-    B{{"Bridge B: structures as graphs"}}
-    C{{"Bridge C: decision problems"}}
-    D{{"Bridge D: infinite vs finite"}}
-
-    CARD ==> D
-    DIAG ==> D
-    BINOM ==> A
-    CATALAN ==> A
-    TREE ==> B
-    CL ==> B
-    GRAPH ==> B
-    CONN ==> C
-    CSATCLQ ==> C
-    PATHNL ==> C
-
-    A ==> CORE
-    B ==> CORE
-    C ==> CORE
-    D ==> CORE
-
-    INDUCT -.-> COUNT
-    REL -.-> GRAPH
-    CARD -.-> DIAG
-    RAMSEY -.-> COLOR
-    GENFUN -.-> CATALAN
-    MATCH -.-> CSATCLQ
-    COLOR -.-> NPC
-    INCEXC -.-> CONN
-    HALT -.-> NPC
-
-    classDef found fill:#e8eef5,stroke:#5b7a99,color:#1d2d3d;
-    classDef comb fill:#eef3e8,stroke:#7a9959,color:#28341d;
-    classDef graph fill:#f5efe8,stroke:#99795b,color:#3d2e1d;
-    classDef comp fill:#f3e8f0,stroke:#995b86,color:#3d1d33;
-    classDef core fill:#fff7d6,stroke:#b59a00,color:#3d3300,font-weight:bold;
-    classDef bridge fill:#e3e3e3,stroke:#666,color:#222;
-
-    class SET,LOGIC,REL,INDUCT,CARD found;
-    class COUNT,BINOM,CATALAN,INCEXC,RAMSEY,GENFUN comb;
-    class GRAPH,TREE,CL,CONN,COLOR,MATCH graph;
-    class TM,DIAG,HALT,RICE,PATHNL,CSATCLQ,NPC comp;
-    class A,B,C,D bridge;
-    class CORE core;
+    class GT,CB,TC field;
+    class SG core;
 \end{verbatim}
 
 
