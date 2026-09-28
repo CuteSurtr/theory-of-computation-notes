@@ -17611,7 +17611,7 @@ condition.
 \chapter{Decidability}
 
 \section{Decidable Problems about Automata and Grammars}
-A \emph{decision problem} asks a yes/no question about an input, and we encode it as a language: the set of (suitably encoded) inputs whose answer is ``yes.'' To say the problem is \emph{decidable} is to say some Turing machine \emph{halts on every input} and answers correctly -- it never loops. The one key idea of this section is that every natural question we can ask about a finite automaton, a regular expression, or a context-free grammar -- ``does it accept this string?'', ``is its language empty?'', ``do these two machines agree?'' -- has such an always-halting decider, because each of these objects is a \emph{finite} description that an algorithm can read, simulate, and exhaust. This sets the stage for the next sections, where the same questions asked about \emph{Turing machines} will turn out to have no decider at all.
+A \emph{decision problem} asks a yes/no question about an input, and we encode it as a language: the set of (suitably encoded) inputs whose answer is ``yes.'' To say the problem is \emph{decidable} is to say some Turing machine \emph{halts on every input} and answers correctly -- it never loops. The one key idea of this section is that many natural questions we can ask about a finite automaton, a regular expression, or a context-free grammar -- ``does it accept this string?'', ``is its language empty?'', ``do these two machines agree?'' -- have such an always-halting decider, because each of these objects is a \emph{finite} description that an algorithm can read, simulate, and exhaust. This sets the stage for the next sections, where the same questions asked about \emph{Turing machines} will turn out to have no decider at all.
 
 Throughout, $\enc{B}$ denotes a string encoding of an object $B$ (a DFA, NFA, regular expression, or grammar), and $\enc{B,w}$ a string encoding of a pair. A decider may begin by checking that its input has the right form and rejecting if not; we suppress that boilerplate and describe only the interesting work.
 
@@ -17628,7 +17628,7 @@ We package the section's problems as languages:
 \ADFA &= \set{\enc{B,w} \st B \text{ is a DFA and } B \text{ accepts } w},\\
 \ANFA &= \set{\enc{B,w} \st B \text{ is an NFA and } B \text{ accepts } w},\\
 A_{\mathsf{REX}} &= \set{\enc{R,w} \st R \text{ is a regular expression and } R \text{ generates } w},\\
-\E_{mathsf{DFA}} &= \set{\enc{A} \st A \text{ is a DFA and } \lang{A}=\es},\\
+\E_{\mathsf{DFA}} &= \set{\enc{A} \st A \text{ is a DFA and } \lang{A}=\es},\\
 \mathit{EQ}_{\mathsf{DFA}} &= \set{\enc{A,B} \st A,B \text{ are DFAs and } \lang{A}=\lang{B}},\\
 \ACFG &= \set{\enc{G,w} \st G \text{ is a CFG and } G \text{ generates } w},\\
 E_{\mathsf{CFG}} &= \set{\enc{G} \st G \text{ is a CFG and } \lang{G}=\es}.
@@ -17706,10 +17706,10 @@ Show how $A_{\mathsf{REX}}$, $\ANFA$, and $\ADFA$ stack: a single instance $\enc
   \node[procbox,right=of nfa] (dfa) {$M_1$: simulate $C$ on $w$};
   \node[left=14mm of rex] (in) {$\enc{R,w}$};
   \node[right=14mm of dfa] (out) {accept / reject};
-  \path[flow] (in) -- (rex);
-  \path[flow] (rex) -- node[flowlbl]{$\enc{A,w}$} (nfa);
-  \path[flow] (nfa) -- node[flowlbl]{$\enc{C,w}$} (dfa);
-  \path[flow] (dfa) -- (out);
+  \draw[flow] (in) -- (rex);
+  \draw[flow] (rex) -- node[flowlbl]{$\enc{A,w}$} (nfa);
+  \draw[flow] (nfa) -- node[flowlbl]{$\enc{C,w}$} (dfa);
+  \draw[flow] (dfa) -- (out);
 \end{tikzpicture}%
 }
 \end{center}
@@ -17726,7 +17726,7 @@ Theorems~\ref{thm:adfa@c9}--\ref{thm:arex@c9} say that for \emph{decidability} p
 Acceptance asks about \emph{one} string. Emptiness asks about \emph{all} strings at once: does the DFA accept anything? We cannot try every string -- there are infinitely many -- so we switch from simulation to a finite \emph{graph} search on the state diagram.
 
 \begin{theorem}\label{thm:edfa@c9}
-$\E_{mathsf{DFA}}$ is decidable.
+$\E_{\mathsf{DFA}}$ is decidable.
 \end{theorem}
 
 \begin{proof}
@@ -17736,11 +17736,11 @@ A DFA accepts \emph{some} string iff there is a directed path of transition arro
   \item repeat until a pass marks nothing new: mark any state that has an incoming transition arrow from an already-marked state;
   \item if no accept state ever got marked, \emph{accept} (the language is empty); otherwise \emph{reject}.
 \end{enumerate}
-There are finitely many states, and each round either marks a new state or stops, so at most $\abs{Q}$ rounds occur and $T$ halts. The marked states are exactly those reachable from $\qstart$; hence an accept state is marked iff some accepting path exists iff $\lang{A}\neq\es$. So $T$ accepts $\enc{A}$ iff $\lang{A}=\es$, and $T$ decides $\E_{mathsf{DFA}}$.
+There are finitely many states, and each round either marks a new state or stops, so at most $\abs{Q}$ rounds occur and $T$ halts. The marked states are exactly those reachable from $\qstart$; hence an accept state is marked iff some accepting path exists iff $\lang{A}\neq\es$. So $T$ accepts $\enc{A}$ iff $\lang{A}=\es$, and $T$ decides $\E_{\mathsf{DFA}}$.
 \end{proof}
 
 \begin{wex}{Running the emptiness marking algorithm}
-Decide $\enc{A}\in\E_{mathsf{DFA}}$ for the DFA $A$ below over $\Sig=\set{0,1}$: states $s,t,u,v$, start $s$, the only accept state $v$, with $\trans(s,0)=t$, $\trans(s,1)=u$, $\trans(t,0)=\trans(t,1)=t$, $\trans(u,0)=\trans(u,1)=u$, and $v$ unreachable (it loops to itself on both symbols).
+Decide $\enc{A}\in\E_{\mathsf{DFA}}$ for the DFA $A$ below over $\Sig=\set{0,1}$: states $s,t,u,v$, start $s$, the only accept state $v$, with $\trans(s,0)=t$, $\trans(s,1)=u$, $\trans(t,0)=\trans(t,1)=t$, $\trans(u,0)=\trans(u,1)=u$, and $v$ unreachable (it loops to itself on both symbols).
 \wrec Emptiness is \emph{reachability of an accept state from the start}; the trigger is ``does the machine accept any string at all,'' answered by marking reachable states, not by trying strings.
 \wsol Draw $A$ and run the marks. The accept state $v$ sits off to the side with no arrow into it from the reachable part.
 \begin{center}
@@ -17757,7 +17757,7 @@ Decide $\enc{A}\in\E_{mathsf{DFA}}$ for the DFA $A$ below over $\Sig=\set{0,1}$:
 \end{tikzpicture}
 \end{center}
 Marking: round~0 marks $\set{s}$; round~1 adds $\set{t,u}$ (both have an arrow from $s$); round~2 adds nothing new ($t,u$ only point at themselves, and nothing points at $v$). Marked set is $\set{s,t,u}$. The accept state $v$ is \emph{not} marked, so $T$ accepts: $\lang{A}=\es$.
-\whichrule{$\E_{mathsf{DFA}}$'s decider is the reachability marking of Theorem~\ref{thm:edfa@c9}: an accept state stays unmarked exactly when no input can drive the machine into acceptance.}
+\whichrule{$\E_{\mathsf{DFA}}$'s decider is the reachability marking of Theorem~\ref{thm:edfa@c9}: an accept state stays unmarked exactly when no input can drive the machine into acceptance.}
 \emph{Check.} From $s$ you can only ever reach $t$ or $u$, both non-accepting traps; no string leads to $v$. So indeed the language is empty, matching the accept verdict.
 \end{wex}
 
@@ -17806,7 +17806,7 @@ Two DFAs $A,B$ are claimed equivalent. Explain, using a Venn picture, why testin
   \node[font=\footnotesize] at (0,-1.7) {shaded $=\lang{A}\,\triangle\,\lang{B}$};
 \end{tikzpicture}
 \end{center}
-\whichrule{$\mathit{EQ}_{\mathsf{DFA}}$ reduces to $\E_{mathsf{DFA}}$: build a DFA for the shaded set using closure under $\cap,\cup,\overline{\;\;}$, then ask the emptiness decider whether the shaded set is empty.}
+\whichrule{$\mathit{EQ}_{\mathsf{DFA}}$ reduces to $\E_{\mathsf{DFA}}$: build a DFA for the shaded set using closure under $\cap,\cup,\overline{\;\;}$, then ask the emptiness decider whether the shaded set is empty.}
 \emph{Check.} A string $x$ in the left crescent lies in $\lang{A}$ but not $\lang{B}$ -- a witness that the machines \emph{disagree}, hence are not equivalent. No such witness exists iff the crescents are empty iff the circles coincide.
 \end{wex}
 
@@ -17819,7 +17819,7 @@ $\ACFG$ is decidable.
 \end{theorem}
 
 \begin{proof}
-The naive idea -- enumerate all derivations of $G$ and watch for one yielding $w$ -- can loop forever when $G$ does not generate $w$, since infinitely many derivations may exist; that gives only a recognizer. To get a decider we \emph{bound the search}. Convert $G$ to an equivalent grammar in Chomsky normal form (every rule is $A\to BC$ or $A\to a$). In such a grammar, any derivation of a string of length $n\ge 1$ uses exactly $2n-1$ rule applications (each internal node of the parse tree is a binary branch and each leaf comes from a terminal rule). So decider $S$, on input $\enc{G,w}$ with $n=\abs{w}$: convert $G$ to Chomsky normal form; if $n\ge 1$, list all derivations of length $2n-1$ (if $n=0$, list all one-step derivations, to catch $S\to\eps$); accept if any yields $w$, else reject. There are only finitely many derivations of that fixed length, so the search terminates and $S$ halts. It accepts iff some valid derivation produces $w$, i.e.\ iff $G$ generates $w$. Thus $S$ decides $\ACFG$.
+The naive idea -- enumerate all derivations of $G$ and watch for one yielding $w$ -- can loop forever when $G$ does not generate $w$, since infinitely many derivations may exist; that gives only a recognizer. To get a decider we \emph{bound the search}. Convert $G$ to an equivalent grammar in Chomsky normal form (every rule is $A\to BC$ or $A\to a$, plus possibly $S\to\eps$). In such a grammar, any derivation of a string of length $n\ge 1$ uses exactly $2n-1$ rule applications (each internal node of the parse tree is a binary branch and each leaf comes from a terminal rule). So decider $S$, on input $\enc{G,w}$ with $n=\abs{w}$: convert $G$ to Chomsky normal form; if $n\ge 1$, list all derivations of length $2n-1$ (if $n=0$, list all one-step derivations, to catch $S\to\eps$); accept if any yields $w$, else reject. There are only finitely many derivations of that fixed length, so the search terminates and $S$ halts. It accepts iff some valid derivation produces $w$, i.e.\ iff $G$ generates $w$. Thus $S$ decides $\ACFG$.
 \end{proof}
 
 \begin{wex}{Bounding the parse search by tree shape}
@@ -17873,7 +17873,7 @@ Decide $\enc{G}\in E_{\mathsf{CFG}}$ for $G$ with rules $S\to AB$, $A\to \str a$
 \end{tikzpicture}
 \end{center}
 Marking: mark terminal $\str a$; then $A$ (rule $A\to\str a$, right side marked). Now $S$ needs both $A$ and $B$ marked, but $B$ has \emph{only} the rule $B\to SB$, which needs $B$ already marked -- a circular dependency that never bottoms out in terminals. So $B$ is never marked, hence $S$ is never marked. The start variable $S$ is unmarked, so $R$ accepts: $\lang{G}=\es$.
-\whichrule{The generating-variable marking of Theorem~\ref{thm:ecfg@c9}: a variable is reachable only if some rule lets it derive marked (terminal-producing) symbols; $B$'s sole rule is self-referential, so it produces nothing.}
+\whichrule{The generating-variable marking of Theorem~\ref{thm:ecfg@c9}: a variable is marked only if some rule lets it derive marked (terminal-producing) symbols; $B$'s sole rule is self-referential, so it produces nothing.}
 \emph{Check.} Any attempted derivation from $S$ must expand $B$, and every expansion of $B$ reintroduces a $B$, so no terminal string is ever reached. The language is empty, matching the accept verdict.
 \end{wex}
 
@@ -17896,11 +17896,11 @@ Do not confuse \emph{deciding} with merely \emph{recognizing}. For $\ACFG$, the 
 \end{pitfall}
 
 \begin{pitfall}
-For $\E_{mathsf{DFA}}$ and $E_{\mathsf{CFG}}$, the decider \emph{accepts} when the language is \emph{empty} and rejects otherwise -- the polarity is inverted relative to acceptance problems. It is a common slip to wire the final step backwards. Anchor it to the definition: $\enc{A}\in\E_{mathsf{DFA}}$ means $\lang{A}=\es$, so the decider must \emph{accept} exactly the machines whose accept state is unreachable.
+For $\E_{\mathsf{DFA}}$ and $E_{\mathsf{CFG}}$, the decider \emph{accepts} when the language is \emph{empty} and rejects otherwise -- the polarity is inverted relative to acceptance problems. It is a common slip to wire the final step backwards. Anchor it to the definition: $\enc{A}\in\E_{\mathsf{DFA}}$ means $\lang{A}=\es$, so the decider must \emph{accept} exactly the machines whose accept state is unreachable.
 \end{pitfall}
 
 \begin{pitfall}
-The reduction in Theorem~\ref{thm:eqdfa@c9} relies on the regular languages being closed under complement, union, and intersection. Do not transplant it to context-free grammars: $\mathit{EQ}_{\mathsf{CFG}}$ is undecidable precisely because those closure properties fail for CFLs. ``$E_X$ is decidable'' does \emph{not} imply ``$\mathit{EQ}_X$ is decidable'' -- the bridge between them is the closure properties, and that bridge exists only for the regular world.
+The reduction in Theorem~\ref{thm:eqdfa@c9} relies on the regular languages being closed under complement, union, and intersection. Do not transplant it to context-free grammars: those closure properties fail for CFLs, and $\mathit{EQ}_{\mathsf{CFG}}$ is in fact undecidable. ``$E_X$ is decidable'' does \emph{not} imply ``$\mathit{EQ}_X$ is decidable'' -- the bridge between them is the closure properties, and that bridge exists only for the regular world.
 \end{pitfall}
 
 \begin{exers}{Exercises.}
@@ -18046,7 +18046,7 @@ black box that loops one step of $M$ at a time.
   \draw[head] ($(tp-1-7.south)+(0,-5mm)$) -- (tp-1-7.south);
   \node[headlbl,below=6mm of tp-1-7] (hl) {$M$'s head};
   \node[headlbl,above=1mm of tp-1-1] {desc.\ of $M$};
-  \node[headlbl,above=1mm of tp-1-3] {$M$'s state};
+  \node[headlbl,below=1mm of tp-1-3] {$M$'s state};
   \node[headlbl,above=1mm of tp-1-6] {copy of $M$'s tape};
 \end{tikzpicture}
 \end{center}
@@ -18081,7 +18081,7 @@ $U$'s input format.
 $q_0$. It then consults $M$'s table once per step.
 \[
 \underline{q_0}\,\str{ab}\ \vdash\ \str a\,\underline{q_0}\,\str b\ \vdash\
-\str{ab}\,\underline{q_0}\,\sqcup\ \vdash\ \text{accept (last symbol was }\str b).
+\str{ab}\,\underline{q_0}\,\sqcup\ \vdash\ \str a\,\underline{q_1}\,\str b\ \vdash\ \text{accept (last symbol was }\str b).
 \]
 At each $\vdash$, $U$ reads the dotted cell and the recorded state, finds the matching rule
 in the stored copy of $\trans$, and rewrites its working area. When the simulated $M$ enters
@@ -18155,7 +18155,7 @@ if $M$ accepts \emph{any} string the search finds it and halts.
 \begin{tikzpicture}[node distance=8mm and 14mm,>={Stealth[length=2.2mm]}]
   \node[procbox,minimum width=18mm] (start) {round $k$};
   \node[procbox,right=of start,minimum width=34mm] (run) {run $M$ for $k$ steps on $s_1,\dots,s_k$};
-  \node[right=14mm of run] (acc) {accept};
+  \node[right=30mm of run] (acc) {accept};
   \path (start) edge[flow] (run)
         (run.east) edge[flow] node[flowlbl,above]{some run accepted} (acc.west);
   \draw[flow] (run.south) -- ++(0,-6mm) -| node[flowlbl,pos=0.25]{none yet: $k\!\leftarrow\! k+1$} (start.south);
@@ -18174,7 +18174,7 @@ undecidable.
 
 The classes we have met nest. Every regular language is context-free, every context-free
 language is decidable (Section~9.1), and every decidable language is recognizable (a decider
-is in particular a recognizer). All four inclusions are strict, and $\ATM$ is the witness
+is in particular a recognizer). All three inclusions are strict, and $\ATM$ is the witness
 that the outermost one is strict: it is recognizable (Corollary~\ref{cor:atmrec@c9}) but, as we
 will prove, not decidable.
 
@@ -18209,7 +18209,7 @@ even recognizable, and Section~9.5 will name one.
   \item \textbf{For decidability, you must also be able to reject in finite time.} Ask: is
   there a computable bound after which ``not yet'' safely becomes ``never''? A finite search
   space, a step bound that provably suffices, or a structural shortcut (as for
-  $\ADFA,\ETM\text{-style}$ problems in Section~9.1) gives decidability; an unbounded
+  $\ADFA,\E_{\mathsf{DFA}}\text{-style}$ problems in Section~9.1) gives decidability; an unbounded
   ``$\exists$ over all strings/all step counts'' with no such bound usually does not.
   \item \textbf{Suspect undecidability when only non-halting separates the answers.} If the
   only obstacle to a decider is that a simulation might loop and you cannot detect looping in
@@ -18376,12 +18376,12 @@ steps.
   \foreach \j in {1,2,3,4} \node at (\j,5) {$\vdots$};
   % anti-diagonal sweep arrows (straight steps along a row/column,
   % uniform short arcs across each anti-diagonal jump)
-  \draw[flow,red!70!black,shorten >=2pt,shorten <=2pt] (n11) -- (n12);
-  \draw[flow,red!70!black,shorten >=2pt,shorten <=2pt] (n12) to[bend left=18] (n21);
-  \draw[flow,red!70!black,shorten >=2pt,shorten <=2pt] (n21) -- (n31);
-  \draw[flow,red!70!black,shorten >=2pt,shorten <=2pt] (n31) to[bend left=18] (n22);
-  \draw[flow,red!70!black,shorten >=2pt,shorten <=2pt] (n22) to[bend left=18] (n13);
-  \draw[flow,red!70!black,shorten >=2pt,shorten <=2pt] (n13) -- (n14);
+  \draw[flow,black!65,shorten >=2pt,shorten <=2pt] (n11) -- (n12);
+  \draw[flow,black!65,shorten >=2pt,shorten <=2pt] (n12) to[bend left=18] (n21);
+  \draw[flow,black!65,shorten >=2pt,shorten <=2pt] (n21) -- (n31);
+  \draw[flow,black!65,shorten >=2pt,shorten <=2pt] (n31) to[bend left=18] (n22);
+  \draw[flow,black!65,shorten >=2pt,shorten <=2pt] (n22) to[bend left=18] (n13);
+  \draw[flow,black!65,shorten >=2pt,shorten <=2pt] (n13) -- (n14);
 \end{tikzpicture}
 \end{center}
 The list begins $\frac{1}{1},\frac{1}{2},\frac{2}{1},\frac{3}{1},\frac{1}{3},\frac{1}{4},\dots$
@@ -18398,7 +18398,7 @@ a finite position in the list.
 \subsection*{An uncountable set: Cantor's diagonal argument}
 
 Not every infinite set is countable. The proof technique -- \emph{diagonalization} -- is the engine
-behind every undecidability result in this chapter, so we present it carefully on its original
+behind every undecidability result in this chapter, so we present it carefully on its classic
 target, the real numbers.
 
 \begin{theorem}[Cantor]\label{thm:R-uncountable@c9}
@@ -18541,9 +18541,9 @@ single one. The mismatch is stark -- countably many machines, uncountably many t
   \node[gvlbl] at (4.1,1.35) {$L(M_1)$};
   \node[font=\footnotesize] at (4.2,-1.55) {$\ddots$};
   % the unrecognized point
-  \node[gv,fill=red!75!black] (U) at (5.4,-0.2) {};
-  \node[gvlbl,text=red!70!black] at (5.55,0.35) {$X$};
-  \node[font=\footnotesize,align=center,red!70!black] at (4.3,-2.6)
+  \node[gv,fill=white,draw=black,line width=0.8pt] (U) at (5.4,-0.2) {};
+  \node[gvlbl] at (5.55,0.35) {$X$};
+  \node[font=\footnotesize,align=center] at (4.3,-2.95)
        {$X$: hit by no arrow\\ (not recognizable)};
 \end{tikzpicture}
 \end{center}
@@ -18618,7 +18618,7 @@ Argue that adding more tape symbols or states does not make the set of Turing ma
 the machines with at most $k$ states and $k$ tape symbols form a countable family for each $k$.
 \wrec The trigger is ``is this still countable after taking a union over all $k$?'' We use the fact
 that a countable union of countable (indeed finite) sets is countable, mirroring the anti-diagonal
-sweep of Worked Example for $\Q^{+}$.
+sweep of Worked Example~9.3.4 for $\Q^{+}$.
 \wsol For each fixed $k$ there are only \emph{finitely} many Turing machines with at most $k$ states
 and $k$ tape symbols, because there are finitely many possible transition tables on a finite
 state/symbol set. Call this finite set $T_k$. Every Turing machine lies in some $T_k$ (take $k$ as
@@ -18717,13 +18717,13 @@ $\set{0,1}$ using the shortlex enumeration $s_1=\eps,s_2=\str0,s_3=\str1,s_4=\st
 (a) $\es$; (b) $\Sigstar$; (c) the strings ending in $\str1$; (d) the strings of length exactly $1$.
 
 \item Prove that the set of all \emph{deciders} (Turing machines that halt on every input) is
-countable, and conclude that some Turing-recognizable language is not decidable -- \emph{without}
+countable, and conclude that some language over $\set{0,1}$ is not decidable -- \emph{without}
 naming such a language. State clearly which set you are calling countable and which uncountable.
 
 \item \emph{Spot the flaw.} A student ``proves'' that $\Sigstar$ over $\set{0,1}$ is uncountable as
 follows: ``List all strings $s_1,s_2,\dots$ Build $x$ by flipping the $k$th bit of $s_k$. Then $x$ is
 a string on no row, so the list is incomplete.'' Explain precisely why this argument is wrong, and
-identify the step that fails. (Compare with Lemma on the countability of $\Sigstar$.)
+identify the step that fails. (Compare with Lemma~\ref{lem:strings-countable@c9} on the countability of $\Sigstar$.)
 
 \item \emph{Spot the flaw.} Another student argues that there are only countably many languages,
 ``because each language can be described by an English sentence, and there are only countably many
@@ -18938,15 +18938,15 @@ $w$; that is, $S$ decides $\ATM$. Since no such $S$ exists, no decider $R$ for $
 
 \begin{center}
 \begin{tikzpicture}[node distance=6mm and 16mm]
-  \node[procbox,minimum width=28mm,minimum height=20mm] (S) {};
+  \node[procbox,minimum width=46mm,minimum height=20mm] (S) {};
   \node[font=\small] at (S.north) [yshift=-4mm] {$S$ (would-be $\ATM$ decider)};
-  \node[procbox,minimum width=12mm] (R) at ($(S)+(0,1mm)$) [xshift=-6mm] {$R$};
-  \node[procbox,minimum width=12mm,right=4mm of R] (U) {$U$};
+  \node[procbox,minimum width=12mm] (R) at ($(S)+(0,-2mm)$) [xshift=-12mm] {$R$};
+  \node[procbox,minimum width=12mm,right=12mm of R] (U) {$U$};
   \node[left=16mm of S] (in) {$\enc{M,w}$};
   \node[right=16mm of S,yshift=6mm] (acc) {accept};
   \node[right=16mm of S,yshift=-6mm] (rej) {reject};
   \draw[flow] (in) -- (S.west);
-  \draw[flow] (R) -- node[flowlbl]{halts?} (U);
+  \draw[flow] (R) -- node[flowlbl,above]{halts?} (U);
   \draw[flow] (S.east) -- (acc.west);
   \draw[flow] (S.east) -- (rej.west);
 \end{tikzpicture}\\[2pt]
@@ -18988,9 +18988,9 @@ machine $D$ shows is impossible.
 \begin{tikzpicture}[node distance=6mm and 14mm]
   \node[procbox] (sim) {simulate $M$ on $w$};
   \node[left=14mm of sim] (in) {$\enc{M,w}$};
-  \node[right=18mm of sim,yshift=9mm] (a) {accept};
-  \node[right=18mm of sim,yshift=0mm] (r) {reject};
-  \node[right=18mm of sim,yshift=-9mm] (q) {\emph{no verdict ever}};
+  \node[right=32mm of sim,yshift=9mm] (a) {accept};
+  \node[right=32mm of sim,yshift=0mm] (r) {reject};
+  \node[right=32mm of sim,yshift=-9mm] (q) {\emph{no verdict ever}};
   \draw[flow] (in) -- (sim);
   \draw[flow] (sim.east) -- node[flowlbl,pos=0.6]{$M$ accepts} (a.west);
   \draw[flow] (sim.east) -- node[flowlbl,pos=0.6]{$M$ rejects} (r.west);
@@ -19009,7 +19009,7 @@ the recognizable ones, and the strictness of that inclusion is now witnessed con
 \begin{center}
 \begin{tikzcd}[column sep=large,row sep=small]
  \text{decidable} \arrow[r,hook] & \text{Turing-recognizable} \\
- \HALT,\ \ATM \arrow[u,phantom,"\in\ \text{neither}" description] &
+ \HALT,\ \ATM \arrow[u,phantom,"\notin" description] &
    \ATM \arrow[u,phantom,"\in" description]
 \end{tikzcd}\\[2pt]
 {\footnotesize $\ATM$ is recognizable but not decidable; $\HALT$ likewise. Section~9.5 shows the
@@ -19217,8 +19217,8 @@ No input survives both branches, so there is no infinite loop.
 \end{wex}
 
 \begin{wex}{Pinpointing $\ATM$ and its complement on the class map}
-Place $\DEC$, $\REC$, and the four languages $\ATM$, $\overline{\ATM}$, $\ETM$ (some decidable
-language), and an undecidable-but-recognizable problem on a map of language classes.
+Place $\DEC$, $\REC$, and the three languages $\ATM$ (an undecidable-but-recognizable problem),
+$\overline{\ATM}$, and $\E_{\mathsf{DFA}}$ (some decidable language) on a map of language classes.
 \wrec ``Where does a language live?'' is answered by the two coordinates of
 Theorem~\ref{thm:dec-iff@c9}: \emph{is it recognizable?} and \emph{is its complement recognizable?}
 A nested-region (Venn) map is the right picture.
@@ -19237,11 +19237,11 @@ recognizable ring outside $\DEC$. Its complement $\overline{\ATM}$ is not recogn
   \node[font=\footnotesize] at (-0.6,-0.45) {(decidable)};
   \node[font=\footnotesize] (atm) at (1.7,-0.15) {$\ATM$};
   \node[font=\footnotesize] (comp) at (2.6,-1.8) {$\overline{\ATM}$};
-  \node[font=\footnotesize] at (-0.6,0.45) {$\ETM\;(\text{say})$};
+  \node[font=\footnotesize] at (-0.6,0.45) {$\E_{\mathsf{DFA}}\;(\text{say})$};
 \end{tikzpicture}
 \end{center}
 \whichrule{The two recognizability coordinates partition the map: $\DEC=\REC\cap\mathrm{co}\REC$ is
-the overlap, $\ATM$ has only the first coordinate, and $\overline{\ATM}$ has neither, landing it
+the overlap, $\ATM$ has only the first coordinate, and $\overline{\ATM}$ has only the second, landing it
 outside $\REC$ altogether.}
 \emph{Check.} A language in $\DEC$ must have both coordinates, consistent with its position inside
 both rings. $\overline{\ATM}$ outside $\REC$ certifies that the recognizable ring is \emph{strictly}
@@ -19260,7 +19260,7 @@ that neither side can even be recognized.
 \renewcommand{\arraystretch}{1.5}
 \begin{tabular}{c|c|c}
  & $\overline{\Lang}\in\REC$ & $\overline{\Lang}\notin\REC$\\\hline
-$\Lang\in\REC$ & $\Lang$ decidable ($\ETM$) & $\Lang=\ATM$\\\hline
+$\Lang\in\REC$ & $\Lang$ decidable ($\E_{\mathsf{DFA}}$) & $\Lang=\ATM$\\\hline
 $\Lang\notin\REC$ & $\Lang=\overline{\ATM}$ & e.g.\ $\EQTM$\\
 \end{tabular}
 \end{center}
@@ -19307,7 +19307,7 @@ $\overline{\Lang}$, so $\overline{\Lang}\in\DEC$. For $\REC$: take $\Lang=\ATM\i
 complement $\overline{\ATM}\notin\REC$ by Corollary~\ref{cor:notr@c9}. So a single language witnesses
 that complementing can leave $\REC$.
 \begin{center}
-\begin{tikzpicture}[node distance=8mm and 20mm,every node/.style={font=\small}]
+\begin{tikzpicture}[node distance=8mm and 34mm,every node/.style={font=\small}]
   \node[procbox] (a) {$\ATM\in\REC$};
   \node[procbox,right=of a] (b) {$\overline{\ATM}\notin\REC$};
   \draw[flow] (a) -- node[flowlbl]{complement} (b);
@@ -19365,8 +19365,8 @@ Theorem~\ref{thm:dec-iff@c9}.
 \end{method}
 
 \begin{pitfall}
-\emph{Recognizable does not mean its complement is recognizable.} The two are independent for
-undecidable languages: $\ATM\in\REC$ while $\overline{\ATM}\notin\REC$. Only \emph{decidable}
+\emph{Recognizable does not mean its complement is recognizable.} For undecidable languages the
+two cannot both hold: $\ATM\in\REC$ while $\overline{\ATM}\notin\REC$. Only \emph{decidable}
 languages are guaranteed to have a recognizable complement.
 \end{pitfall}
 
@@ -19379,7 +19379,7 @@ those inputs -- it does not recognize the complement.
 
 \begin{pitfall}
 \emph{Do not run the two recognizers sequentially.} If the parallel decider in
-Theorem~\ref{thm:dec-iff@c9} ran $M_1$ fully and only then $M_1$, it would hang forever on any input
+Theorem~\ref{thm:dec-iff@c9} ran $M_1$ fully and only then $M_2$, it would hang forever on any input
 where $M_1$ loops, never reaching $M_2$. Dovetailing (one step of each per round) is what makes the
 construction halt on every input.
 \end{pitfall}
@@ -19395,7 +19395,7 @@ example pins down each strict boundary.
 \begin{center}
 \resizebox{\linewidth}{!}{%
 \begin{tikzpicture}[node distance=10mm and 16mm]
-  \node[croot] (all) {all languages over $\Sigstar$};
+  \node[croot] (all) {all languages over $\Sig$};
   \node[cnode,below left=14mm and 6mm of all] (rec) {$\REC$\\ recognizable};
   \node[cnode,below right=14mm and 6mm of all] (corec) {$\mathrm{co}\REC$\\ co-recognizable};
   \node[cnode,below=44mm of all] (dec) {$\DEC=\REC\cap\mathrm{co}\REC$\\ decidable};
@@ -19406,11 +19406,11 @@ example pins down each strict boundary.
   \draw[cedge] (dec) -- node[cedgelbl]{$\subsetneq$} (rec);
   \draw[cedge] (dec) -- node[cedgelbl]{$\subsetneq$} (corec);
   \draw[cdash] (atm) -- node[cedgelbl]{witness} (rec);
-  \draw[cdash] (catm) -- node[cedgelbl]{outside} (corec.east);
+  \draw[cdash] (catm) -- node[cedgelbl]{witness} (corec.east);
 \end{tikzpicture}%
 }
 \end{center}
-The two upward arrows are \emph{proper} inclusions; $\ATM$ witnesses $\DEC\subsetneq\REC$ and
+All four upward arrows are \emph{proper} inclusions; $\ATM$ witnesses $\DEC\subsetneq\REC$ and
 $\overline{\ATM}$ witnesses that $\REC$ is properly inside ``all languages.''
 
 \noindent\emph{Takeaway.} The decidability landscape: decidable $=$ recognizable \emph{and}
