@@ -4789,7 +4789,7 @@ each subset wired to its $3$-bit string.
 \whichrule{A bijection transports a count: the bit string records, independently for each element,
 the one yes/no decision ``is $i$ in $A$?'', so subsets and binary strings are the same data in two
 costumes and must be equal in number.}
-\emph{Check.} For $n=3$ both columns have $8=2^{3}$ entries, and every arrow is one-to-one onto.
+\emph{Check.} For $n=3$ both columns have $8=2^{3}$ entries, and the arrows pair the two columns one-to-one.
 \end{wex}
 
 \begin{wex}{A combinatorial interpretation: tilings counted by Fibonacci numbers}
@@ -4964,8 +4964,8 @@ arrows land in the same box.
   \path (q0) edge[bend left] node{$a$} (q1)
         (q1) edge[bend left] node{$a$} (q2)
         (q2) edge[bend left] node{$a$} (q0);
-  \node[font=\footnotesize,below=10mm of q1,text width=8.2cm,align=center]
-    {visits on input $\str{aaa}$: $q_0\to q_1\to q_2\to q_0$ \quad
+  \node[font=\footnotesize,below=10mm of q1,align=center]
+    {visits on input $\str{aaa}$: $q_0\to q_1\to q_2\to q_0$\\
      ($4$ visits, $3$ states $\Rightarrow$ $q_0$ recurs)};
 \end{tikzpicture}
 \end{center}
@@ -5328,8 +5328,8 @@ One such path, $E N E E N$, is drawn below on the grid.
   \node[gv,label={above right:\footnotesize$(3,2)$}] at (3,2) {};
 \end{tikzpicture}
 \end{center}
-\whichrule{A monotone $E/N$ path to $(m,n)$ is a word with $m$ E's and $n$ N's; choosing the positions
-of the E's among the $m+n$ steps gives $\binom{m+n}{m}$ paths.}
+\whichrule{A monotone $E/N$ path to $(m,n)$ is a word with $m$ $E$'s and $n$ $N$'s; choosing the positions
+of the $E$'s among the $m+n$ steps gives $\binom{m+n}{m}$ paths.}
 \emph{Check.} Symmetry $\binom{5}{3}=\binom{5}{2}$ matches the obvious fact that choosing the $E$
 positions and choosing the $N$ positions are the same act; both give $10$.
 \end{wex}
@@ -5348,8 +5348,8 @@ Computing term by term (note $(-b)^{4-k}$ alternates sign):
   (2a)^4 \;-\; 4(2a)^3 b \;+\; 6(2a)^2 b^2 \;-\; 4(2a)b^3 \;+\; b^4
   \;=\; 16a^4 - 32a^3 b + 24 a^2 b^2 - 8 a b^3 + b^4.
 \]
-\whichrule{Each term is $\binom{n}{k}x^k y^{n-k}$; the binomial coefficient counts how many of the $n$
-factors donate the $x$, and the sign comes entirely from the powers of $y=-b$.}
+\whichrule{Each term is $\binom{n}{k}x^k y^{n-k}$; the binomial coefficient counts the ways to choose
+which $k$ of the $n$ factors donate the $x$, and the sign comes entirely from the powers of $y=-b$.}
 \emph{Check.} Set $a=b=1$: the polynomial gives $(2-1)^4=1$, and the coefficients sum
 $16-32+24-8+1=1$. Set $a=1,b=0$: $16=16a^4$, the leading term. Both pass.
 \end{wex}
@@ -5539,7 +5539,7 @@ Equivalently, for the union itself,
 We count the total contribution of a single element $x\in S$ to the right-hand sum
 $\sum_{I}(-1)^{\abs{I}}\abs{S_I}$ and show it is $1$ when $x$ lies in no $S_i$ and $0$ otherwise.
 Say $x$ belongs to exactly $m$ of the subsets. The element $x$ is counted in $\abs{S_I}$ precisely
-when $I$ indexes a sub-collection of those $m$ subsets, i.e. when $I$ is one of the $\binom{m}{k}$
+when $I$ indexes a sub-collection of those $m$ subsets, i.e.\ when $I$ is one of the $\binom{m}{k}$
 size-$k$ subsets of the $m$ indices. Summing its signed contributions,
 \[
   \sum_{I:\,x\in S_I}(-1)^{\abs{I}}
@@ -5576,24 +5576,24 @@ why the running total lands on a single net count.
 \begin{tikzpicture}[xscale=1.0,yscale=0.62]
   % header
   \node[font=\footnotesize\bfseries] at (0,1) {term};
-  \node[font=\footnotesize\bfseries] at (2.55,1) {how many contain $x$};
+  \node[font=\footnotesize\bfseries] at (2.3,1) {how many contain $x$};
   \node[font=\footnotesize\bfseries] at (5.5,1) {signed count of $x$};
   \draw[gedge] (-1.05,0.45) -- (6.95,0.45);
   % rows: k = 1, 2, 3, ..., t
   \node[font=\footnotesize] at (0,0)  {singletons};
-  \node[font=\footnotesize] at (2.55,0)  {$\binom{t}{1}$};
+  \node[font=\footnotesize] at (2.3,0)  {$\binom{t}{1}$};
   \node[font=\footnotesize] at (5.5,0)  {$+\binom{t}{1}$};
   \node[font=\footnotesize] at (0,-1) {pairs};
-  \node[font=\footnotesize] at (2.55,-1) {$\binom{t}{2}$};
+  \node[font=\footnotesize] at (2.3,-1) {$\binom{t}{2}$};
   \node[font=\footnotesize] at (5.5,-1) {$-\binom{t}{2}$};
   \node[font=\footnotesize] at (0,-2) {triples};
-  \node[font=\footnotesize] at (2.55,-2) {$\binom{t}{3}$};
+  \node[font=\footnotesize] at (2.3,-2) {$\binom{t}{3}$};
   \node[font=\footnotesize] at (5.5,-2) {$+\binom{t}{3}$};
   \node[font=\footnotesize] at (0,-3) {$\vdots$};
-  \node[font=\footnotesize] at (2.55,-3) {$\vdots$};
+  \node[font=\footnotesize] at (2.3,-3) {$\vdots$};
   \node[font=\footnotesize] at (5.5,-3) {$\vdots$};
   \node[font=\footnotesize] at (0,-4) {$t$-fold};
-  \node[font=\footnotesize] at (2.55,-4) {$\binom{t}{t}$};
+  \node[font=\footnotesize] at (2.3,-4) {$\binom{t}{t}$};
   \node[font=\footnotesize] at (5.5,-4) {$(-1)^{t+1}\binom{t}{t}$};
   \draw[gedge] (-1.05,-4.55) -- (6.95,-4.55);
   \node[font=\footnotesize\bfseries] at (0,-5.4) {net};
@@ -5635,7 +5635,7 @@ the column sums of $\binom{m}{k}$ with alternating signs cancel.
 \subsection*{Application 1: derangements}
 
 \begin{definition}[Derangement]\label{def:derange@c3}
-A \emph{derangement} of $\set{1,\dots,n}$ is a permutation $\pi$ with no fixed point, i.e.
+A \emph{derangement} of $\set{1,\dots,n}$ is a permutation $\pi$ with no fixed point, i.e.\
 $\pi(i)\neq i$ for every $i$. The number of derangements of an $n$-element set is $D_n$.
 \end{definition}
 
@@ -5717,7 +5717,7 @@ Let $S$ be all $m^n$ functions $f\colon\set{1,\dots,n}\to\set{1,\dots,m}$ (each 
 $m$ independent choices). For target value $j$ let $S_j=\set{f\in S\st j\notin\operatorname{im}f}$, the
 functions that \emph{miss} value $j$. A function is onto iff it misses no value, so
 $\mathrm{Surj}(n,m)=\abs{S\setminus\bigcup_j S_j}$. For an index set $I$ of size $k$, the functions in
-$S_I$ are exactly those whose image avoids all $k$ values in $I$, i.e. functions into the remaining
+$S_I$ are exactly those whose image avoids all $k$ values in $I$, i.e.\ functions into the remaining
 $m-k$ values; there are $(m-k)^n$ of them. With $\binom{m}{k}$ index sets of each size,
 Theorem~\ref{thm:pie@c3} gives $\sum_{k=0}^m(-1)^k\binom{m}{k}(m-k)^n$.
 \end{proof}
@@ -5792,7 +5792,7 @@ $\set{1,\dots,N}$ coprime to $N$ is
 \begin{proof}
 Let $S=\set{1,\dots,N}$ and let $S_i$ be the multiples of $p_i$ in $S$. An integer is coprime to $N$
 iff it is divisible by none of $p_1,\dots,p_r$, so $\varphi(N)=\abs{S\setminus\bigcup_i S_i}$. For an
-index set $I$, an element lies in $S_I$ iff it is divisible by every $p_i$ with $i\in I$, i.e. by the
+index set $I$, an element lies in $S_I$ iff it is divisible by every $p_i$ with $i\in I$, i.e.\ by the
 product $\prod_{i\in I}p_i$ (the primes are distinct, so this is their lcm); the count of such
 multiples up to $N$ is $\abs{S_I}=N/\prod_{i\in I}p_i$. Theorem~\ref{thm:pie@c3} then gives
 \[
@@ -5808,12 +5808,12 @@ Count the integers in $\set{1,\dots,60}$ that share no common factor with $60$ b
 \wrec ``Coprime to $N$'' means divisible by none of $N$'s prime factors; the trigger ``avoid every
 divisor in a fixed list'' is the totient sieve with one ``divisible by $p_i$'' condition per prime.
 \wsol Factor $60=2^2\cdot3\cdot5$, so the distinct primes are $p_1=2,p_2=3,p_3=5$. Set
-$S_i=\set{\text{multiples of }p_i\text{ up to }60}$:
+$S_p=\set{\text{multiples of }p\text{ up to }60}$ for $p\in\set{2,3,5}$:
 $\abs{S_2}=30$, $\abs{S_3}=20$, $\abs{S_5}=12$;
 $\abs{S_2\cap S_3}=60/6=10$, $\abs{S_2\cap S_5}=60/10=6$, $\abs{S_3\cap S_5}=60/15=4$;
 $\abs{S_2\cap S_3\cap S_5}=60/30=2$. Inclusion-exclusion gives the count divisible by some prime:
 \[
-  \Bigl\lvert\bigcup_i S_i\Bigr\rvert=(30+20+12)-(10+6+4)+2=62-20+2=44,
+  \Bigl\lvert\bigcup_p S_p\Bigr\rvert=(30+20+12)-(10+6+4)+2=62-20+2=44,
 \]
 so $\varphi(60)=60-44=16$. The three-set Venn diagram records every region exactly:
 \begin{center}
@@ -5887,7 +5887,7 @@ Using $24$ wrongly would give $100-25-16+4=63$, a detectable error of $4$.
   depend only on $\abs{I}=k$.
   \item \textbf{Assemble the alternating sum.} Add $(-1)^{\abs{I}}\abs{S_I}$ over all index sets, grouping
   equal-size terms as $\sum_k(-1)^k(\text{number of size-$k$ sets})\cdot(\text{common }\abs{S_I})$.
-  \item \textbf{Sanity-check small cases or a known formula} (e.g. a Stirling-number or product-formula
+  \item \textbf{Sanity-check small cases or a known formula} (e.g.\ a Stirling-number or product-formula
   cross-check, or a hand count for tiny parameters).
 \end{enumerate}
 \end{method}
@@ -6088,8 +6088,8 @@ $a_n=3\cdot2^n$ agrees and also gives $a_0=3\cdot2^0=3$, matching the boundary v
 This is the cost recurrence for moving a tower of $n$ disks (move $n-1$, move one, move $n-1$).
 Solve $a_0=0$, $a_n=2a_{n-1}+1$ for $n\ge1$.
 \wrec Same first-order shape, but with a constant ``$+1$'' driving term. The trigger ``a fixed
-\emph{added} constant'' tells us the ogf picks up an extra $\frac{1}{1-x}$ piece (the ogf of the
-all-ones sequence), and the denominator will now have two factors, $(1-2x)$ and $(1-x)$.
+\emph{added} constant'' tells us the ogf picks up an extra $\frac{x}{1-x}=\sum_{n\ge1}x^n$ piece (the all-ones
+sequence, summed where the recurrence holds), and the denominator will now have two factors, $(1-2x)$ and $(1-x)$.
 \wsol Multiply by $x^n$ and sum over $n\ge1$:
 \[
   \sum_{n\ge1}a_n x^n = 2\sum_{n\ge1}a_{n-1}x^n + \sum_{n\ge1}x^n .
@@ -6109,8 +6109,8 @@ $\tfrac12=B(\tfrac12)$, so $B=1$. Thus
       =\sum_{n\ge0}2^n x^n-\sum_{n\ge0}x^n,
   \qquad a_n=2^n-1 .
 \]
-\whichrule{An additive constant in a linear recurrence contributes the ogf $\tfrac{x}{1-x}$ of the
-constant sequence; the denominator here factors as a product of distinct $(1-\alpha_i x)$, and
+\whichrule{An additive constant $+1$ in a linear recurrence contributes $\tfrac{x}{1-x}=\sum_{n\ge1}x^n$, the
+constant summed over $n\ge1$; the denominator here factors as a product of distinct $(1-\alpha_i x)$, and
 partial fractions split it into one geometric term per factor.}
 \emph{Check.} $a_1=2\cdot0+1=1=2^1-1$; $a_2=2\cdot1+1=3=2^2-1$; $a_3=2\cdot3+1=7=2^3-1$. The closed
 form $2^n-1$ matches, and $a_0=2^0-1=0$ recovers the boundary value.
@@ -6189,7 +6189,7 @@ if and only if its ordinary generating function is a rational function
 shift $a_{n-k}$ gives $x^k\bigl(f(x)-\text{(its first $d-k$ terms)}\bigr)$, so the total is
 $q(x)f(x)$ minus a polynomial collecting all the subtracted low-order terms. Because every subtracted
 term has degree at most $d-1$, that polynomial -- call it $p(x)$ -- has $\deg p<d$, and the summed
-recurrence reads $q(x)f(x)-p(x)=0$, i.e. $f(x)=p(x)/q(x)$.
+recurrence reads $q(x)f(x)-p(x)=0$, i.e.\ $f(x)=p(x)/q(x)$.
 
 \noindent($\Leftarrow$) Conversely, suppose $f(x)=p(x)/q(x)$ with $q$ as displayed and $\deg p<d$.
 Clearing denominators, $q(x)f(x)=p(x)$. Comparing coefficients of $x^n$ for any $n\ge d$: the left
@@ -6662,7 +6662,7 @@ counted in Proposition~\ref{prop:bool@c3}). The trigger is ``encode each circuit
 compare $2^{(\text{description length})}$ to $2^{2^{n}}$.''
 \wsol Each of the $g$ gates is specified by its type and its two input sources, each source chosen
 from at most $g+n$ candidates. So a circuit is described by at most
-$g\cdot\log_{2}\!\bigl(3(g+n)^{2}\bigr)$ bits, and the number of circuits with $g$ gates is at most
+$g\cdot\log_{2}\bigl(3(g+n)^{2}\bigr)$ bits, and the number of circuits with $g$ gates is at most
 $\bigl(3(g+n)^{2}\bigr)^{g}$. If this is smaller than $2^{2^{n}}$, some function is computed by no
 such circuit. Taking $g=2^{n}/(10n)$, the bound $\bigl(3(g+n)^{2}\bigr)^{g}$ is far below $2^{2^{n}}$,
 so a function on $n$ variables exists that needs more than $2^{n}/(10n)$ gates.
@@ -6679,7 +6679,7 @@ $20$ & $2^{1{,}048{,}576}$   & $\approx 2^{137{,}905}$ \quad ($g=5{,}242$)\\\hli
 $\approx g\log g$ bits, giving $\approx 2^{g\log g}$ of them, while the targets number $2^{2^{n}}$;
 when targets exceed solvers, a hard target must exist, with no explicit construction.}
 \emph{Check.} For $n=5$ there are $2^{32}\approx 4.3\times 10^{9}$ functions; allowing only, say,
-$g=6$ gates gives at most $(3\cdot 11^{2})^{6}\approx 363^{6}\approx 2.3\times 10^{15}$ \emph{labelled}
+$g=6$ gates gives at most $(3\cdot 11^{2})^{6}=363^{6}\approx 2.3\times 10^{15}$ \emph{labelled}
 descriptions, more than $2^{32}$, so at this size the count proves nothing. As $g$ shrinks the
 circuit count drops below $2^{2^{n}}$: at $g=4$ it is $(3\cdot 9^{2})^{4}=243^{4}\approx 3.5\times 10^{9}
 <2^{32}$, forcing a function of $5$ variables that needs more than $4$ gates.
@@ -6699,7 +6699,7 @@ $X^{g}=\set{x\in X \st g\cdot x=x}$ for its set of fixed points.
 If a finite group $G$ acts on a finite set $X$, the number of orbits equals the average number of
 fixed points:
 \[
-  \#\text{orbits}=\frac{1}{\abs{G}}\sum_{g\in G}\abs{X^{g}}.
+  \#\textup{orbits}=\frac{1}{\abs{G}}\sum_{g\in G}\abs{X^{g}}.
 \]
 \end{theorem}
 
