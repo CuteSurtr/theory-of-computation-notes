@@ -31384,7 +31384,7 @@ space but not in $o(f(n))$ space.
 We build a decider $D$ for the witness language $A$; running in $\bigO(f(n))$ space gives one
 half, and diagonalization against every $o(f)$-space machine gives the other. Define
 \[
-D=\text{``On input } w:\quad
+D=\text{``On input } w\colon\quad
 \]
 \begin{enumerate}[leftmargin=2.2em,topsep=1pt,itemsep=1pt]
   \item Let $n=\abs{w}$. Using space constructibility, compute $f(n)$ and mark off exactly
@@ -31429,9 +31429,9 @@ $M_{i}$'s verdict on input $j$ (A = accept, R = reject). $D$ is engineered so th
 % 15R: enlarged horizontal scale and header labels so the boxed-diagonal table is legible
 \begin{tikzpicture}[x=20mm,y=10mm,font=\small]
   % column headers
-  \node[font=\footnotesize] at (1,1) {$\enc{M_1}\!10^{*}$};
-  \node[font=\footnotesize] at (2,1) {$\enc{M_2}\!10^{*}$};
-  \node[font=\footnotesize] at (3,1) {$\enc{M_3}\!10^{*}$};
+  \node[font=\footnotesize] at (1,1) {$\enc{M_{1}}\str1\str0^{*}$};
+  \node[font=\footnotesize] at (2,1) {$\enc{M_{2}}\str1\str0^{*}$};
+  \node[font=\footnotesize] at (3,1) {$\enc{M_{3}}\str1\str0^{*}$};
   \node at (4,1) {$\cdots$};
   % row headers
   \node[anchor=east] at (0.4,0) {$M_1$};
@@ -31498,7 +31498,7 @@ with $A$ living in the gap.
   \draw[line width=0.8pt] (0,0) ellipse (3.1 and 1.9);
   \draw[line width=0.8pt] (-0.7,0) ellipse (1.5 and 1.0);
   \node at (-0.7,0) {$\SPACE(n)$};
-  \node[font=\small] at (1.7,1.05) {$\SPACE(n^{2})$};
+  \node[font=\small] at (1.45,1.0) {$\SPACE(n^{2})$};
   \node[gv,label=right:{\footnotesize $A$}] at (1.4,-0.4) {};
   \node[font=\footnotesize] at (1.55,-0.95) {(the witness)};
 \end{tikzpicture}
@@ -31533,7 +31533,7 @@ the theorem reads $o(t/\log t)$ rather than $o(t)$.
 
 \begin{theorem}[Time hierarchy]\label{thm:timehier@c15}
 For any time-constructible $t\colon\N\to\N$ there is a language $A$ decidable in $\bigO(t(n))$
-time but not in time $o\!\bigl(t(n)/\log t(n)\bigr)$.
+time but not in time $o\bigl(t(n)/\log t(n)\bigr)$.
 \end{theorem}
 
 \begin{proof}
@@ -31559,7 +31559,7 @@ contradiction.
 \end{proof}
 
 \begin{corollary}\label{cor:timesep@c15}
-If $t_{1}(n)=o\!\bigl(t_{2}(n)/\log t_{2}(n)\bigr)$ and $t_{2}$ is time constructible, then
+If $t_{1}(n)=o\bigl(t_{2}(n)/\log t_{2}(n)\bigr)$ and $t_{2}$ is time constructible, then
 $\TIME(t_{1})\subsetneq\TIME(t_{2})$. Consequently $\TIME(n^{a})\subsetneq\TIME(n^{b})$ for
 $1\le a<b$, and $\classP\subsetneq\EXP$.
 \end{corollary}
@@ -31578,7 +31578,7 @@ the $\log$-factor slack is available.
 \wrec ``Separate two time classes'' triggers Corollary~\ref{cor:timesep@c15}; the extra obligation
 versus space is to verify $t_{1}=o(t_{2}/\log t_{2})$, not merely $t_{1}=o(t_{2})$.
 \wsol Put $t_{2}=n^{3}$ (time constructible) and $t_{1}=n^{2}$. We need
-$n^{2}=o\!\bigl(n^{3}/\log n^{3}\bigr)$. Indeed
+$n^{2}=o\bigl(n^{3}/\log n^{3}\bigr)$. Indeed
 \[
   \frac{n^{2}}{\,n^{3}/\log(n^{3})\,}=\frac{n^{2}\cdot 3\log n}{n^{3}}=\frac{3\log n}{n}\to 0,
 \]
@@ -31632,7 +31632,7 @@ $\mathit{EQREX}{\uparrow}\notin\classP$.
 $2^{\ell}$ inflates the expression by a factor up to $2^{\ell}$, so the de-exponentiated
 expressions, and the NFAs built from them, have size $\bigO(n2^{n})$. Testing two NFAs for
 equivalence in nondeterministic linear space, then applying Savitch, decides equivalence in
-space $\bigO\!\bigl((n2^{n})^{2}\bigr)=2^{\bigO(n)}$, so
+space $\bigO\bigl((n2^{n})^{2}\bigr)=2^{\bigO(n)}$, so
 $\mathit{EQREX}{\uparrow}\in\mathsf{EXPSPACE}$. \emph{Hardness.} Given an
 $\mathsf{EXPSPACE}$ machine $M$ running in space $2^{n^{k}}$ and an input $w$, a polynomial-time
 reduction outputs $R_{1}=\Delta^{*}$ (all strings over the history alphabet) and an $R_{2}$
@@ -31664,8 +31664,8 @@ theorem, and that is all we need.
   \draw[line width=0.8pt] (-0.8,-0.15) ellipse (2.3 and 1.5);
   \draw[line width=0.8pt] (-1.5,-0.3) ellipse (1.0 and 0.8);
   \node[font=\small] at (-1.5,-0.3) {$\classP$};
-  \node[font=\small] at (0.05,1.0) {$\PSPACE$};
-  \node[font=\small] at (2.35,1.6) {$\mathsf{EXPSPACE}$};
+  \node[font=\small] at (-0.4,0.95) {$\PSPACE$};
+  \node[font=\small] at (1.8,1.35) {$\mathsf{EXPSPACE}$};
   \node[gv] (E) at (1.9,-0.5) {};
   \node[font=\footnotesize,anchor=west] at (2.03,-0.5) {$\mathit{EQREX}{\uparrow}$};
   \node[font=\footnotesize] at (0,-2.65) {top step proven strict; bottom step open};
@@ -31741,7 +31741,7 @@ the flipped entries. Then state in one sentence which single input witnesses $\l
 \item A classmate proposes to prove $\TIME(n^{2})\subsetneq\TIME(n^{2}\log\log n)$ ``by the
 same template as $\TIME(n^{2})\subsetneq\TIME(n^{3})$.'' Check whether
 \[
-  n^{2}=o\!\bigl(n^{2}\log\log n/\log(n^{2}\log\log n)\bigr)
+  n^{2}=o\bigl(n^{2}\log\log n/\log(n^{2}\log\log n)\bigr)
 \]
 by computing the ratio limit, and conclude whether the proposed separation follows from the
 theorem as stated.
@@ -31873,7 +31873,7 @@ its accept and reject answers), so $\Lang\in\classP^{\SAT}$.
 \begin{wex}{Reading an oracle machine $M^{A}$ run by run}
 Fix $A=\set{\str{11},\str{0000}}$. Trace the oracle machine that, on input
 $\str{1}^{n}$, queries $\str{1}^{n}$ and then queries $\str{0}^{n}$, accepting
-iff at least one query returns YES. What language does it decide?
+iff at least one query returns YES\@. What language does it decide?
 \wrec An oracle machine is an ordinary machine plus a query tape whose contents
 are judged by one membership test (Definition~\ref{def:oracle@c15}). The trigger
 ``what does $M^{A}$ decide'' means: pin down $A$, then resolve each query as a
@@ -31925,7 +31925,7 @@ of query box -- an oracle -- yet answering the $\classP$ vs $\classNP$ question 
   % world A (collapse)
   \node[procbox,minimum width=18mm,align=center] (MA) {\footnotesize $M^{A}$};
   \node[procbox,minimum width=22mm,align=center,right=14mm of MA] (OA)
-    {\footnotesize oracle $A$\\[-1pt]\footnotesize (PSPACE-complete)};
+    {\footnotesize oracle $A$\\[-1pt]\footnotesize ($\PSPACE$-complete)};
   \draw[flow] (MA.north east) to[bend left=14] node[flowlbl]{\scriptsize query $y$} (OA.north west);
   \draw[flow] (OA.south west) to[bend left=14] node[flowlbl]{\scriptsize $y\in A$?} (MA.south east);
   \node[font=\footnotesize,below=2mm of MA,xshift=18mm] {$\classP^{A}=\classNP^{A}$};
@@ -31963,7 +31963,7 @@ $\classP^{A}\subseteq\classNP^{A}$ is automatic).
 
 \emph{First inclusion.} Let $\Lang\in\classNP^{A}$ via a nondeterministic
 polynomial-time oracle machine $N^{A}$. Replace each oracle call by an
-in-line computation: since $A\in\PSPACE$, a query ``$y\in A$?'' can be answered
+in-line computation: since $A\in\PSPACE$, a query ``$y\in A$?''\ can be answered
 in space polynomial in $\abs{y}$, and $\abs{y}$ is polynomial in the input
 length because $N$ runs in polynomial time. The resulting machine is a
 nondeterministic polynomial-space decider for $\Lang$, so
@@ -31998,7 +31998,7 @@ language
 \]
 \emph{$L_{B}\in\classNP^{B}$ for every $B$.} On input $\str1^{n}$ a
 nondeterministic oracle machine guesses a string $x$ of length $n$ (in $n$
-steps), queries $x\in B$, and accepts iff the answer is YES. Some branch
+steps), queries $x\in B$, and accepts iff the answer is YES\@. Some branch
 accepts iff $B$ holds a string of length $n$, so this machine decides $L_{B}$
 in nondeterministic polynomial time.
 
@@ -32259,8 +32259,8 @@ anything about the unrelativized $\classP$ and $\classNP$, which remain open.
 \end{pitfall}
 
 \begin{exers}{Exercises.}
-\item Fix the oracle $A=\set{\str{0},\str{010},\str{0101010}}$ (the all-pattern
-$(\str{01})^{*}\str0$ strings of odd length $1,3,7$). Trace the oracle machine
+\item Fix the oracle $A=\set{\str{0},\str{010},\str{0101010}}$ (the strings of the form
+$(\str{01})^{*}\str0$ of odd length $1,3,7$). Trace the oracle machine
 that, on input $\str1^{n}$, writes the string $(\str{01})^{k}\str0$ where
 $n=2k+1$ and queries it (rejecting at once if $n$ is even). For which $n\le 9$
 does it accept? State the language it decides.
@@ -32303,7 +32303,7 @@ is in $\classNP^{B}$ for \emph{every} oracle $B$. Your machine must run in
 nondeterministic polynomial time; state the guess, the single oracle query, and
 the acceptance condition.
 
-\item Explain why the existence of the two Baker--Gill--Solovay oracles does
+\item Explain why the two Baker--Gill--Solovay oracles do
 \emph{not} contradict each other. Then state, in one precise sentence, the
 \emph{only} thing the pair lets us conclude about the unrelativized $\classP$
 versus $\classNP$ question.
@@ -32323,7 +32323,7 @@ for a general oracle $O$ and why (consider what answering a query to $O$ costs
 in space when $O\notin\PSPACE$).
 
 \item Define an oracle machine to be \emph{benign} if on every input it makes at
-most one oracle query. Show that for the SAT oracle, $\classNP\subseteq
+most one oracle query. Show that for the $\SAT$ oracle, $\classNP\subseteq
 \classP^{\SAT}$ is already witnessed by benign machines, and explain why
 $\coNP\subseteq\classP^{\SAT}$ likewise needs only one query plus a swap of the
 accept/reject answers.
@@ -32341,15 +32341,15 @@ When a problem is $\classNP$-hard we cannot, unless $\classP=\classNP$, compute 
 polynomial time. The escape route this section explores is to lower our sights: aim for a solution
 \emph{provably close} to optimal, in polynomial time. The one idea that makes the analysis work is
 to bound our algorithm's output not against the (hard-to-compute) optimum directly, but against a
-\emph{computable lower or upper bound} on the optimum -- a quantity we can hold in our hand. We
+\emph{computable lower or upper bound} on the optimum~-- a quantity we can hold in our hand. We
 develop this for three landmark cases (vertex cover, max-cut, max-3sat), and close with an honest
 word on the limits: for some problems even a modest approximation ratio is itself $\classNP$-hard.
 
 \subsection*{Optimization problems and the approximation ratio}
 
 The decision problems $\VC$, $\CLIQUE$, and so on each have an \emph{optimization} twin. Instead of
-asking ``does $G$ have a vertex cover of size $\le k$?'' we ask ``what is the \emph{smallest} vertex
-cover of $G$?'' and want the cover itself, not a yes/no.
+asking ``does $G$ have a vertex cover of size $\le k$?''\ we ask ``what is the \emph{smallest} vertex
+cover of $G$?''\ and want the cover itself, not a yes/no.
 
 \begin{definition}[Optimization problem]\label{def:opt@c15}
 An \emph{optimization problem} $\Pi$ assigns to each instance $x$ a set of \emph{feasible
@@ -32623,7 +32623,7 @@ $\mathrm{OPT}\le m$, that assignment satisfies at least $\tfrac78 m\ge\tfrac78\m
 \end{proof}
 
 \begin{wex}{Counting satisfied clauses over all assignments}
-Take $\varphi=(x\vee y\vee z)\wedge(\bar x\vee y\vee \bar z)\wedge(x\vee\bar y\vee z)$, three
+Take $\varphi={(x\vee y\vee z)}\wedge{(\bar x\vee y\vee \bar z)}\wedge{(x\vee\bar y\vee z)}$, three
 clauses on variables $x,y,z$. Verify the $\tfrac78$ figure by averaging over the $2^3=8$
 assignments, and find an assignment matching the expectation bound.
 \wrec The trigger is ``MAX-3SAT, expected coverage'': Theorem~\ref{thm:max3sat@c15} says each clause
@@ -32647,7 +32647,7 @@ $\begin{array}{ccc|ccc|c}
 \end{array}$
 \end{center}
 \begin{center}
-\begin{tikzpicture}[x=0.95cm,y=0.5cm]
+\begin{tikzpicture}[x=0.95cm,y=0.65cm]
   \draw[->,line width=0.6pt] (-0.3,0)--(8.6,0) node[right,font=\footnotesize]{assignment};
   \draw[->,line width=0.6pt] (-0.3,0)--(-0.3,3.6) node[above,font=\footnotesize]{\#sat};
   \foreach \i/\h in {0/2,1/3,2/2,3/3,4/3,5/2,6/3,7/3}{
@@ -32708,7 +32708,7 @@ Is $\abs{M}\le\mathrm{OPT}\le\abs{C}=2\abs{M}$?
 \item State, for each problem, whether it is a minimization or a maximization problem, and write the
 defining inequality a $\rho$-approximation $A$ must satisfy (using $\mathrm{OPT}$, $\rho$, and
 $A(x)$): (a) MIN-VERTEX-COVER; (b) MAX-CUT; (c) shortest path between two fixed nodes; (d)
-MAX-INDEPENDENT-SET. For one of them, explain in a sentence why a bound written in the
+MAX-INDEPENDENT-SET\@. For one of them, explain in a sentence why a bound written in the
 \emph{opposite} direction would be vacuous.
 
 \item Prove that the matching $M$ built by algorithm $A$ in Theorem~\ref{thm:vc2@c15} is always a
@@ -32812,7 +32812,8 @@ is the fraction of leaf-weight that lands on \texttt{accept}.
 \begin{tikzpicture}[level distance=12mm,treenode,
    level 1/.style={sibling distance=40mm},
    level 2/.style={sibling distance=20mm},
-   edge from parent/.style={tedge,draw}]
+   edge from parent/.style={tedge,draw},
+   every label/.append style={text height=1.5ex,text depth=0.4ex}]
   \node[gv,label=left:{\footnotesize start}] {}
     child {node[gv] {}
       child {node[gv,label=below:{\footnotesize\texttt{acc}}] {}}
@@ -32994,7 +32995,7 @@ shows $d\mapsto dt\bmod n$ injects nonwitnesses into witnesses, so witnesses are
 numerous as nonwitnesses; hence at least half the bases are witnesses.
 \end{proof}
 
-\begin{wex}{Why MILLER--RABIN puts COMPOSITES in $\mathsf{RP}$}
+\begin{wex}{Why Miller--Rabin puts COMPOSITES in $\mathsf{RP}$}
 Package the test as a probabilistic algorithm for
 $\mathrm{COMPOSITES}=\{n:\,n\text{ is composite}\}$ with one-sided error, and identify
 which direction it can err.
@@ -33064,7 +33065,7 @@ Induct on $m$. For $m=1$, a nonzero univariate degree-$d$ polynomial has at most
 roots, so a uniform $a_1\in S$ is a root with probability $\le d/\abs{S}$. For the step,
 write $q=\sum_{i=0}^{d} x_1^{i}\,q_i(x_2,\dots,x_m)$ and let $j$ be the largest index
 with $q_j\not\equiv 0$; then $q_j$ has total degree $\le d-j$. If
-$q(a_1,\dots,a_m)=0$ then either $q_j(a_2,\dots,a_m)=0$ -- probability
+$q(a_1,\dots,a_m)=0$ then either $q_j(a_2,\dots,a_m)=0$~-- probability
 $\le (d-j)/\abs{S}$ by induction -- or $q_j(a_2,\dots,a_m)\ne 0$, in which case
 $q(x_1,a_2,\dots,a_m)$ is a nonzero degree-$j$ univariate polynomial and $a_1$ is one
 of its $\le j$ roots, probability $\le j/\abs{S}$. Summing, the total is at most
@@ -33097,7 +33098,7 @@ $d/\abs S=2/11\approx 0.18$ when the identity actually \emph{fails}:
 \end{tikzpicture}
 \end{center}
 \whichrule{Equality of polynomials is a root question on their difference; a random
-evaluation catches a nonzero $q$ unless we land on one of its $\le d$ roots, an event of
+evaluation catches a nonzero $q$ unless we land on one of its roots, an event of
 probability $\le d/\abs S$ -- so a larger field $S$ shrinks the error for free.}
 \emph{Check.} The honest answer is ``unequal'' (the difference is $-xy\ne 0$), and our
 single point $(3,5)$ already exposed it; a ``$\ne 0$'' verdict is \emph{never} wrong, so
@@ -33122,7 +33123,7 @@ hard on average, and public-key systems like RSA stake their security on exactly
 asymmetry. Randomized primality testing is what lets one \emph{generate} the large primes
 $p,q$ in the first place -- the practical link back to this section.
 
-\subsection*{Where BPP sits}
+\subsection*{Where $\mathsf{BPP}$ sits}
 
 \begin{theorem}[$\mathsf{BPP}\subseteq\PSPACE$]\label{thm:bpppspace@c15}
 Every language in $\mathsf{BPP}$ is in $\PSPACE$.
@@ -33332,8 +33333,8 @@ languages are those, like graph non-isomorphism below, that seem to lie in neith
 \begin{tikzpicture}[node distance=10mm and 26mm]
   \node[procbox] (P) {Prover $P$};
   \node[procbox,right=of P] (V) {Verifier $V$};
-  \node[below=5mm of V,font=\footnotesize] (coins) {coins $r$};
-  \draw[flow] (coins) -- (V);
+  \node[below=5mm of V,xshift=5mm,font=\footnotesize] (coins) {coins $r$};
+  \draw[flow] (coins) -- (coins|-V.south);
   \draw[flow] (V.north) to[bend right=22] node[flowlbl]{$m_1$ (challenge)} (P.north);
   \draw[flow] (P.south) to[bend right=22] node[flowlbl]{$m_2$ (response)} (V.south);
   \node[above=15mm of $(P)!0.5!(V)$,font=\footnotesize] {$\vdots\ \le\poly(n)$ rounds $\vdots$};
@@ -33545,7 +33546,7 @@ randomized round at a time, down to a single field-point check the verifier can 
 \resizebox{\linewidth}{!}{%
 \begin{tikzpicture}[node distance=8mm and 11mm]
   \node[procbox,minimum width=24mm,align=center] (tqbf)
-    {\footnotesize TQBF $\Phi$\\[-1pt]\footnotesize (PSPACE-complete)};
+    {\footnotesize $\mathit{TQBF}$ $\Phi$\\[-1pt]\footnotesize ($\PSPACE$-complete)};
   \node[procbox,minimum width=24mm,align=center,right=of tqbf] (arith)
     {\footnotesize arithmetize\\[-1pt]\footnotesize $\Phi\mapsto$ low-degree $p$ over $\F_q$};
   \node[procbox,minimum width=26mm,align=center,right=of arith] (sc)
@@ -33566,7 +33567,7 @@ randomized round at a time, down to a single field-point check the verifier can 
 \end{tikzpicture}}
 \end{center}
 \emph{Takeaway.} Arithmetization turns a quantified Boolean formula into a low-degree polynomial whose
-value the verifier checks via the round-by-round sum-check protocol; this puts the PSPACE-complete TQBF
+value the verifier checks via the round-by-round sum-check protocol; this puts the $\PSPACE$-complete $\mathit{TQBF}$
 in $\mathsf{IP}$, and since $\mathsf{IP}\subseteq\PSPACE$, $\mathsf{IP}=\PSPACE$ (Shamir). The protocol
 idea is sketched, not fully proved.
 
@@ -33728,7 +33729,7 @@ versus polynomial space is a genuine gap).
 \end{tikzpicture}
 \end{center}
 \whichrule{A containment is provably strict only when a hierarchy theorem separates the two resource
-bounds; chains like $\classP\subseteq\classNP\subseteq\PSPACE$ collapse-or-not is unknown because no
+bounds; whether chains like $\classP\subseteq\classNP\subseteq\PSPACE$ collapse is unknown because no
 diagonalization crosses a single such gap.}
 \emph{Check.} The two known strict pairs, $\Lclass\subsetneq\PSPACE$ and $\classP\subsetneq\EXP$,
 straddle the long open middle; if any open inclusion were proved equal it would not contradict these
