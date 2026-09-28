@@ -19465,7 +19465,7 @@ recognizable.
 
 \section{Undecidability via Reductions}
 In the previous chapter we proved $\ATM$ undecidable, and we did it the hard
-way -- by diagonalization. This section introduces the tool that does all the rest of the work:
+way -- by diagonalization. This section develops the tool that does all the rest of the work:
 \emph{reduction}. The one key idea is that to prove a new problem $B$ undecidable we never argue from
 scratch; we instead show that an already-known undecidable problem $A$ would become decidable if $B$
 were, and read off the contradiction. Every proof here has the same skeleton -- assume a decider $R$
@@ -19479,7 +19479,7 @@ string.
 \begin{definition}[Informal reduction]\label{def:redinformal@c10}
 A problem $A$ \emph{reduces} to a problem $B$ when any decider for $B$ can be used as a subroutine to
 build a decider for $A$. Intuitively, $A$ is ``no harder than'' $B$: a solution to $B$ delivers a
-solution to $A$. (The fully formal version, mapping reducibility $A\redm B$, is the subject of the
+solution to $A$. (A formal and stricter version, mapping reducibility $A\redm B$, is the subject of the
 next section; here we use the relation only to transport undecidability.)
 \end{definition}
 
@@ -19870,7 +19870,7 @@ table of the gadget's language against the two cases of $M$ on $w$ before wiring
 \begin{pitfall}
 A reduction transports undecidability in one direction only. Showing ``$A$ reduces to $B$'' with $A$
 undecidable proves $B$ undecidable -- never the reverse. Do not conclude anything about $A$ from $B$'s
-status, and do not reduce \emph{from} the problem you are trying to indict: to prove $B$ undecidable
+undecidability, and do not reduce \emph{from} the problem you are trying to indict: to prove $B$ undecidable
 you reduce a known-undecidable source \emph{to} $B$, putting the assumed decider for $B$ inside the
 decider you build for the source.
 \end{pitfall}
@@ -19994,8 +19994,8 @@ $B$ and the outside to outside.
   \node[below=1.5mm of B]{$\overline{B}$};
   \draw[->,line width=0.7pt] (A.east) to[bend left=18]
         node[above,font=\footnotesize,fill=white,inner sep=1.4pt]{$f$} (B.west);
-  \draw[->,line width=0.7pt,black!55] ([yshift=-6mm]U1.east) to[bend right=14]
-        ([yshift=-6mm]U2.west);
+  \draw[->,line width=0.7pt,black!55] ([xshift=-5mm,yshift=-6mm]U1.east) to[bend right=14]
+        ([xshift=5mm,yshift=-6mm]U2.west);
 \end{tikzpicture}
 \end{center}
 
@@ -20885,7 +20885,7 @@ encodings) or no Turing machine is in $P$ (so $P=\es$). Otherwise $P$ is \emph{n
 at least one machine $T$ with $\enc{T}\in P$ and at least one machine with its encoding outside $P$.
 \end{definition}
 
-The two qualifiers are exactly the loopholes a property must avoid to be undecidable. ``Trivial''
+The two qualifiers are exactly the loopholes a property must avoid for Rice's theorem to apply. ``Trivial''
 properties are decidable for a silly reason -- a decider can answer ``yes'' (or always ``no'')
 without reading its input. ``Syntactic'' properties dodge the theorem because they can inspect the
 text of $\enc{M}$, which is given explicitly; only properties of the abstract \emph{language} are
@@ -21096,22 +21096,23 @@ fails, so Rice's theorem says nothing, and indeed the problem is decidable.
 \begin{center}
 \begin{tikzpicture}[fa,node distance=14mm and 20mm]
   \node[stinit] (q0) {$q_0$};
-  \node[stacc,right=of q0] (q1) {$q_1$};
+  \node[stacc,right=of q0] (q1) {$q_{\mathrm{acc}}$};
+  \node[st,below=10mm of q1] (qr) {$q_{\mathrm{rej}}$};
   \node[st,right=of q1] (qd) {$q_2$};
-  \path (q0) edge node{$\str1$} (q1)
-        (q0) edge[loop above] node{$\str0$} (q0)
-        (q1) edge[loop above] node{$\str0,\str1$} (q1)
-        (qd) edge[loop above] node{$\str0,\str1$} (qd);
-  \node[font=\footnotesize,below=8mm of q1,align=center] (note)
-        {same language as a $2$-state machine,
-         but $3$ states drawn: count is syntactic};
+  \path (q0) edge node{$\str1\!\to\!R$} (q1)
+        (q0) edge[loop above] node{$\str0\!\to\!R$} (q0)
+        (q0) edge[swap] node{$\sqcup\!\to\!R$} (qr)
+        (qd) edge[loop above] node{$\str0,\str1\!\to\!R$} (qd);
+  \node[font=\footnotesize,below=5mm of qr,align=center] (note)
+        {same language as a $3$-state machine,
+         but $4$ states drawn: count is syntactic};
 \end{tikzpicture}
 \end{center}
 \whichrule{State count is read directly from $\enc{M}$ and is not invariant under language equality;
 because it violates the semantic hypothesis, Rice's theorem -- which speaks only of language
 properties -- has nothing to say, and the count is plainly computable.}
-\emph{Check.} The drawn machine and its $2$-state reduct (delete the unreachable trap $q_2$)
-recognize the same language yet sit on opposite sides of, say, $Q_2$; a language property could never
+\emph{Check.} The drawn machine and its $3$-state reduct (delete the unreachable trap $q_2$)
+recognize the same language yet sit on opposite sides of, say, $Q_3$; a language property could never
 separate them, confirming $Q_5$ is syntactic.
 \end{wex}
 
@@ -21148,7 +21149,7 @@ precisely when $M$ accepts $w$; negating gives a decider for $E_{\mathsf{TM}}$, 
 
 \begin{pitfall}
 Rice's theorem is about the \emph{language} $L(M)$, never about the machine's behavior on a single
-input or its runtime. ``$M$ halts on the blank tape,'' ``$M$ uses at most $100$ tape cells on
+input (beyond whether it accepts) or its runtime. ``$M$ halts on the blank tape,'' ``$M$ uses at most $100$ tape cells on
 $\str{01}$,'' and ``$M$ has fewer than $7$ states'' are \emph{not} language properties: two machines
 with identical languages can disagree on all three. Applying Rice to such a property is a category
 error -- some of these problems are undecidable and some are decidable, but \emph{never because of
@@ -21566,11 +21567,11 @@ bottom adds a single $\#$, so top and bottom become identical.
     \node[draw,minimum size=6.2mm,inner sep=0pt,font=\small] (T\i) at (\i,1) {$\c$};}
   \node[left=2mm of T0,font=\footnotesize] {top owes};
   \node[font=\footnotesize] at (2,1.95) {eat left $a$, eat right $b$, then close};
-  \foreach \i/\c in {0/{\cdots},1/{q_{\mathrm{acc}}},2/{\#}}{
+  \foreach \i/\c in {0/{\cdots},1/{\#},2/{q_{\mathrm{acc}}},3/{\#}}{
     \node[draw,minimum size=6.2mm,inner sep=0pt,font=\small] (B\i) at (\i,0) {$\c$};}
   \node[left=2mm of B0,font=\footnotesize] {bottom};
-  \draw[-{Stealth[length=2mm]},thin] (1.5,0.62) -- (1.0,0.38);
-  \draw[-{Stealth[length=2mm]},thin] (2.5,0.62) -- (3.0,0.38);
+  \draw[-{Stealth[length=2mm]},thin] (1.5,0.62) -- (1.85,0.38);
+  \draw[-{Stealth[length=2mm]},thin] (2.5,0.62) -- (2.15,0.38);
 \end{tikzpicture}
 \end{center}
 \whichrule{Equality of top and bottom is impossible while the machine is mid-run because the bottom
@@ -21632,11 +21633,11 @@ computable map preserving membership, so their composition is too.
 \end{method}
 
 \begin{pitfall}
-Do not reduce PCP to a \emph{trivially easy} restriction and claim victory. For instance, PCP becomes
+Do not reduce \emph{from} a \emph{trivially easy} restriction of PCP and claim victory. For instance, PCP becomes
 \emph{decidable} when the alphabet has a single symbol (then a match is just a numeric balance
 condition you can solve by arithmetic). Undecidability is a property of the \emph{general} problem;
-choosing a special case with extra structure can make it decidable, so a reduction must target the
-unrestricted problem.
+choosing a special case with extra structure can make it decidable, so a reduction must start from the
+unrestricted problem (or from a restriction already proved undecidable).
 \end{pitfall}
 
 \begin{pitfall}
