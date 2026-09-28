@@ -17772,7 +17772,7 @@ Decide $\enc{A}\in\E_{\mathsf{DFA}}$ for the DFA $A$ below over $\Sig=\set{0,1}$
 \end{tikzpicture}
 \end{center}
 Marking: round~0 marks $\set{s}$; round~1 adds $\set{t,u}$ (both have an arrow from $s$); round~2 adds nothing new ($t,u$ only point at themselves, and nothing points at $v$). Marked set is $\set{s,t,u}$. The accept state $v$ is \emph{not} marked, so $T$ accepts: $\lang{A}=\es$.
-\whichrule{$\E_{\mathsf{DFA}}$'s decider is the reachability marking of Theorem~\ref{thm:edfa@c9}: an accept state stays unmarked exactly when no input can drive the machine into acceptance.}
+\whichrule{$\E_{\mathsf{DFA}}$'s decider is the reachability marking of Theorem~\ref{thm:edfa@c9}: every accept state stays unmarked exactly when no input can drive the machine into acceptance.}
 \emph{Check.} From $s$ you can only ever reach $t$ or $u$, both non-accepting traps; no string leads to $v$. So indeed the language is empty, matching the accept verdict.
 \end{wex}
 
@@ -17911,7 +17911,7 @@ Do not confuse \emph{deciding} with merely \emph{recognizing}. For $\ACFG$, the 
 \end{pitfall}
 
 \begin{pitfall}
-For $\E_{\mathsf{DFA}}$ and $E_{\mathsf{CFG}}$, the decider \emph{accepts} when the language is \emph{empty} and rejects otherwise -- the polarity is inverted relative to acceptance problems. It is a common slip to wire the final step backwards. Anchor it to the definition: $\enc{A}\in\E_{\mathsf{DFA}}$ means $\lang{A}=\es$, so the decider must \emph{accept} exactly the machines whose accept state is unreachable.
+For $\E_{\mathsf{DFA}}$ and $E_{\mathsf{CFG}}$, the decider \emph{accepts} when the language is \emph{empty} and rejects otherwise -- the polarity is inverted relative to acceptance problems. It is a common slip to wire the final step backwards. Anchor it to the definition: $\enc{A}\in\E_{\mathsf{DFA}}$ means $\lang{A}=\es$, so the decider must \emph{accept} exactly the machines whose accept states are all unreachable.
 \end{pitfall}
 
 \begin{pitfall}
@@ -17923,7 +17923,7 @@ The reduction in Theorem~\ref{thm:eqdfa@c9} relies on the regular languages bein
 
 \item Give a decider for $\ETM$-style emptiness on DFAs, $E_{\mathsf{DFA}}=\set{\enc{D}\st \lang{D}=\es}$, by reducing the question to reachability in a graph. Which graph, which two vertices, and which standard algorithm? (This is the place graph search from the foundations pays off.)
 
-\item Using the previous two ideas, build a decider for $EQ_{\mathsf{DFA}}=\set{\enc{D_1,D_2}\st \lang{D_1}=\lang{D_2}}$. (Hint: form a DFA for the symmetric difference $\lang{D_1}\triangle\lang{D_2}$ and test it for emptiness.)
+\item Using the previous two ideas, build a decider for $EQ_{\mathsf{DFA}}=\set{\enc{D_1,D_2}\st \lang{D_1}=\lang{D_2}}$. (Hint: form a DFA for the symmetric difference $\lang{D_1}\,\triangle\,\lang{D_2}$ and test it for emptiness.)
 
 \item Show that
 \[
@@ -17936,7 +17936,7 @@ are decidable, by reduction to $\ADFA$. What conversion does each reduction perf
 
 \item Describe a decider for $\ACFG=\set{\enc{G,w}\st G\text{ is a CFG generating }w}$. Why is it not enough to ``try all derivations''? State the bound on derivation length once $G$ is in Chomsky normal form, for $\abs{w}=n\ge 1$.
 
-\item Give a decider for $E_{\mathsf{CFG}}=\set{\enc{G}\st \lang{G}=\es}$ by marking the variables that can generate a terminal string, bottom-up. Run your procedure on $S\to AB\mid a,\ A\to BB,\ B\to b$ and report whether $\lang{G}$ is empty.
+\item Give a decider for $E_{\mathsf{CFG}}=\set{\enc{G}\st \lang{G}=\es}$ by marking the variables that can generate a terminal string, bottom-up. Run your procedure on $S\to AB\mid \str a,\ A\to BB,\ B\to \str b$ and report whether $\lang{G}$ is empty.
 
 \item Prove that the class of decidable languages is closed under union, intersection, and complement, by describing the deciders explicitly. Where does ``the machine always halts'' get used?
 
@@ -18384,7 +18384,7 @@ anti-diagonals (arrows), skipping any fraction already listed in lowest terms (e
 repeats $\frac{1}{1}$). Each anti-diagonal is finite, so every entry is reached after finitely many
 steps.
 \begin{center}
-\begin{tikzpicture}[x=15mm,y=-13mm,baseline]
+\begin{tikzpicture}[x=15mm,y=-15mm]
   \foreach \i in {1,2,3,4}
     \foreach \j in {1,2,3,4}
       \node (n\i\j) at (\j,\i) {$\dfrac{\i}{\j}$};
@@ -18599,7 +18599,7 @@ no machine -- there are more languages than machines.
 \begin{wex}{Reading off a characteristic sequence, and diagonalizing a list of languages}
 Fix $\Sig=\set{0,1}$ with the shortlex enumeration
 $s_1=\eps,\,s_2=\str0,\,s_3=\str1,\,s_4=\str{00},\dots$ Let $\Lang$ be ``strings of even length''
-(so $\eps,\str{00},\str{01},\dots\in\Lang$). Write the first few bits of $\chi_\Lang$. Then, given a
+(so $\eps,\str{00},\str{01},\ldots\in\Lang$). Write the first few bits of $\chi_\Lang$. Then, given a
 list of three languages, build a language differing from all of them by the diagonal trick.
 \wrec Two sub-tasks. First, $\chi_\Lang(i)=1$ exactly when $s_i\in\Lang$ -- a membership lookup.
 Second, ``a language off every entry of a list'' is precisely Theorem~\ref{thm:langs-uncountable@c9}'s
@@ -18985,7 +18985,7 @@ need to know whether $M$ halts.
 \whichrule{Timeouts decide ``halts within $k$ steps,'' a different, decidable language; deciding
 ``halts eventually'' would require a halting oracle, which is exactly what
 Theorem~\ref{thm:halt@c9} forbids.}
-\emph{Check.} The bounded language $\set{\enc{M,w}\st M\text{ halts on }w\text{ in }\le 10^6
+\emph{Check.} The bounded language $\set{\enc{M,w}\st M\text{ halts on }w\text{ in}\le 10^6
 \text{ steps}}$ is decidable (just simulate $10^6$ steps), confirming the issue is the unbounded
 ``eventually,'' not the simulation.
 \end{wex}
@@ -19050,7 +19050,7 @@ halting check inserted precisely to tame the dangerous simulation step.
 
 \begin{pitfall}
 ``Undecidable'' does not mean ``unrecognizable.'' $\ATM$ \emph{is} recognizable -- the universal
-machine $U$ accepts exactly its members -- it merely fails to halt on the non-members. Reserve
+machine $U$ accepts exactly its members -- it merely fails to halt on some non-members. Reserve
 ``not recognizable'' for languages, like $\overline{\ATM}$ in Section~9.5, that no machine accepts
 even when allowed to loop on rejects.
 \end{pitfall}
@@ -19097,7 +19097,7 @@ known-hard language ($\ATM$) is the thing you must end up deciding, never the th
 \section{Turing-Unrecognizable Languages}
 The previous section produced a concrete undecidable language, $\ATM$, yet $\ATM$ is still
 \emph{recognizable}: a universal machine accepts every $\enc{M,w}$ with $M$ accepting $w$, merely
-looping when it should reject. The job of this section is to climb one rung higher and exhibit a
+looping on some inputs it should reject. The job of this section is to climb one rung higher and exhibit a
 language that no Turing machine recognizes \emph{at all}. The single idea that gets us there is a
 symmetry between a language and its complement: deciding a language means recognizing the
 ``yes'' instances \emph{and} recognizing the ``no'' instances, so a language sits in the decidable
