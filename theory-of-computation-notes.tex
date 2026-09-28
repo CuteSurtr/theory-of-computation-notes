@@ -2598,8 +2598,8 @@ arrowheads.
 $d^{+}=2,d^{-}=1$), but each arc has exactly one tail and one head, so both columns must total the
 arc count.}
 \emph{Check.} There are $5$ arcs; both $\sum_v d^{+}(v)$ and $\sum_v d^{-}(v)$ equal $5=\card{\Eset}$,
-as the proposition requires. Note $d^{+}(q)\ne d^{-}(q)$, so the per-vertex equality of the undirected
-lemma genuinely fails for digraphs.
+as the proposition requires. Note $d^{+}(q)\ne d^{-}(q)$, so the equality of the two sums does not
+hold vertex by vertex.
 \end{wex}
 
 \begin{wex}{Subgraph versus induced subgraph}
@@ -2917,7 +2917,7 @@ the list, confirming it is not a path. $R_3$ visits each of $a,b,c,d,e$ once.
 Define a relation on $\Vset$ by $u\sim v$ iff there is a walk (equivalently, by
 Lemma~\ref{lem:walkpath@c2}, a path) from $u$ to $v$. This $\sim$ is an equivalence relation; its
 equivalence classes are the \emph{connected components} of $\Gr$. A graph is \emph{connected} if
-it has exactly one component, i.e. every pair of vertices is joined by a path.
+it has exactly one component, i.e.\ every pair of vertices is joined by a path.
 \end{definition}
 
 That $\sim$ is an equivalence relation is the quiet engine of the whole subject, so we verify
@@ -2996,7 +2996,7 @@ turns a graph into a metric space and is the first place graph search becomes qu
 
 \begin{definition}[Distance]\label{def:dist@c2}
 The \emph{distance} $d(u,v)$ between vertices $u,v$ is the length of a shortest $u$--$v$ walk,
-or $\infty$ if no walk exists (i.e. $u\not\sim v$). By Lemma~\ref{lem:walkpath@c2} a shortest walk
+or $\infty$ if no walk exists (i.e.\ $u\not\sim v$). By Lemma~\ref{lem:walkpath@c2} a shortest walk
 is a path, so $d(u,v)$ equals the length of a shortest \emph{path}.
 \end{definition}
 
@@ -3069,9 +3069,9 @@ Euler circuit iff every vertex has \emph{even} degree, and an Euler trail (open)
 vertices have odd degree. The reason is a local parity count: each time a circuit passes through
 a vertex it uses two incident edges (one in, one out), so traversing all edges forces every
 degree to be even. The Hamilton side has \emph{no} such efficient test known; deciding whether a
-graph has a Hamilton path is the problem $\HAMPATH$, which is $\classNP$-complete
-(Chapter~13). Keep the contrast in view: counting degrees is easy, but routing through all
-vertices is, as far as anyone knows, hard.
+graph has a Hamilton path is (in its directed $s$-to-$t$ form) the problem $\HAMPATH$, which is
+$\classNP$-complete (Chapter~13). Keep the contrast in view: counting degrees is easy, but routing
+through all vertices is, as far as anyone knows, hard.
 
 \begin{wex}{Euler circuit by the even-degree test}
 Does the graph below have an Euler circuit, an open Euler trail, or neither? If a circuit
@@ -3216,8 +3216,9 @@ state how many there are. Identify any isolated vertices.
 vertex lies at distance exactly $3$ from $s$. Label each vertex with its distance $d(s,\cdot)$,
 and exhibit one shortest path realizing the distance $3$.
 
-\item Prove that a graph $\Gr$ is connected if and only if for every partition of $\Vset$ into
-two nonempty sets $X$ and $Y$, at least one edge has one endpoint in $X$ and the other in $Y$.
+\item Prove that a graph $\Gr$ with at least one vertex is connected if and only if for every
+partition of $\Vset$ into two nonempty sets $X$ and $Y$, at least one edge has one endpoint in $X$
+and the other in $Y$.
 
 \item Determine, using only a degree count, whether each graph has an Euler circuit, an open
 Euler trail, or neither: (a) the cycle $C_5$; (b) the complete bipartite graph $K_{2,3}$;
@@ -3258,7 +3259,7 @@ connected graph.
 
 \begin{definition}[Forest, tree, leaf]\label{def:tree@c2}
 A graph is \emph{acyclic} if it contains no cycle. A \emph{forest} is an acyclic graph; a
-\emph{tree} is a connected forest, i.e. a connected acyclic graph. A vertex of degree $1$ in a
+\emph{tree} is a connected forest, i.e.\ a connected acyclic graph. A vertex of degree $1$ in a
 tree is a \emph{leaf}; a vertex of degree $\ge 2$ is an \emph{internal} vertex. The connected
 components of a forest are exactly its constituent trees.
 \end{definition}
@@ -3295,7 +3296,7 @@ We can now collect the standard descriptions of a tree and prove they coincide. 
 result of the section; later we use whichever clause is most convenient.
 
 \begin{theorem}[Equivalent characterizations of a tree]\label{thm:treechar@c2}
-Let $G$ be a graph with $n$ vertices and $m$ edges. The following are equivalent.
+Let $G$ be a graph with $n\ge 1$ vertices and $m$ edges. The following are equivalent.
 \begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.4em,topsep=2pt,itemsep=1pt]
   \item $G$ is a tree (connected and acyclic).
   \item Every two vertices of $G$ are joined by exactly one path.
@@ -3508,8 +3509,8 @@ cycle remains, leaving a connected acyclic spanning subgraph --- a spanning tree
 \end{proof}
 
 A spanning tree always uses exactly $n-1$ of $G$'s edges (Lemma~\ref{lem:edges@c2}); the
-$m-(n-1)$ discarded edges are the graph's \emph{independent cycles}, the ones each closing a loop
-when restored (Corollary~\ref{cor:onee@c2}). The graph traversals BFS and DFS each produce a spanning
+$m-(n-1)$ discarded edges each close one of the graph's \emph{independent cycles} when restored
+(Corollary~\ref{cor:onee@c2}). The graph traversals BFS and DFS each produce a spanning
 tree as a by-product: the tree edges are those that first discover a new vertex, and the
 \emph{non-tree} edges are exactly the ones whose endpoints were already reached.
 
@@ -3850,7 +3851,7 @@ maximum, as the next example shows.
 
 \begin{wex}{Maximal is not maximum}
 In the path $P_4$ on vertices $1\,2\,3\,4$, exhibit a maximal matching that is not maximum.
-\wrec The pitfall is the maximal/maximum distinction in Definition~\ref{def:match@c2}. The trigger is a
+\wrec The pitfall is the maximal/maximum distinction drawn after Definition~\ref{def:match@c2}. The trigger is a
 single edge that, once chosen, blocks both of the others from being added.
 \wsol The middle edge $\{2,3\}$ is a matching of size $1$. Its endpoints $2$ and $3$ are now used, so
 neither $\{1,2\}$ nor $\{3,4\}$ can be added: the matching is \emph{maximal}. But the two end edges
@@ -4286,7 +4287,7 @@ whose edge labels, read in order, spell $w$. In this language, \emph{running the
 \end{definition}
 
 For a DFA the walk is unique (determinism), so acceptance is a reachability question along one
-labelled path; for an NFA several walks may spell $w$, and acceptance asks whether \emph{some} walk
+labelled walk; for an NFA several walks may spell $w$, and acceptance asks whether \emph{some} walk
 ending at an accept vertex spells $w$. Dropping the labels entirely leaves a plain digraph in which
 the only question is which states are reachable at all -- exactly the data needed to decide whether a
 machine has any useful states.
@@ -4637,7 +4638,7 @@ is wrong and what the BFS-found path fails to guarantee about visiting every ver
 \item (Find the bug.) Another classmate encodes an undirected graph by an adjacency matrix $A$ but
 fills in only the entries \emph{above} the diagonal, leaving the lower triangle and the diagonal
 blank to ``save space.'' Explain why a machine reading this matrix can still recover $\Gr$, but why
-the convention must be stated as part of the encoding; then give one query (e.g. ``is $v_iv_j$ an
+the convention must be stated as part of the encoding; then give one query (e.g.\ ``is $v_iv_j$ an
 edge for $i>j$?'') that becomes ambiguous if the convention is omitted.
 
 \item Order the four languages $\mathit{PATH}$, $\HAMPATH$, $\CLIQUE$, and ``$\Gr$ is connected''
