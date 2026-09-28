@@ -60,8 +60,8 @@ Sets $A,B$ are \emph{disjoint} when $A\cap B=\es$. The number of elements of a f
 \emph{cardinality} $\card{A}$.
 \end{definition}
 
-A \emph{Venn diagram} draws each set as a region; overlap means shared elements. The three basic
-operations are exactly the three ways of shading those regions.
+A \emph{Venn diagram} draws each set as a region; overlap means shared elements. Three of these
+operations -- union, intersection, and complement -- are pictured below as shadings of those regions.
 
 \begin{center}
 \begin{tikzpicture}[every node/.style={font=\small},line width=0.7pt]
@@ -678,7 +678,7 @@ sits to the right, a substring any contiguous window (Def.~\ref{def:substr@c1}).
 means slide a window over the positions and collect what you see, remembering that $\eps$ (the empty
 window) always qualifies.
 \wsol Cutting $\str{aba}$ after position $0,1,2,3$ gives the prefixes
-$\eps,\str a,\str{ab},\str{aba}$. Cutting before those positions gives the suffixes
+$\eps,\str a,\str{ab},\str{aba}$. The parts to the right of the same cuts are the suffixes
 $\str{aba},\str{ba},\str a,\eps$. The substrings are all contiguous windows: the empty window $\eps$;
 length-$1$ windows $\str a,\str b$; length-$2$ windows $\str{ab},\str{ba}$; and the whole string
 $\str{aba}$. Note $\str a$ occurs at two positions but is listed once -- substrings form a \emph{set}.
@@ -785,8 +785,8 @@ explain why $\card{A\concat A}<\card A\cdot\card A$.
 \wrec Same operation as before, but now the alphabet is a single letter, so different gluings can
 produce the \emph{same} string -- a \emph{collision}. The trigger ``count is smaller than the product''
 flags that the set quotient removes duplicates.
-\wsol The four gluings are $\str a\str a=\str{aa}$, $\str a\str{aa}=\str{aaa}$,
-$\str{aa}\str a=\str{aaa}$, $\str{aa}\str{aa}=\str{aaaa}$. The middle two both equal $\str{aaa}$, so
+\wsol The four gluings are $\str a\concat\str a=\str{aa}$, $\str a\concat\str{aa}=\str{aaa}$,
+$\str{aa}\concat\str a=\str{aaa}$, $\str{aa}\concat\str{aa}=\str{aaaa}$. The middle two both equal $\str{aaa}$, so
 \[
   A\concat A=\set{\str{aa},\ \str{aaa},\ \str{aaaa}},\qquad \card{A\concat A}=3.
 \]
@@ -840,7 +840,7 @@ and $A\kstar=\bigcup_{k\ge 0}A^{k}$. A derivation tree makes the tiling of $\str
 So $\str{abb}=\str{ab}\concat\str b$, a $2$-piece tiling, hence $\str{abb}\in A\kstar$. But
 $\str{aab}$ would have to start with a piece that is a prefix of $\str{aab}$; neither $\str{ab}$ nor
 $\str b$ is, since $\str{aab}$ begins $\str{aa}$. No tiling starts, so $\str{aab}\notin A\kstar$.
-\whichrule{Membership in $A\kstar$ is a left-to-right \emph{greedy/exhaustive tiling}: peel off a
+\whichrule{Membership in $A\kstar$ is a left-to-right \emph{exhaustive tiling}: peel off a
 prefix that lies in $A$, recurse on the rest, and accept iff some sequence of peels consumes the whole
 string and leaves $\eps$.}
 \emph{Check.} $\str{abb}$ tiles as $(\str{ab})(\str b)$ -- accepted. $\str{aab}$ has no first tile, so
@@ -973,7 +973,7 @@ substrings of $w$?
 
 \item Let $\Sig=\set{\str0,\str1}$. Write out $\Sig^{0}$, $\Sig^{1}$, and $\Sig^{2}$ explicitly, and
 say how many strings are in $\Sig^{n}$ in general. Then list the first six strings of $\Sigstar$ in
-shortlex (string) order.
+shortlex order (by length, ties broken alphabetically).
 
 \item For strings over $\set{\str a,\str b}$, decide whether each statement is true for \emph{all}
 $x,y$, giving a one-line reason or a counterexample: (a) $\abs{\rev{x}}=\abs{x}$; (b) $xy=yx$;
@@ -1115,8 +1115,8 @@ that reaches ``false'' is $P$ true followed by $Q$ false.
 \begin{center}
 \begin{tikzpicture}[fa,node distance=13mm and 22mm]
   \node[stinit] (start) {$\to$};
-  \node[st,above right=of start] (pt) {$P{=}\mathrm{T}$};
-  \node[st,below right=of start] (pf) {$P{=}\mathrm{F}$};
+  \node[st,above right=of start,inner sep=3pt] (pt) {$P{=}\mathrm{T}$};
+  \node[st,below right=of start,inner sep=3pt] (pf) {$P{=}\mathrm{F}$};
   \node[st,right=of pt] (out1) {$Q$?};
   \node[stacc,above right=9mm and 22mm of out1] (T1) {$\mathrm{T}$};
   \node[st,below right=9mm and 22mm of out1] (F1) {$\mathrm{F}$};
@@ -1320,7 +1320,7 @@ one witness must serve every $x$. Swapping the two quantifiers is therefore \emp
 truth-preserving move, unlike swapping two adjacent $\forall$s or two adjacent $\exists$s.}
 \emph{Check.} The order $\exists\forall$ is logically stronger: $\exists y\,\forall x\,P\to
 \forall x\,\exists y\,P$ always holds (the universal witness also works pointwise), but the
-converse fails here -- consistent with true-implies-from-false but not conversely.
+converse fails here -- consistent with $\mathrm{F}\to\mathrm{T}$ being true and $\mathrm{T}\to\mathrm{F}$ false.
 \end{wex}
 
 \subsection*{Predicates as relations, and a circuit view}
@@ -1551,8 +1551,8 @@ statement, you know which of a handful of standard openings to write down. Every
 book (that a construction works, that two machines are equivalent, that some language is \emph{not}
 regular) is one of these shapes dressed in the costume of automata, so it pays to see the shapes
 bare. We treat the five workhorses -- direct proof, proof by contrapositive, proof by contradiction,
-proof by construction, and proof by cases -- and pair each with a worked argument and a diagram of
-its logical flow.
+proof by construction, and proof by cases -- and pair each with a worked argument and, for all but
+construction, a diagram of its logical flow.
 
 \subsection*{Reading a statement before proving it}
 
@@ -1630,7 +1630,7 @@ $(\text{not }Q)\imp(\text{not }P)$. Use it when ``not $Q$'' is a more concrete h
 \begin{center}
 \begin{tikzpicture}[node distance=10mm]
   \node[procbox] (nQ) {assume $\lnot Q$};
-  \node[procbox,right=20mm of nQ] (nP) {derive $\lnot P$};
+  \node[procbox,right=26mm of nQ] (nP) {derive $\lnot P$};
   \node[draw=none,below=7mm of $(nQ)!0.5!(nP)$] (eq)
     {equivalent to $P\imp Q$};
   \path (nQ) edge[flow] node[flowlbl,above]{forward chain} (nP);
@@ -2201,8 +2201,8 @@ So $P(wa)$ holds. By Theorem~\ref{thm:struct@c1}, $P(y)$ holds for every $y\in\S
         child {node {$\eps$ \scriptsize(base case)}}}};
 \end{tikzpicture}
 \end{center}
-\whichrule{Concatenation is defined by recursion on its right argument, so structural induction on
-$y$ lets each appended symbol contribute exactly $+1$ to both sides; the base $y=\eps$ is the only
+\whichrule{Concatenation satisfies the recursion $x(wa)=(xw)a$ on its right argument, so structural
+induction on $y$ lets each appended symbol contribute exactly $+1$ to both sides; the base $y=\eps$ is the only
 non-recursive case, matching the single base clause of $\Sigstar$.}
 \emph{Check.} With $x=\str{ab}$, $y=\str{cde}$: $\abs{xy}=\abs{\str{abcde}}=5$ and
 $\abs{x}+\abs{y}=2+3=5$.
@@ -2212,8 +2212,8 @@ $\abs{x}+\abs{y}=2+3=5$.
 Define reversal by $\rev{\eps}=\eps$ and $\rev{(wa)}=a\,\rev{w}$ for $a\in\Sig$. Prove
 $\rev{(xy)}=\rev{y}\,\rev{x}$ for all $x,y\in\Sigstar$.
 \wrec Reversal is given recursively on a string's right end, so a claim about all $x,y$ asks for
-structural induction; we again induct on $y$ because both $\rev{}$ and concatenation are defined by
-recursion on the right.
+structural induction; we again induct on $y$ because both $\rev{}$ and concatenation unfold by
+recursion on the right ($\rev{(wa)}=a\,\rev{w}$ and $x(wa)=(xw)a$).
 \wsol Fix $x$ and let $P(y)$ be $\rev{(xy)}=\rev{y}\,\rev{x}$.
 
 \emph{Base} ($y=\eps$): $\rev{(x\eps)}=\rev{x}$, while $\rev{\eps}\,\rev{x}=\eps\,\rev{x}=\rev{x}$.
