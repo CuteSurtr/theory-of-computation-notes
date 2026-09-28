@@ -6928,7 +6928,7 @@ one bit -- what the most recent symbol was.
 \wsol Use two states: $q_0$ ``last symbol was $\str0$ (or no symbol yet)'' and $q_1$ ``last symbol
 was $\str1$.'' On reading $\str0$ go to $q_0$; on reading $\str1$ go to $q_1$; this holds from
 either state. Accept exactly when the last symbol was $\str1$, so $\Acc=\set{q_1}$. The empty string
-has no last symbol and must be rejected, which is automatic because $\qstart=q_0\notin\Acc$.
+has no last symbol and must be rejected, which is automatic because $\qstart\notin\Acc$.
 \[
   \trans(q_0,\str0)=q_0,\quad \trans(q_0,\str1)=q_1,\quad
   \trans(q_1,\str0)=q_0,\quad \trans(q_1,\str1)=q_1.
@@ -7716,10 +7716,10 @@ used the accept set for \emph{union} instead of intersection:
         (lo) edge[bend right=12] node[swap]{$1$} (le)
         (re) edge[bend left=12] node{$0$} (ro)
         (ro) edge[bend left=12] node{$0$} (re)
-        (le) edge[bend left=10] node[pos=0.62]{$0$} (ro)
-        (ro) edge[bend left=10] node[pos=0.62]{$1$} (le)
-        (re) edge[bend right=10] node[swap,pos=0.62]{$1$} (lo)
-        (lo) edge[bend right=10] node[swap,pos=0.62]{$0$} (re);
+        (le) edge[bend left=10] node[pos=0.78]{$0$} (ro)
+        (ro) edge[bend left=10] node[pos=0.78]{$1$} (le)
+        (re) edge[bend right=10] node[swap,pos=0.78]{$1$} (lo)
+        (lo) edge[bend right=10] node[swap,pos=0.78]{$0$} (re);
 \end{tikzpicture}
 \end{center}
 Here the first coordinate is $L$ (last symbol not $\str{0}$, or empty) versus $R$ (last
@@ -8050,7 +8050,7 @@ The corollary is the practical payoff: from now on we may design the \emph{small
 
 \subsection*{Reachable subsets only}
 
-The construction lists all $2^{\abs{Q}}$ subsets, but most are unreachable from the start subset and may be dropped. In practice we build the DFA \emph{lazily}: begin with $q_0'=E(\set{\qstart})$, and from each subset already discovered compute $\trans'(R,a)$ for every symbol $a$, adding any new subset to a worklist. We stop when no new subset appears. The reachable part is usually far smaller than $2^{\abs{Q}}$, and the empty set $\es$ -- reached when $\nfa$ has died on every branch -- is the dead state of the DFA.
+The construction lists all $2^{\abs{Q}}$ subsets, but often most are unreachable from the start subset and may be dropped. In practice we build the DFA \emph{lazily}: begin with $q_0'=E(\set{\qstart})$, and from each subset already discovered compute $\trans'(R,a)$ for every symbol $a$, adding any new subset to a worklist. We stop when no new subset appears. The reachable part is usually far smaller than $2^{\abs{Q}}$, and the empty set $\es$ -- reached when $\nfa$ has died on every branch -- is the dead state of the DFA.
 
 \begin{method}{Subset construction, run by hand (the worklist algorithm)}
 \textbf{1.} Compute the start subset $q_0'=E(\set{\qstart})$ (start state plus everything reachable by $\eps$-arrows). Put it on the worklist.\\
@@ -8735,7 +8735,7 @@ the content of regular expressions, taken up next.) The constructions of Section
 add the Boolean operations: regular languages are closed under \emph{intersection} (run two
 DFAs in lockstep, accept when both accept) and under \emph{complement} (run one DFA, swap
 accepting and non-accepting states). Together these make $\REG$ closed under union,
-intersection, complement, concatenation, star, and reversal.
+intersection, complement, concatenation, and star; Exercise~11 below adds reversal.
 
 \begin{wex}{Complement by swapping accept states}
 Let $\Lang$ be the language of strings over $\set{0,1}$ that end in $\str{1}$, recognized by a
