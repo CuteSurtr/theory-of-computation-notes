@@ -108,7 +108,7 @@ operations -- union, intersection, and complement -- are pictured below as shadi
 
 \begin{definition}[Power set]\label{def:powerset@c1}
 The \emph{power set} of $A$, written $\pow{A}$, is the set of all subsets of $A$:
-$\pow{A}=\set{S\st S\subseteq A}$. If $\card{A}=n$ then $\card{\pow{A}}=2^{n}$, since each element
+$\pow{A}={\set{S\st S\subseteq A}}$. If $\card{A}=n$ then $\card{\pow{A}}=2^{n}$, since each element
 is independently either in or out of a subset.
 \end{definition}
 
@@ -441,8 +441,8 @@ each level $k$ to level $3-k$.
   \item \textbf{For functions, test the two failure modes separately.} Injective fails iff two
   arrows share a target; surjective fails iff some codomain dot has no incoming arrow. Bijective
   means neither failure occurs.
-  \item \textbf{For relations, translate each property to a shape.} Reflexive $=$ every dot has a
-  self-loop; symmetric $=$ every arrow is matched by its reverse; transitive $=$ every length-two
+  \item \textbf{For relations, translate each property to a shape.} Reflexive~$=$ every dot has a
+  self-loop; symmetric~$=$ every arrow is matched by its reverse; transitive~$=$ every length-two
   path has its shortcut. To disprove a property, exhibit one missing edge.
   \item \textbf{If it is an equivalence relation, read off the partition.} The connected blocks of
   mutually related elements are the equivalence classes; check they are nonempty, disjoint, and
@@ -505,8 +505,8 @@ injective; (c) a function $g\colon A\to A$ on a \emph{finite} set $A$ that is in
 surjective. (For (c), state precisely why your answer is forced.)
 
 \item Let $A=\set{1,2,3}$. Decide for each of the following relations on $A$ which of reflexive,
-symmetric, transitive hold, drawing the directed graph of each: (a) $R_1=\set{(1,1),(2,2),(3,3)}$;
-(b) $R_2=\set{(1,2),(2,1),(1,1),(2,2)}$; (c) $R_3=\set{(1,2),(2,3),(1,3)}$. Which, if any, are
+symmetric, transitive hold, drawing the directed graph of each: (a)~$R_1=\set{(1,1),(2,2),(3,3)}$;
+(b)~$R_2=\set{(1,2),(2,1),(1,1),(2,2)}$; (c)~$R_3=\set{(1,2),(2,3),(1,3)}$. Which, if any, are
 equivalence relations, and what partition does each equivalence relation induce?
 
 \item On the set $L=\set{\str a,\str{ab},\str{abc},\str b,\str{bc},\str c}$ of strings, define
@@ -656,11 +656,11 @@ $\rev{(ww)}=\rev{w}\,\rev{w}=\str{bba}\,\str{bba}=\str{bbabba}$.
   \node[font=\footnotesize] at (-0.9,0) {$w$:};
   \foreach \i/\c in {1/\str a,2/\str b,3/\str b}
     \node[draw,minimum size=6.5mm,inner sep=1pt] at (\i*0.75,0) {$\c$};
-  \node[font=\footnotesize] at (-0.9,-1) {$\rev{w}$:};
+  \node[font=\footnotesize] at (-0.9,-1.5) {$\rev{w}$:};
   \foreach \i/\c in {1/\str b,2/\str b,3/\str a}
-    \node[draw,minimum size=6.5mm,inner sep=1pt] at (\i*0.75,-1) {$\c$};
-  \draw[->,gray,shorten >=2pt,shorten <=2pt] (0.75,-0.35) to[bend right=35] (2.25,-0.65);
-  \draw[->,gray,shorten >=2pt,shorten <=2pt] (2.25,-0.35) to[bend left=35] (0.75,-0.65);
+    \node[draw,minimum size=6.5mm,inner sep=1pt] at (\i*0.75,-1.5) {$\c$};
+  \draw[->,gray,shorten >=2pt,shorten <=2pt] (0.75,-0.35) to[bend right=20] (2.25,-1.04);
+  \draw[->,gray,shorten >=2pt,shorten <=2pt] (2.25,-0.35) to[bend left=20] (0.75,-1.04);
 \end{tikzpicture}
 \end{center}
 \whichrule{Reversal of a concatenation reverses the \emph{pieces} and swaps their order
@@ -726,7 +726,7 @@ language sizes, while $\abs{\eps}=0$ as a string length.
 
 \begin{definition}[Operations on languages]\label{def:langops@c1}
 Let $A,B\subseteq\Sigstar$ be languages. Their
-\emph{union} $A\cup B=\set{w\st w\in A\text{ or }w\in B}$,
+\emph{union} $A\cup B={\set{w\st w\in A\text{ or }w\in B}}$,
 \emph{intersection} $A\cap B=\set{w\st w\in A\text{ and }w\in B}$, and
 \emph{complement} $\overline{A}=\Sigstar\setminus A$ are the usual set operations. The string-aware
 operations are:
@@ -1033,7 +1033,7 @@ and then negate, specialize, or chain such statements without slipping.
 \subsection*{Propositions and connectives}
 
 \begin{definition}[Proposition and truth value]
-A \emph{proposition} is a statement that is either \emph{true} or \emph{false} -- never both,
+A \emph{proposition} is a statement that is either \emph{true} or \emph{false}~-- never both,
 never neither. Its \emph{truth value} is $\mathrm{T}$ (true) or $\mathrm{F}$ (false), often
 written $1$ and $0$. ``$3$ is prime'' is a proposition (value $\mathrm{T}$); ``$x>5$'' is
 \emph{not} a proposition on its own, because its value depends on $x$ -- it is a \emph{predicate}
@@ -1131,7 +1131,7 @@ that reaches ``false'' is $P$ true followed by $Q$ false.
 \end{center}
 
 \begin{wex}{Build a truth table for a three-variable formula}\label{wex:table3@c1}
-Decide whether $\varphi=(P\to Q)\land(Q\to R)\to(P\to R)$ is a tautology.
+Decide whether $\varphi={(P\to Q)}\land{(Q\to R)}\to{(P\to R)}$ is a tautology.
 \wrec The formula mixes connectives over three variables and asks ``true under \emph{every}
 assignment?'' The trigger ``every assignment / is it a tautology'' says: enumerate all
 $2^3=8$ rows of a truth table and check the final column. (This is the transitivity of
@@ -1274,7 +1274,7 @@ R(x,y)$ and where a negation lands after Corollary~\ref{cor:push@c1} turns it in
 The statement ``$\dfa$ accepts every string over $\Sig$'' is
 $\forall w\in\Sigstar\;\mathrm{Acc}_{\dfa}(w)$. Write its negation in plain words and in symbols.
 \wrec This asks to negate a \emph{universal} statement over strings -- exactly
-Theorem~\ref{thm:negquant@c1}. The trigger ``write the negation of `for all \dots' '' says: turn
+Theorem~\ref{thm:negquant@c1}. The trigger ``write the negation of `for all \dots'\,'' says: turn
 $\forall$ into $\exists$ and negate the body.
 \wsol By Theorem~\ref{thm:negquant@c1},
 \[
@@ -1291,7 +1291,7 @@ the original $\forall$ is true -- the equivalence behaves correctly at the extre
 \end{wex}
 
 \begin{wex}{Order of quantifiers changes the meaning}\label{wex:order@c1}
-On the domain $\Z$, compare $\forall x\,\exists y\,(x+y=0)$ with $\exists y\,\forall x\,(x+y=0)$.
+On the domain $\Z$, compare $\forall x\,\exists y\,{(x+y=0)}$ with $\exists y\,\forall x\,{(x+y=0)}$.
 \wrec Two statements use the same predicate but swap the quantifier order. The trigger
 ``$\forall\exists$ vs.\ $\exists\forall$'' says: read each as a nested game and ask who moves
 first, because the inner choice may legally depend on the outer one.
@@ -1526,7 +1526,7 @@ least two of $P,Q,R$ are true, as an OR of AND-clauses (one clause per true row 
 draw it as a gate network with four AND gates feeding one OR gate.
 
 \item \emph{Find the bug.} A student writes: ``The negation of `for all $x$, if $x>0$ then
-$x^2>0$' is `for all $x$, if $x>0$ then $x^2\le 0$.' '' Identify every error (there are two: the
+$x^2>0$' is `for all $x$, if $x>0$ then $x^2\le 0$.'\,'' Identify every error (there are two: the
 quantifier and the body), and write the correct negation in symbols and in English.
 
 \item \emph{Find the bug.} Someone claims $\forall x\,\exists y\,(x\cdot y=1)$ is true over $\Z$
@@ -1705,7 +1705,7 @@ that pervades automata theory: ``$\Lang$ is regular'' means ``here is a machine,
 
 \begin{wex}{Construction: a graph on any even $n\ge 4$ in which every vertex has degree $2$}
 Prove: for every even integer $n\ge 4$ there is a graph with $n$ vertices in which every vertex has
-degree exactly $2$.
+degree exactly~$2$.
 \wrec ``There is a graph such that\dots'' is an \emph{existence} claim about a buildable object, so we
 should display one and count degrees. A single cycle gives every vertex degree $2$ for free, and the
 trigger ``exhibit an object with a uniform local property'' points straight at a regular,
@@ -1809,7 +1809,7 @@ re-expressings of a direct argument over a negated statement, while biconditiona
 direct proofs assembled from smaller direct pieces. The Hasse-style picture below orders the methods
 by ``builds on'':
 \begin{center}
-\begin{tikzpicture}[yscale=1.05]
+\begin{tikzpicture}[yscale=1.05,every label/.append style={text depth=0.5ex}]
   \node[ltdot,label=below:{direct}] (d) at (0,0) {};
   \node[ltdot,label=above:{contrapositive}] (cp) at (-5.6,1.9) {};
   \node[ltdot,label=above:{contradiction}] (cd) at (-2.8,1.9) {};
@@ -1974,7 +1974,7 @@ falls. The chain of implications below makes the metaphor exact.
   \node[right=12mm of k3] (dots) {$\cdots$};
   \path[->,shorten >=1pt,shorten <=1pt]
     (b) edge (k1) (k1) edge (k2) (k2) edge (k3) (k3) edge (dots);
-  \node[below=5mm of b,font=\footnotesize] {basis};
+  \node[below=3mm of b,font=\footnotesize] {basis};
   \node[below=3mm of k2,font=\footnotesize,xshift=-7mm] {each arrow is one use of the induction step};
 \end{tikzpicture}
 \end{center}
@@ -2227,7 +2227,7 @@ $\rev{(ua)}=a\,\rev{u}$,
   =\rev{(wa)}\,\rev{x},
 \]
 since $\rev{(wa)}=a\,\rev{w}$ by definition. So $P(wa)$ holds, and structural induction finishes.
-\whichrule{The recursive clause $\rev{(wa)}=a\rev{w}$ peels the symbol off the right of $y$ and
+\whichrule{The recursive clause $\rev{(wa)}=a\,\rev{w}$ peels the symbol off the right of $y$ and
 plants it on the \emph{left} of the result, which is exactly why the two factors swap order;
 induction on $y$ tracks that one symbol per step.}
 \emph{Check.} $x=\str{ab},y=\str{cd}$: $\rev{(\str{abcd})}=\str{dcba}$ and
@@ -2260,9 +2260,9 @@ So $P(T)$ holds, and Theorem~\ref{thm:struct@c1} gives the claim for all full bi
    level/.style={sibling distance=30mm/#1},edge from parent/.style={tedge,draw}]
   \node[circle,draw,inner sep=1.5pt] {}
     child {node[circle,draw,inner sep=1.5pt] {}
-      child {node[draw,rectangle,inner sep=2pt] {\scriptsize leaf}}
-      child {node[draw,rectangle,inner sep=2pt] {\scriptsize leaf}}}
-    child {node[draw,rectangle,inner sep=2pt] {\scriptsize leaf}};
+      child {node[draw=black,thin,rectangle,inner sep=2pt] {\scriptsize leaf}}
+      child {node[draw=black,thin,rectangle,inner sep=2pt] {\scriptsize leaf}}}
+    child {node[draw=black,thin,rectangle,inner sep=2pt] {\scriptsize leaf}};
 \end{tikzpicture}
 \end{center}
 \whichrule{One base case and a constructor taking \emph{two} prior objects mean structural
