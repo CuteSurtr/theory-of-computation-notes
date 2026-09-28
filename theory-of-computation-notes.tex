@@ -24095,7 +24095,7 @@ polynomial bends \emph{toward} the horizontal, the exponential stays a rising st
 \begin{tikzpicture}[x=0.34cm,y=0.40cm]
   % axes
   \draw[->,line width=0.7pt] (0,0) -- (21,0) node[right,font=\small] {$n$};
-  \draw[->,line width=0.7pt] (0,0) -- (0,16) node[above,font=\small] {$\log_{10}(\text{steps})$};
+  \draw[->,line width=0.7pt] (0,0) -- (0,16) node[above,font=\small] {steps (log scale)};
   % y gridlines / ticks at decades 0..15
   \foreach \y in {0,3,6,9,12,15}{
     \draw[black!18,line width=0.4pt] (0,\y) -- (20,\y);
@@ -24200,8 +24200,8 @@ $A\in\TIME(n\log n)$ -- the best a single tape can do for this language. The nex
 \emph{second tape} does even better.
 
 \begin{wex}{A second tape buys linear time for $\{\str0^{k}\str1^{k}\}$}
-Show $A\in\TIME(n)$ on a \emph{two-tape} machine $M_{3}$ that copies the block of $\str0$s onto
-tape~2, then deletes one tape-2 $\str0$ per $\str1$ read on tape~1.
+Show that $A$ is decided in time $\bigO(n)$ by a \emph{two-tape} machine $M_{3}$ that copies the
+block of $\str0$s onto tape~2, then deletes one tape-2 $\str0$ per $\str1$ read on tape~1.
 \wrec Two heads move independently, so a ``count and match'' that cost a nested loop on one tape
 becomes a single synchronized pass. The trigger is ``a second tape lets us remember a block
 verbatim instead of re-scanning for it.''
@@ -25386,8 +25386,8 @@ hence polynomial in $n$. It accepts iff $\varphi$ evaluates to $1$.
 vertices are distinct and that all $\binom{k}{2}$ pairs are edges of $\Gr$, by scanning the edge
 list; this is $O(n^2)$ work. It accepts iff every pair is present.
 
-\emph{$\VC$.} The certificate is a list $c$ of $k$ vertices. The verifier checks $\abs{c}=k$ and then
-scans every edge of $\Gr$, confirming that each edge has at least one endpoint in $c$; this is again
+\emph{$\VC$.} The certificate is a list $c$ of $k$ vertices. The verifier checks that $c$ consists of $k$
+distinct vertices of $\Gr$ and then scans every edge of $\Gr$, confirming that each edge has at least one endpoint in $c$; this is again
 polynomial. It accepts iff no edge is missed.
 
 \emph{$\HAMPATH$.} The certificate is a sequence $p_1,\dots,p_m$ of the $m$ vertices. The verifier
@@ -25798,8 +25798,8 @@ polynomial.''
   \node[draw,ellipse,minimum width=15mm,minimum height=22mm,below=2mm of Bw] (Bell) {};
   \node[draw,ellipse,minimum width=8mm,minimum height=9mm] at ($(Bell)+(0,4mm)$) (Bin) {\small $B$};
   \node at ($(Bell)+(0,-7mm)$) {\small $\overline{B}$};
-  \path[flow] (Ain.east) edge node[flowlbl]{$f$} (Bin.west)
-              ([yshift=-7mm]Aell.east) edge node[flowlbl]{$f$} ([yshift=-7mm]Bell.west);
+  \path (Ain.east) edge[flow] node[flowlbl]{$f$} (Bin.west)
+        ($(Aell.center)+(5.8mm,-7mm)$) edge[flow] node[flowlbl]{$f$} ($(Bell.center)+(-5.8mm,-7mm)$);
 \end{tikzpicture}
 \end{center}
 
@@ -26111,8 +26111,8 @@ swallow $\classNP$ and the two ovals would merge.
 The single most common error is reducing in the \emph{wrong direction}. To show a problem $B$ is
 hard you must reduce a hard problem \emph{to} $B$, i.e. produce $A\redp B$ with $A$ already known
 hard. Writing $B\redp A$ instead proves only that $B$ is no harder than something hard -- a
-vacuous statement. Whenever you set up a reduction, name out loud which language is the trusted
-one and confirm the arrow ends there.
+vacuous statement. Whenever you set up a hardness reduction, name out loud which language is the
+known-hard one and confirm the arrow starts there.
 \end{pitfall}
 
 \begin{pitfall}
