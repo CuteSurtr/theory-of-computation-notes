@@ -13792,7 +13792,7 @@ should be.
 The reverse direction is the substantial one. We are given a PDA and must \emph{generate} its
 language with a grammar. The trick is to introduce, for each ordered pair of states $p,q$, a
 variable $A_{pq}$ whose job is to derive exactly the strings that drive the machine from $p$ to $q$
-while leaving the stack as it found it.
+while leaving the stack as it found it, never touching what was already on it.
 
 \begin{definition}[Generating variables $A_{pq}$]\label{def:apq@c7}
 Let $P=(Q,\Sig,\Gam,\trans,\qstart,\set{q_{\mathrm{acc}}})$ be a PDA. For states $p,q\in Q$, the
@@ -13855,8 +13855,8 @@ two independent empty-to-empty pieces (family~2).
     % push at the first move (left edge), pop at the last move (right edge)
     \draw[densely dotted] (0.6,0) -- (0.6,0.72);
     \draw[densely dotted] (3.7,0) -- (3.7,0.72);
-    \node[font=\footnotesize,anchor=south east] at (0.55,0.78) {push $u$};
-    \node[font=\footnotesize,anchor=south west] at (3.75,0.78) {pop $u$};
+    \node[font=\footnotesize,anchor=north west] at (0.65,0.62) {push $u$};
+    \node[font=\footnotesize,anchor=north east] at (3.65,0.62) {pop $u$};
     \node[font=\small] at (2.15,-0.95) {family 1: $A_{pq}\to a\,A_{rs}\,b$};
   \end{scope}
   % right: split at empty stack, two humps
@@ -13919,7 +13919,9 @@ Both accept exactly $\str{ab}$.
 A PDA $P$ for $\Lang=\set{a^{n}b^{n}\st n\ge 1}$ pushes a marker for each $\str a$ and pops one for
 each $\str b$. After normalizing it has a push state $p$ and a pop state $q$ with a self-push
 $(p,u)\in\trans(p,a,\eps)$, a hand-off pop $(q,\eps)\in\trans(p,b,u)$, and a self-pop
-$(q,\eps)\in\trans(q,b,u)$. Read off the recursive grammar rule for the $a$\,/\,$b$ matching.
+$(q,\eps)\in\trans(q,b,u)$; to empty its stack before accepting, it also pushes a bottom marker
+$\$$ on a free move from its start state $s$ to $p$ and pops it on a free move from $q$ to its
+accept state $f$. Read off the recursive grammar rule for the $a$\,/\,$b$ matching.
 \wrec Again the reverse direction, but now we focus on the \emph{recursion} that family~1 creates
 when the inner pair of states equals the outer pair. The trigger is ``one push at the start matched
 by one pop at the very end with the same computation nested inside,'' which is exactly the
@@ -13937,7 +13939,9 @@ effectively $A_{pq}\to ab$ for the shortest case. Writing $T=A_{pq}$, the produc
   T\;\to\; a\,T\,b\;\mid\;ab ,
 \]
 the textbook grammar for $a^{n}b^{n}$ with $n\ge 1$. Each application of $T\to aTb$ wraps one $a$ on the left and
-one $b$ on the right, mirroring one push now matched by one pop later.
+one $b$ on the right, mirroring one push now matched by one pop later. The marker push and pop pair
+up into the only other family-1 rule, $A_{sf}\to A_{pq}$ (with $a=b=\eps$), so the start variable
+$A_{sf}$ generates exactly what $T$ does.
 \begin{center}
 \begin{tikzpicture}[treenode,level distance=10mm,
    level/.style={sibling distance=30mm/#1},edge from parent/.style={tedge,draw}]
@@ -13953,8 +13957,8 @@ one $b$ on the right, mirroring one push now matched by one pop later.
 \emph{recursive} ($A_{pq}\to aA_{pq}b$); this recursion is exactly how the grammar records that an
 unbounded number of pushes must be balanced by the same number of later pops.}
 \emph{Check.} The tree above derives $T\Rightarrow aTb\Rightarrow a\,ab\,b=\str{aabb}$
-when the inner $T$ uses $T\to ab$, matching $P$'s run on $\str{aabb}$: push, push, pop, pop, ending
-empty in $q$.
+when the inner $T$ uses $T\to ab$, matching $P$'s run on $\str{aabb}$ between the two marker moves:
+push, push, pop, pop, ending in $q$ with only $\$$ left.
 \end{wex}
 
 \begin{wex}{A leftmost derivation read as a parse tree}
@@ -14133,15 +14137,16 @@ the marker $\$$ on the stack.
 over $\set{\str a,\str b}$ with a fixed centre) into a PDA. Then give a one-sentence informal
 description of how the resulting machine uses its stack.
 
-\item Take the PDA $P$ with start state $p$, accept state $q$, stack alphabet $\set{u}$, and the two
+\item Take the PDA $P$ with start state $s$, accept state $f$, stack alphabet $\set{u,\$}$, the marker
+moves $(p,\$)\in\trans(s,\eps,\eps)$ and $(f,\eps)\in\trans(q,\eps,\$)$, and the two
 moves $(p,u)\in\trans(p,a,\eps)$ (self-push at $p$) and $(q,\eps)\in\trans(p,b,u)$ (read $\str b$,
 pop, go to $q$), plus $(q,\eps)\in\trans(q,b,u)$ (self-pop at $q$). Carry out the construction of
 Lemma~\ref{lem:pdacfg@c7}: list the variables $A_{pq}$, write down every family-1, family-2, and
 family-3 rule, then prune to a clean grammar and identify the language.
 
-\item In the construction of Lemma~\ref{lem:pdacfg@c7}, explain in two or three sentences why a
+\item In the construction of Lemma~\ref{lem:pdacfg@c7}, explain in two or three sentences how a
 matched-ends rule whose inner state pair equals its outer state pair (i.e.\ $A_{pq}\to a\,A_{pq}\,b$)
-is exactly the mechanism that lets the grammar generate arbitrarily long strings, and connect this to
+lets the grammar generate arbitrarily long strings, and connect this to
 the stack-height picture rising and falling once.
 
 \item Give a leftmost derivation and the parse tree of the string $\str{aabb}$ in the grammar
@@ -14875,8 +14880,8 @@ longer matches the first half; concretely $uv^2xy^2z$ has its $1^p0^p$ boundary 
 the two halves differ. \textbf{Window entirely right of $m$.} Symmetric: pump up and the second half
 grows, breaking equality. \textbf{Window straddles $m$.} Then $vxy$ lies within $1^p0^p$ around the
 center (since $\abs{vxy}\le p$, it cannot reach the outer $0^p$ or $1^p$). Pump \emph{down} to $i=0$:
-$uxz=0^p1^{p-a}0^{p-b}1^p$ with $a+b=\abs{vy}>0$ and not both the deleted runs full, so the result has
-the shape $0^p1^{i}0^{j}1^p$ with $(i,j)\ne(p,p)$. Splitting any such string in half cannot give two
+$uxz=0^p1^{p-a}0^{p-b}1^p$ with $a+b=\abs{vy}>0$ and $a,b<p$ (deleting a whole middle run would force
+$\abs{vxy}>p$), so the result has the shape $0^p1^{i}0^{j}1^p$ with $i,j\ge1$ and $(i,j)\ne(p,p)$. Splitting any such string in half cannot give two
 equal halves (if $uxz=tt$, then $t$ begins with $0$ and ends with $1$, so $tt$ has twice as many runs
 as $t$; comparing with the runs of $uxz$ forces $t=0^p1^{i}=0^{j}1^p$, i.e.\ $i=j=p$), so
 $uxz\notin D$.
@@ -15069,7 +15074,8 @@ Every DPDA has an equivalent DPDA that reads its entire input string on every ru
 \begin{proof}[Proof idea]
 Hanging is cured by planting a fresh bottom marker $\$$ on the stack before anything else; if $\$$ is
 ever exposed, the machine knows the original stack is empty, and instead of getting stuck it scans the
-rest of the input and rejects (or accepts, if it had just been in an accept state). Looping is cured
+rest of the input and rejects (or accepts, if it had entered an accept state after reading the last
+input symbol). Looping is cured
 by detecting the finitely many \emph{looping situations} -- pairs $(q,x)$ from which the machine,
 started in state $q$ with $x$ on top, never reads another input symbol -- and rewiring each so that
 it instead reads the remaining input and then halts with the verdict it was destined for. Both fixes
@@ -15089,7 +15095,8 @@ suffices.
 the counting state $q_1$. In $q_1$ each $\str0$ pushes a $\str0$. The first $\str1$ switches to the
 matching state $q_2$, popping one $\str0$. In $q_2$ each further $\str1$ pops a $\str0$. When $\$$
 resurfaces under an $\eps$-move, pop it and accept in $q_3$. Every state/input/stack-top triple has a
-unique move, so determinism holds.
+unique move, so determinism holds (a triple with no drawn move goes to an omitted non-accepting dead
+state that reads the rest of the input).
 \begin{center}
 \begin{tikzpicture}[fa,node distance=18mm and 26mm]
   \node[stinitacc] (q0) {$q_0$};
@@ -15325,7 +15332,8 @@ $\trans$-slot of Definition~\ref{def:dpda@c7} each DFA transition uses.
 
 \item (Complement test.) Using closure of $\mathsf{DCFL}$ under complement, show that
 $E=\set{\str a^i\str b^j\st i\ne j}$ \emph{is} a DCFL by giving a DPDA for its complement
-$\overline{E}\cap\str a\kstar\str b\kstar$ and citing the right theorem. Then explain why the same
+$\overline{E}$ (the strings $\str a^n\str b^n$ together with all strings outside $\str a\kstar\str b\kstar$)
+and citing the right theorem. Then explain why the same
 ``complement'' move does \emph{not} prove $\set{\str a^i\str b^j\str c^k\st i\ne j\text{ or }j\ne k}$
 is a DCFL.
 
