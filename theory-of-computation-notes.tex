@@ -26466,7 +26466,7 @@ schematically below.
   \node[font=\footnotesize,below=1mm of A] {known NPC};
   \node[gvlab,fill=black!12,minimum size=9mm] (B) at (1.6,0) {$B$};
   \node[font=\footnotesize,below=1mm of B] {new};
-  \node[flowlbl] at (-3.0,0.35) {known: $L\redp A$};
+  \node[flowlbl] at (-3.3,0.35) {known: $L\redp A$};
   \node[flowlbl] at (0.0,0.35) {prove: $A\redp B$};
 \end{tikzpicture}
 \end{center}
@@ -26804,7 +26804,9 @@ $w$ (of length $n$) to a formula $\varphi$ with
 A \emph{tableau} for $\nfa$ on $w$ is an $n^{k}\times n^{k}$ grid of cells. Row $i$ holds the
 $i$-th configuration of one computation branch of $\nfa$ on $w$, written as a string over
 $C=Q\cup\Gam\cup\set{\#}$, framed by $\#$ in the first and last columns. Row $1$ is the start
-configuration; each row legally follows the one above it under $\trans$. The tableau is
+configuration; each row legally follows the one above it under $\trans$, except that an accepting
+configuration, which has no successor, is repeated in every row below it (so a branch that accepts
+early still fills the grid). The tableau is
 \emph{accepting} if some row contains the accept state $q_{\mathrm{acc}}$.
 \end{definition}
 
@@ -26920,12 +26922,13 @@ A \emph{$2\times3$ window} is the six cells $(i,j-1),(i,j),(i,j+1)$ over
 $(i+1,j-1),(i+1,j),(i+1,j+1)$. The window is \emph{legal} if its contents could appear in some
 correct one-step transition of $\nfa$: either the head is far from these columns and the bottom row
 copies the top, or the head sits inside or just beside them and the change agrees with some rule of
-$\trans$.
+$\trans$. A window whose top row contains $q_{\mathrm{acc}}$ is also legal when its bottom row copies
+the top, so that an accepting configuration may repeat.
 \end{definition}
 
 \begin{lemma}[Windows certify legal moves]\label{lem:windows@c13}
 If row $1$ of a tableau is the start configuration and \emph{every} $2\times3$ window is legal, then
-each row legally follows the previous one.
+each row legally follows the previous one, or repeats it if the previous one is accepting.
 \end{lemma}
 
 \begin{proof}
@@ -26933,12 +26936,14 @@ Fix adjacent rows $i$ (upper) and $i+1$ (lower). A tape symbol in column $j$ of 
 is not adjacent to the state symbol sits as the top-center of a window whose top row carries no
 state; legality of that window forces the bottom-center to equal it, so the symbol is unchanged in
 the lower row -- exactly as a one-step move leaves non-head cells alone. The single window whose
-top row contains the state symbol (with its two neighbors) must match a transition of $\trans$, so
+top row contains the state symbol (with its two neighbors) must match a transition of $\trans$ (or,
+if the state is $q_{\mathrm{acc}}$, copy its top row), so
 the three affected positions are rewritten consistently with some rule. Hence the lower row is a
-configuration that $\nfa$ can reach from the upper one in one step. The choice of \emph{two} rows
-and \emph{three} columns is exactly what is needed: the head's effect on cell $(i+1,j)$ depends on
-the upper cells $(i,j-1),(i,j),(i,j+1)$, the head could enter $(i+1,j)$ from the left or the right,
-so all three upper neighbors must be visible.
+configuration that $\nfa$ can reach from the upper one in one step, or a repeat of an accepting one.
+The choice of \emph{two} rows
+and \emph{three} columns is exactly what is needed: one step rewrites only the state's cell and its
+two neighbors (a left move changes all three), so the window centered on the state sees the whole
+change.
 \end{proof}
 
 Encoding ``the $(i,j)$-window is legal'' as Boolean logic is a finite disjunction: enumerate every
@@ -27003,7 +27008,7 @@ $(q_0,\mathtt{a})$ to $q_2$.
   \node[font=\footnotesize,right=2mm] at (3,-1.5){no rule yields $q_2$};
 \end{tikzpicture}
 \end{center}
-The transition $\trans(q_0,\mathtt{a})$ enters only $q_1$, never $q_2$, so no legal six-tuple has
+The transition $\trans(q_0,\mathtt{a})$ never enters $q_2$, so no legal six-tuple has
 this top row paired with $q_2$ at the bottom-right. The window is therefore \emph{not} among the
 disjuncts, and any assignment placing these symbols falsifies the window-$(i,j)$ formula, hence
 falsifies $\varphi_{\mathrm{move}}$ and all of $\varphi$.
@@ -27021,10 +27026,11 @@ window formula becomes satisfiable again -- confirming the formula tracks $\tran
 Set $f(w)=\varphi=\varphi_{\mathrm{cell}}\wedge\varphi_{\mathrm{start}}\wedge\varphi_{\mathrm{move}}
 \wedge\varphi_{\mathrm{accept}}$. A satisfying assignment of $\varphi$ assigns exactly one symbol
 to every cell (by $\varphi_{\mathrm{cell}}$), makes row $1$ the start configuration (by
-$\varphi_{\mathrm{start}}$), makes every row follow its predecessor (by $\varphi_{\mathrm{move}}$
-and Lemma~\ref{lem:windows@c13}), and forces $q_{\mathrm{acc}}$ to appear (by
+$\varphi_{\mathrm{start}}$), makes every row follow its predecessor or repeat an accepting one (by
+$\varphi_{\mathrm{move}}$ and Lemma~\ref{lem:windows@c13}), and forces $q_{\mathrm{acc}}$ to appear (by
 $\varphi_{\mathrm{accept}}$) -- i.e.\ it \emph{is} an accepting tableau, so $\nfa$ accepts $w$.
-Conversely an accepting branch of $\nfa$ on $w$ fills the tableau and the assignment
+Conversely an accepting branch of $\nfa$ on $w$, with its accepting configuration repeated down to
+the last row, fills the tableau and the assignment
 $x_{i,j,s}=1\iff$ cell $(i,j)$ holds $s$ satisfies all four parts. Thus $\varphi$ is satisfiable iff
 $\nfa$ accepts $w$ iff $w\in\Lang$. Finally $f$ runs in polynomial time: the size bound below shows
 $\abs{\varphi}=\bigO(n^{2k})$, and the formula is so repetitive (identical fragments differing only
@@ -27452,7 +27458,7 @@ $x_1=0,x_3=0$, satisfies $\phi$.
 \whichrule{A $k$-clique forces one true literal per clause with no variable forced both ways; the
 edge $x_2$--$x_2$ realizes ``$x_2$ true satisfies both clauses,'' which is a genuine satisfying
 assignment.}
-\emph{Check.} Under $x_2=1$: clause $1=(0\lor 1\lor\ast)=1$ and clause $2=(\ast\lor 1\lor 0)=1$, so
+\emph{Check.} Under $x_2=1$: clause $1=(\ast\lor 1\lor\ast)=1$ and clause $2=(\ast\lor 1\lor\ast)=1$, so
 $\phi=1$. Conversely the non-edges $x_1$--$\overline{x_1}$ and $\overline{x_3}$--$x_3$ correctly
 forbid the impossible demands ``$x_1$ true and false'' or ``$x_3$ true and false.''
 \end{wex}
@@ -27688,10 +27694,10 @@ clique in $G$ iff $S$ is independent in the complement graph $\overline{G}$.
   \item \textbf{Pick the source.} Reduce \emph{from} a known $\classNP$-complete problem,
   almost always $\CSAT$, \emph{to} the target $B$. Never the other way.
   \item \textbf{Design a variable gadget.} Find a structure of $B$ with two stable
-  configurations, one per truth value (an edge with two endpoints; a triple-vertex choice).
+  configurations, one per truth value (an edge with two endpoints).
   \item \textbf{Design a clause gadget.} Find a structure forcing ``at least one literal true''
   (a triple of cross-edges that admits a $k$-clique only with one node per clause; a triangle that
-  needs two cover-vertices unless a true literal helps).
+  needs three cover-vertices unless a true literal helps).
   \item \textbf{Glue with edges.} Connect gadgets so consistency (no $x_i$ both true and false) and
   satisfaction (each clause served) are enforced -- e.g.\ omit edges between contradictory literals,
   or link like-labelled vertices.
@@ -28245,7 +28251,7 @@ each target digit is matched \emph{independently}.
 \emph{Correctness.} If $\varphi$ is satisfiable, pick $y_{i}$ when $x_{i}=$ \textsc{true} and
 $z_{i}$ when $x_{i}=$ \textsc{false}; this puts a single $1$ in each variable column (matching the
 target's $1$). In clause column $c_{j}$ the chosen variable numbers contribute between $1$ and $3$
-(the number of true literals in $c_{j}$, which is $\ge 1$ since $c_{j}$ is satisfied); choose
+(the number of distinct true literals in $c_{j}$, which is $\ge 1$ since $c_{j}$ is satisfied); choose
 enough of $g_{j},h_{j}$ to top the column up to $3$. The subset sums to $t$. Conversely, if a
 subset sums to $t$, then -- no carries -- to get a $1$ in variable column $i$ it must take exactly
 one of $y_{i},z_{i}$, defining a truth assignment. In clause column $c_{j}$ the slacks
@@ -28338,8 +28344,9 @@ Hamiltonian path of $\Gr'$ from $s^{\mathrm{out}}$ to $t^{\mathrm{in}}$ that cor
 directed path $s,a,b,t$.
 
 \item In the node-splitting gadget, the middle node $u^{\mathrm{mid}}$ has degree exactly $2$.
-Prove that any Hamiltonian path of $\Gr'$ must traverse $u^{\mathrm{in}},u^{\mathrm{mid}},
-u^{\mathrm{out}}$ consecutively (in one of the two orders), and explain why this is what re-encodes
+Prove that any Hamiltonian path of $\Gr'$ from $s^{\mathrm{out}}$ to $t^{\mathrm{in}}$ must traverse
+$u^{\mathrm{in}},u^{\mathrm{mid}},u^{\mathrm{out}}$ consecutively (in one of the two orders), and
+explain why this is what re-encodes
 edge direction in the undirected graph.
 
 \item For the $3$cnf-formula $\varphi=(x_{1}\vee\overline{x_{2}}\vee x_{3})$ (one clause), describe
@@ -28546,8 +28553,8 @@ Run the \emph{maximal matching} algorithm: repeatedly pick any uncovered edge, a
 \emph{both} its endpoints to the output set $C$, and delete all edges now touching either
 endpoint; stop when no edges remain. This is polynomial (each step removes at least one edge).
 The chosen edges form a matching $M$ -- they are pairwise disjoint, since adding both
-endpoints deletes every edge meeting them. The set $C$ covers every edge of $G$: an uncovered
-edge would still be in the graph, contradicting the stopping rule, so $\abs C=2\abs M$. Now any
+endpoints deletes every edge meeting them -- so $\abs C=2\abs M$. The set $C$ covers every edge of
+$G$: an uncovered edge would still be in the graph, contradicting the stopping rule. Now any
 vertex cover, in particular a minimum cover $C^{*}$, must contain at least one endpoint of each
 of the $\abs M$ disjoint matching edges, so $\abs{C^{*}}\ge\abs M$. Combining,
 $\abs C=2\abs M\le 2\abs{C^{*}}$.
@@ -28663,7 +28670,15 @@ $\overline{\ell_{1}}\Rightarrow\ell_{2}$ and $\overline{\ell_{2}}\Rightarrow\ell
 the \emph{implication graph} $D$: one node per literal $x$ and $\overline x$, one directed edge
 per implication. Then $\varphi$ is unsatisfiable iff some variable $x$ has both $x$ and
 $\overline x$ in the same strongly connected component of $D$ (a cycle forcing $x\Rightarrow
-\overline x\Rightarrow x$). Strongly connected components are computable in linear time, so
+\overline x\Rightarrow x$, so neither value of $x$ works). Conversely, if no variable has this
+property, list the components in a topological order (every edge of $D$ stays inside a component
+or goes to a later one), write $p(\ell)$ for the position of the component of $\ell$, and make a
+literal $\ell$ true iff $p(\ell)>p(\overline{\ell})$; this sets each variable $x$ consistently (as
+$p(x)\ne p(\overline x)$), and a clause
+$(\ell_{1}\vee\ell_{2})$ with both literals false would give
+$p(\ell_{1})<p(\overline{\ell_{1}})\le p(\ell_{2})<p(\overline{\ell_{2}})\le p(\ell_{1})$ (the
+two $\le$ by its edges $\overline{\ell_{1}}\to\ell_{2}$ and $\overline{\ell_{2}}\to\ell_{1}$),
+which is impossible. Strongly connected components are computable in linear time, so
 $\mathit{2SAT}$ is decidable in polynomial time.
 \end{proof}
 
@@ -28731,9 +28746,10 @@ combinatorial search that Cook--Levin shows is NP-complete.}
 \begin{pitfall}
 An approximation or heuristic does \emph{not} put the problem in $\classP$. ``$\VC$ has a
 polynomial $2$-approximation'' is a statement about an \emph{easier, approximate} task; the
-exact decision problem $\VC$ remains NP-complete unless $\classP=\classNP$. Likewise an FPT
+exact decision problem $\VC$ remains NP-complete, hence outside $\classP$ unless $\classP=\classNP$.
+Likewise an FPT
 algorithm running in $\bigO(2^{k}n)$ is polynomial only when $k$ is treated as a constant --
-let $k$ grow with $n$ and it is exponential again. And every ratio guarantee like ``factor
+let $k$ grow linearly with $n$ and it is exponential again. And every ratio guarantee like ``factor
 $2$'' is \emph{worst-case}: it bounds the gap on the nastiest instance, not the typical one,
 and it certainly does not claim the optimum was found.
 \end{pitfall}
