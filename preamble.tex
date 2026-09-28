@@ -45,11 +45,13 @@
 \newcommand{\wsol}{\par\smallskip\noindent\textit{Solution.}\enspace\ignorespaces}
 
 % ---- method block: \begin{method}{title} ... \end{method} ----
-\newenvironment{method}[1]{\begin{methodthm}[{#1}]\leavevmode\ignorespaces}{\end{methodthm}}
+\makeatletter
+\newenvironment{method}[1]{\begin{methodthm}[{#1}]\@beginparpenalty\@M\leavevmode\ignorespaces}{\end{methodthm}}
+\makeatother
 
 % ---- exercise list: \begin{exers}{heading} \item ... \end{exers} ----
 \newenvironment{exers}[1]{\par\medskip\noindent\ifx\relax#1\relax\else\textbf{#1}\par\nopagebreak\fi
-  \begin{enumerate}[leftmargin=*,labelsep=0.6em,itemsep=2pt,topsep=2pt]}
+  \begin{enumerate}[leftmargin=*,labelsep=0.6em,itemsep=2pt,topsep=2pt,beginpenalty=10000]}
   {\end{enumerate}}
 \newcommand{\whichrule}[1]{\par\smallskip\noindent\textit{Which idea, and why?}\enspace #1\par}
 
