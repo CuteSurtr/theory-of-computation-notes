@@ -24068,7 +24068,7 @@ $\begin{array}{r|r|r}
 \end{array}$
 \end{center}
 At $n=100$ the polynomial sits near a million -- a fraction of a second of computing -- while the
-exponential exceeds the number of atoms in the observable universe. Plotting both on a base-$10$
+exponential would outlast the age of the universe even at $10^{12}$ steps per second. Plotting both on a base-$10$
 logarithmic axis (so a straight line means a fixed growth rate) makes the divergence visible: the
 polynomial bends \emph{toward} the horizontal, the exponential stays a rising straight line.
 \begin{center}
@@ -24084,7 +24084,7 @@ polynomial bends \emph{toward} the horizontal, the exponential stays a rising st
   % polynomial n^3 : log10 = 3 log10 n
   \draw[line width=1pt]
     plot[domain=1:20,samples=40] (\x, {3*log10(\x)});
-  \node[fill=white,inner sep=1pt,font=\footnotesize] at (16.5,4.6) {$n^{3}$};
+  \node[fill=white,inner sep=1pt,font=\footnotesize] at (16.5,2.9) {$n^{3}$};
   % exponential 2^n : log10 = n log10 2 = 0.3010 n
   \draw[line width=1pt,dashed]
     plot[domain=0:20,samples=2] (\x, {0.30103*\x});
@@ -24135,7 +24135,7 @@ they run out together.
 \begin{wex}{Time analysis of a single-tape decider for $\{\str0^{k}\str1^{k}\}$}
 Analyze the running time of the machine $M_{1}$ that decides $A$ by: (i) one left-to-right scan
 rejecting if a $\str0$ follows a $\str1$; then (ii) repeatedly scanning the tape and crossing off
-the leftmost remaining $\str0$ together with the leftmost remaining $\str1$, until symbols run out.
+the leftmost remaining $\str0$ together with the rightmost remaining $\str1$, until symbols run out.
 \wrec The trigger is ``loop whose body is a tape scan.'' Cost $=$ (number of iterations)
 $\times$ (cost per iteration); a full scan of an $n$-cell tape is $\Theta(n)$ steps.
 \wsol Picture the tape after a few cross-offs ($\str{x}$ marks a crossed cell), with the head
@@ -24213,7 +24213,7 @@ scans $\bigO(n)$ -- linear, versus the one-tape machine's $\sim n^{2}$.
 
 \subsection*{How much does the model matter?}
 
-The last two examples decided the \emph{same} language $A$ in $\bigO(n\log n)$ on one tape but
+We have now decided the \emph{same} language $A$ in $\bigO(n\log n)$ on one tape but
 $\bigO(n)$ on two: time complexity is \emph{model-dependent}. This is the sharpest break from
 computability theory, where the Church--Turing thesis made all reasonable models equivalent. Here
 the model changes the running time. The good news is that for the models we care about the change
@@ -24271,7 +24271,7 @@ nodes total.
    level 1/.style={sibling distance=26mm},
    level 2/.style={sibling distance=12mm},
    edge from parent/.style={tedge,draw}]
-  \node[gv,label=left:{\footnotesize start}] {}
+  \node[gv,label=above left:{\footnotesize start}] {}
     child {node[gv] {}
       child {node[gv] {}}
       child {node[gv] {}}}
@@ -24392,8 +24392,8 @@ Argue informally that your machine runs in time $\bigO(n^{2})$.
 decides $B$ in time $\bigO(n)$, and explain in one sentence what the second tape is used for.
 
 \item Let $C=\set{\str{0}^{k} \st k \text{ is a power of }2}$. The natural single-tape decider
-repeatedly halves the number of $\str0$s (by crossing off every other one), rejecting if an odd
-count $>1$ ever appears, and accepting when exactly one remains. Bound the number of halving passes
+repeatedly halves the number of $\str0$s (by crossing off every other one), rejecting on the empty
+input or if an odd count $>1$ ever appears, and accepting when exactly one remains. Bound the number of halving passes
 as a function of $n$, bound the cost of one pass, and conclude a $\bigO(n\log n)$ running time.
 
 \item Find the bug. A student claims this machine decides $A=\set{\str0^{k}\str1^{k}}$ in linear
@@ -24479,8 +24479,10 @@ $n\mapsto p(q(n))$ are all polynomially bounded.
 Write $p(n)=\bigO(n^{a})$ and $q(n)=\bigO(n^{b})$, so for some constants $c,d$ and a threshold $n_0$
 we have $p(n)\le c\,n^{a}$ and $q(n)\le d\,n^{b}$ for all $n\ge n_0$. Then
 $p(n)+q(n)\le c\,n^{a}+d\,n^{b}\le (c+d)\,n^{\max(a,b)}$, which is $\bigO(n^{\max(a,b)})$. The product
-satisfies $p(n)q(n)\le cd\,n^{a+b}=\bigO(n^{a+b})$. For the composition,
-$p(q(n))\le c\,(q(n))^{a}\le c\,(d\,n^{b})^{a}=c\,d^{a}\,n^{ab}=\bigO(n^{ab})$. Each bound is a fixed
+satisfies $p(n)q(n)\le cd\,n^{a+b}=\bigO(n^{a+b})$. For the composition, first enlarge $c$ so that
+$p(m)\le c\,m^{a}+c$ for \emph{every} $m$ (only the finitely many $m<n_0$ need this, as $q(n)$ may be
+small); then
+$p(q(n))\le c\,(q(n))^{a}+c\le c\,(d\,n^{b})^{a}+c=c\,d^{a}\,n^{ab}+c=\bigO(n^{ab})$. Each bound is a fixed
 power of $n$, hence polynomial.
 \end{proof}
 
@@ -24492,7 +24494,8 @@ some polynomial $r(n)$. Then the algorithm runs in polynomial time.
 \end{corollary}
 
 \begin{proof}
-Total time is at most $p(n)\cdot q(r(n))$. By Proposition~\ref{prop:compose@c12}, $q(r(n))$ is
+Total time is at most $p(n)\cdot q(r(n))$ (we may take $q$ nondecreasing, replacing $q(m)$ by
+$\max_{i\le m}q(i)$, which is still polynomially bounded). By Proposition~\ref{prop:compose@c12}, $q(r(n))$ is
 polynomially bounded and the product of two polynomially bounded functions is polynomially bounded,
 so the total is $\bigO(n^{k})$ for some $k$.
 \end{proof}
@@ -24507,10 +24510,10 @@ count individual head motions. The following schematic is the shape of every suc
   \node[procbox] (in)  at (0,0)   {input, $|w|=n$};
   \node[procbox] (st)  at (3.6,0) {one stage};
   \node[procbox] (out) at (7.6,0) {accept / reject};
-  \path[flow] (in) -- (st);
-  \path[flow] (st) -- (out);
-  \path[flow] (st.north) .. controls (4.6,1.05) and (2.6,1.05) .. (st.north)
-     node[flowlbl,above=6pt] {$\le p(n)$ times, each $\poly(n)$};
+  \draw[flow] (in) -- (st);
+  \draw[flow] (st) -- (out);
+  \draw[flow] ([xshift=3mm]st.north) .. controls +(0.5,1.0) and +(-0.5,1.0) .. ([xshift=-3mm]st.north)
+     node[flowlbl,pos=0.5,above] {$\le p(n)$ times, each $\poly(n)$};
   \node[font=\footnotesize] at (3.6,-0.95)
      {total $=(\text{\# stages})\times(\text{cost per stage})=\poly(n)$};
 \end{tikzpicture}
@@ -24550,7 +24553,7 @@ growing.
   \begin{scope}[on background layer]
     \path[gedge,->] (s) edge (a) (s) edge (b)
                     (a) edge (c) (b) edge (c)
-                    (c) edge (t) (b) edge (u)
+                    (c) edge (t) (u) edge (b)
                     (u) edge (v) (v) edge[bend left] (u);
   \end{scope}
   \node[gvlbl,below=1pt of s] {pass 0};
@@ -24625,7 +24628,7 @@ $w_i\cdots w_k$ and $C$ the right piece $w_{k+1}\cdots w_j$. Hence
 \[
   T_{i,j}=\set{A \st \exists\,k,\ A\to BC,\ B\in T_{i,k},\ C\in T_{k+1,j}}.
 \]
-Accept iff the start variable $S\in T_{1,n}$. The dependency is upward: a longer interval is filled
+Accept iff the start variable $S\in T_{1,n}$ (for $w=\eps$, accept iff $S\to\eps$ is a rule). The dependency is upward: a longer interval is filled
 purely from strictly shorter ones already in the table, as the arrows show for $T_{1,3}$ splitting at
 $k=1$ and $k=2$.
 \begin{center}
@@ -24640,17 +24643,17 @@ $k=1$ and $k=2$.
   \node[cell] (23) at (1.5,1) {$T_{2,3}$};
   \node[tcell] (13) at (1,0) {$T_{1,3}$};
   % split k=1 (solid): T_{1,1} and T_{2,3} feed T_{1,3}; routed down the left/right outside
-  \path[flow,black!75,shorten >=1.5pt,shorten <=1.5pt]
+  \draw[flow,black!75,shorten >=1.5pt,shorten <=1.5pt]
         (11.west) to[out=-90,in=150] (13.north west);
-  \path[flow,black!75,shorten >=1.5pt,shorten <=1.5pt]
-        (23.east) to[out=-90,in=30]  (13.north east);
+  \draw[flow,black!75,shorten >=1.5pt,shorten <=1.5pt]
+        (23.south) to[out=-90,in=60]  ([xshift=3mm]13.north);
   % split k=2 (dashed): T_{1,2} and T_{3,3} feed T_{1,3}
-  \path[flow,black!55,dashed,shorten >=1.5pt,shorten <=1.5pt]
-        (12.south) to[out=-90,in=110] (13.north);
-  \path[flow,black!55,dashed,shorten >=1.5pt,shorten <=1.5pt]
-        (33.east) to[out=-90,in=55]  (13.north east);
-  \node[font=\footnotesize,black!75] at (-0.55,1) {$k{=}1$ (solid)};
-  \node[font=\footnotesize,black!55] at (2.6,1) {$k{=}2$ (dashed)};
+  \draw[flow,black!55,dashed,shorten >=1.5pt,shorten <=1.5pt]
+        (12.south) to[out=-90,in=120] ([xshift=-3mm]13.north);
+  \draw[flow,black!55,dashed,shorten >=1.5pt,shorten <=1.5pt]
+        (33.east) to[out=-90,in=30]  (13.north east);
+  \node[font=\footnotesize,black!75,anchor=east] at (-0.25,1) {$k{=}1$ (solid)};
+  \node[font=\footnotesize,black!55,anchor=west] at (2.25,1) {$k{=}2$ (dashed)};
   \node[font=\footnotesize,align=center] at (1,2.8)
      {row $=$ substring length $\ell$ \ (fill $\ell=1,2,\dots,n$)};
 \end{tikzpicture}
@@ -24884,7 +24887,7 @@ inputs of the form $\enc{w,c}$ (measuring in $n=\abs{w}$). Build an NTM $N$:
 \begin{quote}
 $N$ on input $w$ of length $n$:
 (1) nondeterministically write a string $c$ of length at most $n^k$, one symbol at a time by
-branching over $\Sig$ at each of $n^k$ positions;
+branching over $\Sig$ (or stopping) at each of up to $n^k$ positions;
 (2) run $V$ on $\enc{w,c}$;
 (3) accept iff $V$ accepts.
 \end{quote}
@@ -24943,11 +24946,11 @@ $\classNP$-membership flow backward along a reduction $A\redp B$.
   \node[procbox,right=16mm of w] (V) {verifier $V$};
   \node[right=16mm of V,font=\small,align=left] (out)
     {accept iff\\ $\exists\,c\ V(w,c)=\text{acc}$};
-  \path[flow] (w) -- (V);
-  \path[flow] (c) -| (V);
-  \path[flow] (V) -- (out);
+  \draw[flow] (w) -- (V);
+  \draw[flow] (c) -| (V);
+  \draw[flow] (V) -- (out);
   \node[smlbl,below=1mm of V,font=\scriptsize] {$\abs{c}=\bigO(\abs{w}^{k})$};
-  \node[font=\footnotesize,anchor=west] at ($(w)+(-1.0,1.55)$)
+  \node[font=\footnotesize,anchor=west] at ($(w)+(-1.0,2.05)$)
     {\textbf{characterization:}\ \ $w\in\Lang \iff \exists\,c\ V(w,c)=\text{accept}$};
   % --- BOTTOM: certificate-transport square ---
   \node[smnode,below=20mm of w] (Aw) {$w$ for $A$};
@@ -25002,7 +25005,7 @@ certificate has length $\bigO(m)$.
   \begin{scope}[on background layer]
     \path[gedge,-{Stealth[length=2mm]}]
       (s) edge (a) (a) edge (d) (d) edge (e) (e) edge (b) (b) edge (t)
-      (s) edge[bend left=12] (b) (a) edge (e) (d) edge[bend right=20] (t);
+      (s) edge[bend left=12] (b) (a) edge (e) (d) edge (t);
   \end{scope}
 \end{tikzpicture}
 \end{center}
@@ -25036,7 +25039,7 @@ nondeterministic polynomial time.
     child {node[label=left:{\footnotesize guess $p_2$}]{}
       child {node[label=below:{\footnotesize $\times$}]{}}
       child[edge from parent/.style={tedge,draw,line width=1.1pt}]
-        {node[acc,label=below:{\footnotesize accepting branch $s,a,d,\dots,t$ \checkmark}]{}}
+        {node[acc,label={[rectangle,label distance=3.5mm]below:{\footnotesize accepting branch $s,a,d,\dots,t$ \checkmark}}]{}}
       child {node[label=below:{\footnotesize $\times$}]{}}}
     child {node {}
       child {node[label=below:{\footnotesize $\times$}]{}}
@@ -25053,7 +25056,7 @@ interchangeable; the accepting branch (the bold leaf) \emph{is} the certificate 
 example.}
 \emph{Check.} The bold branch guesses the same order $s,a,d,e,b,t$ that served as the certificate;
 all other branches fail the repeat/edge tests and die. One accepting branch suffices, matching
-Definition~\ref{def:ntime@c12}.
+Definition~8.3.7.
 \end{wex}
 
 \begin{wex}{$\CLIQUE$ is in $\classNP$}
@@ -25083,9 +25086,9 @@ in $\abs{\enc{G,k}}$.
 \whichrule{Membership in $\classNP$ follows from a short witness ($k$ vertices) plus a polynomial
 check (all pairs adjacent); the witness need not be unique or found efficiently.}
 \emph{Check.} For $\enc{G,4}$ the certificate $c=\set{1,2,3,4}$ is a $4$-clique: the bold edges show
-all six pairs among $1,2,3,4$ are present, so the verifier accepts. The bogus certificate
-$\set{1,2,5}$ fails the pair test because $1\text{--}5$ is not an edge, even though it passes the
-count test.
+all six pairs among $1,2,3,4$ are present, so the verifier accepts. For $\enc{G,3}$ the bogus
+certificate $\set{1,2,5}$ fails the pair test because $1\text{--}5$ is not an edge, even though it
+passes the count test.
 \end{wex}
 
 \begin{wex}{$\mathit{SUBSET\text{-}SUM}$ is in $\classNP$}
@@ -25127,8 +25130,8 @@ Show $\mathit{COMPOSITES}\in\classNP$, and explain why its complement is not obv
 $\classNP$.
 \wrec A factor is a one-line proof of compositeness, and checking a factor is just a division. The
 trigger is the existence of a short, checkable witness.
-\wsol \emph{Certificate.} A single integer $d$ with $1<d<x$. \emph{Verifier:} accept iff $d$ divides
-$x$ evenly. Division of binary integers is polynomial in $\abs{x}$ (the number of bits), so this is
+\wsol \emph{Certificate.} A single integer $d$ with $1<d<x$. \emph{Verifier:} accept iff $1<d<x$ and
+$d$ divides $x$ evenly. Division of binary integers is polynomial in $\abs{x}$ (the number of bits), so this is
 a polynomial-time verifier and $\mathit{COMPOSITES}\in\classNP$.
 
 For the complement $\overline{\mathit{COMPOSITES}}$ (the primes, plus $0,1$), what would a
@@ -25145,15 +25148,16 @@ $\coNP=\classNP$ is open.
   \node[procbox,above right=6mm and 16mm of V] (acc) {accept};
   \node[procbox,below right=6mm and 16mm of V] (rej) {reject};
   \node[above=7mm of x,font=\footnotesize] (cert) {certificate $d=7$};
-  \path[flow] (x) -- (V);
-  \path[flow] (cert) -| (V);
-  \path[flow] (V) -- node[flowlbl]{$7\mid 91$} (acc);
-  \path[flow] (V) -- node[flowlbl]{$d\nmid x$} (rej);
+  \draw[flow] (x) -- (V);
+  \draw[flow] (cert) -| (V);
+  \draw[flow] (V) -- node[flowlbl]{$7\mid 91$} (acc);
+  \draw[flow] (V) -- node[flowlbl]{$d\nmid x$} (rej);
 \end{tikzpicture}
 \end{center}
-\whichrule{Membership uses a one-sided witness: a factor certifies ``composite,'' but no symmetric
-short witness is known to certify ``prime,'' which is exactly why $\classNP$ and $\coNP$ need not
-coincide.}
+\whichrule{Membership uses a one-sided witness: a factor certifies ``composite,'' but a short witness
+certifying ``prime'' is far from obvious (one does exist, by Pratt's theorem, and primality is even in
+$\classP$); in general no symmetric witness need exist, which is exactly why $\classNP$ and $\coNP$
+need not coincide.}
 \emph{Check.} For $x=91$ the certificate $d=7$ gives $91=7\cdot 13$, so $V$ accepts and
 $91\in\mathit{COMPOSITES}$. For $x=97$ no $d$ with $1<d<97$ divides it, so no certificate exists and
 $97\notin\mathit{COMPOSITES}$ -- correctly, since $97$ is prime.
@@ -25224,8 +25228,8 @@ the verifier.
 $\classNP$ is defined by a \emph{one-sided} guarantee. A polynomial-time verifier certifies the
 ``yes'' instances via an accepting certificate; it says nothing about how to certify ``no''
 instances. So $\Lang\in\classNP$ does \emph{not} give $\overline{\Lang}\in\classNP$ for free -- that
-would require a short witness of \emph{non}-membership, which for problems like $\HAMPATH$ or
-primality is not known to exist. Do not assume $\classNP$ is closed under complement; the question
+would require a short witness of \emph{non}-membership, which for problems like $\HAMPATH$
+is not known to exist. Do not assume $\classNP$ is closed under complement; the question
 ``$\classNP=\coNP$?'' is open.
 \end{pitfall}
 
@@ -25265,10 +25269,10 @@ many positions does the constructed NTM branch in stage~1? Explain why each bran
 polynomial time.
 
 \item Draw the nondeterministic computation tree (down to depth $3$) of a polynomial-time NTM for
-$\mathit{SUBSET\text{-}SUM}$ on the instance $S=\set{2,4,7}$, $t=6$, where at vertex $i$ the machine
+$\mathit{SUBSET\text{-}SUM}$ on the instance $S=\set{2,4,7}$, $t=6$, where at step $i$ the machine
 branches on whether to include $x_i$. Mark every accepting leaf.
 
-\item \emph{True or false, with justification.} (a) If $\Lang\in\classP$ then $\Lang\in\classNP$.
+\item \emph{True, false, or open, with justification.} (a) If $\Lang\in\classP$ then $\Lang\in\classNP$.
 (b) If $\Lang\in\classNP$ then $\overline{\Lang}\in\classNP$. (c) Every language in $\classNP$ is
 decidable. (d) $\classNP\subseteq\EXP$.
 
@@ -25349,7 +25353,7 @@ $\classNP$.
 \end{theorem}
 
 \begin{proof}
-We exhibit a polynomial-time verifier for each; by Definition~\ref{def:sat@c12} of the previous section a
+We exhibit a polynomial-time verifier for each; by Definition~\ref{def:np@c12} of the previous section a
 language with such a verifier is in $\classNP$. Throughout, $n$ denotes the length of the encoded
 input.
 
@@ -25396,7 +25400,7 @@ discovering it.
   \node[procbox,right=of cert] (ver) {verifier $V$ checks $c$};
   \node[right=18mm of ver] (out2) {accept/reject};
   \path (w) edge[flow] (search) (search) edge[flow] (out1);
-  \path (w2) edge[flow] (ver) (cert) edge[flow] (ver) (ver) edge[flow] (out2);
+  \path (w2) edge[flow,bend right=35] (ver) (cert) edge[flow] (ver) (ver) edge[flow] (out2);
   \node[anchor=west] at ($(out1)+(0.2,0.55)$) {\footnotesize exponential time};
   \node[anchor=west] at ($(out2)+(0.2,-0.55)$) {\footnotesize polynomial time};
 \end{tikzpicture}
@@ -25580,9 +25584,9 @@ logically possible pictures are drawn below.
   \begin{scope}
     \draw[line width=0.8pt] (0,0) ellipse (2.1 and 1.5);
     \node at (0,1.15) {$\classNP$};
-    \draw[line width=0.8pt,fill=black!6] (-0.55,0.05) ellipse (1.05 and 0.72);
-    \node at (-0.55,0.05) {$\classP$};
-    \node at (0,-1.12) {\scriptsize $\CLIQUE,\HAMPATH$};
+    \draw[line width=0.8pt,fill=black!6] (-0.55,0.2) ellipse (1.05 and 0.72);
+    \node at (-0.55,0.2) {$\classP$};
+    \node at (0,-0.8) {\scriptsize $\CLIQUE,\HAMPATH$};
     \node at (0,-2.05) {\small if $\classP\neq\classNP$};
   \end{scope}
   % right picture: P = NP
@@ -25594,11 +25598,11 @@ logically possible pictures are drawn below.
 \end{tikzpicture}
 \end{center}
 
-In the left picture, problems such as $\CLIQUE$ and $\HAMPATH$ live in the shaded gap $\classNP
+In the left picture, problems such as $\CLIQUE$ and $\HAMPATH$ live in the unshaded gap $\classNP
 \setminus\classP$: verifiable but not decidable in polynomial time. In the right picture there is no
 gap, and every fast verifier could be replaced by a fast decider. No one knows which holds, though the
 best deterministic algorithms known for $\classNP$ problems run in exponential time, and the
-containment $\classNP\subseteq\EXP$ is provable while no smaller deterministic bound is.
+containment $\classNP\subseteq\EXP$ is proved while no smaller deterministic time bound is known.
 
 It helps to place $\classNP$ in the chain of containments that \emph{are} proved, while marking
 exactly where the open question lives.
@@ -25607,7 +25611,7 @@ exactly where the open question lives.
 %   Known inclusions P subset NP subset PSPACE drawn with 'inc' hook arrows.
 %   Label "P = NP ? (open)" on the P-subset-NP edge. Do NOT claim P != NP.
 \begin{center}
-\begin{tikzcd}[column sep=large]
+\begin{tikzcd}[column sep=2.6cm]
 \classP \arrow[r, inc, "{\classP=\classNP\,?\ \text{(open)}}"] & \classNP \arrow[r, inc] & \PSPACE
 \end{tikzcd}
 \end{center}
@@ -25725,7 +25729,7 @@ transform every instance of problem $A$ into an instance of problem $B$ using on
 polynomial amount of work, in such a way that yes-instances map to yes-instances and
 no-instances to no-instances, then $B$ is ``at least as hard'' as $A$ up to a polynomial:
 any fast algorithm for $B$ becomes a fast algorithm for $A$. This is the efficient refinement
-of the mapping reductions that were used to compare decidability in Chapter~11, and it is
+of the mapping reductions that were used to compare decidability in Chapter~10, and it is
 the exact tool that, in the next section, lets a single problem stand in for the entire
 class $\classNP$.
 
@@ -25826,7 +25830,7 @@ $A\redp C$.
 \begin{remark}
 $\redp$ is reflexive ($f$ the identity) and transitive (Proposition~\ref{prop:trans@c12}), so it is
 a preorder on languages. It is \emph{not} antisymmetric: two different problems can each reduce
-to the other, and indeed all problems in $\classP$ reduce to one another, collapsing into a
+to the other, and indeed all problems in $\classP$ other than $\es$ and $\Sigstar$ reduce to one another, collapsing into a
 single ``easy'' equivalence class. The interesting structure lives above $\classP$.
 \end{remark}
 
@@ -25872,21 +25876,21 @@ instances to one fixed Hamiltonian graph, no instances to one fixed non-Hamilton
 It exists regardless of whether $\HAMPATH$ is easy or hard, confirming it tells us nothing.
 \end{wex}
 
-\begin{wex}{$\redp$ between two graph problems: even cycle to general cycle}
+\begin{wex}{$\redp$ between two graph problems: general cycle to even cycle}
 Over directed graphs, let $\textit{EVENCYC}=\set{\enc{G}\st G\text{ has a directed cycle of even
 length}}$ and $\textit{CYC}=\set{\enc{G}\st G\text{ has a directed cycle}}$. Show
-$\textit{EVENCYC}\redp\textit{CYC}$.
-\wrec We must \emph{rewrite} an instance $G$ into a new instance $G'$ so that ``$G$ has an even
-cycle'' becomes exactly ``$G'$ has a cycle.'' The device is to split each vertex so that every
-single step of $G'$ corresponds to two steps of $G$, doubling cycle lengths.
+$\textit{CYC}\redp\textit{EVENCYC}$.
+\wrec We must \emph{rewrite} an instance $G$ into a new instance $G'$ so that ``$G$ has a
+cycle'' becomes exactly ``$G'$ has an even cycle.'' The device is to split each vertex so that every
+single step of $G$ corresponds to two steps of $G'$, doubling cycle lengths.
 \wsol Build $G'$ on two copies of the vertex set, an \emph{in}-layer and an \emph{out}-layer.
 For each edge $u\to v$ of $G$, put an edge $u^{\mathrm{out}}\!\to v^{\mathrm{in}}$ in $G'$; for
 each vertex $w$, put an edge $w^{\mathrm{in}}\!\to w^{\mathrm{out}}$. A walk in $G'$ alternates
 out$\to$in (a real $G$-edge) and in$\to$out (the internal link), so any cycle of $G'$ has even
 length and projects to a $G$-cycle traversed once. Conversely a $G$-cycle of length $\ell$ lifts
-to a $G'$-cycle of length $2\ell$. Thus $G'$ has \emph{any} cycle iff $G$ has \emph{some} cycle;
-a small variant pins the parity, but already this bipartite-doubling layout shows the rewriting
-style.
+to a $G'$-cycle of length $2\ell$. Thus $G'$ has an even cycle iff it has \emph{any} cycle iff $G$
+has \emph{some} cycle, so $f(\enc{G})=\enc{G'}$ reduces $\textit{CYC}$ to $\textit{EVENCYC}$; this
+bipartite-doubling layout shows the rewriting style.
 \begin{center}
 \begin{tikzpicture}[node distance=11mm and 16mm]
   \node[gvlab] (a) {$a$};
@@ -25901,13 +25905,18 @@ style.
   % G' to the right
   \node[gvlab,right=42mm of b] (ai) {$a^{\mathrm{i}}$};
   \node[gvlab,right=of ai] (ao) {$a^{\mathrm{o}}$};
-  \node[gvlab,below=of ai] (bi) {$b^{\mathrm{i}}$};
-  \node[gvlab,below=of ao] (bo) {$b^{\mathrm{o}}$};
+  \node[gvlab,right=of ao] (bi) {$b^{\mathrm{i}}$};
+  \node[gvlab,below=of bi] (bo) {$b^{\mathrm{o}}$};
+  \node[gvlab,below=of ao] (ci) {$c^{\mathrm{i}}$};
+  \node[gvlab,below=of ai] (co) {$c^{\mathrm{o}}$};
   \node at ($(ai)+(-12mm,0)$) {\small $G'$:};
   \begin{scope}[on background layer]
     \draw[gedge,->,>={Stealth[length=2mm]}] (ai) -- (ao);
     \draw[gedge,->,>={Stealth[length=2mm]}] (bi) -- (bo);
     \draw[gedge,->,>={Stealth[length=2mm]}] (ao) -- (bi);
+    \draw[gedge,->,>={Stealth[length=2mm]}] (bo) -- (ci);
+    \draw[gedge,->,>={Stealth[length=2mm]}] (ci) -- (co);
+    \draw[gedge,->,>={Stealth[length=2mm]}] (co) -- (ai);
   \end{scope}
 \end{tikzpicture}
 \end{center}
@@ -25946,13 +25955,13 @@ clique). Every clause then has a true literal, so $\phi$ is satisfied.
 \begin{tikzpicture}[node distance=9mm and 13mm]
   % triple 1
   \node[gvlab] (x1) {\small $x_1$};
-  \node[gvlab,below left=8mm and 6mm of x1] (nx2) {\small $\overline{x_2}$};
-  \node[gvlab,below right=8mm and 6mm of x1] (x3) {\small $x_3$};
+  \node[gvlab,below=5mm of x1] (nx2) {\small $\overline{x_2}$};
+  \node[gvlab,below=5mm of nx2] (x3) {\small $x_3$};
   \node[above=1mm of x1] {\scriptsize clause $1$};
   % triple 2 (right)
   \node[gvlab,right=34mm of x1] (nx1) {\small $\overline{x_1}$};
-  \node[gvlab,below left=8mm and 6mm of nx1] (x2) {\small $x_2$};
-  \node[gvlab,below right=8mm and 6mm of nx1] (nx3) {\small $\overline{x_3}$};
+  \node[gvlab,below=5mm of nx1] (x2) {\small $x_2$};
+  \node[gvlab,below=5mm of x2] (nx3) {\small $\overline{x_3}$};
   \node[above=1mm of nx1] {\scriptsize clause $2$};
   \begin{scope}[on background layer]
     % cross-triple edges only; omit the three contradictory pairs
@@ -25964,7 +25973,7 @@ clique). Every clause then has a true literal, so $\phi$ is satisfied.
     \draw[gedge] (x3) -- (nx1);
     \draw[gedge] (x3) -- (x2);
   \end{scope}
-  \node[below=15mm of x1,xshift=17mm,font=\scriptsize] {(no edges within a triple; no edge between contradictory literals)};
+  \node[below=4mm of x3,xshift=20mm,font=\scriptsize] {(no edges within a triple; no edge between contradictory literals)};
 \end{tikzpicture}
 \end{center}
 \whichrule{$\CSAT\redp\CLIQUE$ uses the \emph{gadget} method: triples mimic clauses (forcing one
@@ -26049,7 +26058,7 @@ landscape these reductions carve out.
   % NP-complete sub-oval
   \node[draw,ellipse,minimum width=22mm,minimum height=18mm] at ($(np.center)+(18mm,0)$) (npc) {};
   \node[align=center] at (npc.center) {\small $\classNP$-\\[-1pt]\small complete};
-  \node[font=\scriptsize] at ($(npc.center)+(0,-12mm)$) {hardest in $\classNP$};
+  \node[font=\scriptsize] at ($(npc.center)+(-5mm,-11.5mm)$) {hardest in $\classNP$};
 \end{tikzpicture}
 \end{center}
 
@@ -26097,9 +26106,9 @@ $A$-solution.
 
 \begin{pitfall}
 ``Polynomial-time'' constrains the \emph{reduction}, not a search. The function $f$ may not, even
-implicitly, solve $A$ or $B$ along the way -- e.g. it cannot test satisfiability of $\phi$ while
+implicitly, solve a hard $A$ or $B$ along the way -- e.g. it cannot test satisfiability of $\phi$ while
 building the graph. It only rewrites the instance; all the genuine computation is deferred to the
-decider for $B$. If your description of $f$ secretly requires deciding the problem, it is not a
+decider for $B$. If your description of $f$ secretly requires deciding a hard problem, it is not a
 polynomial-time reduction.
 \end{pitfall}
 
@@ -26115,7 +26124,8 @@ about $B$ from the additional fact that $\textit{TSP}$ is believed not to be in 
   B=\set{w\in\set{\str0,\str1}\kstar\st w\text{ has an even number of }\str0\text{s}}.
 \]
 Give an explicit polynomial-time computable $f$ with $w\in A\iff f(w)\in B$, and verify the
-biconditional in both directions. (Hint: rewrite each $\str1$ as a $\str0$.)
+biconditional in both directions. (Hint: rewrite each $\str1$ as a $\str0$, and send any input
+containing a $\str0$ to the string $\str0$.)
 
 \item \textbf{Length bounds.} Definition~\ref{def:ptcf@c12} forces $\abs{f(w)}$ to be polynomially
 bounded in $\abs{w}$. Explain why, and exhibit a function $g$ that is computable but is
@@ -26163,7 +26173,7 @@ $\classNP$-complete, citing the exact result from the section you use at each st
 \item \textbf{Contrapositive of the collapse.} Using Theorem~\ref{thm:collapse@c12}, prove that if
 $\classP\ne\classNP$ then no $\classNP$-complete language lies in $\classP$. Then explain why
 this makes finding a polynomial algorithm for \emph{any} single $\classNP$-complete problem (such
-as $\SAT$ or $\CLIQUE$) equivalent to settling $\classP$ versus $\classNP$.
+as $\SAT$ or $\CLIQUE$) equivalent to proving $\classP=\classNP$.
 \end{exers}
 
 
