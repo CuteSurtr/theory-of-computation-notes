@@ -9061,7 +9061,7 @@ $\str0\str1\restar\reor\str1\restar$ describe the \emph{same} language.
 \wrec This is a \emph{language equality} between expressions, the regex analogue of an arithmetic
 identity. The trigger is the factor $(\str0\reor\eps)$ multiplying $\str1\restar$: concatenation
 distributes over union, so we can ``multiply out.''
-\wsol Concatenation distributes over union on the left: $(A\cup B)\concat C=(A\concat C)\cup(B\concat
+\wsol Concatenation distributes over union on the right: $(A\cup B)\concat C=(A\concat C)\cup(B\concat
 C)$. With $A=\set{\str0}$, $B=\set{\eps}$, $C=\lang{\str1\restar}$,
 \[
   \lang{(\str0\reor\eps)\str1\restar}
@@ -9876,7 +9876,7 @@ loop $y$ back to it, then $z$ on to an accept state.
 \begin{tikzpicture}[fa,node distance=16mm and 24mm]
   \node[stinit] (a) {$\qstart$};
   \node[st,right=of a] (rj) {$r_j$};
-  \node[stacc,right=of rj] (f) {$r_{n+1}$};
+  \node[stacc,right=of rj,inner sep=3pt] (f) {$r_{n+1}$};
   \path (a) edge node{$x$} (rj)
         (rj) edge[loop above] node{$y$} (rj)
         (rj) edge node{$z$} (f);
@@ -9900,7 +9900,7 @@ lap count $i$ leaves the verdict unchanged, so $xy^{\,i}z\in\Lang$ for all $i\ge
 \begin{tikzpicture}[fa,node distance=16mm and 26mm]
   \node[stinit] (a) {$\qstart$};
   \node[st,right=of a] (rj) {$r_j$};
-  \node[stacc,right=of rj] (f) {$r_{n+1}$};
+  \node[stacc,right=of rj,inner sep=3pt] (f) {$r_{n+1}$};
   \path (a) edge node{$x$} (rj)
         (rj) edge[loop above] node{$y$ \footnotesize($i$ laps)} (rj)
         (rj) edge node{$z$} (f);
@@ -10146,7 +10146,7 @@ and indeed $xy^0z=\str{00}\in\Lang$, $xy^2z=\str{1100}\in\Lang$.
 You do \emph{not} choose the pumping length $p$, and you do \emph{not} choose the split $x,y,z$.
 Both are handed to you adversarially: $p$ is some fixed-but-unknown positive integer, and the
 decomposition is whatever the lemma supplies, subject only to $\abs{y}>0$ and $\abs{xy}\le p$. A
-correct argument fixes the \emph{string} $s$ (your only free choice) and then defeats \emph{every}
+correct argument fixes the \emph{string} $s$ (your first free choice) and then defeats \emph{every}
 legal split. The two choices you actually make are $s$ and the pumping exponent $i$.
 \end{pitfall}
 
@@ -10258,7 +10258,7 @@ the whole method is just its contrapositive.
 \begin{tikzpicture}[fa,node distance=16mm and 22mm]
   \node[stinit] (q1) {$r_1$};
   \node[st,right=of q1] (qj) {$r_j$};
-  \node[stacc,right=of qj] (qn) {$r_{n+1}$};
+  \node[stacc,right=of qj,inner sep=3pt] (qn) {$r_{n+1}$};
   \path (q1) edge node{$x$} (qj)
         (qj) edge[loop above] node{$y$} (qj)
         (qj) edge node{$z$} (qn);
@@ -10273,8 +10273,8 @@ right is the whole skill. Spelled out, ``$\Lang$ regular'' implies
   \abs{xy}\le p)\ \ \forall i\ge 0:\ xy^{i}z\in\Lang .
 \]
 To \emph{refute} regularity we negate this. The negation flips every quantifier, which
-turns the statement into a two-player game in which the existential choices belong to an
-adversary and the universal choices belong to us:
+turns the statement into a two-player game in which the lemma's existential choices belong to an
+adversary and its universal choices belong to us:
 \begin{itemize}[leftmargin=2.0em,topsep=2pt,itemsep=1pt]
   \item \textbf{Adversary} names a pumping length $p$ (we may not assume any value for it).
   \item \textbf{We} choose a single string $s\in\Lang$ with $\abs{s}\ge p$, free to use $p$
@@ -10882,8 +10882,8 @@ $\set{A,B}$ (non-accepting) and sink $\set{C,D}$ (accepting); a $\str1$ moves to
 sink, a $\str0$ stays:
 \begin{center}
 \begin{tikzpicture}[fa,node distance=18mm and 26mm]
-  \node[stinit] (ab) {$\{A,B\}$};
-  \node[stacc,right=of ab] (cd) {$\{C,D\}$};
+  \node[stinit,inner sep=3pt] (ab) {$\{A,B\}$};
+  \node[stacc,right=of ab,inner sep=3pt] (cd) {$\{C,D\}$};
   \path (ab) edge[loop above] node{$0$} (ab)
         (ab) edge node{$1$} (cd)
         (cd) edge[loop above] node{$0,1$} (cd);
