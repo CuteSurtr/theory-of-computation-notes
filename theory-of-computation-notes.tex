@@ -28838,7 +28838,7 @@ for any input of length $n$.
 \end{definition}
 
 The picture below is the machine model the whole chapter assumes: one head that may only
-\emph{read} the input, and a separate, much shorter scratch tape that may be read and written
+\emph{read} the input, and a separate scratch tape that may be read and written
 and whose used length is the quantity we charge.
 
 \begin{center}
@@ -28878,7 +28878,7 @@ nondeterministically.
 
 Two further bookkeeping facts make space usable. First, on a work tape of length $f(n)$ a
 machine with $c$ states and $g$ work-tape symbols has only finitely many distinct snapshots;
-counting them bounds how long it can run before a configuration must repeat.
+second, counting them bounds how long it can run before a configuration must repeat.
 
 \begin{proposition}[Configuration count]\label{prop:configcount@c14}
 Let $M$ run in space $f(n)\ge\log n$ with $c$ control states and $g$ work-tape symbols.
@@ -28890,7 +28890,7 @@ Consequently every halting branch of $M$ runs for at most $2^{\bigO(f(n))}$ step
 \end{proposition}
 
 \begin{proof}
-A configuration (Definition: state $+$ work-tape contents $+$ both head positions, but
+A configuration (state $+$ work-tape contents $+$ both head positions, but
 \emph{not} the fixed input) is determined by choosing the state ($c$ ways), the work-tape
 string ($g^{\,f(n)}$ ways), the input-head position ($n$ ways), and the work-head position
 ($f(n)$ ways). Multiplying gives $c\,n\,f(n)\,g^{\,f(n)}$. Taking logs base $2$, this is
@@ -29007,6 +29007,14 @@ time} on the same scratch region, so the only growing cost is the stack of suspe
 Each call halves $t$, so the depth is $\log_{2}t_{0}=\bigO(f(n))$. Total space
 $=(\text{depth})\times(\text{frame size})=\bigO(f(n))\cdot\bigO(f(n))=\bigO(f(n)^{2})$. Hence
 $\Lang\in\SPACE(f(n)^{2})$.
+
+\emph{Knowing $f(n)$.} $M$ uses $f(n)$ to list configurations and to set $t_{0}$. If $f(n)$ cannot
+be computed in $\bigO(f(n))$ space, $M$ tries $i=\lceil\log_{2}n\rceil,\lceil\log_{2}n\rceil+1,\dots$
+in its place: it accepts if $c_{\mathrm{accept}}$ is reachable through configurations with at most
+$i$ work cells; it rejects if \textsc{Canyield} shows that no configuration with $i+1$ work cells
+is reachable from $c_{\mathrm{start}}$ (then $N$ never uses more than $i$ cells, so the search was
+complete); otherwise it moves on to $i+1$. It stops no later than the first $i\ge f(n)$, so the
+space stays $\bigO(f(n)^{2})$.
 \end{proof}
 
 The divide-and-conquer recursion is the heart of the proof. The decisive identity is the
@@ -29129,7 +29137,7 @@ squares it to $\bigO(n^{2})$:
 Since $n^{2}$ is a polynomial, $\SPACE(n^{2})\subseteq\PSPACE$, so $\Lang\in\PSPACE$.
 \whichrule{Savitch squares the space bound; squaring a polynomial keeps it polynomial, so the
 whole nondeterministic-polynomial-space world collapses into $\PSPACE$.}
-\emph{Check.} The same machine run as time would be exponential ($2^{\bigO(n)}$ branches), yet
+\emph{Check.} The same machine run as time would be exponential ($2^{\bigO(n)}$ steps), yet
 in space it is merely quadratic -- the qualitative difference space-reuse makes.
 \end{wex}
 
@@ -29172,7 +29180,7 @@ input, and state the work-tape length as a function of $n$.
 
 \item Let $\Lang$ be decided by a deterministic machine that, on every input of length $n$,
 scans at most $5\log_{2}n+12$ work-tape cells. Name the smallest standard class among
-$\Lclass,\NL,\PSPACE$ containing $\Lang$, and justify the choice in one sentence using
+$\Lclass,\NL,\PSPACE$ (Definition~\ref{def:LNL@c14}) containing $\Lang$, and justify the choice in one sentence using
 Definition~\ref{def:spaceclass@c14}.
 
 \item Consider $\mathit{MAJ}=\set{\enc{\varphi}\st \varphi \text{ is true for a strict majority
@@ -29190,7 +29198,7 @@ machine accepts (is $c_{\mathrm{accept}}$ reachable?).
 \item Apply Savitch's theorem (Theorem~\ref{thm:savitch@c14}) to each bound below, writing the
 deterministic space guarantee and naming the value of $f(n)$ you used:
 $(a)$ $\NSPACE(n^{3})$; \quad $(b)$ $\NSPACE(n\log n)$; \quad $(c)$ $\NSPACE(\log n)$.
-For $(c)$, state which class the result is usually denoted by.
+For $(c)$, state the usual name of the class $\NSPACE(\log n)$ (Definition~\ref{def:LNL@c14}).
 
 \item Trace \textsc{Canyield} from the proof of Theorem~\ref{thm:savitch@c14} with step budget
 $t_{0}=4$. List, in the order they are pushed and popped, the sequence of $(c_{1},c_{2},t)$
@@ -29273,9 +29281,9 @@ the reverse inclusion $\classP\subseteq\PSPACE$ always holds.
 \end{proof}
 
 \begin{remark}
-The same composition argument explains why a \emph{space}-bounded reduction would be
-useless here: a polynomial-space reduction composed with a polynomial-space decider is
-still only polynomial space, so \emph{every} nontrivial language in $\PSPACE$ would reduce
+A \emph{space}-bounded reduction, by contrast, would be
+useless here: a polynomial-space reduction can decide $A$ outright and then output a fixed
+member or a fixed non-member of $B$, so \emph{every} nontrivial language in $\PSPACE$ would reduce
 to every other, and ``complete'' would lose all meaning. The reduction must be strictly
 weaker than the class.
 \end{remark}
@@ -29451,7 +29459,7 @@ root-to-leaf path:
     child {node[gvlab] {$x_2$}
       child {node[gv] {} child {node[gv] {}} child {node[gv] {}}}
       child {node[gv] {} child {node[gv] {}} child {node[gv] {}}}};
-  \draw[decorate,decoration={brace,amplitude=4pt,mirror},line width=0.6pt]
+  \draw[decorate,decoration={brace,amplitude=4pt},line width=0.6pt]
     (4.4,0.1) -- (4.4,-2.8) node[midway,right=5pt,font=\footnotesize]{depth $m$};
   \node[font=\footnotesize] at (0,-3.4)
     {one live path stored at a time $\Rightarrow$ $\bigO(m)$ values};
@@ -29556,7 +29564,7 @@ $\phi=\exists x\,\forall y\,[(x\vee y)\wedge(x\vee\neg y)]$ and report true/fals
 the space used.
 \wrec The trigger is ``a fully quantified sentence to decide'': strip the leftmost
 quantifier, recurse on $0$ and $1$, combine with $\vee$ for $\exists$ and $\wedge$ for
-$\forall$. The matrix simplifies to $x\wedge(y\vee\neg y)=x$.
+$\forall$. The matrix simplifies to $x\vee(y\wedge\neg y)=x$.
 \wsol Outer is $\exists x$, so we need at least one of $x=0,x=1$ to make the $\forall y$ body
 true.
 \begin{itemize}\setlength\itemsep{1pt}
@@ -29587,7 +29595,7 @@ short-circuits and abandons the $x=0$ branch, illustrating the depth-first reuse
 \whichrule{$T$ is the quantifier game played out: $\exists$ wins if \emph{some} child wins
 ($\vee$), $\forall$ wins only if \emph{all} children win ($\wedge$); a single live
 root-to-leaf path is all the memory required.}
-\emph{Check.} The matrix is $x\wedge(y\vee\neg y)=x$, so $\phi=\exists x\,\forall y\,[x]
+\emph{Check.} The matrix is $x\vee(y\wedge\neg y)=x$, so $\phi=\exists x\,\forall y\,[x]
 =\exists x\,[x]$, true at $x=1$ -- agreeing with the trace.
 \end{wex}
 
@@ -29624,8 +29632,8 @@ $S(h)=\bigO(n\cdot n)=\bigO(n^{2})$ -- polynomial.
 midpoint $\exists m$ with the universal fold makes size scale with $\log h=n$, the depth of
 the divide-and-conquer -- the same idea that turns Savitch's $2^{\bigO(f)}$ time into
 $\bigO(f^{2})$ space.}
-\emph{Check.} At $n=20$: unrolled needs $\sim 2^{20}\approx 10^{6}$ blocks; folded needs
-$\sim 400$. The reduction must run in poly time, so only the second is admissible.
+\emph{Check.} At $n=20$: the unrolled formula has size $\sim 2^{20}\cdot 20\approx 2\cdot 10^{7}$;
+the folded one $\sim 20^{2}=400$. The reduction must run in poly time, so only the second is admissible.
 \end{wex}
 
 \begin{wex}{$\SAT$ and $\mathit{TQBF}$: the all-$\exists$ slice}
@@ -29761,7 +29769,7 @@ machine with configuration encoded by three cells, sketch (in words and a small
 $3\times 2$ tape diagram) which cell-triples the predicate must constrain, and argue its
 size is $\bigO(n^{k})$ rather than constant.
 
-\item True or false, with a one-line reason each.
+\item True, false, or open, with a one-line reason each.
 $(a)$ Every language in $\classNP$ is poly-time reducible to $\mathit{TQBF}$.
 $(b)$ If $\mathit{TQBF}\in\classP$ then $\classP=\PSPACE$.
 $(c)$ A $\PSPACE$-complete problem cannot be in $\classNP$.
@@ -29968,7 +29976,9 @@ $\mathit{FGAME}\redp\mathit{GG}$; since $\mathit{FGAME}=\mathit{TQBF}$ is $\PSPA
 (Theorem~\ref{thm:fgame@c14}), this makes $\mathit{GG}$ $\PSPACE$-hard, hence $\PSPACE$-complete.
 Take a formula $\varphi=\exists x_1\forall x_2\exists x_3\cdots Qx_k[\psi]$ with $\psi$ in
 conjunctive normal form and quantifiers strictly alternating, starting and ending with $\exists$
-(pad with dummy variables otherwise). Player I plays Player E, Player II plays Player A.
+(pad with dummy variables otherwise; a matrix not in CNF is first put in CNF by naming each of its
+subformulas with a fresh innermost $\exists$-variable, which keeps the truth value and the size
+linear). Player I plays Player E, Player II plays Player A.
 
 \emph{Variable (diamond) gadgets.} For each $x_i$ build a diamond: a top node $t_i$, a left node
 $\ell_i$ and a right node $r_i$, and a bottom node $h_i$, with edges $t_i\to\ell_i$, $t_i\to r_i$,
@@ -30074,11 +30084,11 @@ nodes (root is I's move), Player II owns odd-depth.
     child {node[sq] {at $2$ (II)}
       child {node[sq] {at $4$ (I)}
         child {node[sq,label=below:{\scriptsize $2$ used: I stuck $\Rightarrow$ I loses}] {(no move)}}}
-      edge from parent node[font=\footnotesize,left]{$1{\to}2$}}
+      edge from parent node[font=\footnotesize,above left]{$1{\to}2$}}
     child {node[sq] {at $3$ (II)}
       child {node[sq] {at $5$ (I)}
         child {node[sq,label=below:{\scriptsize $3$ used: I stuck $\Rightarrow$ I loses}] {(no move)}}}
-      edge from parent node[font=\footnotesize,right]{$1{\to}3$}};
+      edge from parent node[font=\footnotesize,above right]{$1{\to}3$}};
 \end{tikzpicture}
 \end{center}
 Branch $1\to2$: Player II is forced $2\to4$, and Player I's only edge is $4\to2$, but $2$ is already on the
@@ -30409,7 +30419,7 @@ computable function} computed by the transducer.
 The output tape is \emph{not} counted against the space budget -- the transducer may print a
 string of length $n^{10}$ while keeping its work tape down to $\bigO(\log n)$ cells. This is
 the same accounting principle as the input tape: only the work tape costs. We will use such
-transducers heavily in Section 14.5; here they justify calling functions like ``increment a
+transducers heavily in Section~14.5; here they justify calling functions like ``increment a
 binary counter'' or ``output every position $i$ with $w_i=\str1$'' log-space computable.
 
 \subsection*{A deterministic log-space decider: counting in binary}
@@ -30669,7 +30679,8 @@ identify one branch that rejects without reaching $t$.
 
 \item For the same graph $G$ of the previous exercise, argue that the procedure correctly
 \emph{rejects} $\enc{G,3,t}$ when $t$ is chosen to be a vertex unreachable from $3$ -- name such
-a $t$ and explain why every branch eventually rejects via the step counter.
+a $t$ and explain why every branch eventually rejects (via the step counter, unless an edge check
+fails first).
 
 \item Prove that $\NL\subseteq\classP$ by the configuration-graph argument: state the bound on
 the number of configurations of an $\bigO(\log n)$-space nondeterministic machine on input of
@@ -30702,10 +30713,11 @@ Using the configuration count $n\,2^{\bigO(s(n))}$, give an explicit polynomial 
 the number of configurations of $M$ on a length-$n$ input, and conclude that $L(M)\in\classP$.
 
 \item Define $2\text{-}COL=\set{\enc{G}\st G\text{ is }2\text{-colorable (bipartite)}}$ for
-undirected $G$. Sketch why $2\text{-}COL$ is decidable in nondeterministic log space by reducing
-the test to short reachability/parity checks on the read-only adjacency input, and state which
-registers your $\NL$ machine keeps. (You need only describe the registers and the local check,
-not a full correctness proof.)
+undirected $G$. Sketch why the complement of $2\text{-}COL$ is decidable in nondeterministic log
+space by reducing the test to short reachability/parity checks on the read-only adjacency input
+(guess a closed walk of odd length), and state which registers your $\NL$ machine keeps. (You need
+only describe the registers and the local check, not a full correctness proof. $2\text{-}COL$
+itself is then in $\NL$ by $\NL=\mathsf{coNL}$, Section~14.5.)
 \end{exers}
 
 
