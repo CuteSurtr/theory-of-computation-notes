@@ -26250,9 +26250,9 @@ respects membership.
   % yes-region inside each box
   \node[draw,ellipse,minimum width=14mm,minimum height=10mm,fill=black!8] (A) at (0,0.6) {$A$};
   \node[draw,ellipse,minimum width=14mm,minimum height=10mm,fill=black!8] (B) at (6,0.6) {$B$};
-  \node[gv] (w1) at (0,-0.95) {};  \node[font=\footnotesize,left=1mm of w1] {$w\notin A$};
+  \node[gv] (w1) at (0.25,-0.95) {};  \node[font=\footnotesize,left=1mm of w1] {$w\notin A$};
   \node[gv] (w2) at (0.35,0.6) {};
-  \node[gv] (fw1) at (6,-0.95) {}; \node[font=\footnotesize,right=1mm of fw1] {$f(w)\notin B$};
+  \node[gv] (fw1) at (5.4,-0.95) {}; \node[font=\footnotesize,right=1mm of fw1] {$f(w)\notin B$};
   \node[gv] (fw2) at (5.65,0.6) {};
   \draw[flow] (w1) to[bend left=10] node[flowlbl,midway]{$f$} (fw1);
   \draw[flow] (w2) to[bend left=10] node[flowlbl,midway]{$f$} (fw2);
@@ -26286,7 +26286,7 @@ If $A\redp B$ and $B\in\classP$, then $A\in\classP$.
 Let $f$ be a polynomial-time reduction of $A$ to $B$, computable in time $\le p(n)$, and let $M_B$
 decide $B$ in time $\le q(n)$. Build a machine $M_A$:
 \[
-  M_A=\text{``On input } w:\ \text{(1) compute } f(w);\ \text{(2) run } M_B \text{ on } f(w)
+  M_A=\text{``On input } w{:}\ \text{(1) compute } f(w);\ \text{(2) run } M_B \text{ on } f(w)
   \text{ and copy its answer.''}
 \]
 \emph{Correctness:} $M_A$ accepts $w$ iff $M_B$ accepts $f(w)$ iff $f(w)\in B$ iff $w\in A$, the
@@ -26919,7 +26919,7 @@ We police the whole transition by checking every $2\times 3$ block of cells -- t
 
 \begin{definition}[Legal window]\label{def:window@c13}
 A \emph{$2\times3$ window} is the six cells $(i,j-1),(i,j),(i,j+1)$ over
-$(i+1,j-1),(i+1,j),(i+1,j+1)$. The window is \emph{legal} if its contents could appear in some
+$(i+1,j-1),\allowbreak(i+1,j),\allowbreak(i+1,j+1)$. The window is \emph{legal} if its contents could appear in some
 correct one-step transition of $\nfa$: either the head is far from these columns and the bottom row
 copies the top, or the head sits inside or just beside them and the change agrees with some rule of
 $\trans$. A window whose top row contains $q_{\mathrm{acc}}$ is also legal when its bottom row copies
@@ -27064,7 +27064,7 @@ formula is quadratic in the tableau side -- polynomial in $n$, which is what mak
 $\redp$ reduction.}
 \emph{Check.} A super-polynomial $\varphi$ could never be \emph{written} in polynomial time, so any
 correct tableau reduction must land at a fixed power of $n$; $\bigO(n^{2k})$ is exactly that. (Up to
-a $\bigO(\log n)$ factor for writing the indices, which does not change polynomiality.)
+an $\bigO(\log n)$ factor for writing the indices, which does not change polynomiality.)
 \end{wex}
 
 \begin{wex}{Encoding $\varphi_{\mathrm{start}}$ for a tiny input}
@@ -27151,7 +27151,7 @@ guarantees.
      $\wedge\,\varphi_{\mathrm{move}}\wedge\varphi_{\mathrm{accept}}$\\[1pt]
      $\abs{\varphi}=\bigO(n^{2k})$ (polynomial)};
   % construction arrow tableau |-> phi (built FROM tableau)
-  \draw[redarrow] (T.east) -- node[redlbl,align=center,above]{$f:\ \text{build}$\\ four groups}
+  \draw[redarrow] (T.east) -- node[redlbl,align=center,above]{$f{:}\ \text{build}$\\ four groups}
      ($(T.east -| cell.west)+(-2mm,0)$);
   \draw[flow] ($(top)!0.5!(bot)+(3mm,0)$) -- (phi.west);
   % the invariant box
@@ -27494,10 +27494,10 @@ $2=(1\lor 1\lor 0)=1$; clause $3=(0\lor 0\lor 1)=1$. All true, so $\psi$ is sati
 the clique predicted.
 \end{wex}
 
-\subsection*{From $\CLIQUE$ to \textsf{INDEPENDENT-SET} (the complement graph)}
+\subsection*{From $\CLIQUE$ to $\mathit{INDEPENDENT\text{-}SET}$ (the complement graph)}
 
 A \emph{clique} is a set of pairwise-adjacent vertices; an \emph{independent set} is a set of
-pairwise-\emph{non}-adjacent vertices. These are mirror images under graph complementation. Let
+pairwise-\emph{non}-adjacent vertices. They are mirror images under graph complementation. Let
 $\mathit{IS}=\set{\enc{G,k}\st G\text{ has an independent set of size }k}$ and let $\overline{G}$ be
 the \emph{complement} graph on the same vertices, with $\set{u,v}$ an edge of $\overline{G}$ iff it
 is \emph{not} an edge of $G$.
@@ -27526,7 +27526,7 @@ edge of $\overline{G}$.
 \begin{center}
 \begin{tikzpicture}[node distance=12mm]
   \begin{scope}
-    \node[font=\footnotesize] at (0,1.7) {$G$};
+    \node[font=\footnotesize] at (0,1.85) {$G$};
     \node[gvlab] (g1) at (90:1.25)  {$1$};
     \node[gvlab] (g2) at (162:1.25) {$2$};
     \node[gvlab] (g3) at (234:1.25) {$3$};
@@ -27538,7 +27538,7 @@ edge of $\overline{G}$.
     \end{scope}
   \end{scope}
   \begin{scope}[xshift=4.4cm]
-    \node[font=\footnotesize] at (0,1.7) {$\overline{G}$};
+    \node[font=\footnotesize] at (0,1.85) {$\overline{G}$};
     \node[gvlab] (h1) at (90:1.25)  {$1$};
     \node[gvlab] (h2) at (162:1.25) {$2$};
     \node[gvlab] (h3) at (234:1.25) {$3$};
@@ -27553,14 +27553,17 @@ edge of $\overline{G}$.
 \whichrule{Complementation swaps ``all pairs adjacent'' for ``no pair adjacent,'' so the same
 vertex set that is a clique in $G$ is automatically an independent set in $\overline{G}$.}
 \emph{Check.} In $G$ the bold triangle $\set{1,2,3}$ uses edges $12,23,13$ (a clique); in
-$\overline{G}$ those three pairs are exactly the missing edges, so $\set{1,2,3}$ is independent.
+$\overline{G}$ those three pairs are all missing edges, so $\set{1,2,3}$ is independent.
 The reduction would map $\enc{G,3}$ to $\enc{\overline{G},3}$, and both are ``yes'' instances.
 \end{wex}
 
 \subsection*{From $\CSAT$ to $\VC$}
 
 A \emph{vertex cover} of $G$ is a set of vertices touching every edge; let
-$\VC=\set{\enc{G,k}\st G\text{ has a vertex cover of size }k}$. We reduce directly from $\CSAT$,
+\[
+  \VC=\set{\enc{G,k}\st G\text{ has a vertex cover of size }k}.
+\]
+We reduce directly from $\CSAT$,
 using a \emph{variable gadget} (one edge per variable) and a \emph{clause gadget} (one triangle per
 clause), linked by edges from each literal-vertex of a triangle to the matching variable-vertex.
 
@@ -27649,7 +27652,7 @@ $V\setminus S$ (filled) marked as the cover.
 \begin{tikzpicture}[node distance=12mm]
   % ---- left copy: S independent (filled = S) ----
   \begin{scope}
-    \node[font=\footnotesize] at (0,1.7) {$S$ independent};
+    \node[font=\footnotesize] at (0,1.85) {$S$ independent};
     \node[gvlab,fill=black!18] (a1) at (90:1.25)  {$1$};
     \node[gvlab]               (a2) at (162:1.25) {$2$};
     \node[gvlab,fill=black!18] (a3) at (234:1.25) {$3$};
@@ -27663,7 +27666,7 @@ $V\setminus S$ (filled) marked as the cover.
   \end{scope}
   % ---- right copy: V\S vertex cover (filled = V\S) ----
   \begin{scope}[xshift=5cm]
-    \node[font=\footnotesize] at (0,1.7) {$V\setminus S$ a cover};
+    \node[font=\footnotesize] at (0,1.85) {$V\setminus S$ a cover};
     \node[gvlab]               (b1) at (90:1.25)  {$1$};
     \node[gvlab,fill=black!18] (b2) at (162:1.25) {$2$};
     \node[gvlab]               (b3) at (234:1.25) {$3$};
@@ -27696,7 +27699,7 @@ clique in $G$ iff $S$ is independent in the complement graph $\overline{G}$.
   \item \textbf{Design a variable gadget.} Find a structure of $B$ with two stable
   configurations, one per truth value (an edge with two endpoints).
   \item \textbf{Design a clause gadget.} Find a structure forcing ``at least one literal true''
-  (a triple of cross-edges that admits a $k$-clique only with one node per clause; a triangle that
+  (a vertex triple with only cross-edges that admits a $k$-clique only with one node per clause; a triangle that
   needs three cover-vertices unless a true literal helps).
   \item \textbf{Glue with edges.} Connect gadgets so consistency (no $x_i$ both true and false) and
   satisfaction (each clause served) are enforced -- e.g.\ omit edges between contradictory literals,
@@ -27989,7 +27992,7 @@ $x_{1}$) with its one clause-pair and the detour edges to the clause node $c_{1}
 detour the path takes when $x_{1}=$ \textsc{true}.
 \wrec This is the variable-gadget rule: a diamond is swept \emph{zig} (left to right) for
 \textsc{true}. The trigger ``$x_{1}$ occurs positively in $c_{1}$'' tells us the detour edges run
-left-member$\to c_{1}\to$ right-member, so a zig sweep can take them.
+left-member $\to c_{1}\to$ right-member, so a zig sweep can take them.
 \wsol With $k=1$ the row of diamond $1$ has $3k+1=4$ inner nodes: a pair $p,p'$ for $c_{1}$ plus
 two buffers. A \textsc{true} (zig) sweep enters at $p$, and because $x_{1}$ is positive in
 $c_{1}$ the edges $p\to c_{1}\to p'$ exist, so the path detours $p\to c_{1}\to p'$ and continues.
