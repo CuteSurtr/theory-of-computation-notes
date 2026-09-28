@@ -13320,7 +13320,7 @@ A \emph{pushdown automaton} is a $6$-tuple $M=(Q,\Sig,\Gam,\trans,\qstart,\Acc)$
 \end{itemize}
 \end{definition}
 
-Two features distinguish this from a DFA. First, the machine has \emph{two} alphabets: $\Sig$ for
+Two features distinguish this from a DFA\@. First, the machine has \emph{two} alphabets: $\Sig$ for
 the input it reads and $\Gam$ for the symbols it stores; these need not be related, and the stack
 alphabet usually carries a few extra bookkeeping symbols. Second, $\trans$ returns a \emph{set} of
 moves, so the model is \emph{nondeterministic}: in a given situation the machine may have several
@@ -13462,7 +13462,7 @@ $\str b$. (The diagram also lets $\str a$ push an $\str A$ onto a $\str B$; such
 harmless, since every move on $\str a$ raises the number of $\str A$s minus the number of $\str B$s
 on the stack by one and every move on $\str b$ lowers it by one, so $\$$ can resurface only when
 the counts agree.) Accept exactly when the surplus is
-zero, i.e. the marker $\$$ is back on top.
+zero, i.e.\ the marker $\$$ is back on top.
 \begin{center}
 \begin{tikzpicture}[fa,node distance=20mm and 30mm]
   \node[stinit] (q0) {$q_0$};
@@ -13565,7 +13565,7 @@ mismatch or ends off-$\$$ -- rejected.
   otherwise empty.''
   \item \textbf{Push during the storing phase.} For each input symbol that grows the stored
   quantity, push one stack token. Use distinct token types only when you must distinguish what was
-  stored (e.g. $\str0$ vs $\str1$ for a reversal, or a sign for a surplus).
+  stored (e.g.\ $\str0$ vs $\str1$ for a reversal, or a sign for a surplus).
   \item \textbf{Pop during the matching phase.} For each input symbol that should consume stored
   information, pop the token it must match. A required token that is absent gives \emph{no legal
   move}; let the branch die -- that is how a PDA rejects.
@@ -13619,8 +13619,8 @@ many $\str b$s as $\str a$s, all $\str a$s before all $\str b$s). Draw the diagr
 machine does with the ``extra'' $\str b$s after the stack is exhausted.
 
 \item Design a PDA over $\set{(,)}$ recognizing the strings of brackets in which the number of
-\texttt{(} equals the number of \texttt{)} but \emph{nesting need not be proper} (e.g.
-\texttt{)(} is accepted). Draw the diagram and contrast it in one sentence with the Dyck-language
+\texttt{(} equals the number of \texttt{)} but \emph{nesting need not be proper}
+(e.g.\ \texttt{)(} is accepted). Draw the diagram and contrast it in one sentence with the Dyck-language
 PDA of the section.
 
 \item Design a PDA over $\set{0,1,\str\#}$ recognizing $\set{x\,\str\#\,\rev{x}\st x\in
@@ -13795,7 +13795,7 @@ variable $A_{pq}$ whose job is to derive exactly the strings that drive the mach
 while leaving the stack as it found it, never touching what was already on it.
 
 \begin{definition}[Generating variables $A_{pq}$]\label{def:apq@c7}
-Let $P=(Q,\Sig,\Gam,\trans,\qstart,\set{q_{\mathrm{acc}}})$ be a PDA. For states $p,q\in Q$, the
+Let $P=(Q,\Sig,\Gam,\trans,\qstart,\set{q_{\mathrm{acc}}})$ be a PDA\@. For states $p,q\in Q$, the
 variable $A_{pq}$ is intended to generate every string $x$ that can take $P$ from state $p$ with an
 empty stack to state $q$ with an empty stack.
 \end{definition}
@@ -14134,7 +14134,7 @@ input $\str{0011}$, writing the stack top-first at each step, and confirm that t
 the marker $\$$ on the stack.
 
 \item Convert the grammar $S\to\str{a}S\str{a}\mid\str{b}S\str{b}\mid\eps$ (even-length palindromes
-over $\set{\str a,\str b}$ with a fixed centre) into a PDA. Then give a one-sentence informal
+over $\set{\str a,\str b}$ with a fixed centre) into a PDA\@. Then give a one-sentence informal
 description of how the resulting machine uses its stack.
 
 \item Take the PDA $P$ with start state $s$, accept state $f$, stack alphabet $\set{u,\$}$, the marker
@@ -14247,7 +14247,7 @@ Each occurrence of $R$ heads a subtree that derives a contiguous block of $s$. T
 $R_{\mathrm{up}}$ derives a block we name $vxy$, and inside it the subtree under $R_{\mathrm{down}}$
 derives the shorter block $x$. Everything to the left of the $R_{\mathrm{up}}$ block is $u$ and
 everything to its right is $z$, so indeed $s=uvxyz$ and $R\Rightarrow^{*}vxy$,
-$R\Rightarrow^{*}x$ (Figure on the left below).
+$R\Rightarrow^{*}x$ (figure on the left below).
 
 \begin{center}
 \begin{tikzpicture}[level distance=8.5mm,treenode,
@@ -14366,12 +14366,12 @@ blocks at once; pumping then changes at most two counts and leaves the third beh
 all three counts is impossible to maintain.}
 \emph{Check.} Concretely, if $vxy$ lands inside the $\str a\str b$ region with $v=\str a^{k}$,
 $y=\str b^{m}$ and $k+m>0$, then $uv^{2}xy^{2}z=\str a^{p+k}\str b^{p+m}\str c^{p}$, which has
-$p+k$ or $p+m$ exceeding $p=$ (the $\str c$-count), so it is not in $L$.
+$p+k$ or $p+m$ exceeding $p$ (the $\str c$-count), so it is not in $L$.
 \end{wex}
 
 \begin{wex}{A grammar's own parse tree, pumped}
 Take $G$ with the rules $S\to\str a\,S\,\str b\mid\eps$, generating
-$\Lang=\set{\str a^{n}\str b^{n}\st n\ge 0}$ (a CFL). Exhibit the repeated-variable surgery on the
+$\Lang=\set{\str a^{n}\str b^{n}\st n\ge 0}$ (a CFL\@). Exhibit the repeated-variable surgery on the
 string $\str a^{3}\str b^{3}$ and read off a pumping split.
 \wrec Here we are \emph{not} disproving anything --- $\Lang$ is context-free --- we are watching the
 proof mechanism on a concrete tree to see what $u,v,x,y,z$ literally are. The trigger is the
@@ -14590,7 +14590,7 @@ string of that length forces a repeated variable on some root-to-leaf path.
 is not context-free. Identify the string $s$ you choose and the pumping index $i$ you use, and explain
 why the window $vxy$ cannot reach all four blocks.
 
-\item Let $L=\set{\str 0^{m}\str 1^{m}\str 0^{m}\st m\ge 1}$. Prove $L$ is not a CFL. (Hint: use
+\item Let $L=\set{\str 0^{m}\str 1^{m}\str 0^{m}\st m\ge 1}$. Prove $L$ is not a CFL\@. (Hint: use
 condition 3 to confine $vxy$ to at most two of the three blocks, then pump up.)
 
 \item Show that $\set{w\str\#w\st w\in\set{\str a,\str b}^{*}}$ is not context-free, where $\str\#$
@@ -14684,7 +14684,7 @@ players, ``Prover'' (us, showing $A$ is not a CFL) and ``Adversary'' (defending 
   \node[movA,below=of p] (a) {\textbf{Adversary:} cut $s=uvxyz$ with $\abs{vy}>0$, $\abs{vxy}\le p$.};
   \node[movP,below=of a] (p2) {\textbf{Prover:} pick a power $i$ so that $uv^{\,i}xy^{\,i}z\notin A$.};
   \node[font=\small,below=4mm of p2] (win) {Prover wins for \emph{every} legal cut $\Rightarrow$ $A$ is not context-free.};
-  \node[font=\footnotesize,left=4mm of p,align=right,text width=20mm] {given $p$ (Adversary's secret)};
+  \node[font=\footnotesize,left=4mm of p,align=flush right,text width=20mm] {given $p$ (Adversary's secret)};
   \path (p) edge[mvarrow] (a) (a) edge[mvarrow] (p2) (p2) edge[mvarrow] (win);
 \end{tikzpicture}
 \end{center}
@@ -14881,9 +14881,9 @@ the two halves differ. \textbf{Window entirely right of $m$.} Symmetric: pump up
 grows, breaking equality. \textbf{Window straddles $m$.} Then $vxy$ lies within $1^p0^p$ around the
 center (since $\abs{vxy}\le p$, it cannot reach the outer $0^p$ or $1^p$). Pump \emph{down} to $i=0$:
 $uxz=0^p1^{p-a}0^{p-b}1^p$ with $a+b=\abs{vy}>0$ and $a,b<p$ (deleting a whole middle run would force
-$\abs{vxy}>p$), so the result has the shape $0^p1^{i}0^{j}1^p$ with $i,j\ge1$ and $(i,j)\ne(p,p)$. Splitting any such string in half cannot give two
+$\abs{vxy}>p$), so the result has the shape $0^p1^{j}0^{k}1^p$ with $j,k\ge1$ and $(j,k)\ne(p,p)$. Splitting any such string in half cannot give two
 equal halves (if $uxz=tt$, then $t$ begins with $0$ and ends with $1$, so $tt$ has twice as many runs
-as $t$; comparing with the runs of $uxz$ forces $t=0^p1^{i}=0^{j}1^p$, i.e.\ $i=j=p$), so
+as $t$; comparing with the runs of $uxz$ forces $t=0^p1^{j}=0^{k}1^p$, i.e.\ $j=k=p$), so
 $uxz\notin D$.
 \whichrule{The third condition $\abs{vxy}\le p$ is the workhorse: it confines the window to one half
 (pump up to desynchronize) or to the central $1^p0^p$ (pump down to misalign), and the four-block
@@ -14904,7 +14904,7 @@ languages. The next example uses a marker $\#$ so the window's position is even 
 Let $E=\set{0^n\#0^{2n}\#0^{3n}\st n\ge 0}$ over $\Sig=\set{0,\#}$. Show $E$ is not a CFL.
 \wrec Three blocks whose lengths are locked in ratio $1:2:3$ by two equalities ($\#_2=2\#_1$ and
 $\#_3=3\#_1$); the markers fix the block boundaries, and a short window touches at most two of the
-three $0$-runs -- the trigger that one ratio must break.
+three $0$-runs~-- the trigger that one ratio must break.
 \wsol Assume $E$ is a CFL with pumping length $p$ and take $s=0^p\#0^{2p}\#0^{3p}\in E$,
 $\abs{s}=6p+2$. Let $s=uvxyz$ be a legal cut. First, neither $v$ nor $y$ can contain a $\#$: if a
 pumped string changed the number of $\#$'s away from exactly two, it would leave the format
@@ -15022,7 +15022,7 @@ nondeterministic PDA of the previous sections may explore many stack computation
 and that freedom is exactly what makes it as expressive as a context-free grammar; but a real
 parser inside a compiler cannot afford to branch. This section studies the \emph{deterministic}
 pushdown automaton (DPDA), the machine that has at most one legal move in every situation. The
-single key idea is that determinism here is a genuine restriction -- unlike finite automata, where
+single key idea is that determinism here is a genuine restriction~-- unlike finite automata, where
 determinism costs nothing, a DPDA is strictly weaker than a PDA -- and the languages it recognizes,
 the \emph{deterministic context-free languages} (DCFLs), sit in their own layer between the regular
 languages and the full context-free languages. We make the model precise, prove the key closure
@@ -15121,7 +15121,7 @@ $\$$ is never exposed and the string is rejected.
 \end{wex}
 
 \begin{wex}{Why $\set{\str0^n\str1^n}\cup\set{\str0^n\str1^{2n}}$ resists determinism}\label{wex:union-fail@c7}
-Consider $B=\set{\str0^n\str1^n\st n\ge1}\cup\set{\str0^n\str1^{2n}\st n\ge1}$. It is context-free.
+Consider $B=\set{\str0^n\str1^n\st {n\ge1}}\cup\set{\str0^n\str1^{2n}\st {n\ge1}}$. It is context-free.
 Explain informally why no DPDA seems able to recognize it, so that a PDA's nondeterminism is doing
 real work.
 \wrec The trigger is a \emph{commitment} problem: after reading the block of $\str0$s and starting to
@@ -15183,7 +15183,7 @@ is context-free but not deterministic context-free.
 \begin{proof}
 $C$ is a CFL (it is the union of the CFL $\set{\str a^i\str b^j\str c^k\st i\ne j}$ and the CFL
 $\set{\str a^i\str b^j\str c^k\st j\ne k}$, and CFLs are closed under union). If $C$ were a DCFL, then by
-Theorem~\ref{thm:dcfl-comp@c7} its complement would be a DCFL, hence a CFL. Intersecting that complement
+Theorem~\ref{thm:dcfl-comp@c7} its complement would be a DCFL, hence a CFL\@. Intersecting that complement
 with the regular language $\str a\kstar\str b\kstar\str c\kstar$ (CFLs are closed under intersection with
 regular languages) yields exactly $\set{\str a^n\str b^n\str c^n\st n\ge0}$, which the pumping lemma of
 the previous section shows is \emph{not} context-free -- a contradiction. So $C$ is a CFL outside
@@ -15247,7 +15247,7 @@ real symbol, works out whether $P$ \emph{would} accept were the next symbol $\da
 afford to pop the whole stack each time, so it stores alongside each stack symbol a set
 $R\in\pow{Q}$ of states from which $P$ accepts-on-$\dashv$ with the current stack. Thus
 $\Gam'=\Gam\cup\pow{Q}$, interleaving real stack data with this lookahead summary, and the test becomes
-reading the top set $R$ in $O(1)$.
+reading the top set $R$ in $\bigO(1)$.
 \begin{center}
 \begin{tikzpicture}[every node/.style={font=\small},
     cell/.style={draw,line width=0.6pt,minimum width=14mm,minimum height=6.5mm,inner sep=2pt}]
@@ -15259,9 +15259,9 @@ reading the top set $R$ in $O(1)$.
   \node[cell,below=0pt of c4] (c5) {$\$$};
   \node[font=\footnotesize,anchor=west] at ($(c0.east)+(0.5,0)$) {$\leftarrow$ top of stack};
   \node[font=\footnotesize,anchor=west] at ($(c5.east)+(0.5,0)$) {$\leftarrow$ bottom marker};
-  \node[font=\footnotesize,anchor=north,text width=6.2cm,align=center]
+  \node[font=\footnotesize,anchor=north,text width=6.2cm,align=flush center]
     at ($(c5.south)+(0,-0.2)$)
-    {each $R_i\in\pow{Q}$ summarizes ``accept-on-$\dashv$ from here''};
+    {each $R_i\in\pow{Q}$ summarizes\\ ``accept-on-$\dashv$ from here''};
 \end{tikzpicture}
 \end{center}
 \whichrule{Both directions are simulations, so neither enlarges the class; the gain is purely in
@@ -15275,7 +15275,7 @@ languages carry the same membership information; only the moment of decision mov
 \begin{enumerate}[leftmargin=2em,topsep=2pt,itemsep=1pt]
   \item \textbf{Look for a forced single strategy.} Try to design a PDA in which, at every step, the
   next move is dictated by (state, next input symbol, stack top) with no genuine alternative. If you
-  can, you have a DPDA and the language is a DCFL. Matching-counter languages like
+  can, you have a DPDA and the language is a DCFL\@. Matching-counter languages like
   $\set{\str0^n\str1^n}$ and balanced parentheses pass this test.
   \item \textbf{Hunt for an unresolvable guess.} If the machine must decide \emph{early} between two
   futures whose correctness depends on input not yet read (the two pop-rates of $B$ above; the fold
@@ -15338,7 +15338,7 @@ and citing the right theorem. Then explain why the same
 is a DCFL.
 
 \item Carry out the argument sketched in Worked Example~\ref{wex:union-fail@c7}: prove that
-$B=\set{\str0^n\str1^n\st n\ge1}\cup\set{\str0^n\str1^{2n}\st n\ge1}$ is not a DCFL. (Hint: suppose a
+$B=\set{\str0^n\str1^n\st n\ge1}\cup\set{\str0^n\str1^{2n}\st n\ge1}$ is not a DCFL\@. (Hint: suppose a
 DPDA $P$ recognized $B$. By determinism, its run on $\str0^n\str1^{2n}$ passes through its accepting
 run on $\str0^n\str1^n$; so a PDA that simulates $P$ and, at an accept state, may switch to a copy of
 $P$ reading $\str2$s in place of $\str1$s accepts, among its strings ending in $\str2$, exactly
@@ -15371,14 +15371,14 @@ intersection, (iv) intersection with a regular language. For each that fails, gi
 or a counterexample built from languages in this section.
 
 \item Show that $\mathsf{DCFL}$ is not closed under reversal by arguing that the reversal of some DCFL
-is not a DCFL. (Hint: $B'=\set{\str c\,\str1^n\str0^n\st n\ge1}\cup\set{\str d\,\str1^{2n}\str0^n\st n\ge1}$
+is not a DCFL\@. (Hint: $B'=\set{\str c\,\str1^n\str0^n\st n\ge1}\cup\set{\str d\,\str1^{2n}\str0^n\st n\ge1}$
 is a DCFL, since a DPDA reading $B'$ left-to-right learns the pop rate from the first symbol and has
 no early commitment, whereas $\rev{B'}$ announces the rate only at the very end; the lookahead sets
 of Worked Example~\ref{wex:endmark@c7} would turn a DPDA for $\rev{B'}$ into one for the witness $B$
 of Worked Example~\ref{wex:union-fail@c7}.)
 
 \item Explain, in three or four sentences, why the subset construction that converts an NFA to a DFA
-does \emph{not} convert a PDA to a DPDA. Identify exactly which finiteness assumption breaks.
+does \emph{not} convert a PDA to a DPDA\@. Identify exactly which finiteness assumption breaks.
 
 \item Endmarkers. Let $A=\set{\str a^n\str b^n\st n\ge0}$ and $A{\dashv}=\set{w{\dashv}\st w\in A}$.
 Design a DPDA for $A{\dashv}$ that exploits the endmarker to perform its final stack check, and point
