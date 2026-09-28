@@ -463,8 +463,9 @@ codomain is fixed.
 \begin{pitfall}
 ``Symmetric'' and ``antisymmetric'' are not opposites, and a relation can be neither. Symmetry says
 every arrow has a reverse; antisymmetry says no two \emph{distinct} elements have arrows both ways
-(self-loops are still allowed). The relation $\set{(1,2),(2,3)}$ is neither symmetric (no reverse of
-$1\to2$) nor antisymmetric-violating, while $\set{(1,2),(2,1)}$ is symmetric but not antisymmetric.
+(self-loops are still allowed). The relation $\set{(1,2),(2,1),(2,3)}$ is neither symmetric (no reverse
+of $2\to3$) nor antisymmetric ($1\to2$ and $2\to1$), while $\set{(1,2),(2,1)}$ is symmetric but not
+antisymmetric.
 Equivalence relations are built from symmetry; partial orders are built from antisymmetry -- mixing
 the two is a frequent slip when classifying a relation.
 \end{pitfall}
@@ -494,7 +495,7 @@ between subsets of $A$ and length-$n$ strings over $\set{0,1}$ (the ``indicator 
 Draw the arrow diagram of this bijection for $n=2$, i.e.\ between $\pow{\set{a,b}}$ and
 $\set{0,1}^{2}$.
 
-\item Define $f\colon\set{1,2,3,4,5}\to\set{1,2,3,4,5}$ by $f(n)=(2n)\bmod 5$. Tabulate $f$, draw its
+\item Define $f\colon\set{0,1,2,3,4}\to\set{0,1,2,3,4}$ by $f(n)=(2n)\bmod 5$. Tabulate $f$, draw its
 arrow diagram, and decide whether it is injective, surjective, bijective. If it is a bijection, give
 $f\inv$ as a table.
 
@@ -800,8 +801,8 @@ $\str{aa}\str a=\str{aaa}$, $\str{aa}\str{aa}=\str{aaaa}$. The middle two both e
   \draw[->,gray] (a1)--(o2);
   \draw[->,gray] (a2)--(o2);
   \draw[->,gray] (a2)--(o3);
-  \node[font=\footnotesize,red!60!black] at ($(o2)+(2.2,0)$) {two arrows in: collision};
-  \draw[->,red!50,shorten >=2pt] ($(o2)+(1.05,0)$)--(o2);
+  \node[font=\footnotesize,anchor=west] (col) at ($(o2)+(1.2,0)$) {two arrows in: collision};
+  \draw[->,black,shorten >=2pt] (col.west)--(o2);
 \end{tikzpicture}
 \end{center}
 \whichrule{The product rule $\card{A\concat B}\le\card A\cdot\card B$ is an \emph{inequality}: equality
@@ -859,7 +860,7 @@ $\eps\in C$, gluing in extra copies of $\eps$ changes nothing, so already $C\kpl
 (take $k=1$, piece $\eps$), giving $C\kstar=C\kplus=\set{\str a^{k}\st k\ge 0}=A\kstar$.
 \begin{center}
 \begin{tikzpicture}[every node/.style={font=\small}]
-  \node[draw,ellipse,minimum width=30mm,minimum height=13mm] (star) at (0,0) {};
+  \node[draw,ellipse,minimum width=33mm,minimum height=15mm] (star) at (0,0) {};
   \node at (0,0.46) {$A\kstar$};
   \node[draw,ellipse,minimum width=20mm,minimum height=8mm,fill=black!10] (plus) at (0.45,-0.15) {};
   \node[font=\footnotesize] at (0.45,-0.15) {$A\kplus$};
@@ -995,13 +996,13 @@ member, draw the derivation tree showing how it tiles into pieces of $A$.
 the analogous facts with the special language on the \emph{right}, and say which (if any) change when
 the factors are swapped.
 
-\item Prove or disprove, for all languages $A,B$ over $\Sig$: (a) $(A\cup B)\concat C=
+\item Prove or disprove, for all languages $A,B,C$ over $\Sig$: (a) $(A\cup B)\concat C=
 (A\concat C)\cup(B\concat C)$; (b) $(A\cap B)\concat C=(A\concat C)\cap(B\concat C)$. For the false
 one, give the smallest counterexample you can over $\set{\str a}$.
 
 \item Show that $\rev{(\rev{A})}=A$ and $\rev{(A\kstar)}=(\rev{A})\kstar$ for every language $A$.
-(For the second, use that reversal flips a concatenation, Proposition style, on each $k$-piece
-product.)
+(For the second, use that reversal flips a concatenation (Proposition~\ref{prop:revconcat@c1}) on each
+$k$-piece product.)
 
 \item Determine, with proof, exactly when $A\kstar=A\kplus$ for a language $A$, and exactly when
 $\eps\in A\concat B$. Give a single language $A$ for which $A\kstar=A\kplus$ and a single one for
@@ -1092,8 +1093,8 @@ For all propositions $P,Q,R$:
 \end{proposition}
 \begin{proof}
 Each is a claim that two columns of a truth table agree, so it suffices to fill in the table and
-compare. We do the contrapositive; the others are identical in spirit and are filled in as
-Worked Example~\ref{wex:demorgan@c1} below.
+compare. We do the contrapositive; the others are identical in spirit, and one De Morgan law is
+filled in as Worked Example~\ref{wex:demorgan@c1} below.
 \[
 \renewcommand{\arraystretch}{1.2}
 \begin{array}{cc|cc|c|c}
@@ -1302,10 +1303,10 @@ statement is \textbf{false}. Same atoms, opposite truth values.
 \begin{tikzpicture}[fa,node distance=12mm and 30mm]
   \node[stinit] (a0) {$\forall x$};
   \node[st,right=of a0] (a1) {$\exists y$};
-  \node[stacc,right=of a1] (a2) {$x{+}y{=}0$};
+  \node[stacc,right=of a1,inner sep=3pt] (a2) {$x{+}y{=}0$};
   \node[stinit,below=20mm of a0] (b0) {$\exists y$};
   \node[st,right=of b0] (b1) {$\forall x$};
-  \node[st,right=of b1] (b2) {$x{+}y{=}0$};
+  \node[st,right=of b1,inner sep=3pt] (b2) {$x{+}y{=}0$};
   \path (a0) edge node{pick $x$} (a1)
         (a1) edge node{then $y{=}{-}x$} (a2)
         (b0) edge node{fix $y$ first} (b1)
@@ -1479,8 +1480,8 @@ equivalent to the original. The map below collects all four under that single pr
 \noindent\emph{Negation turns each connective or quantifier into its dual --
 $\land\leftrightarrow\lor$, $\forall\leftrightarrow\exists$ -- while negating the inside; truth
 values are preserved, so each arrow is a logical equivalence, not just a rewrite.}
-\emph{Check.} The two left laws are exactly the De Morgan laws verified by table in Worked
-Example~\ref{wex:demorgan@c1}; the two right laws are Theorem~\ref{thm:negquant@c1}, which the finite-domain
+\emph{Check.} The two left laws are exactly the De Morgan laws (one of them verified by table in Worked
+Example~\ref{wex:demorgan@c1}); the two right laws are Theorem~\ref{thm:negquant@c1}, which the finite-domain
 unfolding reduces to those same De Morgan laws -- so all four are one tautological equivalence wearing
 four faces.
 
@@ -1522,14 +1523,14 @@ is reflexive, whether it is symmetric, and whether $\forall x\,\exists y\,(x\neq
 
 \item Give a connective expression for the ``majority'' function $\mathrm{Maj}(P,Q,R)$, true iff at
 least two of $P,Q,R$ are true, as an OR of AND-clauses (one clause per true row of its table). Then
-draw it as a gate network with three AND gates feeding one OR gate.
+draw it as a gate network with four AND gates feeding one OR gate.
 
 \item \emph{Find the bug.} A student writes: ``The negation of `for all $x$, if $x>0$ then
 $x^2>0$' is `for all $x$, if $x>0$ then $x^2\le 0$.' '' Identify every error (there are two: the
 quantifier and the body), and write the correct negation in symbols and in English.
 
 \item \emph{Find the bug.} Someone claims $\forall x\,\exists y\,(x\cdot y=1)$ is true over $\Z$
-``because you can always take $y=1/x$.'' Explain precisely why the argument fails, name the smallest
+``because you can always take $y=1/x$.'' Explain precisely why the argument fails, name a
 domain on which the statement \emph{is} true with the same predicate, and state the correct truth
 value over $\Z$.
 
@@ -1614,7 +1615,7 @@ $a,b$. Then
 \[
   mn=(2a)(2b)=2(2ab),
 \]
-and $2ab$ is an integer, so $mn$ is twice an integer, i.e. even. (We used only one ``even'' here, so
+and $2ab$ is an integer, so $mn$ is twice an integer, i.e.\ even. (We needed only one ``even'' here, so
 the result actually holds as soon as \emph{one} factor is even; the worked claim is the weaker
 symmetric version.) $\qquad\blacksquare$
 \whichrule{When the hypothesis hands you a usable structural fact (here, ``$=2\cdot\text{integer}$'')
@@ -1653,7 +1654,7 @@ $\qquad\blacksquare$
 computation, whereas the original direction offers no algebraic foothold; and the two are logically
 identical, so proving either settles the theorem.}
 \emph{Check.} $n=5$ (odd): $n^2=25$ odd -- contrapositive instance holds. Original instance: $n^2=36$
-even forces $n=6$ even. Both consistent.
+even forces $n=\pm6$, even. Both consistent.
 \end{wex}
 
 \textbf{3. Proof by contradiction.} To prove a statement $S$, assume $\lnot S$ and derive a
@@ -1775,7 +1776,7 @@ and $B\subseteq A$.
 
 \begin{wex}{A biconditional, proved in two directions}
 Prove: an integer $n$ is divisible by $6$ \emph{iff} it is divisible by both $2$ and $3$.
-\wrec The connective is ``iff,'' i.e. a biconditional $P\eqv Q$, which Definition~\ref{def:forms@c1}
+\wrec The connective is ``iff,'' i.e.\ a biconditional $P\eqv Q$, which Definition~\ref{def:forms@c1}
 says must be split into a forward and a reverse implication. The ``iff'' itself is the trigger.
 \wsol \emph{($\Rightarrow$)} If $6\mid n$ then $n=6k=2(3k)=3(2k)$, so $2\mid n$ and $3\mid n$.
 \emph{($\Leftarrow$)} Suppose $2\mid n$ and $3\mid n$. From $2\mid n$, write $n=2m$. Since $3\mid n=2m$
@@ -1808,14 +1809,14 @@ re-expressings of a direct argument over a negated statement, while biconditiona
 direct proofs assembled from smaller direct pieces. The Hasse-style picture below orders the methods
 by ``builds on'':
 \begin{center}
-\begin{tikzpicture}[yscale=1.05,xscale=1.5]
+\begin{tikzpicture}[yscale=1.05]
   \node[ltdot,label=below:{direct}] (d) at (0,0) {};
-  \node[ltdot,label=left:{contrapositive}] (cp) at (-1,1) {};
-  \node[ltdot,label=right:{contradiction}] (cd) at (1,1) {};
-  \node[ltdot,label=left:{by cases}] (ca) at (-1,2) {};
-  \node[ltdot,label=right:{biconditional}] (bi) at (1,2) {};
-  \node[ltdot,label=above:{construction}] (co) at (0,3) {};
-  \draw[ltedge] (d)--(cp) (d)--(cd) (cp)--(ca) (cd)--(bi) (ca)--(co) (bi)--(co);
+  \node[ltdot,label=above:{contrapositive}] (cp) at (-5.6,1.9) {};
+  \node[ltdot,label=above:{contradiction}] (cd) at (-2.8,1.9) {};
+  \node[ltdot,label=above:{construction}] (co) at (0,1.9) {};
+  \node[ltdot,label=above:{biconditional}] (bi) at (2.8,1.9) {};
+  \node[ltdot,label=above:{by cases}] (ca) at (5.6,1.9) {};
+  \draw[ltedge] (d)--(cp) (d)--(cd) (d)--(co) (d)--(bi) (d)--(ca);
 \end{tikzpicture}
 \end{center}
 The point of the picture is practical: when a fancier method stalls, drop to the direct argument
@@ -2017,7 +2018,7 @@ the induction step proves that even $m$ cannot fail, so no bad case survives.
   \node[font=\footnotesize,align=center,anchor=west] at (4.2,3.2)
     {failing cases $n_3>n_2>n_1>\cdots$\\ \emph{cannot} descend forever;\\
      the least one is $m$.};
-  \node[font=\footnotesize] at (3.35,2.0) [above=1pt] {least};
+  \node[font=\footnotesize,anchor=south west] at (3.4,2.0) {least};
 \end{tikzpicture}
 \end{center}
 
@@ -2031,7 +2032,7 @@ at $n-1$ by adding one term. ``Built from the previous case by one step'' is the
 \emph{Basis} ($n=1$): the left side is $1$ and the right side is $\frac{1\cdot 2}{2}=1$. So $P(1)$
 holds.
 
-\emph{Induction step:} fix $k\ge 1$ and assume $P(k)$, i.e. $\sum_{i=1}^{k}i=\frac{k(k+1)}{2}$.
+\emph{Induction step:} fix $k\ge 1$ and assume $P(k)$, i.e.\ $\sum_{i=1}^{k}i=\frac{k(k+1)}{2}$.
 Then
 \[
   \sum_{i=1}^{k+1} i=\Bigl(\sum_{i=1}^{k} i\Bigr)+(k{+}1)
@@ -2102,17 +2103,18 @@ internal nodes, giving $n\log_2 n$.
     child {node {$n/2$}
       child {node {$n/4$}}
       child {node {$n/4$}}};
-  \node[anchor=west,font=\footnotesize,align=left] at (3.6,0.6)
+  \node[anchor=west,font=\footnotesize,align=left] at (4.2,0)
     {row sum $=n$};
-  \node[anchor=west,font=\footnotesize,align=left] at (3.6,-1.0)
+  \node[anchor=west,font=\footnotesize,align=left] at (4.2,-1.0)
     {row sum $=n$};
-  \node[anchor=west,font=\footnotesize,align=left] at (3.6,-2.6)
+  \node[anchor=west,font=\footnotesize,align=left] at (4.2,-2.0)
     {row sum $=n$};
 \end{tikzpicture}
 \end{center}
-\whichrule{Halving the argument places the recursive call at $n/2$, two steps or more below $n-1$,
-so weak induction cannot reach it; strong induction on $k=\log_2 n$ supplies $T(n/2)$ directly, and
-the recursion tree reads off the $\log_2 n$ equal rows that give $n\log_2 n$.}
+\whichrule{Halving the argument places the recursive call at $n/2$, below $n-1$ once $n\ge 4$,
+so weak induction on $n$ cannot reach it; strong induction on $n$ (equivalently, ordinary induction
+on $k=\log_2 n$) supplies $T(n/2)$ directly, and the recursion tree reads off the $\log_2 n$ equal
+rows that give $n\log_2 n$.}
 \emph{Check.} $n=4$: $T(4)=2T(2)+4=2(2T(1)+2)+4=2\cdot 2+4=8=4\log_2 4$. The tree for $n=4$ has two
 levels of internal nodes, matching $\log_2 4=2$.
 \end{wex}
@@ -2158,7 +2160,7 @@ strong induction on $n$ (Theorem~\ref{thm:strongind@c1}). For the step, take any
 $\ell(x)=n$. If $n=0$, $x$ is a base element and $P(x)$ holds by the first hypothesis. Otherwise
 $x$ is built by a constructor from pieces $x_1,\dots,x_r$, each of which has construction length
 $<n$; the induction hypothesis gives $P(x_1),\dots,P(x_r)$, and the second hypothesis then yields
-$P(x)$. So $Q(n)$ holds for all $n$, i.e. $P$ holds throughout $X$.
+$P(x)$. So $Q(n)$ holds for all $n$, i.e.\ $P$ holds throughout $X$.
 \end{proof}
 
 Structural induction is thus strong induction in disguise, run along the construction order rather
@@ -2195,8 +2197,8 @@ So $P(wa)$ holds. By Theorem~\ref{thm:struct@c1}, $P(y)$ holds for every $y\in\S
    level/.style={sibling distance=46mm/#1},edge from parent/.style={tedge,draw}]
   \node {$wa$ \scriptsize(append $a$)}
     child {node {$w$}
-      child {node {$\eps$ \scriptsize(base case)}
-        child[grow=down] {node[font=\footnotesize] {$\vdots$} edge from parent[draw=none]}}};
+      child {node[font=\footnotesize] {$\vdots$}
+        child {node {$\eps$ \scriptsize(base case)}}}};
 \end{tikzpicture}
 \end{center}
 \whichrule{Concatenation is defined by recursion on its right argument, so structural induction on
