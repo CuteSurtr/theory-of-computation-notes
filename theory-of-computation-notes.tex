@@ -19447,12 +19447,13 @@ recognizable.
 \chapter{Reducibility and Undecidability}
 
 \section{Undecidability via Reductions}
-In the previous chapter we proved exactly one problem undecidable, $\ATM$, and we did it the hard
+In the previous chapter we proved $\ATM$ undecidable, and we did it the hard
 way -- by diagonalization. This section introduces the tool that does all the rest of the work:
 \emph{reduction}. The one key idea is that to prove a new problem $B$ undecidable we never argue from
 scratch; we instead show that an already-known undecidable problem $A$ would become decidable if $B$
 were, and read off the contradiction. Every proof here has the same skeleton -- assume a decider $R$
-for the target $B$, then build from it a decider $S$ for $\ATM$ -- and the creative part is only the
+for the target $B$, then build from it a decider $S$ for $\ATM$ (or another problem already known
+undecidable) -- and the creative part is only the
 little machine $S$ feeds to $R$. We make the pattern precise, run it four times (on $\HALT$, $\ETM$,
 $\mathit{REGULAR}_{\mathsf{TM}}$, and $\mathit{EQ}_{\mathsf{TM}}$), and then sharpen it with the
 \emph{computation-history} technique, which lets a reduction inspect a TM's entire run as a single
@@ -19479,22 +19480,22 @@ $A$ to $B$ turns $R$ into a decider $S$ for $A$, making $A$ decidable. Hence ``$
 ``$A$ decidable,'' and contrapositively ``$A$ undecidable'' forces ``$B$ undecidable.''
 \end{proof}
 
-So every undecidability proof in this section reduces $\ATM=\set{\enc{M,w}\st M\text{ is a TM that
+So nearly every undecidability proof in this section reduces $\ATM=\set{\enc{M,w}\st M\text{ is a TM that
 accepts }w}$ (known undecidable) to the target language. The shape never changes; only the gadget
 machine does. The schematic below is the picture to keep in mind: the assumed decider $R$ for $B$ sits
 \emph{inside} the decider $S$ we are building for $\ATM$.
 
 \begin{center}
 \begin{tikzpicture}[node distance=7mm and 16mm]
-  \node[procbox,minimum width=46mm,minimum height=20mm] (S) {};
+  \node[procbox,minimum width=74mm,minimum height=20mm] (S) {};
   \node[anchor=north west,font=\small\itshape] at (S.north west) {\ decider $S$ for $\ATM$};
-  \node[procbox] (build) at ($(S.center)+(-10mm,-2mm)$) {build gadget};
+  \node[procbox] (build) at ($(S.center)+(-19mm,-2mm)$) {build gadget};
   \node[procbox,right=of build] (R) {$R$ decides $B$};
   \node[left=20mm of S] (in) {$\enc{M,w}$};
   \node[right=18mm of S] (out) {accept / reject};
-  \path[flow] (in) -- (S.west);
-  \path[flow] (build) -- node[flowlbl]{$\enc{\text{gadget}}$} (R);
-  \path[flow] (S.east) -- (out);
+  \draw[flow] (in) -- (S.west);
+  \draw[flow] (build) -- node[flowlbl]{$\enc{\text{gadget}}$} (R);
+  \draw[flow] (S.east) -- (out);
 \end{tikzpicture}
 \\[3pt]{\footnotesize Universal layout of a reduction $\ATM\to B$: $S$ transforms $\enc{M,w}$ into the
 encoding of a gadget machine, hands it to the hypothetical decider $R$ for $B$, and turns $R$'s
@@ -19539,7 +19540,7 @@ $\HALT$ subroutine removes it.
 \wrec The target is $\HALT$ and the source is $\ATM$; the trigger is ``I could simulate $M$ on $w$ if
 only I were promised it stops.'' Whenever a would-be decider stalls solely because of nontermination,
 a halting oracle is the natural fix.
-\wsol The left branch is the doomed plan: simulate and hope. The right branch inserts $R$ first, so
+\wsol The doomed plan is to simulate and hope. The diagram instead inserts $R$ first, so
 simulation is entered only along the ``halts'' edge.
 \begin{center}
 \begin{tikzpicture}[node distance=6mm and 14mm]
@@ -19548,10 +19549,10 @@ simulation is entered only along the ``halts'' edge.
   \node[procbox,above right=4mm and 16mm of R] (sim) {simulate $M$ on $w$};
   \node[procbox,below=14mm of R] (rej) {\textsf{reject}};
   \node[procbox,right=16mm of sim] (acc) {copy $M$'s verdict};
-  \path[flow] (in) -- (R);
-  \path[flow] (R) -- node[flowlbl]{halts} (sim);
-  \path[flow] (R) -- node[flowlbl,swap,pos=0.45]{loops} (rej);
-  \path[flow] (sim) -- (acc);
+  \draw[flow] (in) -- (R);
+  \draw[flow] (R) -- node[flowlbl]{halts} (sim);
+  \draw[flow] (R) -- node[flowlbl,swap,pos=0.45]{loops} (rej);
+  \draw[flow] (sim) -- (acc);
 \end{tikzpicture}
 \end{center}
 \whichrule{This is the reduction $\ATM\to\HALT$: the only reason raw simulation cannot decide $\ATM$ is
@@ -19616,12 +19617,12 @@ so engineer a machine whose whole language collapses to the one fact we care abo
   \node[procbox] (in) {$\enc{M,w}$};
   \node[procbox,right=of in] (mk) {build $M_w$};
   \node[procbox,right=of mk] (R) {$R$: is $\lang{M_w}=\es$?};
-  \node[procbox,above right=3mm and 14mm of R] (rej) {\textsf{reject}};
-  \node[procbox,below right=3mm and 14mm of R] (acc) {\textsf{accept}};
-  \path[flow] (in) -- (mk);
-  \path[flow] (mk) -- node[flowlbl]{$\enc{M_w}$} (R);
-  \path[flow] (R) -- node[flowlbl]{accepts (empty)} (rej);
-  \path[flow] (R) -- node[flowlbl,swap]{rejects (nonempty)} (acc);
+  \node[procbox,above right=3mm and 30mm of R] (rej) {\textsf{reject}};
+  \node[procbox,below right=3mm and 30mm of R] (acc) {\textsf{accept}};
+  \draw[flow] (in) -- (mk);
+  \draw[flow] (mk) -- node[flowlbl]{$\enc{M_w}$} (R);
+  \draw[flow] (R) -- node[flowlbl]{accepts (empty)} (rej);
+  \draw[flow] (R) -- node[flowlbl,swap]{rejects (nonempty)} (acc);
 \end{tikzpicture}
 \end{center}
 \whichrule{We reduce $\ATM$ to $\ETM$ by a \emph{language-engineering} gadget: $M_w$ filters its input
@@ -19680,7 +19681,7 @@ language is forced into the class on yes-instances and out of it on no-instances
 toggles with ``$M$ accepts $w$,'' so $R$'s verdict is $\ATM$'s verdict directly (no inversion).}
 \emph{Check.} The string $\str{0011}=\str0^2\str1^2$ is accepted by $M_2$ in \emph{both} cases (it
 fits the template), so it alone cannot tell the cases apart -- the difference shows only on strings
-\emph{outside} the template, e.g.\ $\str{01}$ is accepted iff $M$ accepts $w$.
+\emph{outside} the template, e.g.\ $\str{10}$ is accepted iff $M$ accepts $w$.
 \end{wex}
 
 \subsection*{Equivalence of two TMs, by reducing from emptiness}
@@ -19718,9 +19719,9 @@ machine.
   \node[procbox,right=of in] (pair) {pair with $T_\es$};
   \node[procbox,right=of pair] (R) {$R$: $\lang{M}=\lang{T_\es}$?};
   \node[procbox,right=20mm of R] (out) {copy verdict};
-  \path[flow] (in) -- (pair);
-  \path[flow] (pair) -- node[flowlbl]{$\enc{M,T_\es}$} (R);
-  \path[flow] (R) -- (out);
+  \draw[flow] (in) -- (pair);
+  \draw[flow] (pair) -- node[flowlbl]{$\enc{M,T_\es}$} (R);
+  \draw[flow] (R) -- (out);
 \end{tikzpicture}
 \end{center}
 \whichrule{$\ETM\redm\mathit{EQ}_{\mathsf{TM}}$ by argument-freezing: $\lang{M}=\es$ is literally
@@ -19762,7 +19763,7 @@ needs to run $M$; each is a finite, mechanical comparison of neighboring blocks.
     (T-1-2.south west) -- (T-1-5.south east) node[midway,below=5pt,font=\footnotesize]{$C_1$};
   \draw[decorate,decoration={brace,amplitude=4pt,mirror},thick]
     (T-1-7.south west) -- (T-1-10.south east) node[midway,below=5pt,font=\footnotesize]{$C_2$};
-  \node[font=\footnotesize,above=2pt of T-1-13]{$C_\ell$};
+  \node[font=\footnotesize,above=2pt of T-1-12]{$C_\ell$};
 \end{tikzpicture}
 \\[2pt]{\footnotesize A computation history as a single tape string: $\#$-delimited configurations,
 each a snapshot $u\,q\,v$. Adjacent blocks must agree except near the head, where $M$'s transition
@@ -19806,10 +19807,9 @@ property checkable by comparing neighboring chunks in place.
   \node[procbox,right=of start] (step) {check $C_i\yields C_{i+1}$ for all $i$};
   \node[procbox,right=of step] (end) {check $C_\ell$ accepting};
   \node[procbox,below=10mm of step] (acc) {\textsf{accept} $x$ as a valid history};
-  \path[flow] (start) -- (step);
-  \path[flow] (step) -- (end);
-  \path[flow] (end) |- (acc);
-  \path[flow] (start) |- (acc.west);
+  \draw[flow] (start) -- (step);
+  \draw[flow] (step) -- (end);
+  \draw[flow] (end) |- (acc);
 \end{tikzpicture}
 \\[2pt]{\footnotesize All three checks read only the given input $x$; the head zig-zags between
 adjacent blocks, marking positions with dots, so no cell beyond $x$ is ever needed.}
@@ -19891,7 +19891,7 @@ source. (Pick one of the two and argue it carefully.)
 
 \item Show that $\mathit{EQ}_{\mathsf{TM}}$ remains undecidable when we additionally require the two
 input machines to share the same input alphabet. Does fixing the alphabet weaken the reduction of
-Theorem on equivalence? Explain.
+Theorem~\ref{thm:eqtm@c10}? Explain.
 
 \item Write out a complete computation history, as a single $\#$-delimited string, for a small TM of
 your own design: take $M$ over $\Sig=\set{\str a}$ that on input $\str{aa}$ moves right twice and then
@@ -19975,9 +19975,9 @@ $B$ and the outside to outside.
   \node[draw,ellipse,fill=black!10,minimum width=15mm,minimum height=9mm]
       (B) at ([yshift=2mm]U2.center) {$B$};
   \node[below=1.5mm of B]{$\overline{B}$};
-  \path[->,line width=0.7pt] (A.east) to[bend left=18]
+  \draw[->,line width=0.7pt] (A.east) to[bend left=18]
         node[above,font=\footnotesize,fill=white,inner sep=1.4pt]{$f$} (B.west);
-  \path[->,line width=0.7pt,black!55] ([yshift=-6mm]U1.east) to[bend right=14]
+  \draw[->,line width=0.7pt,black!55] ([yshift=-6mm]U1.east) to[bend right=14]
         ([yshift=-6mm]U2.west);
 \end{tikzpicture}
 \end{center}
@@ -20013,7 +20013,7 @@ Contrapositive of Theorem~\ref{thm:dec@c10}: if $B$ were decidable, then $A$ wou
 Corollary~\ref{cor:undec@c10} is the workhorse. To prove a target $B$ undecidable we exhibit a
 mapping reduction $A\redm B$ from a known-undecidable $A$ (usually $\ATM$). The same transducer,
 read with recognizers in place of deciders, transfers recognizability; we record this now and
-use it heavily in Section~3.
+use it heavily in Section~10.3.
 
 \begin{theorem}[Recognizability transfers downward]\label{thm:rec@c10}
 If $A\redm B$ and $B$ is Turing-recognizable, then $A$ is Turing-recognizable. Equivalently
@@ -20036,9 +20036,9 @@ solver for $B$, and the verdict comes straight back.
   \node[procbox,right=of F] (MB) {solver for $B$};
   \node[left=15mm of F] (in) {$w$};
   \node[right=16mm of MB] (out) {accept / reject};
-  \path[flow] (in) -- (F);
-  \path[flow] (F) -- node[flowlbl]{$f(w)$} (MB);
-  \path[flow] (MB) -- (out);
+  \draw[flow] (in) -- (F);
+  \draw[flow] (F) -- node[flowlbl]{$f(w)$} (MB);
+  \draw[flow] (MB) -- (out);
   \node[draw,dashed,rounded corners,fit=(F)(MB),inner sep=6pt,
         label={below:\footnotesize solver for $A$}] {};
 \end{tikzpicture}
@@ -20053,8 +20053,8 @@ recognizable) to a target to prove the target unrecognizable.
 
 \begin{wex}{$\ATM\redm\HALT$ as an explicit function}
 Exhibit a computable $f$ with $\enc{M,w}\in\ATM \eqv f(\enc{M,w})\in\HALT$, recovering
-Theorem~10.1.1 as a mapping reduction.
-\wrec The informal proof of Section~1 turned a halting decider into an acceptance decider; to
+Theorem~10.1.3 as a mapping reduction.
+\wrec The informal proof of Section~10.1 turned a halting decider into an acceptance decider; to
 package it as a \emph{map} we must output a single instance $\enc{M',w}$ of $\HALT$ whose halting
 behaviour mirrors $M$'s \emph{accepting} behaviour. The trigger is ``make rejecting look like not
 halting,'' so that halting on $w$ becomes the same event as accepting $w$.
@@ -20071,8 +20071,8 @@ state, pure text editing.
   \node[procbox] (F) {$F$: edit $M\!\to\!M'$};
   \node[left=14mm of F] (in) {$\enc{M,w}$};
   \node[right=14mm of F] (out) {$\enc{M',w}$};
-  \path[flow] (in) -- (F);
-  \path[flow] (F) -- node[flowlbl]{$f$} (out);
+  \draw[flow] (in) -- (F);
+  \draw[flow] (F) -- node[flowlbl]{$f$} (out);
 \end{tikzpicture}
 \end{center}
 \whichrule{A mapping reduction is the construction-only half of the informal argument: emit the
@@ -20097,8 +20097,8 @@ $f(\enc{M})=\enc{M,M_\es}$, a pure padding step, hence computable.
   \node[procbox] (F) {$F$: pad with $M_\es$};
   \node[left=14mm of F] (in) {$\enc{M}$};
   \node[right=14mm of F] (out) {$\enc{M,M_\es}$};
-  \path[flow] (in) -- (F);
-  \path[flow] (F) -- node[flowlbl]{$f$} (out);
+  \draw[flow] (in) -- (F);
+  \draw[flow] (F) -- node[flowlbl]{$f$} (out);
 \end{tikzpicture}
 \end{center}
 \whichrule{To realize problem $A$ as a special case of problem $B$, the reduction fixes the
@@ -20123,7 +20123,7 @@ using the defining biconditionals of $f$ and $g$ in turn. Thus $h$ reduces $A$ t
 \end{proof}
 
 Transitivity is a directed triangle: the two given reductions are the legs, and their composite is
-the hypotenuse, every arrow pointing from the harder source into the easier target.
+the hypotenuse, every arrow pointing from the no-harder source into the at-least-as-hard target.
 
 % ---- FIG 10B: reduction-composition triangle ------------------------------
 % A --f--> B --g--> C  yields  A --g.f--> C.  Arrows point source -> target.
@@ -20158,9 +20158,9 @@ computable function $\ATM\redm\mathit{PCP}$.
   \node[procbox,right=of F] (G) {$G$: $\to\mathit{PCP}$};
   \node[left=12mm of F] (in) {$\enc{M,w}$};
   \node[right=12mm of G] (out) {$P$};
-  \path[flow] (in) -- (F);
-  \path[flow] (F) -- node[flowlbl]{$P'$} (G);
-  \path[flow] (G) -- (out);
+  \draw[flow] (in) -- (F);
+  \draw[flow] (F) -- node[flowlbl]{$P'$} (G);
+  \draw[flow] (G) -- (out);
   \node[draw,dashed,rounded corners,fit=(F)(G),inner sep=5pt,
         label={below:\footnotesize composite $g\circ f$}] {};
 \end{tikzpicture}
@@ -20215,9 +20215,9 @@ square \emph{commutes}: the two routes from a string to a yes/no verdict always 
   \node[smnode,below=of fw] (bw) {is $f(w)\in B$?\\[1pt]\footnotesize yes / no};
   \draw[smpres] (w)  -- node[smlbl,above]{$f$ computable} (fw);
   \draw[smmap]  (w)  -- node[smlbl,left]{membership in $A$} (aw);
-  \draw[smmap]  (fw) -- node[smlbl,right]{decider for $B$} (bw);
+  \draw[smmap]  (fw) -- node[smlbl,right] (dB) {decider for $B$} (bw);
   \draw[cbidir] (aw) -- node[smlbl,below]{same verdict} (bw);
-  \node[draw,dashed,rounded corners,fit=(fw)(bw),inner sep=8pt,
+  \node[draw,dashed,rounded corners,fit=(fw)(bw)(dB),inner sep=8pt,
         label={[smlbl]right:\footnotesize decider for $A$}] {};
 \end{tikzpicture}
 \end{center}
@@ -20234,7 +20234,7 @@ transfer implications under the standing hypothesis $A\redm B$:
 \begin{tikzcd}[column sep=2.6em,row sep=1.1em,ampersand replacement=\&]
   B\ \text{decidable} \arrow[r,Rightarrow] \&
   A\ \text{decidable}
-    \arrow[r,phantom,"{\text{(contra)}}"] \&
+    \arrow[r,phantom,"{\text{(contra)}}"] \&[1.8em]
   A\ \text{undecid.} \arrow[r,Rightarrow] \& B\ \text{undecid.} \\
   B\ \text{recogniz.} \arrow[r,Rightarrow] \&
   A\ \text{recogniz.}
@@ -20253,8 +20253,8 @@ transfer implications under the standing hypothesis $A\redm B$:
   \emph{description} from the input description. Use only operations a TM can do to text: add
   states, hard-wire a string, splice two machines, redirect transitions. Never ``run'' the input
   machine inside $F$.
-  \item \textbf{State $f$ explicitly}, including a default output (some fixed string outside $B$)
-  for malformed inputs.
+  \item \textbf{State $f$ explicitly}, including a default output (some fixed string outside $B$,
+  or inside $B$ if malformed strings belong to $A$, as for $\overline{\ATM}$) for malformed inputs.
   \item \textbf{Prove the biconditional} $w\in A\eqv f(w)\in B$, both directions. This is where
   the construction earns its keep; the $\imp$ direction alone is not enough.
   \item \textbf{Invoke a transfer theorem.} For undecidability cite Corollary~\ref{cor:undec@c10};
@@ -20293,8 +20293,8 @@ itself). Prove that $f$ is a computable function by describing a transducer for 
 
 \item Let $A=\set{\str{0}^n\st n\geq 0}$ and $B=\set{w\st w\text{ contains the symbol }\str1}$
 over $\Sig=\set{0,1}$. Give an explicit computable $f$ witnessing $A\redm B$, and verify the
-biconditional $w\in A\eqv f(w)\in B$ in both directions. (Hint: a member of $A$ should map to a
-non-member of $B$ and vice versa.)
+biconditional $w\in A\eqv f(w)\in B$ in both directions. (Hint: every member of $A$ is itself a
+non-member of $B$ and vice versa, so $f$ cannot be the identity.)
 
 \item Show directly from Definition~\ref{def:redm@c10} that every language $A$ satisfies $A\redm A$
 (reflexivity), and combine this with Theorem~\ref{thm:trans@c10} to argue that $\redm$ is a preorder.
@@ -20342,8 +20342,8 @@ co-recognizable.
 \end{exers}
 
 
-\section{Proving Undecidability and Unrecognizability with <=m}
-Section~2 turned the informal ``reduce $A$ to $B$'' slogan into a precise relation
+\section{Proving Undecidability and Unrecognizability with \texorpdfstring{$\redm$}{<=m}}
+Section~10.2 turned the informal ``reduce $A$ to $B$'' slogan into a precise relation
 $A\redm B$: a single computable function $f$ with $w\in A\iff f(w)\in B$, together with the two
 transfer theorems --- if $B$ is decidable so is $A$, and if $B$ is Turing-recognizable so is $A$.
 This section is the practical payoff. We turn those theorems into two reusable
@@ -20355,7 +20355,7 @@ arrow is everything.
 
 \subsection*{The two templates}
 
-Recall the master tool from Section~2 in the form we actually use it. Its proof is the
+Recall the master tool from Section~10.2 in the form we actually use it. Its proof is the
 contrapositive of the transfer theorems, so we restate it as the working lemma of this section.
 
 \begin{lemma}[Hardness transfer]\label{lem:transfer@c10}
@@ -20368,7 +20368,7 @@ Let $A\redm B$. Then:
 
 \begin{proof}
 For (1): if $B$ were decidable then $A\redm B$ would make $A$ decidable, by the
-decidability-transfer theorem of Section~2 --- contradiction. For (2): if $B$ were recognizable
+decidability-transfer theorem of Section~10.2 --- contradiction. For (2): if $B$ were recognizable
 then $A\redm B$ would make $A$ recognizable, by the recognizability-transfer theorem ---
 contradiction. In both cases the reduction carries the easiness of $B$ backward onto $A$, so the
 hardness of $A$ must already live in $B$.
@@ -20381,8 +20381,8 @@ directions; a hypothetical decider for $B$ then composes with $f$ to decide $A$.
 \begin{center}
 \begin{tikzpicture}[node distance=8mm]
   \node[procbox] (f) {$f$};
-  \node[left=14mm of f] (in) {$w$};
-  \node[procbox,right=16mm of f] (db) {decider for $B$};
+  \node[left=32mm of f] (in) {$w$};
+  \node[procbox,right=36mm of f] (db) {decider for $B$};
   \node[right=16mm of db] (out) {accept/reject};
   \draw[flow] (in) -- node[flowlbl]{instance of $A$} (f);
   \draw[flow] (f) -- node[flowlbl]{$f(w)$, instance of $B$} (db);
@@ -20497,7 +20497,7 @@ recognizability landscape these templates populate is the following.
 \end{center}
 
 Template~U lands a language above the ``decidable'' node (undecidable); Template~N lands it
-strictly outside the ``recognizable'' wing. A language proved hard by \emph{both} a $\ATM$
+strictly outside the ``recognizable'' wing. A language proved hard by \emph{both} an $\ATM$
 reduction and an $\overline{\ATM}$ reduction sits at the very top, in ``neither.''
 
 \subsection*{Template U in action}
@@ -20615,7 +20615,7 @@ language from non-regular to regular; thus $\enc{M_2}\in\mathit{REGULAR}_{\maths
 $\iff\enc{M_2}\in\mathit{REGULAR}_{\mathsf{TM}}$. So $\ATM\redm\mathit{REGULAR}_{\mathsf{TM}}$ and the
 problem is undecidable. The same skeleton works for ``is context-free,'' ``is decidable,'' ``is
 finite,'' by swapping in an appropriate witness language --- a foretaste of Rice's theorem in
-Section~4.
+Section~10.4.
 \end{wex}
 
 \begin{wex}{Reducing from a different source: $\mathit{EQ}_{\mathsf{TM}}$ via $\ETM$}
@@ -20631,7 +20631,7 @@ machine. This is a trivial, clearly computable rewrite (append a fixed descripti
 \begin{tikzpicture}[node distance=7mm]
   \node[procbox] (f) {$f$};
   \node[left=10mm of f] (in) {$\enc{M}$};
-  \node[right=14mm of f] (out) {$\enc{M,M_\es}$};
+  \node[right=28mm of f] (out) {$\enc{M,M_\es}$};
   \node[below=4mm of out,font=\footnotesize] {$\lang{M_\es}=\es$ fixed};
   \draw[flow] (in) -- (f);
   \draw[flow] (f) -- node[flowlbl]{pair with $M_\es$} (out);
@@ -20649,7 +20649,7 @@ $\ATM$ as the source made the reduction a one-liner --- a reminder that the sour
 
 Undecidability says no machine \emph{decides} the language; unrecognizability says no machine even
 \emph{recognizes} it (no machine that halts-and-accepts on exactly its members). The strictly
-stronger conclusion comes from reducing the strictly harder source $\overline{\ATM}$.
+stronger conclusion comes from reducing the non-recognizable source $\overline{\ATM}$.
 
 \begin{wex}{$\overline{\ATM}\redm\ETM$, so $\ETM$ is not recognizable}
 Show that $\ETM$ is not Turing-recognizable.
@@ -20710,8 +20710,8 @@ $\enc{M,w}\in\overline{\ATM}\iff h(\enc{M,w})\in\overline{\mathit{EQ}_{\mathsf{T
   \node (src) {$\overline{\ATM}$};
   \node[above right=8mm and 30mm of src] (eq) {$\mathit{EQ}_{\mathsf{TM}}$};
   \node[below right=8mm and 30mm of src] (ceq) {$\overline{\mathit{EQ}_{\mathsf{TM}}}$};
-  \draw[flow] (src) -- node[flowlbl,sloped]{$g$: pair with $M_{\mathrm{rej}}$ ($\es$)} (eq);
-  \draw[flow] (src) -- node[flowlbl,sloped]{$h$: pair with $M_{\mathrm{acc}}$ ($\Sigstar$)} (ceq);
+  \draw[flow] (src) -- node[flowlbl,sloped,above]{$g$: pair with $M_{\mathrm{rej}}$ ($\es$)} (eq);
+  \draw[flow] (src) -- node[flowlbl,sloped,below]{$h$: pair with $M_{\mathrm{acc}}$ ($\Sigstar$)} (ceq);
 \end{tikzpicture}
 \end{center}
 \whichrule{Two Template~N reductions from the same non-recognizable source, differing only in the
@@ -20733,16 +20733,16 @@ the source actually has.
 \wsol If $B$ is recognizable, then $B$ \emph{cannot} be the target of a reduction from
 $\overline{\ATM}$: such a reduction would force $B$ to be non-recognizable by
 Lemma~\ref{lem:transfer@c10}(2), contradicting recognizability of $B$. So a recognizable-but-undecidable
-$B$ must be proved hard from $\ATM$ (which transfers only undecidability), never from
-$\overline{\ATM}$.
+$B$ must be proved hard from $\ATM$ (which transfers undecidability but never non-recognizability),
+never from $\overline{\ATM}$.
 \begin{center}
-\begin{tikzpicture}[node distance=7mm and 24mm]
+\begin{tikzpicture}[node distance=7mm and 40mm]
   \node (atm) {$\ATM$ (recognizable)};
   \node[below=12mm of atm] (catm) {$\overline{\ATM}$ (not recognizable)};
   \node[right=of atm] (b1) {recognizable $B$};
   \node[right=of catm] (b2) {recognizable $B$};
   \draw[flow] (atm) -- node[flowlbl]{OK: gives undecidable} (b1);
-  \draw[-{Stealth[length=2.2mm]},line width=0.7pt,red!55!black,dashed] (catm) -- node[flowlbl]{forbidden} (b2);
+  \draw[-{Stealth[length=2.2mm]},line width=0.7pt,black!55,dashed] (catm) -- node[flowlbl]{forbidden} (b2);
 \end{tikzpicture}
 \end{center}
 \whichrule{A reduction transfers exactly the source's hardness: $\overline{\ATM}\redm B$ would make
@@ -20762,9 +20762,10 @@ harder than $B$,'' and put the known-hard problem on the \emph{left}.
 \end{pitfall}
 
 \begin{pitfall}
-Do not confuse undecidability with unrecognizability, and do not let a $\ATM$ reduction masquerade
-as proof of the stronger fact. A reduction $\ATM\redm B$ shows only that $B$ is \emph{undecidable};
-because $\ATM$ is itself recognizable, it can never certify that $B$ is non-recognizable. For the
+Do not confuse undecidability with unrecognizability, and do not let an $\ATM$ reduction masquerade
+as proof of the stronger fact. A reduction $\ATM\redm B$ shows that $B$ is \emph{undecidable} (and
+not co-recognizable), but because $\ATM$ is itself recognizable, it can never certify that $B$ is
+non-recognizable. For the
 stronger conclusion you must reduce from a non-recognizable source --- typically
 $\overline{\ATM}$ --- which by Proposition~\ref{prop:comp@c10} usually amounts to building a reduction
 $\ATM\redm\overline{B}$ instead of $\ATM\redm B$.
@@ -20790,8 +20791,8 @@ the ``filter to $w$'' construction. What is $\lang{M_w}$ in each of the two case
 exactly one of them have size $1$?
 
 \item Show that $\ATM\redm\HALT$ and $\HALT\redm\ATM$ both hold, so $\ATM$ and $\HALT$ are
-mapping-equivalent. (For the second direction, build from $\enc{M,w}$ a machine that on $w$ first
-makes $M$'s halting unavoidable, then routes a halt to an \emph{accept}.)
+mapping-equivalent. (For the second direction, build from $\enc{M,w}$ a machine that on $w$ runs
+$M$ and routes \emph{every} halt, accepting or rejecting, to an \emph{accept}.)
 
 \item Decide whether each statement is true, and justify in one or two sentences.
 \begin{enumerate}[label=(\alph*),leftmargin=1.6em,topsep=1pt,itemsep=1pt]
@@ -20842,7 +20843,8 @@ uses.
 \section{Rice's Theorem}
 The reductions of the previous sections each attacked one specific Turing-machine problem
 ($\HALT$, $\ETM$, $\mathit{REGULAR}_{\mathsf{TM}}$, $\mathit{EQ}_{\mathsf{TM}}$) with its own ad hoc
-gadget. Rice's theorem packages all of those proofs into a single sweeping statement: \emph{any}
+gadget. Rice's theorem packages the ones about a single machine's language ($\ETM$,
+$\mathit{REGULAR}_{\mathsf{TM}}$) into a single sweeping statement: \emph{any}
 question that asks ``does the language recognized by this machine have such-and-such property?''
 is undecidable, provided the property is not utterly trivial and depends only on the language. The
 one key idea is that the reduction from $\ATM$ used over and over -- splice the simulation of $M$
@@ -21019,7 +21021,7 @@ Theorem~\ref{thm:rice@c10} runs verbatim with this $T$.
 \begin{center}
 \begin{tikzpicture}[node distance=8mm and 16mm]
   \node (in) {$\enc{M,w}$};
-  \node[procbox,right=of in] (f) {build $M_w$ from $T=\Sigstar$};
+  \node[procbox,right=of in] (f) {build $M_w$ from $L(T)=\Sigstar$};
   \node[procbox,right=20mm of f] (R) {$R_{\mathrm{ALL}}$};
   \node[right=12mm of R] (out) {$\ATM$ ans};
   \path (in) edge[flow] (f)
@@ -21030,7 +21032,7 @@ Theorem~\ref{thm:rice@c10} runs verbatim with this $T$.
 \whichrule{Equality of the language to a fixed nontrivial target is a language property with the
 empty language excluded, so the standard splice with $T$ recognizing $\Sigstar$ settles it.}
 \emph{Check.} $L(M_w)=\Sigstar$ exactly when $M$ accepts $w$, and $L(M_w)=\es\neq\Sigstar$
-otherwise; a $\mathit{ALL}_{\mathsf{TM}}$ decider would therefore decide $\ATM$.
+otherwise; an $\mathit{ALL}_{\mathsf{TM}}$ decider would therefore decide $\ATM$.
 \end{wex}
 
 \begin{wex}{Why triviality kills the theorem}
@@ -21050,7 +21052,7 @@ admits a machine \emph{lacking} the property, so the nontriviality witness is mi
 theorem does not apply (correctly, since these are decidable).
 \begin{center}
 \begin{tikzpicture}[node distance=7mm and 0mm]
-  \node[draw,rounded corners,minimum width=46mm,minimum height=15mm,
+  \node[draw,rounded corners,minimum width=66mm,minimum height=15mm,
         label=above:{all TM encodings}] (all) {};
   \node[font=\footnotesize] at (all) {every $\enc{M}\in P_{\mathrm{rec}}$ -- no outside witness};
 \end{tikzpicture}
@@ -21176,7 +21178,7 @@ of $L(M_w)$ and which one contains $\str{ab}$.
 palindromes}}$ is undecidable. Give the witness machine $T$ used in the splice and state $L(T)$.
 
 \item The property $\mathit{REGULAR}_{\mathsf{TM}}$ (the language of $M$ is regular) was shown
-undecidable in Section~10.1 by a hand-built computation-history reduction. Re-derive its
+undecidable in Section~10.1 by a hand-built reduction. Re-derive its
 undecidability in three lines using Rice's theorem instead. Then explain in one sentence what the
 earlier proof gives that the Rice proof does not.
 
@@ -21276,9 +21278,9 @@ $2,1,3,2,4$ matches:
 \begin{center}
 \begin{tikzpicture}[x=7.2mm,y=7.2mm]
   % top row cells
-  \foreach \i/\c in {0/a,1/a,2/b,3/c,4/a,5/a,6/a,7/b,8/c}{
+  \foreach \i/\c in {0/a,1/b,2/c,3/a,4/a,5/a,6/b,7/c}{
     \node[draw,minimum size=6.5mm,inner sep=0pt,font=\small] (T\i) at (\i,1) {$\str{\c}$};}
-  \foreach \i/\c in {0/a,1/a,2/b,3/c,4/a,5/a,6/a,7/b,8/c}{
+  \foreach \i/\c in {0/a,1/b,2/c,3/a,4/a,5/a,6/b,7/c}{
     \node[draw,minimum size=6.5mm,inner sep=0pt,font=\small] (B\i) at (\i,0) {$\str{\c}$};}
   \node[left=2mm of T0,font=\footnotesize] {top};
   \node[left=2mm of B0,font=\footnotesize] {bottom};
@@ -21449,7 +21451,7 @@ untouched tape cells, and run them on our example step.
 configuration while the bottom writes the \emph{next} one. The trigger ``advance the simulation by
 one step'' is exactly the transition function turned into tiles.
 \wsol Three groups. For a right move $\trans(q,a)=(r,b,R)$ add $\left[\frac{q\,a}{b\,r}\right]$; for a
-left move $\trans(q,c\,a)$... more precisely $\trans(q,a)=(r,b,L)$, add for each tape symbol $c$ the
+left move $\trans(q,a)=(r,b,L)$, add for each tape symbol $c$ the
 tile $\left[\frac{c\,q\,a}{r\,c\,b}\right]$; and for every tape symbol $a$ add the copy tile
 $\left[\frac{a}{a}\right]$ (group 4) so cells away from the head are reproduced unchanged. In our
 example $\trans(q_0,\str0)=(q_7,\str2,R)$ contributes
