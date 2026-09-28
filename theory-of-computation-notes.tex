@@ -11803,7 +11803,7 @@ making $\str\times$ bind tighter than $\str{+}$ and both associate to the left.
 variable \emph{layer} per precedence level, lowest-binding at the top, so the tree shape is forced.
 The trigger is ``I want a unique grouping,'' which means each operator must live at exactly one level.
 \wsol Use three variables: $E$ (sums) at the loosest level, $T$ (products) tighter, and $F$ (atoms /
-parenthesised subexpressions) tightest. Left recursion ($E\to E\str{+}T$) forces left associativity;
+parenthesized subexpressions) tightest. Left recursion ($E\to E\str{+}T$) forces left associativity;
 demoting to the next variable forces $\str\times$ inside $\str{+}$.
 \[
   E\;\to\;E\,\str{+}\,T\;\mid\;T,
@@ -11845,8 +11845,8 @@ $E,T,F$, leaving the generated language fixed while collapsing the parse trees t
 \begin{tikzpicture}[node distance=12mm and 38mm]
   \node[cnode,text width=38mm,minimum height=22mm] (flat)
     {\textbf{flat (ambiguous)}\\[3pt]
-     $E\to E\,\str{+}\,E$\\$\phantom{E\to{}}\mid E\,\str\times\,E$\\
-     $\phantom{E\to{}}\mid\str(\,E\,\str)\mid\str a$};
+     $\begin{aligned}E&\to E\,\str{+}\,E\\&\mid E\,\str\times\,E\\
+     &\mid\str(\,E\,\str)\mid\str a\end{aligned}$};
   \node[cnode,text width=38mm,minimum height=22mm,right=of flat] (lay)
     {\textbf{layered (unambiguous)}\\[3pt]
      $E\to E\,\str{+}\,T\mid T$\\$T\to T\,\str\times\,F\mid F$\\
@@ -11912,7 +11912,7 @@ $\str a$ at a time, finish with $S\to\str a$), so it is unambiguous.
 
 Technique~2 (DFA-to-CFG) is more than a trick: it shows every regular language is context-free, so
 $\REG\subseteq\CFL$. The containment is strict, since $\set{\str a^n\str b^n\st n\ge 0}$ is
-context-free (Worked Example earlier in this section, with $m=n$) but not regular.
+context-free (Worked Example~6.2.1, with $m=n$) but not regular.
 
 \begin{center}
 \begin{tikzpicture}[gv/.style={},node distance=10mm]
@@ -11983,7 +11983,7 @@ $E\to E\str{+}T\mid T$, $T\to T\str\times F\mid F$, $F\to\str(E\str)\mid\str a$,
 tree for $\str{(a+a)\times a}$ and confirm it groups the $\str{+}$ before the $\str\times$.
 
 \item \emph{Find the bug.} A student claims the grammar $S\to \str a S\str a \mid \str b S\str b
-\mid \eps$ generates exactly the palindromes over $\set{\str a,\str b\,}$. State precisely
+\mid \eps$ generates exactly the palindromes over $\set{\str a,\str b}$. State precisely
 which strings it actually generates and which palindromes it misses, then repair the grammar.
 
 \item Prove that the regular language $\Lang=\set{w\in\set{\str0,\str1}\kstar \st w\text{ contains
@@ -12365,7 +12365,7 @@ valid order, and give the resulting (unit-free) grammar.
 \item Convert the grammar $S\to \str0 S\str0\mid \str1 S\str1\mid\eps$ for even-length palindromes
 over $\set{\str0,\str1}$ to Chomsky normal form. Show all four stages.
 
-\item Convert $S\to ASB\mid\eps$, $\ A\to aAS\mid a$, $\ B\to SbS\mid A\mid bb$ to CNF. (Take your
+\item Convert $S\to ASB\mid\eps$, $\ A\to aAS\mid a$, $\ B\to SbS\mid A\mid bb$ to CNF\@. (Take your
 time with the nullable variables.)
 
 \item A CNF grammar generates a string $w$ with $|w|=6$. How many rule applications does any
@@ -12403,7 +12403,7 @@ $A\to a$) does not branch, so bound the number of leaves of a binary tree of hei
 \end{exers}
 
 
-\section{Regular Languages are Context-Free; Closure Properties}
+\section{Regular Languages Are Context-Free; Closure Properties}
 The previous sections built grammars by hand and put them into normal form; this section
 places the context-free languages inside the larger landscape of language classes. Two facts
 do most of the work. First, every regular language is context-free, so grammars are at least as
@@ -12568,7 +12568,7 @@ $\lang{G_A}\cup\lang{G_B}=A\cup B$.
 
 \emph{Concatenation.} Add a fresh start variable $S$ and the rule $S\to S_A S_B$. Any derivation
 expands $S_A$ into a string of $A$ and $S_B$ into a string of $B$, side by side, so the language is
-$\set{xy\st x\in A,\ y\in B\,}=A\concat B$.
+$\set{xy\st x\in A,\ y\in B}=A\concat B$.
 
 \emph{Star.} Add a fresh start variable $S$ and the rules $S\to S S_A\mid\eps$. The $\eps$-rule
 yields the empty string (so $\eps\in A\kstar$ always), and the recursive rule appends one more copy
@@ -12598,7 +12598,7 @@ The very first step of any derivation picks the branch; the chosen sub-grammar d
       child {node {$S_A$}
         child {node {$\eps$}}}
       child {node {$\str b$}}}
-    child[densely dashed] {node {$S_B$ \scriptsize(other branch)}};
+    child[densely dashed] {node[label={[font=\scriptsize]right:(other branch)}] {$S_B$}};
 \end{tikzpicture}
 \end{center}
 \whichrule{The single rule $S\to S_A\mid S_B$ makes the union: a derivation is forced to choose one
@@ -12684,7 +12684,7 @@ them together'' the way the DFA product runs two automata together.
 work, so the task is to see \emph{where} the automata product loses its footing.
 \wsol For finite automata, intersection used a product machine that tracks one state from each
 machine simultaneously; the state set $Q_A\times Q_B$ is finite, so the combined device is still a
-DFA. The analogue for grammars would be a single derivation that is simultaneously a derivation in
+DFA\@. The analogue for grammars would be a single derivation that is simultaneously a derivation in
 $G_A$ \emph{and} in $G_B$, but a derivation has only one start variable and one stack of pending
 variables -- there is no room to carry two independent matchings.
 \begin{center}
@@ -12745,7 +12745,7 @@ Show that $\Lang=\set{\str a^n\str b^n\st n\ge0,\ n\text{ even}}$ is context-fre
 a grammar for it from scratch.
 \wrec The set $\set{\str a^n\str b^n}$ is a familiar CFL, and ``$n$ even'' is a regular constraint;
 this is the ``CFL $\cap$ regular'' situation of Corollary~\ref{cor:setdiff@c6}.
-\wsol Write $\Lang=C\cap D$ where $C=\set{\str a^n\str b^n\st n\ge0\,}$ is context-free (grammar
+\wsol Write $\Lang=C\cap D$ where $C=\set{\str a^n\str b^n\st n\ge0}$ is context-free (grammar
 $S\to\str a S\str b\mid\eps$) and $D=\set{w\st w\text{ has an even number of }\str a\text{s}}$ is
 regular -- recognized by the two-state parity automaton below.
 \begin{center}
@@ -12831,7 +12831,7 @@ $\trans(p_1,\str b)=p_2$, $\trans(p_2,\str a)=p_1$, $\trans(p_2,\str b)=p_0$. Gi
 the start variable, then derive the string $\str{abb}$ if it is accepted.
 
 \item Draw a DFA recognizing $\set{w\in\set{\str0,\str1}\kstar\st w\text{ has an even number of }
-\str1\text{s}}$, then mechanically write the equivalent CFG. State which rule of your grammar
+\str1\text{s}}$, then mechanically write the equivalent CFG\@. State which rule of your grammar
 corresponds to which arrow.
 
 \item An NFA $\nfa$ over $\set{\str a,\str b}$ has start state $s_0$, an $\eps$-move
@@ -12852,7 +12852,7 @@ reprove the pumping lemma; just name the obstruction.)
 $\bigl(\set{\str a^n\str b^n\st n\ge0}\cup\set{\str b^n\str a^n\st n\ge0}\bigr)\kstar$. Show a
 parse tree for the string $\str{ab}\,\str{ba}$ (two copies, one from each side of the union).
 
-\item Find the bug. A student claims the grammar below puts $A\concat B$ into $\CFL$, where
+\item \emph{Find the bug.} A student claims the grammar below puts $A\concat B$ into $\CFL$, where
 $A$ has grammar $S_A\to\str a S_A\mid\eps$ and $B$ has grammar $S_B\to\str b S_B\mid\eps$:
 \[
   S\to S_A\mid S_B,\qquad S_A\to\str a S_A\mid\eps,\qquad S_B\to\str b S_B\mid\eps.
@@ -12924,7 +12924,7 @@ right child is a $T$; a $\str*$ is introduced only by $T\to T\str* F$. Since no 
 derive a string containing an unparenthesized $\str+$, the operands of any $\str*$ are themselves
 $\str+$-free factors -- the multiplication is resolved before the surrounding addition. Left
 recursion ($E\to E\str+ T$, $T\to T\str* F$) puts the already-built part on the left and a single
-fresh operand on the right, so a chain $a\str+ a\str+ a$ must group as $(a\str+ a)\str+ a$; a right
+fresh operand on the right, so a chain $\str a\str+\str a\str+\str a$ must group as $(\str a\str+\str a)\str+\str a$; a right
 grouping would require a rule $E\to T\str+ E$, which $G_E$ does not have. Uniqueness follows because
 at each node the variable ($E$, $T$, or $F$) and the position of the rightmost lowest-precedence
 top-level operator determine the rule applied, leaving no choice.
@@ -13134,7 +13134,7 @@ forever. Always transform first.
 
 Recursive descent is fast but fussy about the grammar. The Cocke--Younger--Kasami (CYK) algorithm
 trades that away: it decides $w\in\lang{G}$ for \emph{any} grammar in Chomsky normal form, by filling
-a table from the bottom up. Recall that in CNF every rule is $A\to BC$ or $A\to\str a$ (with the lone
+a table from the bottom up. Recall that in CNF every rule is $A\to BC$ or $A\to a$ (with the lone
 exception $S\to\eps$). The algorithm rests on a simple recursion on substrings.
 
 \begin{theorem}[CYK]\label{thm:cyk@c6}
@@ -13143,7 +13143,7 @@ $X_{i,j}=\set{A \st A\xRightarrow{*}a_i\cdots a_j}$ be the variables generating 
 position $i$ to $j$. Then
 \[
   X_{i,i}=\set{A \st A\to a_i \text{ is a rule}},\qquad
-  X_{i,j}=\bigcup_{k=i}^{j-1}\set{A \st A\to BC,\ B\in X_{i,k},\ C\in X_{k+1,j}} ,
+  X_{i,j}=\bigcup_{k=i}^{j-1}\set{A \st A\to BC,\ B\in X_{i,k},\ C\in X_{k+1,j}}\quad(i<j),
 \]
 and $w\in\lang{G}$ iff the start variable $S\in X_{1,n}$ (together with the convention that $\eps\in
 \lang{G}$ iff $S\to\eps$ is a rule).
@@ -13151,7 +13151,7 @@ and $w\in\lang{G}$ iff the start variable $S\in X_{1,n}$ (together with the conv
 
 \begin{proof}
 A length-one substring $a_i$ is generated by $A$ iff $A\to a_i$ is a rule, since the only CNF rules
-producing a single terminal are the $A\to\str a$ rules; that is the base case. For $j>i$, a CNF
+producing a single terminal are the $A\to a$ rules; that is the base case. For $j>i$, a CNF
 derivation $A\xRightarrow{*}a_i\cdots a_j$ must begin with a rule $A\to BC$ (no terminal rule can
 start a length-$\ge 2$ derivation), after which $B$ derives a nonempty prefix $a_i\cdots a_k$ and $C$
 the nonempty suffix $a_{k+1}\cdots a_j$ for some split point $k$ with $i\le k<j$. Conversely any such
@@ -13161,7 +13161,7 @@ asking whether $S\xRightarrow{*}w$.
 \end{proof}
 
 Each $X_{i,j}$ depends only on entries for strictly shorter substrings, so we fill the table by
-increasing substring length $\ell=j-i+1$. The result is an $O(n^3\cdot|G|)$ membership test --
+increasing substring length $\ell=j-i+1$. The result is an $\bigO(n^3\cdot|G|)$ membership test --
 polynomial, in contrast to the unbounded search a naive derivation hunt would do.
 
 \begin{method}{Running CYK on a CNF grammar}
