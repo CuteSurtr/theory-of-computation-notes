@@ -2609,7 +2609,7 @@ $X$ that is \emph{not} induced.
 \wrec The trigger is the contrast ``induced versus general.'' Induced is determined the instant you
 pick $X$ -- keep every original edge inside $X$; a non-induced subgraph on the same vertices must
 \emph{drop} at least one available edge.
-\wsol Inside $X=\set{1,2,3}$ the original edges are $12,23$, and $13$ (the edge $34$ and $41$ leave
+\wsol Inside $X=\set{1,2,3}$ the original edges are $12,23$, and $13$ (the edges $34$ and $41$ leave
 $X$, so they are gone). The induced subgraph keeps all three, forming a triangle:
 \begin{center}
 \begin{tikzpicture}[scale=1.4]
@@ -2723,7 +2723,7 @@ isomorphism preserves connectedness, so no bijection can match them.
 distinguished by a \emph{different} invariant -- here the number of connected components ($1$ versus
 $2$) -- which the degree sequence cannot see.}
 \emph{Check.} Degree sequences agree: $(2,2,2,2,2,2)$ for each; edge counts agree: $6$ each. They
-differ only in component count, which suffices to deny isomorphism.
+differ in component count, which suffices to deny isomorphism.
 \end{wex}
 
 \begin{method}{How to compute degrees and apply the handshake lemma}
@@ -2741,13 +2741,13 @@ differ only in component count, which suffices to deny isomorphism.
   impossible (Corollary~\ref{cor:parity@c2}); reject it before drawing.
   \item \textbf{Compare invariants, not pictures.} To decide isomorphism, first compare degree
   sequences (and edge counts, component counts). Matching invariants only suggest isomorphism --
-  prove it by exhibiting a degree-preserving bijection; a single mismatch disproves it outright.
+  prove it by exhibiting an adjacency-preserving bijection; a single mismatch disproves it outright.
 \end{enumerate}
 \end{method}
 
 \begin{pitfall}
 A proposed degree sequence must sum to an \emph{even} number, because the sum equals $2\card{\Eset}$.
-A sequence like $(3,3,3,1)$ sums to $10$ (even) and may be realizable, but $(3,2,2,2)$ sums to $9$
+A sequence like $(3,3,2,2)$ sums to $10$ (even) and may be realizable, but $(3,2,2,2)$ sums to $9$
 (odd) and \emph{no} graph has it -- there is no need to attempt a drawing. Equivalently, by
 Corollary~\ref{cor:parity@c2}, any list with an odd count of odd numbers is dead on arrival.
 \end{pitfall}
@@ -2792,9 +2792,9 @@ $X=\set{1,2,3,4}$, draw the induced subgraph $\Gr[X]$ and give its degree sequen
 spanning subgraph of $\Gr$ that is \emph{not} induced, and one subgraph on $X$ that has strictly fewer
 edges than $\Gr[X]$.
 
-\item Show that the two drawings below are isomorphic by giving an explicit vertex bijection and
+\item Show that the two graphs below are isomorphic by giving an explicit vertex bijection and
 checking every edge: $\Gr$ has vertices $\set{1,2,3,4,5}$ and edges $\set{12,23,34,45,51}$;
-$\Gr'$ has vertices $\set{a,b,c,d,e}$ and edges $\set{ac,ce,eb,bd,da}$. (Both are five-cycles, drawn
+$\Gr'$ has vertices $\set{a,b,c,d,e}$ and edges $\set{ac,ce,eb,bd,da}$. (Both are five-cycles, labelled
 differently.)
 
 \item Exhibit two non-isomorphic simple graphs that both have degree sequence $(3,2,2,2,1)$, and name
@@ -2804,7 +2804,7 @@ the invariant that distinguishes them. (Hint: consider whether a triangle is pre
 equal degree. (Hint: in a graph on $n$ vertices each degree lies in $\set{0,1,\dots,n-1}$; argue that
 the values $0$ and $n-1$ cannot both occur, then use pigeonhole.)
 
-\item \emph{Find the bug.} A student claims the sequence $(4,4,3,2,1)$ is realized by some simple
+\item \emph{Find the bug.} A student claims the sequence $(5,4,3,2,1)$ is realized by some simple
 graph on five vertices and starts drawing. Without drawing, show the claim is impossible, and identify
 \emph{two} separate reasons (one a counting/parity fact, one about the largest degree relative to the
 number of vertices).
@@ -2814,9 +2814,9 @@ look like a square with one diagonal, and both have $5$ edges.'' Construct two g
 that each have $5$ edges but are \emph{not} isomorphic -- or explain why no such pair exists on four
 vertices -- and state precisely why ``same number of edges'' alone never establishes isomorphism.
 
-\item Prove that for every digraph, the number of vertices with $d^{+}(v)>d^{-}(v)$ contributes a
+\item Prove that for every digraph, the vertices with $d^{+}(v)>d^{-}(v)$ contribute a
 total excess exactly balanced by the deficit at vertices with $d^{+}(v)<d^{-}(v)$; that is,
-$\sum_v\bigl(d^{+}(v)-d^{-}(v)\bigr)=0$. Explain how this generalizes
+$\sum_v\bigl(d^{+}(v)-d^{-}(v)\bigr)=0$. Explain how this follows from
 Proposition~\ref{prop:dirhandshake@c2}.
 \end{exers}
 
@@ -2879,7 +2879,7 @@ is a path.
 
 \begin{wex}{Classifying a route as walk, trail, or path}
 In the graph below, classify each route from $a$ to $e$:
-$R_1=a\,b\,c\,b\,e$,\quad $R_2=a\,b\,d\,c\,b\,e$ (wait -- check edges),\quad $R_3=a\,b\,c\,d\,e$.
+$R_1=a\,b\,c\,b\,e$,\quad $R_2=a\,b\,d\,c\,b\,e$,\quad $R_3=a\,b\,c\,d\,e$.
 \wrec Definition~\ref{def:walk@c2} is a checklist: ``repeats a vertex?'' separates path from
 non-path; ``repeats an edge?'' separates trail from non-trail. Read each route off the diagram.
 \wsol Here is the graph; every listed step must be a real edge.
@@ -2895,7 +2895,7 @@ non-path; ``repeats an edge?'' separates trail from non-trail. Read each route o
   \draw[gedge] (b)--(e);
   \draw[gedge] (c)--(d);
   \draw[gedge] (c)--(e);
-  \draw[gedge] (d)--(e);
+  \draw[gedge] (d) to[bend right=45] (e);
 \end{tikzpicture}
 \end{center}
 $R_1=a\,b\,c\,b\,e$ uses edges $ab,bc,cb,be$. The vertex $b$ repeats, so it is \emph{not} a path;
@@ -2961,7 +2961,7 @@ piece.}
 drawn edge crosses between them -- both hallmarks of a partition into components.
 \end{wex}
 
-The lemma below records how connectivity constrains the edge count; it is the bridge to trees
+The proposition below records how connectivity constrains the edge count; it is the bridge to trees
 in Section~2.3 and the reason ``$n-1$ edges'' will keep reappearing.
 
 \begin{proposition}[A connected graph has at least $n-1$ edges]\label{prop:nminus1@c2}
@@ -3069,8 +3069,8 @@ Euler circuit iff every vertex has \emph{even} degree, and an Euler trail (open)
 vertices have odd degree. The reason is a local parity count: each time a circuit passes through
 a vertex it uses two incident edges (one in, one out), so traversing all edges forces every
 degree to be even. The Hamilton side has \emph{no} such efficient test known; deciding whether a
-graph has a Hamilton path is the problem $\HAMPATH$, which is $\classNP$-complete (Chapter on
-$\classNP$). Keep the contrast in view: counting degrees is easy, but routing through all
+graph has a Hamilton path is the problem $\HAMPATH$, which is $\classNP$-complete
+(Chapter~13). Keep the contrast in view: counting degrees is easy, but routing through all
 vertices is, as far as anyone knows, hard.
 
 \begin{wex}{Euler circuit by the even-degree test}
@@ -3159,7 +3159,7 @@ arrowheads only.
 \end{center}
 Following arrows: from $p$ we reach $q$ (edge $p\to q$), $r$ (edge $p\to r$, or via $q$). From
 $q$ we reach $r$. But from $r$ there are \emph{no} outgoing edges, so $r$ reaches nothing; and
-$q$ cannot reach $p$, since the only arrow at $p$ points away from it. Thus $p$ reaches everyone,
+$q$ cannot reach $p$, since both arrows at $p$ point away from it. Thus $p$ reaches everyone,
 yet no one reaches $p$. The underlying \emph{undirected} graph (forget arrowheads) is connected,
 but directed reachability is one-way, so $\sim$ from Definition~\ref{def:conn@c2} is not symmetric
 here. This is why digraphs distinguish \emph{strong} connectivity (every $u$ reaches every $v$
@@ -3349,7 +3349,7 @@ Removing edge $uv$ disconnects $G$ (clause (v)); the two components are the side
 and the side reachable from $v$, and there are exactly two because the remaining graph has
 $n$ vertices and $(n-1)-1=n-2$ edges, forcing $c=n-(n-2)=2$ by the count in (iv). Adding a
 non-edge creates a cycle (clause (vi)); it is unique because two cycles would share the new edge and
-their symmetric difference would be a cycle already present in the tree.
+their symmetric difference would contain a cycle already present in the tree.
 \end{proof}
 
 It is worth seeing the four most-used clauses of Theorem~\ref{thm:treechar@c2} laid out as a closed
@@ -3447,7 +3447,8 @@ vertex's \emph{parent}. This is the form trees take when they record a computati
 \begin{definition}[Rooted tree]\label{def:rooted@c2}
 A \emph{rooted tree} is a tree $T$ with a distinguished vertex $r$, the \emph{root}. For a vertex
 $v\ne r$, the \emph{parent} of $v$ is the neighbour of $v$ on the unique $v$--$r$ path; the other
-neighbours of $v$ are its \emph{children}. A leaf of a rooted tree is a vertex with no children. The
+neighbours of $v$ are its \emph{children}, and every neighbour of $r$ is a child of $r$. A leaf of a
+rooted tree is a vertex with no children. The
 \emph{depth} of $v$ is the length of the $v$--$r$ path; the \emph{height} of $T$ is the maximum
 depth.
 \end{definition}
@@ -3478,8 +3479,8 @@ and ``depth'' is the count of edges up to the root, so the trigger is simply: or
 then read levels.
 \wsol The children of $x$ are the vertices one level below it, namely $p$ and $z$. The vertex $z$
 sits two edges below $r$ ($z\to x\to r$), so its depth is $2$. The leaves are the childless vertices:
-$p,z,q$. (The root $r$ is internal, not a leaf, even though in the \emph{underlying unrooted} tree
-$r$ might have had degree $\ge 2$ --- rootedness, not degree, decides leaf-hood here.)
+$p,z,q$. (The root $r$ is internal, not a leaf, and would remain so even if in the \emph{underlying
+unrooted} tree $r$ had degree $1$ --- rootedness, not degree, decides leaf-hood here.)
 \whichrule{In a rooted tree the parent of $v$ is its neighbour toward the root and a leaf is a vertex
 with no children, so every structural question reduces to walking the unique path to $r$
 (Definition~\ref{def:rooted@c2}).}
@@ -3625,7 +3626,7 @@ The count $m=n-1$ becomes decisive only \emph{together with} connectivity or acy
 \begin{pitfall}
 ``Leaf'' means different things rooted and unrooted. In an unrooted tree a leaf is a degree-$1$
 vertex (Definition~\ref{def:tree@c2}); in a rooted tree a leaf is a vertex with \emph{no children}
-(Definition~\ref{def:rooted@c2}). The root itself, though possibly of degree $\ge 2$, is never a leaf,
+(Definition~\ref{def:rooted@c2}). The root itself, unless it is the only vertex, is never a leaf,
 and a degree-$1$ vertex that happens to be chosen as the root is internal, not a leaf. Always state
 whether a tree is rooted before counting leaves.
 \end{pitfall}
@@ -3654,7 +3655,7 @@ edge-count test before doing any further work.
   \end{enumerate}
 
 \item Prove that a tree with at least two vertices in which \emph{every} internal vertex has degree
-exactly $3$ has an even number of leaves. (Hint: combine Lemma~\ref{lem:edges@c2} with the handshake
+exactly $3$ has an even number of vertices. (Hint: combine Lemma~\ref{lem:edges@c2} with the handshake
 sum $\sum_v \deg v = 2m$.)
 
 \item Let $T$ be a tree and let $u,v$ be two non-adjacent vertices. Adding the edge $uv$ creates a
@@ -3814,14 +3815,15 @@ $v_1$ blue, $v_2$ red, $v_3$ blue, $v_4$ red. Now the closing edge $v_4v_0$ join
 monochromatic edge. The alternation cannot close up because $5$ is odd.
 \begin{center}
 \begin{tikzpicture}[scale=1.25]
-  \foreach \i/\col in {0/r,1/b,2/r,3/b,4/r}{
-    \node[gvlab,fill=black!10] (v\i) at ({90-72*\i}:1.35cm) {$v_\i$};}
+  \foreach \i/\col in {0/black!25,1/white,2/black!25,3/white,4/black!25}{
+    \node[gvlab,fill=\col] (v\i) at ({90-72*\i}:1.35cm) {$v_\i$};}
   \begin{scope}[on background layer]
     \foreach \i [evaluate=\i as \j using {int(mod(\i+1,5))}] in {0,...,4}{
       \draw[gedge] (v\i)--(v\j);}
     \draw[gedge,line width=1.3pt,black] (v4)--(v0);
   \end{scope}
-  \node[font=\footnotesize] at (0,-1.85) {bold edge $v_4v_0$ is the forced clash};
+  \node[font=\footnotesize,align=center] at (0,-2.0) {shaded $=$ red, plain $=$ blue;\\
+    bold edge $v_4v_0$ is the forced clash};
 \end{tikzpicture}
 \end{center}
 \whichrule{Odd length is the exact certificate of non-bipartiteness; the forced alternation uses up
@@ -3923,8 +3925,8 @@ $U$ can be saturated.
   \begin{scope}[on background layer]
     \draw[gedge] (u1)--(w1) (u2)--(w1) (u3)--(w1) (u3)--(w2) (u3)--(w3);
   \end{scope}
-  \node[font=\footnotesize] at (0,2.4) {$U$};
-  \node[font=\footnotesize] at (3,2.4) {$W$};
+  \node[font=\footnotesize] at (0,2.6) {$U$};
+  \node[font=\footnotesize] at (3,2.6) {$W$};
 \end{tikzpicture}
 \end{center}
 \wrec The question ``can $U$ be saturated'' is exactly Theorem~\ref{thm:hall@c2}. The trigger is the
@@ -4012,9 +4014,9 @@ $1,2,1,2$ around four rim vertices and give the fifth a third color $3$. The hub
 rim vertices, so it cannot reuse any rim color; a fourth color $4$ on the hub completes a proper
 $4$-coloring, giving $\chi(W_5)\le 4$. For the lower bound, take any rim edge $\{v_i,v_{i+1}\}$
 together with the hub $h$: these three vertices are mutually adjacent, a triangle (clique of size
-$3$), forcing $3$ colors. Combining with the fact that the odd rim needs a third color \emph{beyond}
-the two it shares with the hub's neighbors, no proper coloring uses fewer than $4$, so
-$\chi(W_5)=4$.
+$3$), forcing $3$ colors. That alone gives only $\chi(W_5)\ge 3$ ($W_5$ has no $K_4$); but the odd
+rim by itself needs $3$ colors, and the hub, adjacent to every rim vertex, can reuse none of them, so
+no proper coloring uses fewer than $4$, and $\chi(W_5)=4$.
 \begin{center}
 \begin{tikzpicture}[scale=1.3]
   \node[gvlab,label={[font=\footnotesize]below:$4$}] (h) at (0,0) {$h$};
@@ -4027,9 +4029,9 @@ $\chi(W_5)=4$.
   \end{scope}
 \end{tikzpicture}
 \end{center}
-\whichrule{The clique bound $\omega\le\chi$ supplies the lower bound (the hub-plus-edge triangle),
-and the explicit greedy-style coloring supplies the matching upper bound; together they pin $\chi$
-exactly.}
+\whichrule{The clique bound $\omega\le\chi$ gives only $3$ (the hub-plus-edge triangle); the odd rim
+together with the hub adjacent to all of it supplies the true lower bound $4$, and the explicit
+greedy-style coloring supplies the matching upper bound; together they pin $\chi$ exactly.}
 \emph{Check.} The displayed colors are all distinct across every drawn edge: rim colors alternate
 $1,2,1,2,3$ with no equal neighbors, and the hub's $4$ differs from all of $1,2,3$, so the
 $4$-coloring is proper and $\chi(W_5)=4$.
@@ -4037,7 +4039,8 @@ $4$-coloring is proper and $\chi(W_5)=4$.
 
 \begin{remark}
 Computing $\chi(\Gr)$ in general is hard: the decision problem ``is $\chi(\Gr)\le k$?'' is
-$\classNP$-complete already for $k=3$ (we prove $3$-coloring $\classNP$-complete later in the book).
+$\classNP$-complete already for $k=3$ (a classical result; Chapter~12 shows that $3$-coloring is in
+$\classNP$).
 So Proposition~\ref{prop:bounds@c2} is typically the best we get cheaply -- the two bounds can be far
 apart, and closing the gap is exactly the intractable part. The contrast with bipartiteness
 ($k=2$, decidable by one BFS) is the first concrete glimpse of the easy/hard frontier that the rest
@@ -4106,8 +4109,8 @@ one of size $3$.
 and point to the specific subset $S\subseteq U$ that violates Hall's condition. Make your
 counterexample as small (fewest edges removed from $K_{4,4}$) as you can.
 
-\item In the path $P_5$ on vertices $1\,2\,3\,4\,5$, list a maximal matching that is \emph{not}
-maximum, and a maximum matching. State $\nu(P_5)$ and explain in one sentence why $P_5$ has no
+\item In the path $P_7$ on vertices $1\,2\,3\,4\,5\,6\,7$, list a maximal matching that is \emph{not}
+maximum, and a maximum matching. State $\nu(P_7)$ and explain in one sentence why $P_7$ has no
 perfect matching.
 
 \item Prove directly from Definition~\ref{def:match@c2} that in any graph $\Gr$ with no isolated
@@ -4123,7 +4126,7 @@ complete graph $K_5$; (b) the cycle $C_6$; (c) the Petersen-style ``two pentagon
 of an outer $C_5$, an inner $C_5$, and spokes joining corresponding vertices. Draw your colorings.
 
 \item Run the greedy coloring of Proposition~\ref{prop:bounds@c2} on $C_6$ in the vertex order
-$v_0,v_2,v_4,v_1,v_3,v_5$ and again in the order $v_0,v_1,v_2,v_3,v_4,v_5$. Report the number of
+$v_0,v_3,v_1,v_4,v_2,v_5$ and again in the order $v_0,v_1,v_2,v_3,v_4,v_5$. Report the number of
 colors each order uses, and explain why one order beats the other even though $\chi(C_6)$ is the
 same in both.
 
@@ -4167,7 +4170,8 @@ encoding -- the $n\times n$ matrix $A$ with $A_{ij}=1$ iff $v_iv_j\in\Eset$, wri
 The exact format does not matter, only that translating between two reasonable encodings can be
 done in polynomial time; this is what lets us speak of ``the'' complexity of a graph problem without
 naming an encoding. The matrix uses $\bigTheta(n^2)$ bits regardless of how many edges there are,
-while the list uses $\bigTheta(n+m)$ bits for $m$ edges, which is far smaller for \emph{sparse}
+while the list uses $\bigTheta(n+m)$ entries (vertex names of $\bigO(\log n)$ bits each) for $m$
+edges, which is far smaller for \emph{sparse}
 graphs (few edges) and is the encoding behind near-linear graph algorithms.
 
 \begin{wex}{Encoding one small graph two ways}
@@ -4263,13 +4267,13 @@ The single graph $\Gr$ appears as an object (top left), as the string $\enc{\Gr}
 produces (right), and as the question of whether that string lies in the language $\mathrm{CONN}$
 (bottom); because the encoding is a fixed scheme, invertible on its image, the loop closes and
 ``$\Gr$ has the property'' becomes exactly ``$\enc{\Gr}$ is in the language.''
-\emph{Check.} The map $\Gr\mapsto\enc{\Gr}$ is computable and injective on its image (one can recover
+\emph{Check.} The map $\Gr\mapsto\enc{\Gr}$ is computable and invertible on its image (one can recover
 $\Gr$ up to isomorphism from $\enc{\Gr}$, Definition~\ref{def:enc@c2}), so for any property $P$ the set
 $\Lang_P=\set{\enc{\Gr}\st \Gr\text{ has }P}$ is a language with $\Gr\in P\iff\enc{\Gr}\in\Lang_P$.
 
 \subsection*{Automata and transition systems are labelled digraphs}
 
-The state diagrams of Sections~1 through~4 are not just \emph{drawn} as graphs; they \emph{are}
+The state diagrams of Chapters~4 and~5 are not just \emph{drawn} as graphs; they \emph{are}
 digraphs with edge labels from $\Sig$. Making this explicit lets us reuse graph algorithms on
 automata, and conversely lets us picture any step-by-step process as a graph to be searched.
 
@@ -4383,7 +4387,7 @@ incoming-from-$d$ arcs to the rest, so it is never reached.
   \end{scope}
   \node[font=\footnotesize] at (0,-0.6) {$0$};
   \node[font=\footnotesize] at (1.8,1.5) {$1$};
-  \node[font=\footnotesize] at (1.8,-1.5) {$1$};
+  \node[font=\footnotesize] at (2.25,-1.4) {$1$};
   \node[font=\footnotesize] at (3.6,1.5) {$2$};
   \node[font=\footnotesize] at (3.6,-1.5) {$2$};
   \node[font=\footnotesize] at (1.8,-3.0) {$\infty$};
@@ -4555,7 +4559,7 @@ forbid drawing implied (non-covering) inclusions.
   (a tour, a clique, a colouring) checkable in polynomial time, the problem is in $\classNP$; if no
   search seems to find it, suspect $\classNP$-hardness.
   \item \textbf{Mind the encoding size.} State bounds in $n$ and $m$ and remember the matrix is
-  $\bigTheta(n^2)$ bits while the list is $\bigTheta(n+m)$; a ``linear'' algorithm is linear in the
+  $\bigTheta(n^2)$ bits while the list is $\bigTheta(n+m)$ entries; a ``linear'' algorithm is linear in the
   encoding you actually chose.
 \end{enumerate}
 \end{method}
