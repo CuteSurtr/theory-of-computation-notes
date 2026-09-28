@@ -13359,8 +13359,9 @@ states $r_0,r_1,\dots,r_m\in Q$ and stack strings $s_0,s_1,\dots,s_m\in\Gamstar$
         $\trans$, touching only the top of the stack);
   \item $r_m\in\Acc$ (the last state is an accept state).
 \end{enumerate}
-The \emph{language recognized by} $M$ is $\lang{M}=\set{w\in\Sigstar\st M\text{ accepts }w}$. A
-language is \emph{context free} if some PDA recognizes it.
+The \emph{language recognized by} $M$ is $\lang{M}=\set{w\in\Sigstar\st M\text{ accepts }w}$.
+(Theorem~\ref{thm:equiv@c7} will show that a language is context-free exactly when some PDA
+recognizes it.)
 \end{definition}
 
 Writing the top of the stack on the \emph{left}, condition (2) says each step pops $a$ and pushes
@@ -13386,12 +13387,12 @@ push a marker for every symbol in the first block, pop one for every symbol in t
 $q_0$, push $\$$ for free and go to $q_1$. Step two: in $q_1$, for each $\str0$ push a stack symbol
 $\str X$. Step three: on the first $\str1$, move to $q_2$ and begin popping one $\str X$ per
 $\str1$. Step four: when $\$$ surfaces (every $\str X$ popped, so the counts matched), pop it for
-free and go to the accept state $q_3$. Make $q_1$ accepting as well, with $\$$ on top, so that
-$n=0$ (the empty string) is accepted.
+free and go to the accept state $q_3$. Make $q_0$ accepting as well, so that
+$n=0$ (the empty string) is accepted; no move ever returns to $q_0$.
 \begin{center}
 \begin{tikzpicture}[fa,node distance=18mm and 26mm]
-  \node[stinit] (q0) {$q_0$};
-  \node[stacc,right=of q0] (q1) {$q_1$};
+  \node[stinitacc] (q0) {$q_0$};
+  \node[st,right=of q0] (q1) {$q_1$};
   \node[st,right=of q1] (q2) {$q_2$};
   \node[stacc,right=of q2] (q3) {$q_3$};
   \path (q0) edge node{$\eps,\eps\to\$$} (q1)
@@ -13407,8 +13408,8 @@ push and pop totals agreed exactly.}
 \emph{Check.} On $\str{0011}$: $q_0$ pushes $\$$ ($\to q_1$); two $\str0$s push $\str{XX}$ (stack
 $X X\$$); first $\str1$ pops one $\str X$ ($\to q_2$); second $\str1$ pops the other; $\$$ on top,
 free pop to $q_3\in\Acc$ -- accepted. On $\str{001}$: after the single $\str1$ the stack is $X\$$
-and the input is exhausted in $q_2\notin\Acc$ -- rejected. The empty string is accepted in $q_1$
-with $\$$ on top.
+and the input is exhausted in $q_2\notin\Acc$ -- rejected. The empty string is accepted in $q_0$
+before any move.
 \end{wex}
 
 \begin{wex}{Balanced brackets: the Dyck language on $\set{(,)}$}
@@ -13454,8 +13455,11 @@ which symbol is currently ahead, by keeping at most one kind of token at a time.
 \wsol Keep on the stack a unary tally of the current surplus, using token $\str A$ for ``$\str a$s
 ahead'' and token $\str B$ for ``$\str b$s ahead.'' Reading $\str a$: if a $\str B$ is on top, a
 $\str b$ was waiting, so cancel it (pop $\str B$); otherwise push an $\str A$. Symmetrically for
-$\str b$. The two cases per symbol are where nondeterminism is unnecessary but the stack top
-decides. Accept exactly when the surplus is zero, i.e. the marker $\$$ is back on top.
+$\str b$. (The diagram also lets $\str a$ push an $\str A$ onto a $\str B$; such extra branches are
+harmless, since every move on $\str a$ raises the number of $\str A$s minus the number of $\str B$s
+on the stack by one and every move on $\str b$ lowers it by one, so $\$$ can resurface only when
+the counts agree.) Accept exactly when the surplus is
+zero, i.e. the marker $\$$ is back on top.
 \begin{center}
 \begin{tikzpicture}[fa,node distance=20mm and 30mm]
   \node[stinit] (q0) {$q_0$};
@@ -13591,7 +13595,7 @@ can accidentally make the machine accept strings it should reject.
 Acceptance requires \emph{both} an accept state \emph{and} the input fully read; the empty stack is
 not automatically required by the definition unless you build the machine to test for it. If you
 mean ``accept only with empty stack,'' you must route through a free $\eps,\$\to\eps$ move to the
-accept state. Conversely, ending in an accept state with symbols still buried under $\$$ is fine by
+accept state. Conversely, ending in an accept state with symbols still stacked above $\$$ is fine by
 the formal definition unless your design forbids it -- so decide deliberately whether leftover
 stack contents should block acceptance.
 \end{pitfall}
@@ -13630,8 +13634,8 @@ to the accept state. Describe $\lang{M}$ precisely in words, and decide whether 
 $\str{aabb}$ are accepted.
 
 \item Design a PDA recognizing $\set{w\in\set{a,b}\kstar\st w\text{ has more }\str a\text{s than }
-\str b\text{s}}$ (strictly more). Draw the diagram and say which single change to the equal-counts
-PDA of the section makes the surplus condition strict.
+\str b\text{s}}$ (strictly more). Draw the diagram and say what must change in the equal-counts
+PDA of the section to make the surplus condition strict.
 
 \item Give a PDA over $\set{0,1}$ for the \emph{odd}-length palindromes $\set{w\,c\,\rev{w}\st
 w\in\set{0,1}\kstar,\ c\in\set{0,1}}$ with the unmarked center symbol $c$. Draw the diagram and
@@ -13661,7 +13665,7 @@ this construction correct.
 
 
 \section{Equivalence of PDAs and CFGs}
-Section~7.1 gave us two ways to talk about the context-free languages: as the strings
+Chapter~6 and Section~7.1 gave us two ways to talk about the context-free languages: as the strings
 \emph{generated} by a context-free grammar, and as the strings \emph{recognized} by a pushdown
 automaton. This section proves that these two descriptions pick out exactly the same class of
 languages. The one key idea is that a stack is precisely the right amount of memory to carry out a
@@ -13707,7 +13711,7 @@ bottom-of-stack marker. The transitions are:
   \item \textbf{Initialize.} $\trans(q_{\mathrm{s}},\eps,\eps)=\set{(q_{\ell},S\$)}$: push the start
   variable on top of the marker, then enter the loop.
   \item \textbf{Expand a variable.} For every rule $A\to w$ in $R$, let $\trans(q_{\ell},\eps,A)$
-  contain $(q_{\ell},w)$: if a variable $A$ is on top, pop it and push the string $w$ (top symbol of
+  contain $(q_{\ell},w)$: if a variable $A$ is on top, pop it and push the string $w$ (leftmost symbol of
   $w$ ending up on top), reading nothing from the input.
   \item \textbf{Match a terminal.} For every terminal $a\in\Sig$, let
   $\trans(q_{\ell},a,a)=\set{(q_{\ell},\eps)}$: if a terminal $a$ is on top \emph{and} the next input
@@ -13794,8 +13798,8 @@ empty stack to state $q$ with an empty stack.
 \end{definition}
 
 To make the bookkeeping clean we first put $P$ into a normal form: a single accept state, an empty
-stack at the moment of accepting, and every move either a pure \emph{push} (read a symbol, push one
-stack symbol) or a pure \emph{pop} (read a symbol, pop one stack symbol) -- never both at once and
+stack at the moment of accepting, and every move either a pure \emph{push} (read a symbol or $\eps$,
+push one stack symbol) or a pure \emph{pop} (read a symbol or $\eps$, pop one stack symbol) -- never both at once and
 never neither. Any PDA can be massaged into this shape by adding a few states, so assume $P$ already
 has it.
 
@@ -13867,33 +13871,33 @@ two independent empty-to-empty pieces (family~2).
 \end{center}
 
 \begin{wex}{Apply the $A_{pq}$ construction to a tiny PDA}
-Let $P$ have states $\set{p,q}$ with $p$ the start state and $q$ the only accept state, input
+Let $P$ have states $\set{p,q,f}$ with $p$ the start state and $f$ the only accept state, input
 alphabet $\set{a,b}$, stack alphabet $\set{u}$, and exactly two moves: a push
-$(q,u)\in\trans(p,a,\eps)$ and a pop $(q,\eps)\in\trans(q,b,u)$. Thus $P$ pushes one $u$ on an $a$
+$(q,u)\in\trans(p,a,\eps)$ and a pop $(f,\eps)\in\trans(q,b,u)$. Thus $P$ pushes one $u$ on an $a$
 and pops it on a $b$, accepting $\str{ab}$. Produce a grammar for $\lang{P}$.
 \wrec This is the reverse direction: a machine is given, a grammar is wanted. The trigger ``convert
 a PDA to a CFG'' invokes Lemma~\ref{lem:pdacfg@c7}, so we instantiate the three rule families using only
 the two transitions $P$ actually has.
-\wsol The variables are $A_{pp},A_{pq},A_{qp},A_{qq}$, and the start variable is $A_{pq}$.
+\wsol The variables are the nine $A_{xy}$ with $x,y\in\set{p,q,f}$, and the start variable is $A_{pf}$.
 \emph{Family 1} needs a push and a matching pop. The only push is $(q,u)\in\trans(p,a,\eps)$ (so
 $r=q$, the pushed symbol $u$, input letter $a$); the only pop of $u$ is
-$(q,\eps)\in\trans(q,b,u)$ (so $s=q$, input letter $b$). With $p$ on the left and the final state
-also $q$, this gives the single matched-ends rule
+$(f,\eps)\in\trans(q,b,u)$ (so $s=q$, input letter $b$). With $p$ on the left and the final state
+$f$ on the right, this gives the single matched-ends rule
 \[
-  A_{pq}\;\to\; a\,A_{qq}\,b .
+  A_{pf}\;\to\; a\,A_{qq}\,b .
 \]
-\emph{Family 3} gives $A_{pp}\to\eps$ and $A_{qq}\to\eps$. \emph{Family 2} rules
-$A_{pq}\to A_{pr}A_{rq}$ exist but every one of them contains a variable with no terminating
+\emph{Family 3} gives $A_{pp}\to\eps$, $A_{qq}\to\eps$, and $A_{ff}\to\eps$. \emph{Family 2} rules
+$A_{pf}\to A_{pr}A_{rf}$ exist but every one of them contains a variable with no terminating
 derivation except through the $\eps$-rules, so after substitution they add nothing new. Keeping only
-what is reachable and productive from $A_{pq}$:
+what is reachable and productive from $A_{pf}$:
 \[
-  A_{pq}\to a\,A_{qq}\,b,\qquad A_{qq}\to\eps .
+  A_{pf}\to a\,A_{qq}\,b,\qquad A_{qq}\to\eps .
 \]
 Substituting $A_{qq}\Rightarrow\eps$ yields the lone string $\str{ab}$, exactly $\lang{P}$.
 \begin{center}
 \begin{tikzpicture}[treenode,level distance=11mm,
    level/.style={sibling distance=26mm/#1},edge from parent/.style={tedge,draw}]
-  \node {$A_{pq}$}
+  \node {$A_{pf}$}
     child {node {$a$}}
     child {node {$A_{qq}$}
       child {node {$\eps$}}}
@@ -13904,12 +13908,12 @@ Substituting $A_{qq}\Rightarrow\eps$ yields the lone string $\str{ab}$, exactly 
 becomes the left terminal, the letter $b$ read while popping that same $u$ becomes the right
 terminal, and the inner variable $A_{rs}$ generates whatever happened in between.}
 \emph{Check.} $P$ on $\str{ab}$: from $p$ read $a$ and push $u$ to reach $q$; read $b$ and pop $u$,
-staying in $q$ with empty stack -- accept. The grammar derives $A_{pq}\Rightarrow aA_{qq}b\Rightarrow ab$.
+reaching $f$ with empty stack -- accept. The grammar derives $A_{pf}\Rightarrow aA_{qq}b\Rightarrow ab$.
 Both accept exactly $\str{ab}$.
 \end{wex}
 
 \begin{wex}{The matched-ends rule on a counting PDA: deriving $a^{n}b^{n}$}
-A PDA $P$ for $\Lang=\set{a^{n}b^{n}\st n\ge 0}$ pushes a marker for each $\str a$ and pops one for
+A PDA $P$ for $\Lang=\set{a^{n}b^{n}\st n\ge 1}$ pushes a marker for each $\str a$ and pops one for
 each $\str b$. After normalizing it has a push state $p$ and a pop state $q$ with a self-push
 $(p,u)\in\trans(p,a,\eps)$, a hand-off pop $(q,\eps)\in\trans(p,b,u)$, and a self-pop
 $(q,\eps)\in\trans(q,b,u)$. Read off the recursive grammar rule for the $a$\,/\,$b$ matching.
@@ -13924,12 +13928,12 @@ outer states $p,q$ and inner states $p,q$:
   A_{pq}\;\to\; a\,A_{pq}\,b .
 \]
 A base case comes from the hand-off $(q,\eps)\in\trans(p,b,u)$ together with a push: pairing the
-self-push at $p$ with this pop gives $A_{pq}\to a\,A_{qq}\,b$, and $A_{qq}\to\eps$ closes it off, so
-effectively $A_{pq}\to\eps$ for the empty case. Writing $T=A_{pq}$, the productive grammar is
+self-push at $p$ with this pop gives $A_{pq}\to a\,A_{pp}\,b$, and $A_{pp}\to\eps$ closes it off, so
+effectively $A_{pq}\to ab$ for the shortest case. Writing $T=A_{pq}$, the productive grammar is
 \[
-  T\;\to\; a\,T\,b\;\mid\;\eps ,
+  T\;\to\; a\,T\,b\;\mid\;ab ,
 \]
-the textbook grammar for $a^{n}b^{n}$. Each application of $T\to aTb$ wraps one $a$ on the left and
+the textbook grammar for $a^{n}b^{n}$ with $n\ge 1$. Each application of $T\to aTb$ wraps one $a$ on the left and
 one $b$ on the right, mirroring one push now matched by one pop later.
 \begin{center}
 \begin{tikzpicture}[treenode,level distance=10mm,
@@ -13938,8 +13942,6 @@ one $b$ on the right, mirroring one push now matched by one pop later.
     child {node {$a$}}
     child {node {$T$}
       child {node {$a$}}
-      child {node {$T$}
-        child {node {$\eps$}}}
       child {node {$b$}}}
     child {node {$b$}};
 \end{tikzpicture}
@@ -13947,8 +13949,8 @@ one $b$ on the right, mirroring one push now matched by one pop later.
 \whichrule{A matched-ends rule whose inner state pair coincides with its outer pair is
 \emph{recursive} ($A_{pq}\to aA_{pq}b$); this recursion is exactly how the grammar records that an
 unbounded number of pushes must be balanced by the same number of later pops.}
-\emph{Check.} The tree above derives $T\Rightarrow aTb\Rightarrow aaTbb\Rightarrow aa\,b\,b=\str{aabb}$
-when the inner $T$ is sent to $\eps$, matching $P$'s run on $\str{aabb}$: push, push, pop, pop, ending
+\emph{Check.} The tree above derives $T\Rightarrow aTb\Rightarrow a\,ab\,b=\str{aabb}$
+when the inner $T$ uses $T\to ab$, matching $P$'s run on $\str{aabb}$: push, push, pop, pop, ending
 empty in $q$.
 \end{wex}
 
@@ -13998,10 +14000,10 @@ match transition that reads $\eps$ rather than the terminal itself, decoupling t
 input.
 \wsol With $\trans(q_{\ell},\eps,a)=\set{(q_{\ell},\eps)}$ the PDA may discard a terminal sitting on
 the stack \emph{without consuming any input}. So after pushing the right-hand side of a rule, it can
-silently delete the terminals instead of checking them against $w$. The machine then accepts every
-string the grammar's variable-structure allows regardless of the actual input letters -- for
-instance it would accept $\str{b}$, $\str{ab}$, and also the empty string and $\str{ba}$, far more
-than $\lang{S}=\set{\str{a}^{n}\str{b}\st n\ge 0}$. The fix is the correct match edge, which reads
+silently delete the terminals instead of checking them against $w$. Since the match edges were the
+only moves that read input, the machine now never consumes an input symbol at all: it accepts
+exactly the empty string, which is not in $\lang{S}=\set{\str{a}^{n}\str{b}\st n\ge 0}$, and
+rejects every string that is, such as $\str{b}$ and $\str{ab}$. The fix is the correct match edge, which reads
 the terminal from the input as it pops it:
 \[
   \trans(q_{\ell},a,a)=\set{(q_{\ell},\eps)}\quad\text{for each }a\in\Sig .
@@ -14009,9 +14011,9 @@ the terminal from the input as it pops it:
 \begin{center}
 \begin{tikzpicture}[fa,node distance=18mm and 30mm]
   \node[st] (l1) {$q_{\ell}$};
-  \node[font=\footnotesize,right=6mm of l1] (x1) {wrong:};
+  \node[font=\footnotesize,left=6mm of l1] (x1) {wrong:};
   \node[st,right=34mm of l1] (l2) {$q_{\ell}$};
-  \node[font=\footnotesize,right=6mm of l2] (x2) {right:};
+  \node[font=\footnotesize,left=6mm of l2] (x2) {right:};
   \path (l1) edge[loop above] node{$\eps,a\to\eps$} (l1)
         (l2) edge[loop above] node{$a,a\to\eps$} (l2);
 \end{tikzpicture}
@@ -14065,8 +14067,9 @@ obvious.
 \begin{pitfall}
 Do not skip the normal form before the PDA-to-CFG construction. If a transition both pushes and pops
 (or does neither), there is no clean ``first push, last pop'' to anchor family~1, and the matched-ends
-rule has nothing to read off. Splitting every such transition into a pure push followed by a pure pop
-(through a new intermediate state) is cheap and is what licenses the entire rule set.
+rule has nothing to read off. Splitting every such transition in two through a new intermediate
+state -- a pure pop followed by a pure push, or, for a move that does neither, a push of a dummy
+symbol followed by its pop -- is cheap and is what licenses the entire rule set.
 \end{pitfall}
 
 % === Figure-Spec: FIG 7A -- Layer-3 correctness square for the CFG<->PDA equivalence.
@@ -14082,7 +14085,7 @@ construction is \emph{language-preserving}: the grammar and the machine it is tu
 all name one and the same set of strings.
 
 \begin{center}
-\begin{tikzcd}[row sep=large,column sep=huge]
+\begin{tikzcd}[row sep=large,column sep=19em]
 \text{CFG } G
   \arrow[r,pres,shift left=1.1ex,"{\text{CFG}\to\text{PDA: sentential form on stack, leftmost expand}}"]
   \arrow[d,"{L(\cdot)}"']
@@ -14096,13 +14099,13 @@ L(G) \arrow[r,equal,"{\text{both preserve the language}}"'] & L(P)
 
 \emph{Takeaway.} A language is context-free iff some PDA recognizes it: the dashed top edge
 (CFG$\to$PDA) keeps the current sentential form on the stack and expands its leftmost variable, the
-dashed return edge (PDA$\to$CFG) introduces a variable $A_{pq}$ for ``go from state $p$ to state $q$
-while emptying the stack,'' and each map commutes with $L(\cdot)$, so the square closes as
+dashed return edge (PDA$\to$CFG) introduces a variable $A_{pq}$ for ``go from state $p$ to state $q$,
+starting and ending with an empty stack,'' and each map commutes with $L(\cdot)$, so the square closes as
 $L(G)=L(P)$ -- membership in $\CFL$ is the preserved invariant.
 
 \emph{Check.} The CFG$\to$PDA construction simulates leftmost derivations on the stack, so $P$
 accepts $w$ exactly when $S\Rightarrow^{*}w$ in $G$; the PDA$\to$CFG construction's $A_{pq}$ generate
-exactly the strings that drive $P$ from $p$ (one symbol on the stack) to $q$ (empty stack), so
+exactly the strings that drive $P$ from $p$ (empty stack) to $q$ (empty stack), so
 $A_{\qstart\,q_{\mathrm{acc}}}\Rightarrow^{*}w$ exactly when $P$ accepts $w$. Hence $L(G)=L(P)$ in
 both directions.
 
@@ -14110,8 +14113,8 @@ both directions.
 This square equates \emph{nondeterministic} PDAs with $\CFL$. It does \emph{not} say
 $\mathsf{DPDA}=\CFL$: deterministic PDAs recognize only the strict subclass $\mathsf{DCFL}\subsetneq
 \CFL$ (Section~7.5), so the top and return arrows above must be read as constructions for the
-\emph{nondeterministic} model -- the PDA$\to$CFG direction in particular relies on the freedom to
-guess matching push/pop pairs.
+\emph{nondeterministic} model -- the CFG$\to$PDA direction in particular relies on the freedom to
+guess which rule to expand.
 \end{pitfall}
 
 \begin{exers}{Exercises.}
@@ -14124,7 +14127,7 @@ input $\str{0011}$, writing the stack top-first at each step, and confirm that t
 the marker $\$$ on the stack.
 
 \item Convert the grammar $S\to\str{a}S\str{a}\mid\str{b}S\str{b}\mid\eps$ (even-length palindromes
-over $\set{\str a,\str b\,}$ with a fixed centre) into a PDA. Then give a one-sentence informal
+over $\set{\str a,\str b}$ with a fixed centre) into a PDA. Then give a one-sentence informal
 description of how the resulting machine uses its stack.
 
 \item Take the PDA $P$ with start state $p$, accept state $q$, stack alphabet $\set{u}$, and the two
@@ -14180,7 +14183,7 @@ without some variable repeating on a single root-to-leaf path of the parse tree,
 is a lever: the subtree between the two copies of the repeated variable can be cloned or deleted,
 inflating or shrinking the string while keeping it in the language. Made precise, this is the
 \emph{pumping lemma for context-free languages}, the exact analogue of the regular pumping lemma of
-the finite-automaton chapter, but pumping \emph{two} pieces at once instead of one. We state it,
+Section~5.3, but pumping \emph{two} pieces at once instead of one. We state it,
 prove it by surgery on parse trees, and then use it to convict several languages of \emph{not} being
 context-free.
 
@@ -14203,7 +14206,7 @@ of $G$ occurs at least twice on that path.
 \begin{proof}
 A tree of height $h$ has at most $b^h$ leaves, so a tree with more than $b^{\,|V|}$ leaves has height
 at least $|V|+1$; its longest root-to-leaf path then has at least $|V|+1$ edges and therefore at
-least $|V|+2$ nodes. The bottom node is a terminal leaf and the remaining $\ge |V|+1$ nodes on the
+least $|V|+2$ nodes. The bottom node is a leaf (a terminal or $\eps$) and the remaining $\ge |V|+1$ nodes on the
 path are variables. Since $G$ has only $|V|$ distinct variables, two of these $|V|+1$ variable nodes
 carry the same name $R$.
 \end{proof}
@@ -14224,10 +14227,11 @@ with
 
 \begin{proof}
 Let $G$ be a CFG generating $A$, let $b\ge 2$ bound the length of every right-hand side, and let
-$V$ be the variable set. Put $p=b^{\,|V|}+1$.
+$V$ be the variable set. Put $p=b^{\,|V|+1}$.
 
 Take any $s\in A$ with $\abs{s}\ge p$ and let $\tau$ be a parse tree for $s$ \emph{with the fewest
-nodes} among all parse trees for $s$. By Lemma~\ref{lem:tall@c7} some variable repeats on a longest
+nodes} among all parse trees for $s$. Since $p\ge 2b^{\,|V|}\ge b^{\,|V|}+1$, by
+Lemma~\ref{lem:tall@c7} some variable repeats on a longest
 root-to-leaf path of $\tau$; among the lowest $|V|+1$ variables on that path, pick two occurrences
 of one name $R$, the higher call $R_{\mathrm{up}}$ and the lower call $R_{\mathrm{down}}$.
 
@@ -14278,7 +14282,7 @@ $R\Rightarrow^{*}x$ (Figure on the left below).
 \textbf{Condition 1.} Because $R_{\mathrm{up}}$ and $R_{\mathrm{down}}$ are the \emph{same} variable,
 either subtree is a legal replacement for the other. Splicing the larger $R_{\mathrm{up}}$ subtree in
 place of the smaller $R_{\mathrm{down}}$ subtree adds one more copy of $v$ on the left and $y$ on the
-right; doing it $i$ times yields a parse tree for $uv^{i}xy^{i}z$ (the right-hand figure shows
+right; doing it $i-1$ times yields a parse tree for $uv^{i}xy^{i}z$ (the right-hand figure shows
 $i=2$). Splicing the smaller subtree in place of the larger deletes both, giving a parse tree for
 $uxz=uv^{0}xy^{0}z$. Hence $uv^{i}xy^{i}z\in A$ for every $i\ge 0$.
 
@@ -14288,8 +14292,7 @@ strictly fewer nodes, contradicting the minimality of $\tau$. So $\abs{vy}>0$.
 
 \textbf{Condition 3.} We chose $R$ among the lowest $|V|+1$ variables on a longest path, so the
 subtree under $R_{\mathrm{up}}$ has height at most $|V|+1$. A tree of height $|V|+1$ yields a string
-of length at most $b^{\,|V|+1}$. To match $p$ exactly one may take $p=b^{\,|V|+1}$ throughout; either
-choice gives a constant bound $\abs{vxy}\le p$ independent of $s$.
+of length at most $b^{\,|V|+1}=p$, so $\abs{vxy}\le p$.
 \end{proof}
 
 \begin{remark}
@@ -14339,11 +14342,11 @@ $uv^{2}xy^{2}z\notin L$, contradicting condition 1.
   \node[font=\small] at (23,0) {$\cdots$};
   \foreach \i in {24,...,27}{\node[font=\small] at (\i,0) {$\str c$};}
   % braces for the blocks
-  \draw[decorate,decoration={brace,amplitude=4pt}] (9.4,0.6) -- (-0.4,0.6)
+  \draw[decorate,decoration={brace,amplitude=4pt}] (-0.4,0.6) -- (9.4,0.6)
         node[midway,above=3pt,font=\footnotesize]{$p$ copies of $\str a$};
-  \draw[decorate,decoration={brace,amplitude=4pt}] (18.4,0.6) -- (9.6,0.6)
+  \draw[decorate,decoration={brace,amplitude=4pt}] (9.6,0.6) -- (18.4,0.6)
         node[midway,above=3pt,font=\footnotesize]{$p$ copies of $\str b$};
-  \draw[decorate,decoration={brace,amplitude=4pt}] (27.4,0.6) -- (19.6,0.6)
+  \draw[decorate,decoration={brace,amplitude=4pt}] (18.6,0.6) -- (27.4,0.6)
         node[midway,above=3pt,font=\footnotesize]{$p$ copies of $\str c$};
   % vxy window (<= p wide) straddling the a/b boundary, missing c
   \draw[line width=0.8pt] (7.5,-0.55) rectangle (12.5,-1.25);
@@ -14359,7 +14362,7 @@ $p+k$ or $p+m$ exceeding $p=$ (the $\str c$-count), so it is not in $L$.
 \end{wex}
 
 \begin{wex}{A grammar's own parse tree, pumped}
-Take $G$ with the single rule $S\to\str a\,S\,\str b\mid\eps$, generating
+Take $G$ with the rules $S\to\str a\,S\,\str b\mid\eps$, generating
 $\Lang=\set{\str a^{n}\str b^{n}\st n\ge 0}$ (a CFL). Exhibit the repeated-variable surgery on the
 string $\str a^{3}\str b^{3}$ and read off a pumping split.
 \wrec Here we are \emph{not} disproving anything --- $\Lang$ is context-free --- we are watching the
@@ -14384,8 +14387,8 @@ $S\to\eps$. Pick the top two $S$'s as $R_{\mathrm{up}}$ and $R_{\mathrm{down}}$.
         child {node {$\str b$}}}
       child {node {$\str b$}}}
     child {node {$\str b$}};
-  \node[font=\footnotesize,left=1pt of S0] {$R_{\mathrm{up}}$};
-  \node[font=\footnotesize,left=1pt of S1] {$R_{\mathrm{down}}$};
+  \node[font=\footnotesize,left=1pt of S0,yshift=1.5mm] {$R_{\mathrm{up}}$};
+  \node[font=\footnotesize,left=1pt of S1,yshift=1.5mm] {$R_{\mathrm{down}}$};
 \end{tikzpicture}
 \end{center}
 $R_{\mathrm{up}}$ is the root $S$; its subtree yields the whole string, so $vxy=\str a^{3}\str b^{3}$.
@@ -14399,15 +14402,17 @@ $\str b$ on the right, so reading leaves gives the clean split
 $y=\str b$, giving $\str a^{4}\str b^{4}$; deleting down to the $R_{\mathrm{down}}$ subtree gives
 $uxz=\str a^{2}\str b^{2}$. Both lie in $\Lang$, illustrating condition 1 on a language that
 \emph{is} context-free.}
-\emph{Check.} $\abs{vy}=2>0$ (condition 2) and $\abs{vxy}=6$, a constant independent of the chosen
-$n$ (condition 3). Pumping preserves the matched form $\str a^{m}\str b^{m}$, as it must.
+\emph{Check.} $\abs{vy}=2>0$ (condition 2). Here $\abs{vxy}=6$ is the whole string; the proof
+instead takes the two \emph{lowest} $S$'s, giving $u=\str a^{2}$, $v=\str a$, $x=\eps$, $y=\str b$,
+$z=\str b^{2}$ with $\abs{vxy}=2$ for every $n$ (condition 3). Pumping preserves the matched form
+$\str a^{m}\str b^{m}$, as it must.
 \end{wex}
 
 \begin{wex}{$\set{ww\st w\in\set{\str 0,\str 1}^{*}}$ is not context-free}
 Show that $D=\set{ww\st w\in\set{\str 0,\str 1}^{*}}$ is not a CFL.
 \wrec ``A string repeated'' forces an \emph{order} constraint across the midpoint, not just a count.
-Counts alone won't catch it (a naive string like $\str 0^{p}\str 1^{p}\str 0^{p}\str 1^{p}$ is
-needed, not $\str 0^{p}\str 1^{p}$). The trigger is ``copy language,'' and the move is to use
+Counts alone won't catch it (a string like $\str 0^{p}\str 1^{p}\str 0^{p}\str 1^{p}$ is
+needed, not the naive $\str 0^{p}\str 1\str 0^{p}\str 1$). The trigger is ``copy language,'' and the move is to use
 condition 3 to pin $vxy$ near the middle. Apply Theorem~\ref{thm:cfpump@c7}.
 \wsol Assume $D$ is context-free with pumping length $p$, and choose
 \[
@@ -14432,12 +14437,12 @@ cannot be split into two equal halves. Every case contradicts condition 1.
   \foreach \i in {8,...,10}{\node[font=\small] at (\i,0) {$\str 0$};}
   \node[font=\small] at (11,0) {$\cdots$};
   \foreach \i in {12,...,15}{\node[font=\small] at (\i,0) {$\str 1$};}
-  \draw[decorate,decoration={brace,amplitude=4pt}] (7.4,0.6) -- (-0.4,0.6)
+  \draw[decorate,decoration={brace,amplitude=4pt}] (-0.4,0.6) -- (7.4,0.6)
         node[midway,above=3pt,font=\footnotesize]{first half $w$};
-  \draw[decorate,decoration={brace,amplitude=4pt}] (15.4,0.6) -- (7.6,0.6)
+  \draw[decorate,decoration={brace,amplitude=4pt}] (7.6,0.6) -- (15.4,0.6)
         node[midway,above=3pt,font=\footnotesize]{second half $w$};
-  \draw[dashed,line width=0.6pt] (7.5,-1.6) -- (7.5,0.9);
-  \node[font=\footnotesize] at (7.5,1.5) {midpoint};
+  \draw[dashed,line width=0.6pt] (7.5,-1.3) -- (7.5,2.1);
+  \node[font=\footnotesize] at (7.5,2.5) {midpoint};
   \draw[line width=0.8pt] (5.5,-0.55) rectangle (10.5,-1.25);
   \node[font=\footnotesize] at (8,-1.7) {$vxy$ (width $\le p$)};
 \end{tikzpicture}
@@ -14445,8 +14450,9 @@ cannot be split into two equal halves. Every case contradicts condition 1.
 \whichrule{The copy constraint is positional, so a length-mismatch \emph{or} a symbol in the wrong
 position breaks it; condition 3 keeps $vxy$ short enough that it cannot edit both halves
 symmetrically, and a single direction of pumping always destroys the $ww$ shape.}
-\emph{Check.} The weaker candidate $s=\str 0^{p}\str 1^{p}$ fails: it splits as
-$u=\str 0^{p-1},v=\str 0,x=\eps,y=\str 1,z=\str 1^{p-1}$ and pumps happily, so it proves nothing ---
+\emph{Check.} The weaker candidate $s=\str 0^{p}\str 1\str 0^{p}\str 1$ fails: it splits as
+$u=\str 0^{p-1},v=\str 0,x=\str 1,y=\str 0,z=\str 0^{p-1}\str 1$ and pumps happily
+($uv^{i}xy^{i}z=\str 0^{p-1+i}\str 1\str 0^{p-1+i}\str 1\in D$), so it proves nothing ---
 the four-block choice is what makes condition 3 bite.
 \end{wex}
 
@@ -14461,7 +14467,7 @@ C$. Fix a split $s=uvxyz$ with conditions 2,3. By condition 3, $vxy$ touches at 
 letters, so one letter is absent from both $v$ and $y$. Split on which:
 \begin{itemize}[leftmargin=1.6em,topsep=2pt,itemsep=1pt]
   \item \emph{$\str a$ absent from $v,y$:} pump \emph{down} ($i=0$). Then $uxz$ keeps $p$ $\str a$'s
-  but loses some $\str b$'s or $\str c$'s, giving $i=p>j$ or $j>k$ broken; not in $C$.
+  but loses some $\str b$'s or $\str c$'s, giving $i=p>j$ or $j=p>k$; not in $C$.
   \item \emph{$\str c$ absent from $v,y$:} pump \emph{up} ($i=2$). Then $uv^{2}xy^{2}z$ gains
   $\str a$'s or $\str b$'s while the $\str c$-count stays $p$, forcing $j>k$ or $i>j$; not in $C$.
   \item \emph{$\str b$ absent from $v,y$:} then $v,y$ are made of $\str a$'s and $\str c$'s only.
@@ -14475,27 +14481,27 @@ Every case contradicts condition 1.
   \node[procbox,below=of up] (down) {pump down $i=0$};
   \node[right=30mm of up,font=\small,align=left] (upr)
        {grows $\str a$ or $\str b$ count\\ past the fixed $\str c$ count
-        $\Rightarrow j>k$};
+        $\Rightarrow i>j$ or $j>k$};
   \node[right=30mm of down,font=\small,align=left] (downr)
        {shrinks $\str b$ or $\str c$ count\\ below the fixed $\str a$ count
-        $\Rightarrow i>j$};
-  \path[flow] (up) -- (upr);
-  \path[flow] (down) -- (downr);
+        $\Rightarrow i>j$ or $j>k$};
+  \draw[flow] (up) -- (upr);
+  \draw[flow] (down) -- (downr);
 \end{tikzpicture}
 \end{center}
 \whichrule{For an order condition like $i\le j\le k$, pumping up breaks an \emph{upper} inequality and
 pumping down breaks a \emph{lower} one; choosing the direction by which letter the window misses
 guarantees one of the inequalities fails.}
 \emph{Check.} Equal-count examples ($\str a^{p}\str b^{p}\str c^{p}$) lie on the boundary of $C$, so
-\emph{up} can stay inside but \emph{down} cannot --- which is exactly why a single direction is not
-enough here and the case split is needed.
+\emph{up} can stay inside (pump only $\str c$'s) and so can \emph{down} (pump only $\str a$'s) ---
+which is exactly why a single direction is not enough here and the case split is needed.
 \end{wex}
 
-\begin{wex}{Pumping with an index alphabet: $\set{\str a^{n}\str b^{n}\str c^{n}\st n\ge 1}$ over a tree}
+\begin{wex}{Pumping $\set{\str a^{n}\str b^{n}\str c^{n}\st n\ge 1}$ over a tree}
 Reprove non-context-freeness of $L=\set{\str a^{n}\str b^{n}\str c^{n}\st n\ge 1}$ by exhibiting the
 shape of any candidate parse tree and where the window must sit, to see the geometry behind the
 algebra of the first worked example.
-\wrec Same language as the opener; the point is the \emph{picture}, not a new result. The trigger is
+\wrec The opener's language without $\eps$; the point is the \emph{picture}, not a new result. The trigger is
 ``visualize condition 3 as a bounded subtree near a longest path.'' We use Theorem~\ref{thm:cfpump@c7}
 geometrically.
 \wsol Suppose a CFG generated $L$ and consider the minimal parse tree $\tau$ of $\str a^{p}\str b^{p}
@@ -14510,11 +14516,11 @@ interval inside $\str a^{p}\str b^{p}\str c^{p}$ overlaps at most two of the thr
   \node {$S$}
     child {node {$u$}}
     child {node (R) {$R$}
-      child {node {$v$}}
-      child {node {$x$}}
-      child {node {$y$}}}
+      child {node (Rv) {$v$}}
+      child {node (Rx) {$x$}}
+      child {node (Ry) {$y$}}}
     child {node {$z$}};
-  \node[draw,dashed,fit=(R),inner sep=6pt,label=below:{$\le p$ leaves}] {};
+  \node[draw,dashed,fit=(R)(Rv)(Rx)(Ry),inner sep=4pt,label=below:{$\le p$ leaves}] {};
 \end{tikzpicture}
 \end{center}
 The boxed $R$-subtree controls a contiguous block of at most $p$ symbols; cloning it adds copies of
@@ -14524,7 +14530,7 @@ splits apart exactly as in the algebraic version.
 bounded subtree spans a short, contiguous, hence at-most-two-letter window --- the visual reason a
 three-way balance cannot survive paired pumping.}
 \emph{Check.} If instead one tried to pump material spanning all three blocks, the window would have
-width $\ge 2p+2>p$, violating condition 3; so no such split exists, consistent with the algebra.
+width $\ge p+2>p$, violating condition 3; so no such split exists, consistent with the algebra.
 \end{wex}
 
 \begin{method}{How to use the CFL pumping lemma to prove a language is not context-free}
@@ -14579,7 +14585,7 @@ why the window $vxy$ cannot reach all four blocks.
 \item Let $L=\set{\str 0^{m}\str 1^{m}\str 0^{m}\st m\ge 1}$. Prove $L$ is not a CFL. (Hint: use
 condition 3 to confine $vxy$ to at most two of the three blocks, then pump up.)
 
-\item Show that $\set{w\str\#w\st w\in\set{\str a,\str b\,}^{*}}$ is not context-free, where $\str\#$
+\item Show that $\set{w\str\#w\st w\in\set{\str a,\str b}^{*}}$ is not context-free, where $\str\#$
 is a separator symbol not in $\set{\str a,\str b}$. Pick a string of the form
 $\str a^{p}\str b^{p}\str\# \str a^{p}\str b^{p}$ and argue with condition 3.
 
@@ -14603,7 +14609,8 @@ contradiction.'' Find the bug in this argument and explain what a correct proof 
 
 \item Another student writes: ``$\set{\str a^{i}\str b^{j}\str c^{k}\st i\le j\le k}$ is not a CFL
 because choosing $s=\str a^{p}\str b^{p}\str c^{p}$ and pumping \emph{up} the $\str a$'s gives more
-$\str a$'s than $\str b$'s.'' Show that pumping up the $\str a$-block need not leave the language, and
+$\str a$'s than $\str b$'s.'' Show that pumping up need not leave the language (the adversary may
+place $v$ and $y$ in the $\str c$-block), and
 state which pumping direction actually produces a contradiction in this case.
 
 \item Pumping down. Let $L=\set{\str a^{n}\str b^{m}\st n\ge m\ge 0}$. A classmate believes $L$ is not
@@ -14631,13 +14638,13 @@ pumped, the assumption ``$A$ is a CFL'' collapses. The one key idea is to treat 
 game against an adversary who is forced to hand us a decomposition $uvxyz$, after which we choose a
 power $i$ that drives the pumped string out of $A$; our job is to win no matter which legal
 decomposition the adversary picks. We assemble the standard playbook, then refute a gallery of
-classic languages: $\set{a^nb^nc^n}$, the matched-shuffle constraint $\set{a^ib^jc^k\st i\le j\le
+classic languages: $\set{a^nb^nc^n}$, the inequality chain $\set{a^ib^jc^k\st i\le j\le
 k}$, the copy language $\set{ww}$, and a worked variant using the marker $\#$.
 
 \subsection*{The adversary game}
 
 It pays to make the logical shape of these proofs explicit before doing any. The pumping lemma is a
-``$\forall\exists\forall\exists$'' statement, and a refutation by contradiction flips every quantifier.
+``$\exists\forall\exists\forall$'' statement, and a refutation by contradiction flips every quantifier.
 
 \begin{theorem}[Pumping lemma, contrapositive form]\label{thm:pumpcontra@c7}
 Let $A\subseteq\Sigstar$. Suppose that for \emph{every} integer $p\ge 1$ there exists a string
@@ -14771,7 +14778,7 @@ one subtree in place of the other repeats $v$ and $y$ in lockstep.
     }
     child {node[treenode]{$z$}};
   \node[font=\footnotesize,right=2mm of R1,align=left] {outer $R$\\ $\Rightarrow vxy$};
-  \node[font=\footnotesize,right=2mm of R2,align=left] {inner $R$\\ $\Rightarrow x$};
+  \node[font=\footnotesize,below right=0.5mm and 1.5mm of R2,align=left] {inner $R$\\ $\Rightarrow x$};
   \node[font=\footnotesize,below=8mm of xleaf,align=center,text width=92mm]
     {Reusing the outer subtree at the inner $R$ repeats $v,y$: yields $uv^2xy^2z$.
      Reusing the inner subtree at the outer $R$ deletes them: yields $uxz=uv^0xy^0z$.};
@@ -14796,7 +14803,7 @@ the trigger is that we must \emph{remove} symbols ($i=0$) to break an ordering c
 on which letter the window misses.
 \wsol Assume $C$ is a CFL with pumping length $p$ and take $s=a^pb^pc^p\in C$ (here $i=j=k=p$
 satisfies $i\le j\le k$), $\abs{s}=3p$. Let $s=uvxyz$ be any legal cut. As before, $\abs{vxy}\le p$
-forces $vxy$ to touch at most two adjacent letter blocks, so exactly one of $a,b,c$ is missing from
+forces $vxy$ to touch at most two adjacent letter blocks, so at least one of $a,b,c$ is missing from
 both $v$ and $y$. We win by choosing $i$ per case.
 \begin{center}
 \renewcommand{\arraystretch}{1.25}
@@ -14806,21 +14813,21 @@ both $v$ and $y$. We win by choosing $i$ per case.
 \hline
 $a$ (window in $b,c$) & pump \emph{down} $i=0$ & $a$-count stays $p$; some $b$ or $c$ drops below $p$, so $i>j$ or $j>k$.\\
 $b$ (window in $a$ only & pump up if $a$ grows: $i=2$ & more $a$'s than $b$'s $\Rightarrow i>j$.\\
-\quad or $c$ only) & pump down if $c$ grows: $i=0$ & fewer $c$'s than $b$'s $\Rightarrow j>k$.\\
+\quad or $c$ only) & pump down if in $c$: $i=0$ & fewer $c$'s than $b$'s $\Rightarrow j>k$.\\
 $c$ (window in $a,b$) & pump \emph{up} $i=2$ & some $a$ or $b$ exceeds $p$ while $c$ stays $p$, so $i>k$ or $j>k$.\\
 \hline
 \end{tabular}
 \end{center}
-In the first row, dropping a $b$ gives $b^{p-k}$ with $k>0$ possible, so $j=p-k<p=i$ would violate
-$i\le j$ if the lost symbols were $b$'s, and if they were $c$'s then $j=p>p-k=k$ violates $j\le k$;
+In the first row, pumping down drops $m>0$ symbols, so $j<p=i$ would violate
+$i\le j$ if some lost symbols were $b$'s, and if they were all $c$'s then $j=p>p-m=k$ violates $j\le k$;
 either way the inequality chain breaks. The middle row handles the case where $b$ is the absent
 letter: if the window sits in the $a$-block, pumping up makes $\#a>\#b$; if it sits in the
 $c$-block, pumping down makes $\#b>\#c$. The last row is the $a^nb^nc^n$ argument with $c$ frozen.
 \whichrule{An ordering constraint $i\le j\le k$ is broken in \emph{both} directions: a surplus
 ($i=2$) violates the upper end and a deficit ($i=0$) violates the lower end, so we keep both pump
 directions in the toolkit and select by which block the window misses.}
-\emph{Check.} Suppose $v=b^2$, $y=\eps$ (legal: $\abs{vxy}\le p$, window in the $b$-block, $a$
-missing? no -- here $a$ is untouched, this is the ``$a$ missing'' row). Pump down: $uxz=a^pb^{p-2}c^p$,
+\emph{Check.} Suppose $v=b^2$, $y=\eps$ (legal: $\abs{vxy}\le p$; the window lies in the $b$-block,
+so $a$ is untouched and this is the ``$a$ missing'' row). Pump down: $uxz=a^pb^{p-2}c^p$,
 which has $j=p-2<p=k$, fine for $j\le k$, but $i=p>p-2=j$ violates $i\le j$. Not in $C$.
 \end{wex}
 
@@ -14831,8 +14838,8 @@ pumped, so the choice of string itself is part of the proof.
 
 \begin{wex}{$\set{ww\st w\in\set{0,1}\kstar}$ is not context-free}
 Let $D=\set{ww\st w\in\set{0,1}\kstar}$. Show $D$ is not a CFL.
-\wrec A bad first guess such as $s=0^p10^p1$ \emph{can} be pumped (a lone $0$ in the first half
-absorbs a pump while the halves stay equal), so the trigger is to pick $s$ with four alternating
+\wrec A bad first guess such as $s=0^p10^p1$ \emph{can} be pumped (pumping the last $0$ of the first
+half together with the first $0$ of the second keeps the halves equal), so the trigger is to pick $s$ with four alternating
 blocks, $s=0^p1^p0^p1^p$, where any short window is trapped in one half and breaks the copy
 structure.
 \wsol Assume $D$ is a CFL with pumping length $p$ and set $s=0^p1^p0^p1^p\in D$ (take $w=0^p1^p$),
@@ -14851,29 +14858,31 @@ first $2p$ symbols. The window $vxy$, of length $\le p$, lies in one of three zo
   \node[font=\small] at (35,0.5){$1^p$};
   \draw[line width=0.9pt,densely dashed] (20,-0.4)--(20,1.5);
   \node[font=\footnotesize] at (20,1.85){midpoint $m$};
-  \draw[decorate,decoration={brace,amplitude=3pt},line width=0.5pt] (4,-0.7)--(12,-0.7);
+  \draw[decorate,decoration={brace,amplitude=3pt},line width=0.5pt] (12,-0.7)--(4,-0.7);
   \node[font=\footnotesize] at (8,-1.5){left of $m$};
-  \draw[decorate,decoration={brace,amplitude=3pt},line width=0.5pt] (28,-0.7)--(36,-0.7);
+  \draw[decorate,decoration={brace,amplitude=3pt},line width=0.5pt] (36,-0.7)--(28,-0.7);
   \node[font=\footnotesize] at (32,-1.5){right of $m$};
-  \draw[decorate,decoration={brace,amplitude=3pt},line width=0.5pt] (16,2.3)--(24,2.3);
-  \node[font=\footnotesize] at (20,3.0){straddling $m$};
+  \draw[decorate,decoration={brace,amplitude=3pt},line width=0.5pt] (16,2.6)--(24,2.6);
+  \node[font=\footnotesize] at (20,3.3){straddling $m$};
 \end{tikzpicture}
 \end{center}
 \textbf{Window entirely left of $m$.} Pump up to $i=2$. The first half grows while the second half is
 unchanged, so the new midpoint shifts right and the second symbol-block of the (now longer) string no
-longer matches the first half; concretely $\abs{uv^2xy^2z}$ has its $1^p0^p$ boundary displaced, so
+longer matches the first half; concretely $uv^2xy^2z$ has its $1^p0^p$ boundary displaced, so
 the two halves differ. \textbf{Window entirely right of $m$.} Symmetric: pump up and the second half
 grows, breaking equality. \textbf{Window straddles $m$.} Then $vxy$ lies within $1^p0^p$ around the
 center (since $\abs{vxy}\le p$, it cannot reach the outer $0^p$ or $1^p$). Pump \emph{down} to $i=0$:
 $uxz=0^p1^{p-a}0^{p-b}1^p$ with $a+b=\abs{vy}>0$ and not both the deleted runs full, so the result has
 the shape $0^p1^{i}0^{j}1^p$ with $(i,j)\ne(p,p)$. Splitting any such string in half cannot give two
-equal halves (the first half ends inside the $1$-run while the second starts inside the $0$-run), so
+equal halves (if $uxz=tt$, then $t$ begins with $0$ and ends with $1$, so $tt$ has twice as many runs
+as $t$; comparing with the runs of $uxz$ forces $t=0^p1^{i}=0^{j}1^p$, i.e.\ $i=j=p$), so
 $uxz\notin D$.
 \whichrule{The third condition $\abs{vxy}\le p$ is the workhorse: it confines the window to one half
 (pump up to desynchronize) or to the central $1^p0^p$ (pump down to misalign), and the four-block
 string $0^p1^p0^p1^p$ is engineered so no window can sit harmlessly in a uniform run.}
-\emph{Check.} The discarded candidate $0^p10^p1$ fails: cutting $v=0$ inside the first $0^p$ and
-$y=\eps$ pumps to $0^{p+1}10^{p+1}1\in D$ for $i=2$ -- it stays in $D$, which is why we needed the
+\emph{Check.} The discarded candidate $0^p10^p1$ fails: cutting $v=0$ at the end of the first $0^p$,
+$x=1$, and $y=0$ at the start of the second $0^p$ pumps to $0^{p+1}10^{p+1}1\in D$ for $i=2$ (and to
+$0^{p-1+i}10^{p-1+i}1\in D$ for every $i$) -- it stays in $D$, which is why we needed the
 sharper string.
 \end{wex}
 
@@ -14907,13 +14916,12 @@ grows). Thus $uv^2xy^2z\notin E$.
   \foreach \i in {20,...,37} \fill[black!12] (\i,0) rectangle (\i+1,1);
   \draw[line width=0.6pt] (0,0) rectangle (38,1);
   \node[font=\small] at (3,0.5){$0^p$};
-  \node[font=\small,white] at (6.5,0.5){$\#$};
   \node[font=\small] at (13,0.5){$0^{2p}$};
   \node[font=\small] at (29,0.5){$0^{3p}$};
   \node[font=\footnotesize] at (6.5,1.5){$\#$};
   \node[font=\footnotesize] at (19.5,1.5){$\#$};
-  \draw[decorate,decoration={brace,amplitude=4pt},line width=0.5pt] (8,-0.3)--(16,-0.3);
-  \node[font=\footnotesize] at (12,-1.1){window $vxy$ ($\le p$, no $\#$)};
+  \draw[decorate,decoration={brace,amplitude=4pt},line width=0.5pt] (15,-0.3)--(10,-0.3);
+  \node[font=\footnotesize] at (12.5,-1.1){window $vxy$ ($\le p$, no $\#$)};
 \end{tikzpicture}
 \end{center}
 \whichrule{Markers freeze the block boundaries so the window cannot blur them; with one run untouched
@@ -14964,7 +14972,7 @@ cannot touch both an $a$-block and the matching $c$-block at once.)
 \item Prove that $L_3=\set{w\#w\st w\in\set{0,1}\kstar}$ is not context-free. Explain why the
 marker $\#$ makes choosing $s$ easier than in the markerless copy language $\set{ww}$.
 
-\item Consider $L_4=\set{a^ib^jc^k\st i\ne j\text{ and }j\ne k}$. Decide whether $L_4$ is
+\item Consider $L_4=\set{a^ib^jc^k\st i\ne j\text{ or }j\ne k}$. Decide whether $L_4$ is
 context-free; if not, prove it with the pumping lemma, and if so, give a CFG or a PDA.
 
 \item Let $L_5=\set{0^i1^j\st j=i^2}$. Show $L_5$ is not context-free. (Hint: pump and compare the
@@ -15009,7 +15017,7 @@ pushdown automaton (DPDA), the machine that has at most one legal move in every 
 single key idea is that determinism here is a genuine restriction -- unlike finite automata, where
 determinism costs nothing, a DPDA is strictly weaker than a PDA -- and the languages it recognizes,
 the \emph{deterministic context-free languages} (DCFLs), sit in their own layer between the regular
-languages and the full context-free languages. We make the model precise, prove the one closure
+languages and the full context-free languages. We make the model precise, prove the key closure
 property that separates DCFLs from CFLs (complementation), and assemble the whole picture into the
 chain $\REG\subsetneq\mathsf{DCFL}\subsetneq\CFL$.
 
@@ -15035,8 +15043,8 @@ $\trans(q,a,x)$ both consumes the input symbol $a$ and pops $x$; $\trans(q,a,\ep
 touches nothing on the stack; $\trans(q,\eps,x)$ pops $x$ without consuming input; and
 $\trans(q,\eps,\eps)$ does neither. The determinism condition forces these never to compete: in any
 concrete situation (state $q$, next input $a$, stack top $x$) the machine has \emph{at most one}
-applicable move. We must allow $\eps$-moves -- a DPDA may legitimately push or pop without reading --
-because otherwise it could not even recognize $\set{\str0^n\str1^n}$; what is forbidden is having both
+applicable move. We allow $\eps$-moves -- a DPDA may legitimately push or pop without reading, as the
+DPDA for $\set{\str0^n\str1^n}$ below does with its bottom marker; what is forbidden is having both
 an $\eps$-move and a symbol-reading move enabled at once, since that would reintroduce a choice.
 
 \begin{definition}[Deterministic context-free language]\label{def:dcfl@c7}
@@ -15049,8 +15057,7 @@ Two ways a DPDA can reject deserve attention, because they have no analogue for 
 rejects $w$ if it reads all of $w$ and halts outside $\Acc$ -- but also if it \emph{fails to read all
 of $w$} at all. This second failure happens by \emph{hanging} (the stack is empty and the only
 specified move needs to pop a symbol, so the machine is stuck) or by \emph{looping} (an endless run
-of $\eps$-input moves that never advances the head). For finite automata neither can occur, which is
-why determinism was free there and is not free here.
+of $\eps$-input moves that never advances the head). For finite automata neither can occur.
 
 \begin{lemma}[Read-to-the-end normal form]\label{lem:readall@c7}
 Every DPDA has an equivalent DPDA that reads its entire input string on every run.
@@ -15075,14 +15082,14 @@ Build a deterministic PDA recognizing $A=\set{\str0^n\str1^n\st n\ge 0}$ over $\
 against the $\str1$s. The trigger ``push one marker per $\str0$, pop one per $\str1$, accept on a clean
 stack'' is a counting job, and crucially there is \emph{never a choice} about what to do, so a DPDA
 suffices.
-\wsol Use a bottom marker $\$$ to detect an empty stack and to allow $n=0$. In $q_0$ push $\$$ and go to
+\wsol Use a bottom marker $\$$ to detect an empty stack. In $q_0$ push $\$$ and go to
 the counting state $q_1$. In $q_1$ each $\str0$ pushes a $\str0$. The first $\str1$ switches to the
 matching state $q_2$, popping one $\str0$. In $q_2$ each further $\str1$ pops a $\str0$. When $\$$
 resurfaces under an $\eps$-move, pop it and accept in $q_3$. Every state/input/stack-top triple has a
 unique move, so determinism holds.
 \begin{center}
 \begin{tikzpicture}[fa,node distance=18mm and 26mm]
-  \node[stinit] (q0) {$q_0$};
+  \node[stinitacc] (q0) {$q_0$};
   \node[st,right=of q0] (q1) {$q_1$};
   \node[st,right=of q1] (q2) {$q_2$};
   \node[stacc,right=of q2] (q3) {$q_3$};
@@ -15093,8 +15100,8 @@ unique move, so determinism holds.
         (q2) edge node{$\eps,\$\to\eps$} (q3);
 \end{tikzpicture}
 \end{center}
-Also $q_1$ has the move $\eps,\$\to\eps$ to $q_3$ for the empty input (giving $n=0$); we omit it from
-the picture to avoid clutter, but it is what makes $\eps\in A$ accepted.
+The start state $q_0$ is also accepting, which accepts the empty input (giving $n=0$); no move
+returns to $q_0$.
 \whichrule{When the matching rule is forced -- push on every $\str0$, pop on every $\str1$, switch
 exactly once -- no guessing is ever required, so the language is not merely context-free but
 deterministic context-free.}
@@ -15147,14 +15154,15 @@ non-accepting ones. Swapping naively would then mis-handle a string that was acc
 run \emph{visited} an accept state mid-burst. The fix is to pin acceptance to a single well-defined
 instant per symbol. Call $q$ a \emph{reading state} if its only enabled move consumes an input symbol
 (if it instead pops first, split that step into a pop followed by a read, creating a new reading state
-that carries the accepting status). Make only reading states eligible to be accept states, and arrange
-that $P$ enters an accept state \emph{exactly once} per input symbol, right before reading the next
-one. Now swapping the accepting/non-accepting label \emph{among the reading states only} flips the
+that carries the accepting status). Make only reading states eligible to be accept states: $P$ passes
+through \emph{exactly one} reading state per input symbol, right before reading the next one, and
+(remembering in its finite control whether an accept state was visited since the last read) we make
+that reading state accepting exactly when one was. Now swapping the accepting/non-accepting label \emph{among the reading states only} flips the
 verdict on every string, so the modified DPDA recognizes $\overline{A}$.
 \end{proof}
 
 This one theorem does a surprising amount of work, because the analogous statement is \emph{false} for
-the full class $\CFL$ (we saw a non-context-free complement of a CFL in the previous section). It
+the full class $\CFL$ (we saw a non-context-free complement of a CFL in Theorem~\ref{thm:nocomp@c6}). It
 follows at once that $\mathsf{DCFL}$ is a \emph{proper} subclass of $\CFL$.
 
 \begin{corollary}[There is a CFL that is not a DCFL]\label{cor:strict@c7}
@@ -15173,7 +15181,7 @@ $\mathsf{DCFL}$.
 \end{proof}
 
 \begin{remark}
-The complement closure is the \emph{only} pleasant closure property DCFLs have that CFLs lack; in the
+The complement closure is the \emph{main} pleasant closure property DCFLs have that CFLs lack; in the
 other direction DCFLs are \emph{worse} behaved. The class $\mathsf{DCFL}$ is \emph{not} closed under
 union, intersection, concatenation, star, or reversal. The language $B$ of Worked
 Example~\ref{wex:union-fail@c7} is a union of two DCFLs that is not a DCFL, which already kills closure
@@ -15215,7 +15223,7 @@ pumping lemma (for $\REG$) and by the complement trick (for $\mathsf{DCFL}$).}
 $\subseteq$ are genuinely $\subsetneq$.
 \end{wex}
 
-\begin{wex}{Endmarkers make DPDA design easier without adding power}
+\begin{wex}{Endmarkers make DPDA design easier without adding power}\label{wex:endmark@c7}
 For a language $A$ let $A{\dashv}=\set{w{\dashv}\st w\in A}$ tag every string with a fresh endmarker
 $\dashv\notin\Sig$. Argue that $A$ is a DCFL iff $A{\dashv}$ is a DCFL, and explain why one direction is
 the useful one in practice.
@@ -15320,11 +15328,13 @@ is a DCFL.
 
 \item Carry out the argument sketched in Worked Example~\ref{wex:union-fail@c7}: prove that
 $B=\set{\str0^n\str1^n\st n\ge1}\cup\set{\str0^n\str1^{2n}\st n\ge1}$ is not a DCFL. (Hint: suppose a
-DPDA $P$ recognized $B$ and consider its configuration after reading $\str0^n$ for large $n$; argue
-that the deterministic continuation cannot accept both $\str0^n\str1^n$ and $\str0^n\str1^{2n}$.)
+DPDA $P$ recognized $B$. By determinism, its run on $\str0^n\str1^{2n}$ passes through its accepting
+run on $\str0^n\str1^n$; so a PDA that simulates $P$ and, at an accept state, may switch to a copy of
+$P$ reading $\str2$s in place of $\str1$s accepts, among its strings ending in $\str2$, exactly
+$\set{\str0^n\str1^n\str2^n\st n\ge1}$, which is not context-free.)
 
 \item Decide, with brief justification, whether each language is (a) regular, (b) DCFL but not
-regular, or (c) CFL but not DCFL:
+regular, (c) CFL but not DCFL, or (d) not context-free:
 \[
   L_1=\set{\str0^m\str1^n\st m\ne n},\quad
   L_2=\set{ww\st w\in\set{\str0,\str1}\kstar},\quad
@@ -15350,9 +15360,11 @@ intersection, (iv) intersection with a regular language. For each that fails, gi
 or a counterexample built from languages in this section.
 
 \item Show that $\mathsf{DCFL}$ is not closed under reversal by arguing that the reversal of some DCFL
-is not a DCFL. (Hint: the witness $B$ of Worked Example~\ref{wex:union-fail@c7} can be written as
-$\rev{B'}$ for a suitable DCFL $B'$; describe $B'$ informally and say why a DPDA reading $B'$
-left-to-right has no early commitment, whereas reading $B$ does.)
+is not a DCFL. (Hint: $B'=\set{\str c\,\str1^n\str0^n\st n\ge1}\cup\set{\str d\,\str1^{2n}\str0^n\st n\ge1}$
+is a DCFL, since a DPDA reading $B'$ left-to-right learns the pop rate from the first symbol and has
+no early commitment, whereas $\rev{B'}$ announces the rate only at the very end; the lookahead sets
+of Worked Example~\ref{wex:endmark@c7} would turn a DPDA for $\rev{B'}$ into one for the witness $B$
+of Worked Example~\ref{wex:union-fail@c7}.)
 
 \item Explain, in three or four sentences, why the subset construction that converts an NFA to a DFA
 does \emph{not} convert a PDA to a DPDA. Identify exactly which finiteness assumption breaks.
