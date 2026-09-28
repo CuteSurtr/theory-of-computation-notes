@@ -29031,8 +29031,8 @@ answer, and $M$ accepts iff $N$ does.
 \emph{Space.} Each invocation stores $c_{1},c_{2},t$ and a loop pointer, all $\bigO(f(n))$ bits
 ($t\le t_{0}$ needs $\log t_{0}=\bigO(f(n))$ bits). The two recursive calls run \emph{one at a
 time} on the same scratch region, so the only growing cost is the stack of suspended frames.
-Each call halves $t$, so the depth is $\log_{2}t_{0}=\bigO(f(n))$. Total space
-$=(\text{depth})\times(\text{frame size})=\bigO(f(n))\cdot\bigO(f(n))=\bigO(f(n)^{2})$. Hence
+Each call halves $t$, so the depth is $\log_{2}t_{0}=\bigO(f(n))$.
+Total space~$=(\text{depth})\times(\text{frame size})=\bigO(f(n))\cdot\bigO(f(n))=\bigO(f(n)^{2})$. Hence
 $\Lang\in\SPACE(f(n)^{2})$.
 
 \emph{Knowing $f(n)$.} $M$ uses $f(n)$ to list configurations and to set $t_{0}$. If $f(n)$ cannot
@@ -29066,7 +29066,7 @@ configurations $u,v$ and the guessed midpoint $m$ are the only data a frame hold
     (R) {$\mathrm{REACH}(u,v,2^{k})$};
   % the existential midpoint guess (kept above-right, clear of nodes)
   \node[font=\footnotesize,above right=1mm and 2mm of R,align=left]
-    {$\exists\,m:$ guess a midpoint $m$};
+    {$\exists\,m$: guess a midpoint $m$};
   % level 1: two halves, widely separated so labels never collide
   \node[gvlab,minimum size=0pt,inner sep=2pt,
         below left=16mm and 14mm of R] (L1) {$\mathrm{REACH}(u,m,2^{k-1})$};
@@ -29392,7 +29392,7 @@ $\PSPACE$-complete problem $\mathit{TQBF}$.
   \draw[smmap] (ex) -- node[smlbl,right]{flip some $\exists\!\to\!\forall$} (alt);
   % brackets identifying the complete problems
   \node[font=\footnotesize,right=3mm of ex,align=left]
-    {SAT slice:\\$\varphi\in\SAT \Leftrightarrow$ this is true};
+    {$\SAT$ slice:\\$\varphi\in\SAT \Leftrightarrow$ this is true};
   \node[font=\footnotesize,right=3mm of alt,align=left]
     {full $\mathit{TQBF}$:\\$\PSPACE$-complete};
 \end{tikzpicture}
@@ -29407,9 +29407,9 @@ quantifiers lifts the complete problem from $\classNP$ ($\SAT$) up to $\PSPACE$
 $\PSPACE$-complete $\mathit{TQBF}$ -- these being the complete problems for the two classes.
 
 \begin{wex}{Order of quantifiers changes the truth value}\label{wex:quantorder@c14}
-Decide the truth of $\phi=\forall x\,\exists y\,[(x\vee y)\wedge(\neg x\vee\neg y)]$ and of
+Decide the truth of $\phi=\forall x\,\exists y\,[{(x\vee y)}\wedge{(\neg x\vee\neg y)}]$ and of
 the swapped sentence $\phi'=\exists y\,\forall x\,[(x\vee y)\wedge(\neg x\vee\neg y)]$.
-\wrec The matrix $(x\vee y)\wedge(\neg x\vee\neg y)$ is exactly ``$x\ne y$'' (XOR). The
+\wrec The matrix $(x\vee y)\wedge(\neg x\vee\neg y)$ is exactly ``$x\ne y$'' (XOR)\@. The
 trigger is ``$\forall\exists$ vs.\ $\exists\forall$'': in the first the responder $y$ sees
 $x$ first; in the second $y$ is fixed before $x$ moves.
 \wsol Expand the matrix as a tiny truth table: it is $1$ on $(x,y)\in\set{(0,1),(1,0)}$ and
@@ -29585,7 +29585,7 @@ since $A\in\PSPACE$ was arbitrary, $\mathit{TQBF}$ is $\PSPACE$-hard. With membe
 $\PSPACE$-complete.
 \end{proof}
 
-\begin{wex}{Evaluate a small TQBF by the recursion}
+\begin{wex}{Evaluate a small $\mathit{TQBF}$ by the recursion}
 Run the membership algorithm $T$ on
 $\phi=\exists x\,\forall y\,[(x\vee y)\wedge(x\vee\neg y)]$ and report true/false, tracking
 the space used.
@@ -29607,7 +29607,7 @@ The $\exists$ combines $0\vee 1=1$, so $\phi$ is \textbf{true}.
    level 2/.style={sibling distance=16mm},
    edge from parent/.style={tedge,draw}]
   \node[gvlab,label=above:{\footnotesize $\exists x:0\vee1=1$}] {$x$}
-    child {node[gvlab,label=left:{\footnotesize $\forall:0\wedge?=0$}] {$y$}
+    child {node[gvlab,label=left:{\footnotesize $\forall:0\wedge{?}=0$}] {$y$}
       child {node[gv,label=below:{\footnotesize $0$}] {}}
       child {node[gv,label=below:{\footnotesize $-$}] {}}
       edge from parent node[flowlbl,left]{$x{=}0$}}
@@ -29897,14 +29897,14 @@ the eight leaves; then propagate $\max$ up through E-levels and $\min$ up throug
       child {node[gv] {} child {node[gv,label=below:{\scriptsize $1$}] {}} child {node[gv,label=below:{\scriptsize $0$}] {}} }
       child {node[gv] {} child {node[gv,label=below:{\scriptsize $0$}] {}} child {node[gv,label=below:{\scriptsize $0$}] {}} }
       edge from parent node[lv,right] {$x_1{=}1$} };
-  \node[font=\footnotesize] at (0,-4.6) {leaves show $\psi$; $x_2$ branches left$=0$/right$=1$, then $x_3$ left$=0$/right$=1$};
+  \node[font=\footnotesize] at (0,-4.6) {leaves show $\psi$; $x_2$ branches left${=}0$/right${=}1$, then $x_3$ left${=}0$/right${=}1$};
 \end{tikzpicture}
 \end{center}
 Read the leaves left to right as $(x_1,x_2,x_3)$. Under $x_1=0$: the $x_2=0$ subtree has leaves
-$\psi(0,0,0)=0,\ \psi(0,0,1)=0$ (max $=0$), and the $x_2=1$ subtree has $\psi(0,1,0)=0,\
-\psi(0,1,1)=1$ (max $=1$); Player A then takes the min over $x_2$, getting $\min(0,1)=0$. Under
-$x_1=1$: the $x_2=0$ subtree has $\psi(1,0,0)=1,\ \psi(1,0,1)=0$ (max $=1$), and the $x_2=1$
-subtree has $\psi(1,1,0)=0,\ \psi(1,1,1)=0$ (max $=0$); Player A's min is $\min(1,0)=0$. Finally
+$\psi(0,0,0)=0$, $\psi(0,0,1)=0$ (max $=0$), and the $x_2=1$ subtree has $\psi(0,1,0)=0$,
+$\psi(0,1,1)=1$ (max $=1$); Player A then takes the min over $x_2$, getting $\min(0,1)=0$. Under
+$x_1=1$: the $x_2=0$ subtree has $\psi(1,0,0)=1$, $\psi(1,0,1)=0$ (max $=1$), and the $x_2=1$
+subtree has $\psi(1,1,0)=0$, $\psi(1,1,1)=0$ (max $=0$); Player A's min is $\min(1,0)=0$. Finally
 Player E takes $\max(0,0)=0$, so Player E has no winning strategy: \emph{Player A wins}. His
 strategy: whatever Player E opens with, answer $x_2=x_1$.
 \whichrule{An $\exists\forall\exists$ formula is a game tree; minimax with $\exists=\max$ and
@@ -30106,7 +30106,7 @@ nodes (root is I's move), Player II owns odd-depth.
    level 1/.style={sibling distance=34mm},
    level 2/.style={sibling distance=20mm},
    edge from parent/.style={tedge,draw},
-   sq/.style={draw,rounded corners,inner sep=2pt,font=\footnotesize}]
+   sq/.style={draw=black,rounded corners,inner sep=2pt,font=\footnotesize}]
   \node[sq] {at $1$ (I)}
     child {node[sq] {at $2$ (II)}
       child {node[sq] {at $4$ (I)}
@@ -30119,7 +30119,7 @@ nodes (root is I's move), Player II owns odd-depth.
 \end{tikzpicture}
 \end{center}
 Branch $1\to2$: Player II is forced $2\to4$, and Player I's only edge is $4\to2$, but $2$ is already on the
-path, so Player I cannot move and loses. Branch $1\to3$: Player II forced $3\to5$, Player I forced
+path, so Player I cannot move and loses. Branch $1\to3$: Player II forced $3\to5$, Player I's only edge is
 $5\to3$, but $3$ is used, so Player I is stuck and loses. \emph{Both} of Player I's opening moves
 end in Player I being stuck, so Player I has no winning move: \emph{Player II has a winning
 strategy}.
@@ -30131,7 +30131,7 @@ visited by the time Player I must move there; with no escape the second mover wi
 shows on both branches.
 \end{wex}
 
-\begin{wex}{Mapping a tiny TQBF to its Generalized Geography graph}
+\begin{wex}{Mapping a tiny $\mathit{TQBF}$ to its Generalized Geography graph}
 Build the $\mathit{GG}$ gadget graph for $\varphi=\exists x_1\,\forall x_2\,[\,(x_1\vee x_2)\wedge
 (\overline{x_1}\vee\overline{x_2})\,]$, identify who owns each diamond, and confirm the winner
 agrees with the formula's truth value.
@@ -30188,7 +30188,7 @@ $x_2\to\ell_2$, $\overline{x_1}\to r_1$, $\overline{x_2}\to r_2$.
 \end{center}
 Start $b=t_1$. Diamond $1$ ($Q_1=\exists$) is owned by Player I; the forced $h_1\to t_2$ hands
 diamond $2$ ($Q_2=\forall$) to Player II, and the forced $h_2\to t_3$ hands the dummy diamond $3$
-($Q_3=\exists$) back to Player I. After it, $h_3\to c$ is forced and it is
+($Q_3=\exists$) back to Player I\@. After it, $h_3\to c$ is forced and it is
 Player II's move at $c$. Is $\varphi$ true? It asks for a value of $x_1$ such that for both values
 of $x_2$ the matrix holds. Try $x_1$: $x_1=0$ forces $C_1=(0\vee x_2)=x_2$ to need $x_2=1$, but
 then $C_2=(1\vee 0)=1$ ok and $C_1$ ok -- yet $x_2=0$ makes $C_1=0$, failing $\forall$. Try
@@ -30206,7 +30206,7 @@ dummy) and $2$ clauses.
 \begin{method}{Turning alternating quantifiers into a two-player game}
 \begin{enumerate}[leftmargin=2em,topsep=2pt,itemsep=1pt]
   \item \textbf{Name the players by quantifier.} $\exists$ is the maximizer (Player E / Player I);
-  $\forall$ is the minimizer (Player A / Player II). The move order is the quantifier order.
+  $\forall$ is the minimizer (Player A / Player II)\@. The move order is the quantifier order.
   \item \textbf{Build the game tree.} Branch on each variable's two values in turn; label each
   internal level by its quantifier's owner and each leaf by the value of the matrix $\psi$.
   \item \textbf{Minimax from the leaves up.} Replace an $\exists$-node by the $\max$ of its
@@ -30307,7 +30307,7 @@ that we are allowed to scan but never write,
 and a separate \emph{read/write} work tape whose cells are the only ones charged to the
 space budget. With only $\bigO(\log n)$ work cells -- just enough to hold a handful of
 pointers into the input -- we get the classes $\Lclass$ and $\NL$, the sublinear-space
-analogues of $\classP$ and $\classNP$, and we meet the problem $PATH$ that sits at the
+analogues of $\classP$ and $\classNP$, and we meet the problem $\mathit{PATH}$ that sits at the
 heart of $\NL$.
 
 \subsection*{The log-space machine model}
@@ -30479,7 +30479,7 @@ $b=0$ still on the work tape:
   \node[headlbl,above=4mm of I-1-4] (hi) {head};
   \draw[head] (hi.south) -- (I-1-4.north);
   \matrix (W) [tape,below=12mm of I,nodes={minimum size=6.5mm}]{
-    $a:$ & $\str1$ & $\str1$ & $\;\;$ & $b:$ & $\str0$ & $\sqcup$ \\
+    $a$: & $\str1$ & $\str1$ & $\;\;$ & $b$: & $\str0$ & $\sqcup$ \\
   };
   \node[font=\footnotesize,left=2mm of W-1-1] {work};
   \node[font=\footnotesize,below=2mm of W-1-3] {$a=3$};
@@ -30532,18 +30532,18 @@ $\str1\!=\!\str1,\str0\!=\!\str0,\str1\!=\!\str1$, accept. On $\str{101\#100}$: 
 $(3,7)$ gives $\str1\ne\str0$, reject.
 \end{wex}
 
-\subsection*{PATH and nondeterministic log space}
+\subsection*{$\mathit{PATH}$ and nondeterministic log space}
 
 The flagship $\NL$ problem is directed reachability.
 
-\begin{definition}[PATH]\label{def:path@c14}
+\begin{definition}[$\mathit{PATH}$]\label{def:path@c14}
 \[
-PATH=\set{\enc{G,s,t}\st G\text{ is a directed graph with a directed path from }s\text{ to }t}.
+\mathit{PATH}=\set{\enc{G,s,t}\st G\text{ is a directed graph with a directed path from }s\text{ to }t}.
 \]
 \end{definition}
 
 \begin{theorem}\label{thm:pathNL@c14}
-$PATH\in\NL$.
+$\mathit{PATH}\in\NL$.
 \end{theorem}
 
 \begin{proof}
@@ -30561,13 +30561,13 @@ A genuine $s$-$t$ path, if one exists, is witnessed by some branch that guesses 
 in order; since a shortest path visits no vertex twice it has length $<m$, so the step counter
 never forces a premature reject. Conversely any accepting branch exhibits a real walk from $s$
 to $t$. The only memory used is $\mathrm{cur}$ and $\mathrm{cnt}$, each a number $\le m\le n$,
-hence $\bigO(\log n)$ bits. So $N$ decides $PATH$ in nondeterministic log space.
+hence $\bigO(\log n)$ bits. So $N$ decides $\mathit{PATH}$ in nondeterministic log space.
 \end{proof}
 
-\begin{wex}{Tracing the $PATH$ walk on a concrete graph}
+\begin{wex}{Tracing the $\mathit{PATH}$ walk on a concrete graph}
 Run the procedure of Theorem~\ref{thm:pathNL@c14} on the graph below with $s=1$, $t=6$, and
 exhibit one accepting branch together with the contents of the two registers.
-\wrec ``Reachability by a remembered current vertex'' is exactly $PATH$ in $\NL$. The trigger:
+\wrec ``Reachability by a remembered current vertex'' is exactly $\mathit{PATH}$ in $\NL$. The trigger:
 we are allowed to forget the path so far and remember only \emph{where we are} plus \emph{how
 many steps} we have taken.
 \wsol Here is $G$ ($m=6$ vertices):
@@ -30612,7 +30612,7 @@ edge $(1,2),(2,5),(5,6)$ is present, so every check passes. With $t=3$ instead, 
 $1\to 2\to 3$ accepts in $2$ steps.
 \end{wex}
 
-\begin{wex}{The configuration graph turns $\NL$ acceptance into a $PATH$ instance}
+\begin{wex}{The configuration graph turns $\NL$ acceptance into a $\mathit{PATH}$ instance}
 Explain, for a fixed nondeterministic log-space machine $N$ and input $w$, why ``$N$ accepts
 $w$'' is itself a directed-reachability question, and count the vertices.
 \wrec This is the engine behind Corollary~\ref{cor:LNLinP@c14}. The trigger: a nondeterministic
@@ -30644,7 +30644,7 @@ $G_{N,w}$ has a path from $s$ to $t$. By Lemma~\ref{lem:configcount@c14} there a
 configurations, so $G_{N,w}$ has polynomially many vertices and a deterministic machine can
 solve the reachability by breadth-first search in polynomial time.
 \whichrule{The configuration graph is the universal translation from ``nondeterministic
-computation'' to ``$PATH$.'' Its polynomial size (log space $\Rightarrow$ poly configurations)
+computa\-tion'' to ``$\mathit{PATH}$.'' Its polynomial size (log space $\Rightarrow$ poly configurations)
 is precisely what proves $\NL\subseteq\classP$.}
 \emph{Check.} If $N$ is in fact deterministic, every vertex has out-degree $\le 1$, the part
 reachable from $c_{\text{st}}$ is a simple chain, and reachability is just ``follow the unique successor'' -- recovering the
@@ -30672,7 +30672,7 @@ ordinary deterministic run.
 You may \emph{not} copy the input onto the work tape. Writing all $n$ input symbols to scratch
 is $\bigO(n)$ space -- linear, not logarithmic -- and silently destroys the whole point of the
 model. Likewise you may not record an entire $s$-$t$ path (that is $\Omega(m\log m)$ space);
-$PATH$ stays in $\NL$ only because the walk keeps just the \emph{current} vertex.
+$\mathit{PATH}$ stays in $\NL$ only because the walk keeps just the \emph{current} vertex.
 \end{pitfall}
 
 \begin{pitfall}
@@ -30700,7 +30700,7 @@ which tape is charged for space.
 
 \item A directed graph $G$ on vertices $\set{1,\dots,7}$ has edges
 $1\!\to\!2,\ 2\!\to\!4,\ 4\!\to\!7,\ 1\!\to\!3,\ 3\!\to\!5,\ 5\!\to\!6,\ 6\!\to\!3$. Draw $G$
-(use labelled vertices and directed edges). Then run the $\NL$ procedure for $PATH$ with $s=1$,
+(use labelled vertices and directed edges). Then run the $\NL$ procedure for $\mathit{PATH}$ with $s=1$,
 $t=7$: list one accepting branch as a table of $(\mathrm{cur},\mathrm{cnt})$ values, and
 identify one branch that rejects without reaching $t$.
 
@@ -30723,11 +30723,11 @@ $i$ (in binary, separated by commas) at which $w_i=\str1$. Argue that $f$ is log
 computable by describing a transducer for it, and explain why the (possibly long) comma-list on
 the output tape does \emph{not} violate the $\bigO(\log n)$ work-space bound.
 
-\item \emph{Find the bug.} A student claims $PATH\in\Lclass$ as follows: ``Do a deterministic
+\item \emph{Find the bug.} A student claims $\mathit{PATH}\in\Lclass$ as follows: ``Do a deterministic
 depth-first search from $s$; keep a list of the vertices on the current DFS stack so you never
 revisit one; accept if you ever reach $t$. The stack is the only memory, so it is small.''
 Identify precisely why this does \emph{not} fit the $\bigO(\log n)$ work-space budget, and state
-what is and is not currently known about whether $PATH\in\Lclass$.
+what is and is not currently known about whether $\mathit{PATH}\in\Lclass$.
 
 \item \emph{Find the bug.} Another student claims a log-space decider for
 $A=\set{\str0^k\str1^k}$ that ``copies the block of $\str0$s onto the work tape, then deletes
@@ -30739,11 +30739,11 @@ but is \emph{not} a log-space machine, and contrast it with the binary-counting 
 Using the configuration count $n\,2^{\bigO(s(n))}$, give an explicit polynomial upper bound on
 the number of configurations of $M$ on a length-$n$ input, and conclude that $L(M)\in\classP$.
 
-\item Define $2\text{-}COL=\set{\enc{G}\st G\text{ is }2\text{-colorable (bipartite)}}$ for
-undirected $G$. Sketch why the complement of $2\text{-}COL$ is decidable in nondeterministic log
+\item Define $\mathit{2\text{-}COL}=\set{\enc{G}\st G\text{ is }2\text{-colorable (bipartite)}}$ for
+undirected $G$. Sketch why the complement of $\mathit{2\text{-}COL}$ is decidable in nondeterministic log
 space by reducing the test to short reachability/parity checks on the read-only adjacency input
 (guess a closed walk of odd length), and state which registers your $\NL$ machine keeps. (You need
-only describe the registers and the local check, not a full correctness proof. $2\text{-}COL$
+only describe the registers and the local check, not a full correctness proof. $\mathit{2\text{-}COL}$
 itself is then in $\NL$ by $\NL=\mathsf{coNL}$, Section~14.5.)
 \end{exers}
 
@@ -31188,9 +31188,9 @@ sitting in each band, makes the layering concrete.
 \begin{center}
 \begin{tikzpicture}
   \draw[rounded corners,line width=0.7pt] (-0.2,-0.2) rectangle (10.6,4.0);
-  \node[anchor=north east,font=\footnotesize] at (10.5,3.9) {$\PSPACE$ (TQBF)};
+  \node[anchor=north east,font=\footnotesize] at (10.5,3.9) {$\PSPACE$ ($\mathit{TQBF}$)};
   \draw[rounded corners,line width=0.7pt] (0.2,0.2) rectangle (8.7,3.3);
-  \node[anchor=north east,font=\footnotesize] at (8.6,3.2) {$\classNP$ (SAT)};
+  \node[anchor=north east,font=\footnotesize] at (8.6,3.2) {$\classNP$ ($\SAT$)};
   \draw[rounded corners,line width=0.7pt] (0.6,0.6) rectangle (6.8,2.6);
   \node[anchor=north east,font=\footnotesize] at (6.7,2.5) {$\classP$};
   \draw[rounded corners,line width=0.7pt] (1.0,0.9) rectangle (5.0,2.2);
@@ -31287,7 +31287,7 @@ the recomputation fix in one sentence.
 
 \item Let $\mathit{STCON}_k$ be $\mathit{PATH}$ restricted to graphs of out-degree at most $k$. Show
 $\mathit{STCON}_2$ is still $\NL$-complete by giving a log-space reduction from general
-$\mathit{PATH}$ that replaces each high-out-degree node by a small gadget of out-degree-$\le2$ nodes.
+$\mathit{PATH}$ that replaces each high-out-degree node by a small gadget of out-degree-${\le}2$ nodes.
 Draw the gadget that splits a node with out-edges to $v_1,v_2,v_3$.
 
 \item Argue carefully that $\NL\subseteq\classP$ by combining the $\mathit{PATH}$-hardness reduction
