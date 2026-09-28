@@ -8978,7 +8978,7 @@ $\lang{R}=\set{\str1}\cup\set{\,\str0\str1^{k}\st k\ge 0\,}$.
 \whichrule{Precedence is exactly the rule for shaping an expression tree: $\restar$ is deepest,
 $\concat$ above it, $\reor$ at the root, so the unparenthesized string has one unambiguous reading.}
 \emph{Check.} The string $\str{0111}$ is $\str0\str1^{3}$, in the left branch; $\str1$ is the lone
-right-branch string; but $\str{011}\reor\ldots$ aside, $\str{10}$ is in neither, so it is excluded --
+right-branch string; but $\str{10}$ is in neither, so it is excluded --
 matching the description ``either the single $\str1$, or a $\str0$ followed by any number of $\str1$s.''
 \end{wex}
 
@@ -8992,8 +8992,8 @@ then read any number of $\str0$s and nothing else.
 $\lang{\str0\restar}=\set{\eps,\str0,\str{00},\dots}$, so
 $\lang{R}=\set{\,x\str0^{k}\st x\in\set{\str0,\str1},\ k\ge0\,}$: a first symbol followed by a block of
 $\str0$s. A machine needs: $a_0$ ``nothing read yet,'' $a_1$ ``first symbol read; only $\str0$s allowed
-now'' (accept), and a dead state $a_\times$ entered if a $\str1$ arrives after the first symbol or if
-the input is empty and then a stray second symbol violates the pattern. From $a_0$ either symbol goes
+now'' (accept), and a dead state $a_\times$ entered if a $\str1$ arrives after the first symbol.
+From $a_0$ either symbol goes
 to $a_1$; from $a_1$ a $\str0$ stays (more trailing zeros) and a $\str1$ dies; the empty string is
 \emph{not} in $\lang{R}$ since at least one symbol must be read, so $a_0\notin\Acc$.
 \begin{center}
@@ -9271,10 +9271,10 @@ $\str{01}\restar$ really denotes, give a string the student's reading would wron
 correct expression for ``any number of copies of $\str{01}$.''
 
 \item \emph{Find the bug.} Someone claims $\str1\restar\es$ denotes ``all strings of $\str1$s,'' citing
-the $\str1\restar$ factor. Using Definition of $\lang{\cdot}$, compute $\lang{\str1\restar\es}$ exactly
+the $\str1\restar$ factor. Using Definition~\ref{def:reglang@c5} of $\lang{\cdot}$, compute $\lang{\str1\restar\es}$ exactly
 and explain in one sentence why the $\es$ factor overrides the $\str1\restar$.
 
-\item Prove that for all regular expressions $R$ and $S$, the expression $(R\reor S)\restar$ and
+\item Prove that for all regular expressions $R$ and $S$, the expressions $(R\reor S)\restar$ and
 $(R\restar S\restar)\restar$ denote the same language. (Argue both inclusions on the level of strings:
 every string is a concatenation of pieces, each from $\lang R$ or $\lang S$.) Then give a single
 expression showing that $(R\restar)\kplus=R\restar$.
@@ -9316,16 +9316,16 @@ most $2\abs{R}$ states, where $\abs{R}$ is the number of symbols and operators i
 \end{lemma}
 
 \begin{proof}
-We induct on the structure of $R$. The three \emph{atoms} are recognized by the two-state (or
-one-state) machines below. For the empty-language atom $\es$ we use a start and an accept state
+We induct on the structure of $R$. The three \emph{atoms} are recognized by the two-state
+machines below. For the empty-language atom $\es$ we use a start and an accept state
 with no edge between them, so nothing is accepted.
 \begin{center}
 \begin{tikzpicture}[fa,node distance=14mm and 18mm]
   \node[stinit] (a0) {}; \node[stacc,right=of a0] (a1) {};
   \node[below=5.5mm of a0,font=\footnotesize] {$R=a$};
-  \node[stinit,right=26mm of a1] (e0) {}; \node[stacc,right=of e0] (e1) {};
+  \node[stinit,right=24mm of a1] (e0) {}; \node[stacc,right=of e0] (e1) {};
   \node[below=5.5mm of e0,font=\footnotesize] {$R=\eps$};
-  \node[stinit,right=26mm of e1] (z0) {}; \node[stacc,right=of z0] (z1) {};
+  \node[stinit,right=24mm of e1] (z0) {}; \node[stacc,right=of z0] (z1) {};
   \node[below=5.5mm of z0,font=\footnotesize] {$R=\es$};
   \path (a0) edge node{$a$} (a1)
         (e0) edge node{$\eps$} (e1);
@@ -9353,8 +9353,9 @@ by $\eps$ into a new accept. A run guesses which alternative to take.
 \end{center}
 
 \emph{Concatenation} $R_1 R_2$: the accept of $N_1$ is linked by $\eps$ to the start of $N_2$.
-The new start is $N_1$'s start; the new accept is $N_2$'s accept. A run must finish $N_1$ before
-$N_2$ can begin, so it accepts exactly the strings $xy$ with $x\in\lang{R_1}$, $y\in\lang{R_2}$.
+A new start feeds $N_1$'s start by $\eps$, and $N_2$'s accept feeds a new accept by $\eps$.
+A run must finish $N_1$ before $N_2$ can begin, so it accepts exactly the strings $xy$ with
+$x\in\lang{R_1}$, $y\in\lang{R_2}$.
 \begin{center}
 \begin{tikzpicture}[fa,node distance=10mm and 16mm]
   \node[stinit] (s) {};
@@ -9367,21 +9368,24 @@ $N_2$ can begin, so it accepts exactly the strings $xy$ with $x\in\lang{R_1}$, $
 \end{tikzpicture}
 \end{center}
 
-\emph{Star} $R\restar$: a new start (also the new accept) reaches $N_1$'s start by $\eps$, and
-$N_1$'s accept loops back by $\eps$ to $N_1$'s start. Making the new start accepting puts $\eps$
+\emph{Star} $R\restar$: a new start reaches $N_1$'s start by $\eps$ and also jumps by $\eps$
+straight to a new accept; $N_1$'s accept feeds the new accept by $\eps$ and loops back by $\eps$
+to $N_1$'s start. The direct $\eps$-edge from the new start to the new accept puts $\eps$
 in the language; the back-edge lets a run reread the body any number of times.
 \begin{center}
 \begin{tikzpicture}[fa,node distance=10mm and 16mm]
-  \node[stinitacc] (s) {};
+  \node[stinit] (s) {};
   \node[procbox,right=16mm of s,minimum width=22mm] (b1) {$N_1$};
   \node[stacc,right=16mm of b1] (f) {};
   \path (s) edge node{$\eps$} (b1.west)
         (b1.east) edge node{$\eps$} (f)
         % back-edge routed clearly ABOVE the N_1 box (top corners), never through it
-        (b1.north east) edge[bend right=55] node[fill=white,inner sep=1pt]{$\eps$} (b1.north west);
+        (b1.north east) edge[bend right=55] node[fill=white,inner sep=1pt]{$\eps$} (b1.north west)
+        % bypass edge routed BELOW the N_1 box: it supplies the empty string
+        (s) edge[bend right=40] node[swap]{$\eps$} (f);
 \end{tikzpicture}
 \end{center}
-Each construction recognizes the right language by the closure proofs of Section~5.5 (union,
+Each construction recognizes the right language by the closure proofs of Section~4.5 (union,
 concatenation, star), and the structural induction bottoms out at the atoms. Counting states:
 each atom uses at most two, and each operator adds at most two fresh states, giving at most
 $2\abs{R}$ in total.
@@ -9433,8 +9437,8 @@ star's new start/accept $s,f$ gives:
         (b1) edge node{$a$} (b2)
         (b2) edge node[swap]{$\eps$} (u5)
         (u5) edge node{$\eps$} (f)
-        (s) edge[bend left=22] node{$\eps$} (f)
-        (u5) edge[bend left=42] node[swap]{$\eps$} (u0);
+        (s) edge[bend left=32] node{$\eps$} (f)
+        (u5) edge[bend left=58] node[swap]{$\eps$} (u0);
 \end{tikzpicture}
 \end{center}
 The top path $x_1\to x_2\to x_3$ reads $\str{ab}$; the bottom path $y_1\to y_2$ reads $\str a$;
@@ -9536,8 +9540,9 @@ then the new label is
   \delta'(q_i,q_j)=R_1 R_2\restar R_3 \reor R_4 .
 \]
 This reads ``go straight from $q_i$ to $q_j$ ($R_4$), or step into $q_{\mathrm{rip}}$ ($R_1$),
-loop there any number of times ($R_2\restar$), and step out to $q_j$ ($R_3$).'' The detoured and
-direct strings are exactly the ones removed when $q_{\mathrm{rip}}$ disappears, so the new GNFA on
+loop there any number of times ($R_2\restar$), and step out to $q_j$ ($R_3$).'' The detoured
+strings are exactly the ones lost when $q_{\mathrm{rip}}$ disappears, and the new label restores
+them alongside the direct ones, so the new GNFA on
 $k-1$ states recognizes the same language. Repeat until $k=2$. The lone surviving arrow from
 $\qstart$ to $q_{\mathrm{acc}}$ is labelled by a regular expression $R$ describing precisely the
 accepted strings, and $\lang{R}=\lang{\dfa}$.
@@ -9583,7 +9588,7 @@ Let $\dfa$ over $\set{a,b}$ have states $1$ (start) and $2$ (accept), with $\tra
 $\trans(1,\str b)=1$, and $\trans(2,\str a)=\trans(2,\str b)=2$. Find a regular expression for
 $\lang{\dfa}$.
 \wrec The trigger is ``DFA $\to$ regex,'' so run state elimination. Two real states plus the two
-fresh endpoints gives a four-state GNFA; one elimination should finish it.
+fresh endpoints gives a four-state GNFA; two eliminations finish it.
 \wsol Normalize: add $s\xrightarrow{\eps}1$ and $2\xrightarrow{\eps}a$ (writing $a$ for
 $q_{\mathrm{acc}}$). State $1$ self-loops on $\str b$; the $1\to2$ edge is $\str a$; state $2$
 self-loops on $\str a\reor\str b$. Now eliminate state $2$. For the pair $(1,a)$ take
@@ -9615,7 +9620,7 @@ Now eliminate state $1$: for the pair $(s,a)$ we have $R_1=\eps$ (edge $s\to1$),
 $R_2=\str b$ (loop at $1$), $R_3=\str a(\str a\reor\str b)\restar$ (edge $1\to a$), and
 $R_4=\es$. The final label is $\eps\,\str b\restar\,\str a(\str a\reor\str b)\restar\reor\es=
 \str b\restar\str a(\str a\reor\str b)\restar$.
-\whichrule{State elimination is the only systematic DFA-to-regex method; each removed state
+\whichrule{State elimination is a systematic DFA-to-regex method; each removed state
 contributes an $R_1R_2\restar R_3$ term that re-creates the paths through it, so the surviving
 endpoint edge accumulates exactly the accepted language.}
 \emph{Check.} The expression $\str b\restar\str a(\str a\reor\str b)\restar$ says: some
@@ -9638,7 +9643,7 @@ such term is $\es$ and vanishes; we simply delete $C$ and its incoming $B\xright
 \begin{center}
 \begin{tikzpicture}[fa,node distance=13mm and 22mm]
   \node[stinit] (s) {$s$};
-  \node[stacc,right=18mm of s] (A) {$A$};
+  \node[st,right=18mm of s] (A) {$A$};
   \node[st,below=14mm of A] (B) {$B$};
   \node[stacc,right=26mm of A] (a) {$a$};
   \path (s) edge node{$\eps$} (A)
@@ -9699,12 +9704,12 @@ $\str a$, $\str{ba}$, and $\eps$.
 \end{wex}
 
 \begin{pitfall}
-In the star gadget, do not simply mark the body's original accept state as accepting and stop
-there. You must add a \emph{new} start state that is also accepting and has an $\eps$-edge into
-the body. Re-using the old start as the accept can pull in extra strings: a back-edge from an
-accept state to an interior start may let a partial pass through the body be accepted, so the
-machine would recognize more than $\lang{R}\restar$. The fresh accepting start adds exactly
-$\eps$ and nothing else.
+In the star gadget, do not simply mark the body's original start state as accepting and stop
+there. You must add a \emph{new} start state with an $\eps$-edge into the body and an $\eps$-edge
+straight to the new accept. Re-using the old start as the accept can pull in extra strings: a
+back-edge from an accept state to an interior start may let a partial pass through the body be
+accepted, so the machine would recognize more than $\lang{R}\restar$. The fresh start's direct
+$\eps$-edge adds exactly $\eps$ and nothing else.
 \end{pitfall}
 
 \begin{pitfall}
@@ -9734,8 +9739,8 @@ which is accepted.
 
 \item Parse each expression by precedence and state its parse tree in words, \emph{without}
 drawing a machine: (a)~$\str a\reor\str b\str c\restar$; \ (b)~$\str a\str b\reor\str c\restar$;
-\ (c)~$(\str a\reor\str b)\str c\restar$; \ (d)~$\str a\str b\restar\str c$. Then say which two of
-the four denote the same language and prove it.
+\ (c)~$(\str a\reor\str b)\str c\restar$; \ (d)~$\str a\str b\restar\str c$. Then show that no two of
+the four denote the same language, by exhibiting for each pair a string in one but not the other.
 
 \item Convert the two-state DFA over $\set{0,1}$ with start $1$ (accepting) and second state $2$,
 where $\trans(1,\str0)=2$, $\trans(1,\str1)=1$, $\trans(2,\str0)=2$, $\trans(2,\str1)=1$, to a
@@ -9759,10 +9764,11 @@ sentences citing the correctness argument of Lemma~\ref{lem:dfa2re@c5} suffice.
 $(\str a\restar\str b\restar)\restar$ denote \emph{different} languages by exhibiting a string in
 one but not the other.
 
-\item \emph{Find the bug.} A student applies the star gadget to $R=\str a$ by taking the
-two-state atom machine for $\str a$ and just making its start state accepting and adding an
+\item \emph{Find the bug.} A student applies the star gadget to $R=\str a\restar\str b$ by taking the
+two-state NFA for $\str a\restar\str b$ from the round-trip example (start $p$ with an $\str a$-loop,
+and a $\str b$-edge to the accept $q$) and just making its start state accepting and adding an
 $\eps$ back-edge from accept to start. Draw their machine, find a string it accepts that is not in
-$\lang{\str a\restar}=\set{\eps,\str a,\str{aa},\dots}$, and state the correct fix.
+$\lang{(\str a\restar\str b)\restar}$, and state the correct fix.
 
 \item \emph{Find the bug.} Eliminating a state $q_{\mathrm{rip}}$, a student writes the new
 $q_i\to q_j$ label as $R_4\reor R_1 R_3$, dropping the $R_2\restar$ factor. Give a concrete tiny
@@ -9911,11 +9917,11 @@ steps, giving $\abs{xy}\le p$ and $\abs{y}\ge 1$; the loop at $r_j$ may be taken
 of times, so $xy^{\,i}z$ reaches the same accept state $r_{n+1}$ for every $i\ge 0$.
 
 \begin{wex}{Watching a concrete machine repeat a state}
-Let $\dfa$ be the four-state DFA below over $\Sig=\set{a,b}$, with $\lang{\dfa}=\set{w\st w
-\text{ ends in }\str{ab}}$. Run it on $s=\str{aabab}$ (length $5>4=\abs{Q}$), find the repeated
+Let $\dfa$ be the three-state DFA below over $\Sig=\set{a,b}$, with $\lang{\dfa}=\set{w\st w
+\text{ ends in }\str{ab}}$. Run it on $s=\str{aabab}$ (length $5>3=\abs{Q}$), find the repeated
 state guaranteed by the proof, and read off a pumping decomposition.
-\wrec The machine has $p=4$ states and the input has length $5$, so the run lists $6$ states from a
-pool of $4$: the trigger ``more steps than states'' guarantees a repeat, and the proof tells us to
+\wrec The machine has $p=3$ states and the input has length $5$, so the run lists $6$ states from a
+pool of $3$: the trigger ``more steps than states'' guarantees a repeat, and the proof tells us to
 take the \emph{first} one.
 \wsol The machine:
 \begin{center}
@@ -9931,8 +9937,7 @@ take the \emph{first} one.
         (q2) edge[bend left=55] node[below]{$b$} (q0);
 \end{tikzpicture}
 \end{center}
-(Three reachable states suffice here, so $p=3$ as a pumping length; the run still must repeat.) Run
-$s=\str{aabab}$, recording the state \emph{before} each symbol:
+Run $s=\str{aabab}$, recording the state \emph{before} each symbol:
 \[
   \underbrace{q_0}_{r_1}\xrightarrow{\,a\,}
   \underbrace{q_1}_{r_2}\xrightarrow{\,a\,}
@@ -9947,9 +9952,9 @@ $q_1\to q_2\in\Acc$). Note $\abs{xy}=2\le p$ and $\abs{y}=1>0$, as promised.
 \whichrule{The pumping decomposition is nothing more than the first state-repeat in the run: the
 input between the two visits is exactly the loop $y$, which is why deleting or duplicating it cannot
 change the accept/reject verdict.}
-\emph{Check.} Pump up: $xy^2z=\str{aabab}$ -- wait, that is $s$; one more lap gives
-$xy^3z=\str{aaabab}$, run $q_0\to q_1\to q_1\to q_1\to q_2\to q_1\to q_2\in\Acc$, still ends in
-$\str{ab}$, accepted. Pump down: $xy^0z=xz=\str{bab}$, run $q_0\to q_0\to q_1\to q_2\in\Acc$,
+\emph{Check.} Pump up: one more lap gives $xy^2z=\str{aaabab}$, run
+$q_0\to q_1\to q_1\to q_1\to q_2\to q_1\to q_2\in\Acc$, still ends in $\str{ab}$, accepted.
+Pump down: $xy^0z=xz=\str{abab}$, run $q_0\to q_1\to q_2\to q_1\to q_2\in\Acc$,
 accepted. Every lap-count lands in $\lang{\dfa}$.
 \end{wex}
 
@@ -9964,8 +9969,8 @@ positions. The repeat here is $q_3$ at positions $2$ and $4$.
 \begin{tikzpicture}[fa,node distance=12mm and 17mm]
   \node[stinit] (p0) {$q_0$};
   \node[st,right=of p0] (p1) {$q_3$};
-  \node[st,above right=6mm and 14mm of p1] (p2) {$q_5$};
-  \node[stacc,right=22mm of p1] (p4) {$q_7$};
+  \node[st,above=11mm of p1] (p2) {$q_5$};
+  \node[st,right=22mm of p1] (p4) {$q_7$};
   \node[stacc,right=of p4] (p5) {$q_2$};
   \path (p0) edge node{$s_1$} (p1)
         (p1) edge[bend left] node{$s_2$} (p2)
@@ -9985,7 +9990,7 @@ the original $s_1 s_2 s_3 s_4 s_5$, then $s_1 s_2 s_3 s_2 s_3 s_4 s_5$, and so o
 earliest repeat $q_3$ occurs by position $4$, keeping $x$ and $y$ inside the prefix the lemma
 allows.}
 \emph{Check.} Condition (2): $\abs{y}=2>0$. Condition (3): $\abs{xy}=3$, which is $\le p$ as long as
-the machine has at least $3$ states -- and it must, since the run already shows $4$ distinct states
+the machine has at least $3$ states -- and it must, since the run already shows $5$ distinct states
 $q_0,q_3,q_5,q_7,q_2$, so $p\ge 5$.
 \end{wex}
 
@@ -10057,7 +10062,7 @@ $\abs{xy}\le p$, so again $xy$ is inside the leading zeros and $y=\str0^k$, $1\l
 \begin{center}
 \begin{tikzpicture}[fa,node distance=14mm and 22mm]
   \node[st] (s0) {$s$};
-  \node[stacc,right=34mm of s0] (s1) {$xz$};
+  \node[st,right=34mm of s0] (s1) {$xz$};
   \path (s0) edge[bend left] node{remove $y=\str0^k$ (i.e. $i=0$)} (s1);
 \end{tikzpicture}
 \end{center}
@@ -10076,8 +10081,8 @@ string is excluded; the contradiction holds for every legal $k$.
 \end{wex}
 
 \begin{wex}{Why a bad choice of $s$ wastes the lemma}
-Using $\Lang=\set{\str0^n\str1^n\st n\ge 0}$ again, explain why the candidate $s=(\str{01})^p$ is a
-poor choice even though it is in $\Lang$.
+Using $\Lang=\set{w\in\set{\str0,\str1}^{*}\st w\text{ has equally many }\str0\text{s and }\str1\text{s}}$,
+explain why the candidate $s=(\str{01})^p$ is a poor choice even though it is in $\Lang$.
 \wrec The lemma only bites if \emph{no} legal split survives pumping. A string that the adversary
 can split into a harmless loop gives you nothing.
 \wsol The string $s=(\str{01})^p=\str{0101\cdots 01}$ has $p$ zeros and $p$ ones, so $s\in\Lang$ and
@@ -10177,7 +10182,7 @@ $xy^3z$ explicitly, and confirm by tracing that each is accepted by the machine.
 
 \item A run of some DFA on an accepted string of length $6$ produces the state sequence
 \[
-  s_0,\ s_4,\ s_1,\ s_4,\ s_1,\ s_9,\ s_3 .
+  q_0,\ q_4,\ q_1,\ q_4,\ q_1,\ q_9,\ q_3 .
 \]
 Identify the first repeated state, give the resulting $x,y,z$ (as positions $s_k$ of the input), and
 describe in words the infinite family of strings the lemma certifies belong to the language.
@@ -10320,8 +10325,8 @@ $\Lang$ fails the lemma and is not regular.
   % bracket picture of s = 0^p 1^p with the trapped y inside the first p symbols
   \draw[line width=0.7pt] (0,0) rectangle (6,1);
   \draw[line width=0.7pt] (6,0) rectangle (12,1);
-  \node at (3,0.5) {$\underbrace{0\,0\,\cdots\,0}_{p}$};
-  \node at (9,0.5) {$\overbrace{1\,1\,\cdots\,1}^{p}$};
+  \node at (3,0.5) {$0^{p}$};
+  \node at (9,0.5) {$1^{p}$};
   \draw[decorate,decoration={brace,amplitude=4pt,mirror},line width=0.6pt]
         (0,-0.4) -- (6,-0.4) node[midway,below=4pt]{$\abs{xy}\le p$: lives in the $0$s};
   \draw[-{Stealth[length=2mm]},line width=0.7pt] (2.3,1.7) -- (2.3,1.05);
@@ -10330,9 +10335,10 @@ $\Lang$ fails the lemma and is not regular.
 \end{center}
 \whichrule{Putting all the $0$s first and invoking $\abs{xy}\le p$ pins $y$ to a block of
 $0$s; one pump-up then unbalances the counts. This is the model the other examples imitate.}
-\emph{Check.} The forbidden split $x=\eps,\ y=0^{p}1^{p},\ z=\eps$ would survive pumping,
-but it violates $\abs{xy}\le p$, so the adversary is barred from it -- exactly why
-condition~(iii) matters.
+\emph{Check.} The split $x=\eps,\ y=0^{p}1^{p},\ z=\eps$ violates $\abs{xy}\le p$, so the
+adversary is barred from it; were it allowed, it would need a separate argument (it still fails
+at $i=2$, since $(0^{p}1^{p})^{2}\notin\Lang$) -- condition~(iii) is what lets one argument
+cover every legal split.
 \end{wex}
 
 \begin{wex}{Equal counts, anywhere: $C=\set{w\st \#_0(w)=\#_1(w)}$}
@@ -10348,12 +10354,12 @@ string $s=0^{p}1^{p}\in C$. By $\abs{xy}\le p$ the loop is $y=0^{k}$ with $k\ge 
 $xy^{2}z=0^{p+k}1^{p}$ has unequal counts and is not in $C$. Contradiction.
 
 \textit{One-line reproof via closure.} If $C$ were regular, then $C\cap L(0\kstar 1\kstar)$
-would be regular, because $\REG$ is closed under intersection (Section~5.5) and
+would be regular, because $\REG$ is closed under intersection (Section~4.2) and
 $0\kstar 1\kstar$ is regular. But that intersection is exactly $\set{0^{n}1^{n}\st n\ge 0}$,
 which the previous example showed is nonregular -- contradiction.
 \begin{center}
 \begin{tikzcd}[column sep=small,row sep=tiny,ampersand replacement=\&]
-  C\in\REG \ar[r,Rightarrow,"{\cap\,L(0^{*}1^{*})}"] \&
+  C\in\REG \ar[r,Rightarrow,"{\cap\,L(0^{*}1^{*})}"] \&[2.4em]
   C\cap L(0^{*}1^{*})\in\REG \ar[r,equal] \&
   \set{0^{n}1^{n}}\in\REG \ar[r,Rightarrow] \& \text{contradiction}
 \end{tikzcd}
@@ -10484,7 +10490,7 @@ pumping as possible.
 trigger is that $\Lang$ relates to the known-nonregular $0^{n}1^{n}$ through Boolean
 operations, so closure properties can do the work.
 \wsol Suppose $\Lang$ is regular. The class $\REG$ is closed under complement and
-intersection (Section~5.5). The set $0\kstar 1\kstar$ is regular. Consider
+intersection (Section~4.2). The set $0\kstar 1\kstar$ is regular. Consider
 \[
   \overline{\Lang}\cap L(0\kstar 1\kstar).
 \]
@@ -10495,7 +10501,7 @@ $\set{0^{n}1^{n}\st n\ge 0}$. If $\Lang$ were regular this would be regular too,
 contradicting the canonical example.
 \begin{center}
 \begin{tikzcd}[column sep=2.6em,row sep=tiny,ampersand replacement=\&]
-  \Lang\in\REG \ar[r,Rightarrow,"\text{complement}"] \&
+  \Lang\in\REG \ar[r,Rightarrow,"\text{complement}"] \&[1.6em]
   \overline{\Lang}\in\REG \ar[r,Rightarrow,"{\cap\,0^{*}1^{*}}"] \&
   \set{0^{n}1^{n}}\in\REG \ar[r,Rightarrow] \& \text{contradiction}
 \end{tikzcd}
@@ -10588,14 +10594,13 @@ chooses what, and the meaning of condition~1).
 nonregular by choosing $s=0^{2p}$ and pumping. Explain why this choice cannot yield a
 contradiction, and supply a string that can.
 
-\item Show that regular languages are \emph{not} closed under the operation
+\item Show that regular languages \emph{are} closed under the operation
 \[
-\mathrm{half}(\Lang)=\set{x\st xy\in\Lang\text{ for some }y\text{ with }\abs{x}=\abs{y}}
+\mathrm{half}(\Lang)=\set{x\st xy\in\Lang\text{ for some }y\text{ with }\abs{x}=\abs{y}},
 \]
-by
-exhibiting a regular $\Lang$ whose image $\mathrm{half}(\Lang)$ is one of the nonregular
-languages from this section. (Hint: a suitable $\Lang$ over a three-symbol alphabet collapses
-to $0^{n}1^{n}$.)
+even though its definition matches two lengths. (Hint: from a DFA for $\Lang$, build a DFA whose
+state after reading $x$ records the state reached on $x$ together with the set of states from which
+an accept state can be reached in exactly $\abs{x}$ steps.)
 
 \item Decide whether each language is regular; prove your answer. (a)
 $\set{0^{n}1^{m}\st n+m\le 100}$; (b) $\set{0^{n}1^{m}\st n+m\text{ is even}}$; (c)
@@ -10613,10 +10618,10 @@ itself, an equivalence relation on $\Sigstar$ -- two strings are equivalent when
 ever tell them apart -- and the number of classes of that relation is exactly the number of
 states the smallest DFA for $\Lang$ must have. Finitely many classes means regular; infinitely
 many means nonregular. Reading the relation algebraically, it is a right-congruence on the
-free monoid $\Sigstar$, its classes form a quotient monoid, and ``regular'' becomes ``recognized
-by a finite monoid.'' This is the bridge from automata to the algebra of Dummit \& Foote:
-index of a subgroup becomes index of a congruence, and the quotient group becomes the syntactic
-monoid.
+free monoid $\Sigstar$, its two-sided counterpart has classes forming a quotient monoid, and
+``regular'' becomes ``recognized by a finite monoid.'' This is the bridge from automata to the
+algebra of Dummit \& Foote: index of a subgroup becomes index of a congruence, and the quotient
+group becomes the syntactic monoid.
 
 \subsection*{The Myhill--Nerode relation}
 
@@ -10698,10 +10703,10 @@ $\Lang$ with exactly (index-many) states, and $\Lang$ is regular.
 (Minimality and uniqueness.) The first half showed every DFA for $\Lang$ has at least
 index-many states, and $\dfa_\Lang$ meets that bound, so $\dfa_\Lang$ is smallest. For
 uniqueness, in any minimal DFA the state-reaching map $x\mapsto\xtrans(\qstart,x)$ must be a
-bijection onto the reachable states whose fibres are exactly the $\sim_\Lang$-classes (no two
-classes may share a state, or we could merge and shrink; every state must be reachable, or we
-could delete it). That bijection is an isomorphism of DFAs onto $\dfa_\Lang$, so the minimal
-machine is unique up to renaming.
+surjection onto the reachable states whose fibres are exactly the $\sim_\Lang$-classes (no
+class may be split over two states, or we could merge them and shrink; every state must be
+reachable, or we could delete it). The induced bijection between classes and states is an
+isomorphism of DFAs onto $\dfa_\Lang$, so the minimal machine is unique up to renaming.
 \end{proof}
 
 \begin{remark}
@@ -10807,7 +10812,7 @@ $\begin{array}{c|cccc}
 \end{center}
 \whichrule{An infinite set of pairwise-distinguishable strings forces infinite index; by
 Myhill--Nerode infinite index means no finite DFA, hence nonregular -- no pumping game needed.}
-\emph{Check.} The single distinguishing column for the pair $(\str0^2,\str0^3)$ is $z=\str1^2$:
+\emph{Check.} A distinguishing column for the pair $(\str0^2,\str0^3)$ is $z=\str1^2$:
 $\str0^2\str1^2\in\Lang$ while $\str0^3\str1^2\notin\Lang$. The diagonal of $\checkmark$'s shows
 all rows are different.
 \end{wex}
@@ -11000,7 +11005,7 @@ Dummit \& Foote counterparts:
 $\begin{array}{l|l|l}
   \text{automata object} & \text{relation on }\Sigstar & \text{D\&F analogue}\\\hline
   \text{states of minimal DFA} & \sim_\Lang\ \text{(right-congruence)} &
-     \text{cosets } gH \text{ of a subgroup}\\
+     \text{cosets } Hg \text{ of a subgroup}\\
   \text{transition / syntactic monoid} & \approx_\Lang\ \text{(two-sided congruence)} &
      \text{quotient } G/N \text{ by a normal subgroup}\\
   \text{index of }\Lang & \card{\Sigstar/\!\sim_\Lang} & [G:H]\ \text{index}
@@ -11011,22 +11016,22 @@ $\Sigstar$ into Myhill--Nerode classes and the count is the index of $\Lang$. A 
 subgroup gives a congruence respecting multiplication on both sides, hence a quotient
 \emph{group}; the syntactic congruence respects multiplication on both sides, hence a quotient
 \emph{monoid}. ``Finite index'' is the regularity condition in both worlds. The lattice of
-congruences coarser than $\sim_\Lang$ orders the DFAs that recognize $\Lang$, smallest at the
+congruences finer than $\sim_\Lang$ orders the DFAs that recognize $\Lang$, smallest at the
 bottom; its Hasse diagram has $\sim_\Lang$ (the minimal machine) as least element:
 \begin{center}
 \begin{tikzpicture}[node distance=12mm]
   \node[ltdot,label=below:{\footnotesize $\sim_\Lang$ (minimal DFA)}] (min) {};
   \node[ltdot,above left=15mm and 26mm of min,label=left:{\footnotesize $3$-state DFA}] (m1) {};
   \node[ltdot,above right=15mm and 26mm of min,label=right:{\footnotesize $4$-state DFA}] (m2) {};
-  \node[ltdot,above=30mm of min,label=above:{\footnotesize coarser (bigger) machines}] (top) {};
+  \node[ltdot,above=30mm of min,label=above:{\footnotesize finer (bigger) machines}] (top) {};
   \draw[ltedge] (min) -- (m1);
   \draw[ltedge] (min) -- (m2);
   \draw[ltedge] (m1) -- (top);
   \draw[ltedge] (m2) -- (top);
 \end{tikzpicture}
 \end{center}
-Every DFA for $\Lang$ sits above the minimal one: its state-classes are a \emph{refinement}-free
-coarsening that merges fewer strings than $\sim_\Lang$, and quotienting by indistinguishability
+Every DFA for $\Lang$ sits above the minimal one: its state-classes form a \emph{refinement}
+of $\sim_\Lang$ that merges fewer strings, and quotienting by indistinguishability
 walks back down to the bottom. The whole hierarchy of recognizers -- from automaton to
 finite-index congruence to finite monoid -- collapses to the same finiteness condition:
 
@@ -11092,7 +11097,7 @@ one-way test that sits outside the equivalence.
   \path (reg) edge[cdash] node[cedgelbl,align=center]{necessary,\\not sufficient} (pump);
 \end{tikzpicture}
 \end{center}
-Six equivalent faces of one class: a language is regular iff given by any of DFA / NFA /
+Five equivalent faces of one class: a language is regular iff given by any of DFA / NFA /
 regex / finite Myhill--Nerode index / finite-monoid recognition; the pumping lemma is only a
 one-way test, drawn off to the side with a dashed edge because passing it does \emph{not}
 imply regularity.
@@ -11138,7 +11143,7 @@ pairs, merge the indistinguishable classes, and draw the minimal DFA.
 
 \item A DFA has states $\set{p,q,r}$, start $p$, accept set $\set{r}$, and an unreachable state
 $r$ (no transition from $p$ or $q$ ever enters $r$). A student runs table-filling and reports a
-three-state ``minimal'' DFA. Explain precisely what step was skipped, and give the correct
+two-state ``minimal'' DFA. Explain precisely what step was skipped, and give the correct
 minimal machine.
 
 \item Let $\Lang=\set{w\in\set{0,1}\kstar\st \text{the number of }\str1\text{s in }w\text{ is
