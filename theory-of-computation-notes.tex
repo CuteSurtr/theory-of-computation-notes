@@ -11753,7 +11753,7 @@ generates the language of $\str{+},\str\times$-expressions over the atom $\str a
 ambiguous.
 \wrec The trigger is a binary operator written with the expression variable \emph{itself} as the
 recursive variable on both sides ($E\to E\,\text{op}\,E$): nothing in the rule says which operator binds
-tighter, so a string with two operators can be grouped two ways. To prove ambiguity, exhibit one
+tighter, so a string with two unparenthesized operators can be grouped two ways. To prove ambiguity, exhibit one
 string with two parse trees.
 \wsol Take $w=\str a\str{+}\str a\str\times\str a$. One parse applies $E\to E\str{+}E$ at the root
 (grouping as $\str a\str{+}(\str a\str\times\str a)$); the other applies $E\to E\str\times E$ at the
@@ -12042,8 +12042,8 @@ which we will need so that the eventual rule $S_0\to\eps$ stands alone.
 and delete it. To keep the language unchanged, for every rule that contains $A$ on its right side,
 add new rules covering all ways of leaving each occurrence of $A$ out. For instance $R\to uAv$ also
 gives $R\to uv$, and $R\to uAvAw$ gives $R\to uvAw$, $R\to uAvw$, and $R\to uvw$. If a rule $R\to A$
-is present, add $R\to\eps$ -- unless that $\eps$-rule was already removed once, so the process
-terminates. Repeat until no $\eps$-rule remains except possibly $S_0\to\eps$.
+(or more generally $R\to A\cdots A$) is present, add $R\to\eps$ -- unless that $\eps$-rule was already
+removed once, so the process terminates. Repeat until no $\eps$-rule remains except possibly $S_0\to\eps$.
 
 \emph{Stage 3 (eliminate unit rules).} Repeatedly pick a unit rule $A\to B$ (with $B$ a variable)
 and delete it. For every rule $B\to u$, add $A\to u$, unless $A\to u$ is itself a unit rule that was
@@ -12159,7 +12159,7 @@ $B$ are copied up the chain to $S$.
     (S) edge node[above,gvlbl]{unit} (A)
     (A) edge node[above,gvlbl]{unit} (B)
     (B) edge node[above,gvlbl]{} (rhs);
-  \draw[->,tedge,draw,bend left=35] (S) to[bend left=38] node[below,gvlbl]{copied}(rhs);
+  \draw[->,tedge,draw,bend left=35] (S) to[bend left=38] node[below=2pt,gvlbl]{copied}(rhs);
 \end{tikzpicture}
 \end{center}
 Legend: a \emph{unit} edge is a unit rule $A\to B$ (one variable rewritten to another, no output);
@@ -12222,7 +12222,8 @@ order.
 \[
   S_0\to S,\quad S\to\str0 S\str1\mid T,\quad T\to TT\mid\eps .
 \]
-\underline{Stage 2.} The nullable variables are $T$ (directly) and $S$ (via $S\to T$). Remove
+\underline{Stage 2.} The nullable variables are $T$ (directly), $S$ (via $S\to T$), and $S_0$ (via
+$S_0\to S$). Remove
 $T\to\eps$: in $T\to TT$, dropping one occurrence gives $T\to T$, and dropping both would re-create
 the just-deleted $T\to\eps$, so we skip it; in $S\to T$, dropping gives $S\to\eps$. Now $S$ is
 nullable, so remove $S\to\eps$: in $S\to\str0 S\str1$ dropping the $S$ gives the crucial base rule
@@ -12308,7 +12309,7 @@ $3+4=7=2n-1$, matching the law.
   each rule $A\to\eps$ (with $A\neq S_0$) and, for every rule containing $A$, add the variants that
   omit each subset of the $A$-occurrences. Keep $S_0\to\eps$ only if $\eps\in L$. Repeat to a fixed
   point.
-  \item \textbf{Remove unit rules.} Delete each unit rule $A\to B$ and give $A$ every non-unit
+  \item \textbf{Remove unit rules.} Delete each unit rule $A\to B$ and give $A$ every
   production of $B$, never re-adding a unit rule already removed (this stops cycles). Repeat until
   none remain.
   \item \textbf{Purify terminals.} In every right-hand side of length $\ge 2$, replace each terminal
@@ -12397,8 +12398,8 @@ all output.
 
 \item Let $G$ be a CNF grammar with $v$ variables. Argue that if $G$ generates any string at all,
 it generates one of length at most $2^{\,v-1}$. (Hint: in a parse tree of a shortest such string no
-variable repeats on any root-to-leaf path, so the tree has height at most $v$; bound the number of
-leaves of a binary tree of that height.)
+variable repeats on any root-to-leaf path, so the tree has height at most $v$; its last level (rules
+$A\to a$) does not branch, so bound the number of leaves of a binary tree of height $v-1$.)
 \end{exers}
 
 
@@ -12665,7 +12666,7 @@ Let
 \]
 $A$ is context-free: the grammar $S\to XC$, $X\to\str a X\str b\mid\eps$,
 $C\to\str c C\mid\eps$ matches the $\str a$s to the $\str b$s and tacks on any number of
-$\str c$s. By the symmetric grammar $S\to AY$, $A\to\str a A\mid\eps$,
+$\str c$s. By the symmetric grammar $S\to ZY$, $Z\to\str a Z\mid\eps$,
 $Y\to\str b Y\str c\mid\eps$, $B$ is context-free too. Their intersection forces \emph{both}
 matchings at once:
 \[
@@ -12925,8 +12926,8 @@ $\str+$-free factors -- the multiplication is resolved before the surrounding ad
 recursion ($E\to E\str+ T$, $T\to T\str* F$) puts the already-built part on the left and a single
 fresh operand on the right, so a chain $a\str+ a\str+ a$ must group as $(a\str+ a)\str+ a$; a right
 grouping would require a rule $E\to T\str+ E$, which $G_E$ does not have. Uniqueness follows because
-at each node the variable ($E$, $T$, or $F$) and the position of the lowest-precedence top-level
-operator determine the rule applied, leaving no choice.
+at each node the variable ($E$, $T$, or $F$) and the position of the rightmost lowest-precedence
+top-level operator determine the rule applied, leaving no choice.
 \end{proof}
 
 \begin{wex}{Reading precedence off the tree for $\str{a+a*a}$}
