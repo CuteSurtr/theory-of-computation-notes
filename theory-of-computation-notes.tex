@@ -11623,7 +11623,7 @@ Build a CFG for $\Lang=\set{\str{a}^m\str{b}^n \st m\ge n\ge 0}$ over $\Sig=\set
 core, with a free run of $\str a$s prepended -- so technique~3 (linked parts) handles the core and
 technique~1 (union/concatenation) attaches the surplus.
 \wsol Generate the matched core with $T\to \str a\,T\,\str b\mid\eps$, which produces exactly
-$\set{\str a^n\str b^n}$. Prepend any number of extra $\str a$s with a left-recursive helper folded
+$\set{\str a^n\str b^n}$. Prepend any number of extra $\str a$s with a right-recursive helper folded
 into the start variable:
 \[
   S\;\to\;\str a\,S\;\mid\;T,\qquad\qquad T\;\to\;\str a\,T\,\str b\;\mid\;\eps.
@@ -11711,7 +11711,7 @@ groups nest in any gap, which together reach every legal ordering.
 \whichrule{A fixed ratio between symbol \emph{counts} with arbitrary order is enforced by a recursive
 rule whose every productive alternative emits one full ``unit'' (here $\str a\str b\str b$ in each
 order), with $S$ sprinkled between symbols to allow interleaving.}
-\emph{Check.} $\str{bab}$: $S\Rightarrow S\str b S\str a S\str b S\Rightarrow\str{bab}$ (each $S\to
+\emph{Check.} $\str{bab}$: $S\Rightarrow S\str b S\str a S\str b S\xRightarrow{*}\str{bab}$ (each $S\to
 \eps$) -- one $\str a$, two $\str b$s, accepted. $\str{ab}$ has $\#_{\str a}=1,\#_{\str b}=1\ne 2$ and
 no alternative emits a lone $\str a\str b$, so it is rejected.
 \end{wex}
@@ -11746,11 +11746,11 @@ meet are not inherently ambiguous, and the work is to find the unambiguous gramm
 
 \begin{wex}{An ambiguous expression grammar}
 The grammar $G_{\mathrm{amb}}$ with the single variable $E$ and rules
-$E\to E\,\str{+}\,E \mid E\,\str{\times}\,E \mid \str a$
+$E\to E\,\str{+}\,E \mid E\,\str{\times}\,E \mid \str(\,E\,\str) \mid \str a$
 generates the language of $\str{+},\str\times$-expressions over the atom $\str a$. Show it is
 ambiguous.
-\wrec The trigger is a binary operator written with the operator \emph{itself} as the recursive
-variable on both sides ($E\to E\,\text{op}\,E$): nothing in the rule says which operator binds
+\wrec The trigger is a binary operator written with the expression variable \emph{itself} as the
+recursive variable on both sides ($E\to E\,\text{op}\,E$): nothing in the rule says which operator binds
 tighter, so a string with two operators can be grouped two ways. To prove ambiguity, exhibit one
 string with two parse trees.
 \wsol Take $w=\str a\str{+}\str a\str\times\str a$. One parse applies $E\to E\str{+}E$ at the root
@@ -11786,7 +11786,7 @@ different trees.
 \end{minipage}
 \end{center}
 \whichrule{An operator rule of the form $E\to E\,\text{op}\,E$ encodes \emph{no} precedence or
-associativity, so any string with two operators splits into two trees; this self-on-both-sides shape
+associativity, so any string with two unparenthesized operators splits into two trees; this self-on-both-sides shape
 is the canonical source of ambiguity.}
 \emph{Check.} The two trees are distinct (different root expansion), both have frontier
 $\str a\str{+}\str a\str\times\str a$, so the string has two leftmost derivations and $G_{\mathrm
@@ -11828,7 +11828,7 @@ and the left associativity of $\str{+}$ is fixed by the recursion sitting on the
 \whichrule{Layered variables (one per precedence level, looser binding higher in the tree, plus
 left- or right-recursion for associativity) force a unique grouping, which is exactly what
 removes the ambiguity while keeping the same language.}
-\emph{Check.} There is no way to put $\str\times$ above $\str{+}$ in this grammar: $\str\times$ is
+\emph{Check.} Without parentheses there is no way to put $\str\times$ above $\str{+}$ in this grammar: $\str\times$ is
 introduced only by $T\to T\str\times F$, and $T$ sits strictly below the $E$-level $\str{+}$. So the
 string has a single parse tree, matching the standard reading $\str a+(\str a\times\str a)$.
 \end{wex}
@@ -11840,7 +11840,7 @@ $E,T,F$, leaving the generated language fixed while collapsing the parse trees t
 %   Arrow labelled "stratify by precedence". Invariant: the generated language (unchanged);
 %   ambiguity removed for THIS grammar only (inherently-ambiguous languages exist -- prose caution).
 \begin{center}
-\begin{tikzpicture}[node distance=12mm and 26mm]
+\begin{tikzpicture}[node distance=12mm and 38mm]
   \node[cnode,text width=38mm,minimum height=22mm] (flat)
     {\textbf{flat (ambiguous)}\\[3pt]
      $E\to E\,\str{+}\,E$\\$\phantom{E\to{}}\mid E\,\str\times\,E$\\
@@ -11918,7 +11918,7 @@ context-free (Worked Example earlier in this section, with $m=n$) but not regula
   \draw[gedge,fill=black!10] (-0.9,0) ellipse (1.5cm and 1.0cm);
   \node at (-0.9,0) {\footnotesize $\REG$};
   \node at (1.55,0) {\footnotesize $\CFL$};
-  \node[font=\scriptsize] at (-0.9,-0.55) {(parity, finite sets)};
+  \node[font=\scriptsize] at (-0.9,-0.42) {(parity, finite sets)};
   \node[font=\scriptsize] at (1.55,-0.6) {$\set{\str a^n\str b^n}$};
 \end{tikzpicture}
 \end{center}
@@ -11981,7 +11981,7 @@ $E\to E\str{+}T\mid T$, $T\to T\str\times F\mid F$, $F\to\str(E\str)\mid\str a$,
 tree for $\str{(a+a)\times a}$ and confirm it groups the $\str{+}$ before the $\str\times$.
 
 \item \emph{Find the bug.} A student claims the grammar $S\to \str a S\str a \mid \str b S\str b
-\mid \eps$ generates exactly the even-length palindromes over $\set{\str a,\str b\,}$. State precisely
+\mid \eps$ generates exactly the palindromes over $\set{\str a,\str b\,}$. State precisely
 which strings it actually generates and which palindromes it misses, then repair the grammar.
 
 \item Prove that the regular language $\Lang=\set{w\in\set{\str0,\str1}\kstar \st w\text{ contains
@@ -12000,7 +12000,7 @@ to compute with: a single rule may spawn a whole intermediate string, an $\eps$-
 a variable silently vanish, and a chain of rules $A\to B\to C$ may rename a variable without
 producing anything. \emph{Chomsky normal form} (CNF) is a stripped-down shape in which every
 rule does exactly one of two simple things -- emit a single terminal, or branch into exactly two
-variables -- so that a derivation becomes a strict binary tree of known size. The one key idea of
+variables -- so that a derivation becomes a binary tree of known size. The one key idea of
 this section is that \emph{every} context-free language has such a grammar, and the conversion is a
 finite, mechanical sequence of clean-up stages. This normal form is what makes the parsing and
 membership algorithms of later sections possible, because it pins down both the branching factor
@@ -12046,7 +12046,8 @@ terminates. Repeat until no $\eps$-rule remains except possibly $S_0\to\eps$.
 \emph{Stage 3 (eliminate unit rules).} Repeatedly pick a unit rule $A\to B$ (with $B$ a variable)
 and delete it. For every rule $B\to u$, add $A\to u$, unless $A\to u$ is itself a unit rule that was
 already removed (this guards against the cycles $A\to B\to A$). Repeat until no unit rule remains.
-After this stage every right-hand side is either a single terminal or a string of length $\ge 2$.
+After this stage every right-hand side (apart from that of $S_0\to\eps$) is either a single terminal
+or a string of length $\ge 2$.
 
 \emph{Stage 4 (shorten and purify).} Two clean-ups remain. First, in any rule whose right-hand side
 has length $\ge 2$, replace each terminal $a$ that appears there by a new variable $T_a$ and add the
@@ -12061,16 +12062,16 @@ final grammar generates the original language and is in Chomsky normal form.
 \end{proof}
 
 \textbf{Why a binary right-hand side matters.} In a CNF grammar every internal node of a parse tree
-has exactly two children (from a rule $A\to BC$) and every leaf carrying a terminal hangs from a
-node with a single child (from $A\to a$). The parse tree of a nonempty string is therefore a binary
-tree, and one can show every derivation of a length-$n$ string ($n\ge 1$) uses exactly $2n-1$ steps.
+has exactly two children (from a rule $A\to BC$), except that every leaf carrying a terminal hangs
+from a node with a single child (from $A\to a$). The parse tree of a nonempty string is therefore a
+binary tree, and one can show every derivation of a length-$n$ string ($n\ge 1$) uses exactly $2n-1$ steps.
 That fixed, predictable size is precisely what membership algorithms exploit.
 
 \begin{wex}{Reading off the binary shape of a CNF parse tree}
 The grammar $S\to AB$, $A\to a$, $B\to b$ is already in Chomsky normal form. Derive $\str{ab}$ and
 draw its parse tree, then confirm the step count $2n-1$.
 \wrec Every right-hand side is either two variables or one terminal, and no $\eps$- or unit rule is
-present, so Definition~\ref{def:cnf@c6} is met and the tree must be strictly binary at its internal
+present, so Definition~\ref{def:cnf@c6} is met and the tree must be binary at its internal
 nodes. The trigger ``rules are only $A\to BC$ and $A\to a$'' is what guarantees the clean shape.
 \wsol The leftmost derivation is
 $S\Rightarrow AB\Rightarrow aB\Rightarrow ab$, three steps, and $2n-1=2\cdot 2-1=3$. The branching
@@ -12106,7 +12107,7 @@ keeping or dropping each occurrence: keep both ($XaX$), drop the first ($aX$), d
   S\to XaX\mid aX\mid Xa\mid a,\qquad X\to b .
 \]
 No $\eps$-rule remains, and $X$ now only produces $\str b$. The two derivations below show that the
-old string $\str{aa}$ (using $X\Rightarrow^{*}\eps$ twice) is still produced, now by the new rule
+old string $\str{a}$ (using $X\Rightarrow^{*}\eps$ twice) is still produced, now by the new rule
 $S\to a$ on the right.
 \begin{center}
 \begin{tikzpicture}[treenode,level distance=9mm,
@@ -12142,9 +12143,9 @@ by copying through what the target can do.
 $A\to\str0$ and $A\to\str1$, giving $A\to\str0\mid\str1$. Now remove $S\to A$: since $A\to\str0$ and
 $A\to\str1$, add $S\to\str0\mid\str1$. The unit-free grammar is
 \[
-  S\to\str{1}S\str{0}\mid\str0\mid\str1,\qquad B\to\str0\mid\str1
+  S\to\str{1}S\str{0}\mid\str0\mid\str1,\qquad A\to\str0\mid\str1,\qquad B\to\str0\mid\str1
 \]
-(the variable $A$ is now unreachable and may be dropped). The diagram traces how the productions of
+(the variables $A$ and $B$ are now unreachable and may be dropped). The diagram traces how the productions of
 $B$ are copied up the chain to $S$.
 \begin{center}
 \begin{tikzpicture}[treenode,node distance=10mm and 20mm,>={Stealth[length=2mm]}]
@@ -12271,17 +12272,17 @@ leaves.
 
 \begin{wex}{Counting derivation steps via the $2n-1$ law}
 A CNF grammar $G$ has $L(G)=\set{\str a^n\st n\ge 1}$ through the rules
-$S\to SA\mid a$, $A\to a$. How many steps does the unique leftmost derivation of $\str{aaaa}$ take,
-and does the law $2n-1$ hold?
+$S_0\to SA\mid a$, $S\to SA\mid a$, $A\to a$ (start variable $S_0$). How many steps does the unique
+leftmost derivation of $\str{aaaa}$ take, and does the law $2n-1$ hold?
 \wrec The grammar is in CNF (only $A\to BC$ and $A\to a$ rules), so the $2n-1$ step law applies
 directly; the trigger is ``count derivation steps in a CNF grammar.''
-\wsol For $\str{aaaa}$ we have $n=4$. The branchings $S\to SA$ are applied $n-1=3$ times to build a
-left spine of four leaf-positions, and then $n=4$ terminal rules ($S\to a$ once, $A\to a$ three
-times) finish each leaf, for $3+4=7=2\cdot 4-1$ steps.
+\wsol For $\str{aaaa}$ we have $n=4$. The branchings ($S_0\to SA$ once, then $S\to SA$ twice) are
+applied $n-1=3$ times to build a left spine of four leaf-positions, and then $n=4$ terminal rules
+($S\to a$ once, $A\to a$ three times) finish each leaf, for $3+4=7=2\cdot 4-1$ steps.
 \begin{center}
 \begin{tikzpicture}[treenode,level distance=9mm,
    level/.style={sibling distance=30mm/#1},edge from parent/.style={tedge,draw}]
-  \node {$S$}
+  \node {$S_0$}
     child {node {$S$}
       child {node {$S$}
         child {node {$S$} child {node {$a$}}}
@@ -12436,8 +12437,8 @@ $w\in\lang{\dfa}$. Therefore $\lang{G}=\lang{\dfa}=\Lang$, and $\Lang$ is contex
 \end{proof}
 
 Every grammar produced this way is \emph{right-linear}: each rule has at most one variable, and it
-sits at the right end. Right-linear grammars are precisely the grammars equivalent to finite
-automata, which is another way to read Theorem~\ref{thm:regcf@c6}.
+sits at the right end. Right-linear grammars generate precisely the languages that finite automata
+recognize, and the proof of Theorem~\ref{thm:regcf@c6} gives one direction of this equivalence.
 
 The construction is best seen as a structure square: passing a DFA $\dfa$ to its right-linear
 grammar $G_{\dfa}$ commutes with taking the recognized/generated language, and the resulting
@@ -12453,8 +12454,8 @@ inclusion $\REG\hookrightarrow\CFL$ is proper.
                    q\in\Acc\ \rightsquigarrow\ R_q\to\eps\end{matrix}}"]
        \arrow[d, "\lang{\cdot}"']
   & G_{\dfa} \arrow[d, "\lang{\cdot}"] \\
-  \lang{\dfa} \arrow[r, equal] & \lang{G_{\dfa}}
-    \arrow[r, inc, "{\text{proper}}"] & \CFL
+  \lang{\dfa} \arrow[r, equal] & \lang{G_{\dfa}} \\[-4mm]
+  \REG \arrow[r, inc, "{\text{proper}}"] & \CFL
 \end{tikzcd}
 \end{center}
 Every regular language is context-free: each DFA transition $q\xrightarrow{a}q'$ becomes a rule
@@ -12594,7 +12595,7 @@ The very first step of any derivation picks the branch; the chosen sub-grammar d
       child {node {$S_A$}
         child {node {$\eps$}}}
       child {node {$\str b$}}}
-    child {node {$S_B$ \scriptsize(other branch)}};
+    child[densely dashed] {node {$S_B$ \scriptsize(other branch)}};
 \end{tikzpicture}
 \end{center}
 \whichrule{The single rule $S\to S_A\mid S_B$ makes the union: a derivation is forced to choose one
@@ -12628,9 +12629,11 @@ allows zero copies:
       child {node {$T$}
         child {node {$\eps$}}}
       child {node {$S_A$}
-        child {node {$\str{0}\str{1}$}}}}
+        child {node {$\str{0}$}}
+        child {node {$\str{1}$}}}}
     child {node {$S_A$}
-      child {node {$\str{0}\str{1}$}}};
+      child {node {$\str{0}$}}
+      child {node {$\str{1}$}}};
 \end{tikzpicture}
 \end{center}
 \whichrule{The star rule $T\to T S_A\mid\eps$ is left-recursive: each use of the recursive rule
@@ -12644,7 +12647,7 @@ required even though $\eps\notin A$.
 \subsection*{$\CFL$ is not closed under intersection or complement}
 
 Here the regular and context-free worlds part ways. Finite automata could be run ``in parallel''
-to intersect two regular languages (the product construction of Section~4). Grammars have no such
+to intersect two regular languages (the product construction of Section~4.2). Grammars have no such
 product: there is no way to force a derivation to obey two grammars at once, and in fact no
 construction can exist, because the closure simply fails.
 
@@ -12880,8 +12883,8 @@ it.
 The machinery of the previous sections pays off when we point it at the structures programs are
 actually made of. The one idea that carries this section is that a grammar does not merely accept or
 reject a string -- its parse tree \emph{is} the meaning: the way the tree groups symbols records the
-intended precedence, nesting, and order of operations. We work three running applications --
-arithmetic expressions, balanced brackets, and a small statement language -- and then turn the
+intended precedence, nesting, and order of operations. We work two running applications --
+arithmetic expressions and balanced brackets -- and then turn the
 question around: given a string, how do we \emph{recover} a parse tree mechanically? We meet two
 parsers, the top-down recursive-descent method that mirrors the grammar directly, and the bottom-up
 CYK table that decides membership for any grammar in Chomsky normal form.
@@ -12903,8 +12906,8 @@ a \emph{factor} (an atom or a parenthesized expression).
 
 The three-layer shape is not decoration: it is exactly what forces $\str*$ to bind tighter than
 $\str+$ and makes both operators group to the left. A factor can never directly contain a $\str+$
-unless that $\str+$ is wrapped in parentheses, so addition always sits \emph{above} multiplication in
-any parse tree. We make this precise and then read it off a picture.
+unless that $\str+$ is wrapped in parentheses, so, when no parentheses intervene, addition always sits
+\emph{above} multiplication in any parse tree. We make this precise and then read it off a picture.
 
 \begin{proposition}[Precedence and associativity in $G_E$]\label{prop:prec@c6}
 In every parse tree of $G_E$, each $\str*$ is applied before any $\str+$ that shares an operand with
@@ -13024,7 +13027,7 @@ Give a parse tree for $\str{(())()}$ in $G_B$.
 \wrec The rule $S\to\str(S\str)S$ has \emph{two} recursive slots: the inner $S$ (what sits between a
 matched pair) and the trailing $S$ (what comes after). The trigger ``a closed block followed by more
 text'' maps onto exactly that left/right split.
-\wsol The first $\str($ matches the third symbol $\str)$ (running count first returns to $0$ there),
+\wsol The first $\str($ matches the fourth symbol $\str)$ (running count first returns to $0$ there),
 giving $x=\str{()}$ inside and $y=\str{()}$ after. Recurse on each: $\str{()}$ is
 $\str(\eps\str)\eps$.
 \begin{center}
@@ -13046,7 +13049,7 @@ $\str(\eps\str)\eps$.
 \end{tikzpicture}
 \end{center}
 \whichrule{Each application of $S\to\str(S\str)S$ corresponds to one matched pair plus everything to
-its right, so the tree's left spine walks the outermost pairs left to right while inner subtrees hold
+its right, so the tree's right spine walks the outermost pairs left to right while inner subtrees hold
 their contents -- the bracket nesting and the tree nesting coincide.}
 \emph{Check.} Reading leaves and dropping the $\eps$'s gives $\str(\str(\str)\str)\str(\str)=
 \str{(())()}$. The running count $1,2,1,0,1,0$ never dips below $0$ and ends at $0$, confirming
@@ -13172,8 +13175,9 @@ polynomial, in contrast to the unbounded search a naive derivation hunt would do
 \end{method}
 
 \begin{wex}{A full CYK chart for $\str{aabb}$}
-Let $G$ be the CNF grammar with $S\to AB\mid AC$, $C\to SB$, $A\to\str a$, $B\to\str b$. (One checks
-$\lang{G}=\set{\str a^n\str b^n \st n\ge 1}$.) Run CYK on $w=\str{aabb}$.
+Let $G$ be the CNF grammar with start variable $S_0$ and rules $S_0\to AB\mid AC$, $S\to AB\mid AC$,
+$C\to SB$, $A\to\str a$, $B\to\str b$. (One checks $\lang{G}=\set{\str a^n\str b^n \st n\ge 1}$.)
+Run CYK on $w=\str{aabb}$.
 \wrec The grammar is in CNF and the question is pure membership, so the trigger is ``decide
 $w\in\lang G$ for a CNF grammar'' -- the CYK table. We build it by substring length.
 \wsol Index $a_1a_2a_3a_4=\str a\str a\str b\str b$. Length $1$: cell $(i,i)$ gets $A$ over each
@@ -13183,26 +13187,27 @@ $j$; cell $(i,j)$ holds $X_{i,j}$, the variables generating $a_i\cdots a_j$):
 \renewcommand{\arraystretch}{1.25}
 $\begin{array}{c|cccc}
  i\backslash j & 1\ (\str a) & 2\ (\str a) & 3\ (\str b) & 4\ (\str b)\\\hline
- 1 & \set{A} & \es & \es & \set{S}\\
- 2 & & \set{A} & \set{S} & \set{C}\\
+ 1 & \set{A} & \es & \es & \set{S_0,S}\\
+ 2 & & \set{A} & \set{S_0,S} & \set{C}\\
  3 & & & \set{B} & \es\\
  4 & & & & \set{B}
 \end{array}$
 \end{center}
 Working the nontrivial cells in order of length. Length $2$: cell $(1,2)$ over $\str{aa}$ has only
 $A\in X_{1,1}$ and $A\in X_{2,2}$, and no rule has right-hand side $AA$, so $\es$; cell $(2,3)$ over
-$\str{ab}$ takes the split $k=2$ with $A\in X_{2,2}$, $B\in X_{3,3}$, rule $S\to AB$, giving
-$\set S$; cell $(3,4)$ over $\str{bb}$ has only $B,B$ and no $BB$-rule, so $\es$. Length $3$: cell
-$(1,3)$ over $\str{aab}$ tries $k=1$ ($A\in X_{1,1}$, $X_{2,3}=\set S$, but $S\to AC$ needs $C$, not
-$S$) and $k=2$ ($X_{1,2}=\es$), so $\es$ -- consistent with $\str{aab}\notin\lang G$; cell $(2,4)$
-over $\str{abb}$ tries $k=2$ ($X_{3,4}=\es$) and $k=3$ ($X_{2,3}=\set S$, $X_{4,4}=\set B$, rule
+$\str{ab}$ takes the split $k=2$ with $A\in X_{2,2}$, $B\in X_{3,3}$, rules $S_0\to AB$ and
+$S\to AB$, giving $\set{S_0,S}$; cell $(3,4)$ over $\str{bb}$ has only $B,B$ and no $BB$-rule, so
+$\es$. Length $3$: cell $(1,3)$ over $\str{aab}$ tries $k=1$ ($A\in X_{1,1}$, $X_{2,3}=\set{S_0,S}$,
+but $S_0\to AC$ and $S\to AC$ need $C$, not $S_0$ or $S$) and $k=2$ ($X_{1,2}=\es$), so $\es$ --
+consistent with $\str{aab}\notin\lang G$; cell $(2,4)$
+over $\str{abb}$ tries $k=2$ ($X_{3,4}=\es$) and $k=3$ ($X_{2,3}=\set{S_0,S}$, $X_{4,4}=\set B$, rule
 $C\to SB$), giving $\set C$. Length $4$: cell $(1,4)$ over $\str{aabb}$ tries $k=2,3$ (both involve an
-empty sub-cell) and $k=1$ ($A\in X_{1,1}$, $X_{2,4}=\set C$, rule $S\to AC$), giving $\set S$. Since
-$S\in X_{1,4}$, accept.
+empty sub-cell) and $k=1$ ($A\in X_{1,1}$, $X_{2,4}=\set C$, rules $S_0\to AC$ and $S\to AC$), giving
+$\set{S_0,S}$. Since $S_0\in X_{1,4}$, accept.
 \begin{center}
 \begin{tikzpicture}[treenode,level distance=8.5mm,
    level/.style={sibling distance=30mm/#1},edge from parent/.style={tedge,draw}]
-  \node {$S$}
+  \node {$S_0$}
     child {node {$A$} child {node {$\str a$}}}
     child {node {$C$}
       child {node {$S$}
@@ -13214,8 +13219,8 @@ $S\in X_{1,4}$, accept.
 \whichrule{CYK fills cell $(i,j)$ from all ways to split $a_i\cdots a_j$ into two shorter blocks the
 grammar already knows how to make; the parse tree above is recovered by reading which split and which
 rule populated $(1,4)$, then recursing into the chosen sub-cells.}
-\emph{Check.} The displayed tree's leaves spell $\str{aabb}$ and $S\in X_{1,4}$, so the algorithm and
-the tree agree. By contrast, running the same fill on $\str{abb}$ leaves $S\notin X_{1,3}$, correctly
+\emph{Check.} The displayed tree's leaves spell $\str{aabb}$ and $S_0\in X_{1,4}$, so the algorithm and
+the tree agree. By contrast, running the same fill on $\str{abb}$ leaves $S_0\notin X_{1,3}$, correctly
 rejecting an unbalanced string.
 \end{wex}
 
