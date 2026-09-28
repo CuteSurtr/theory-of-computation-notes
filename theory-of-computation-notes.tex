@@ -31294,7 +31294,7 @@ multiplicand, and the product.
 \begin{center}
 \begin{tikzpicture}
   \matrix (T) [tape,nodes={minimum size=5.6mm}]{
-    $\str1$ & $\str0$ & $\str0$ & $\str1$ & $\str0$ & $\sqcup$ & $\sqcup$ \\
+    $\str1$ & $\str1$ & $\str0$ & $\str0$ & $\str1$ & $\sqcup$ & $\sqcup$ \\
   };
   \node[font=\footnotesize,left=2mm of T-1-1] {work};
   \draw[decorate,decoration={brace,amplitude=4pt},line width=0.6pt]
@@ -31331,13 +31331,13 @@ D=\text{``On input } w:\quad
   \item Let $n=\abs{w}$. Using space constructibility, compute $f(n)$ and mark off exactly
   $f(n)$ tape cells; if any later step tries to leave this marked zone, \textbf{reject}.
   \item If $w$ is not of the form $\enc{M}\str{1}\str{0}^{*}$ for a TM $M$, \textbf{reject}.
-  \item Simulate $M$ on $w$, counting simulated steps; if the count exceeds $2^{f(n)}$,
+  \item Simulate $M$ on $w$, counting simulated steps; if the count exceeds $n\,2^{f(n)}$,
   \textbf{reject}.
   \item If $M$ accepts, \textbf{reject}; if $M$ rejects, \textbf{accept}.''
 \end{enumerate}
 The step counter of stage~3 fits in $\bigO(f(n))$ space and kills any infinite loop that
-stays inside the marked zone (a machine confined to $g(n)$ space has at most $2^{\bigO(g(n))}$
-distinct configurations, so running longer means looping). Hence $D$ always halts and uses
+stays inside the marked zone (a machine confined to $g(n)$ space has at most $n\,2^{\bigO(g(n))}$
+distinct configurations on an input of length $n$, so running longer means looping). Hence $D$ always halts and uses
 $\bigO(f(n))$ space, so $A=\lang{D}\in\SPACE(f(n))$.
 
 Now suppose, for contradiction, some machine $M$ decides $A$ in space $g(n)=o(f(n))$. Because
@@ -31345,7 +31345,7 @@ $D$'s fixed tape alphabet must encode $M$'s arbitrary alphabet, $D$ simulates $M
 constant blow-up: it uses $d\cdot g(n)$ space for a constant $d$ depending only on $M$. Since
 $g=o(f)$, there is an $n_{0}$ with $d\cdot g(n)<f(n)$ for all $n\ge n_{0}$. The padded inputs
 $\enc{M}\str1\str0^{k}$ make $\abs{w}$ as large as we like while still naming $M$; choose $k$
-so that $\abs{w}=\enc{M}\str1\str0^{k}$ has length $\ge n_{0}$. On that input $D$'s simulation
+so that $w=\enc{M}\str1\str0^{k}$ has length $\ge n_{0}$. On that input $D$'s simulation
 fits inside the marked zone and runs to completion, so by stage~4, $D$ outputs the
 \emph{opposite} of $M$. Thus $w\in A \iff w\notin\lang{M}$, contradicting $\lang{M}=A$.
 Therefore no $o(f)$-space machine decides $A$.
@@ -31378,13 +31378,13 @@ $M_{i}$'s verdict on input $j$ (A = accept, R = reject). $D$ is engineered so th
   \node[anchor=east] at (0.4,-2) {$M_3$};
   \node[anchor=east] at (0.4,-3) {$\vdots$};
   % grid of entries
-  \node[draw,circle,inner sep=1pt] at (1,0) {A};
+  \node[draw,inner sep=2pt] at (1,0) {A};
   \node at (2,0) {R}; \node at (3,0) {A}; \node at (4,0) {$\cdots$};
   \node at (1,-1) {R};
-  \node[draw,circle,inner sep=1pt] at (2,-1) {R};
+  \node[draw,inner sep=2pt] at (2,-1) {R};
   \node at (3,-1) {A}; \node at (4,-1) {$\cdots$};
   \node at (1,-2) {A}; \node at (2,-2) {A};
-  \node[draw,circle,inner sep=1pt] at (3,-2) {R};
+  \node[draw,inner sep=2pt] at (3,-2) {R};
   \node at (4,-2) {$\cdots$};
   \node at (1,-3) {$\vdots$}; \node at (2,-3) {$\vdots$}; \node at (3,-3) {$\vdots$};
   % the D row
@@ -31393,9 +31393,9 @@ $M_{i}$'s verdict on input $j$ (A = accept, R = reject). $D$ is engineered so th
   \node[font=\bfseries] at (2,-4.2) {A};
   \node[font=\bfseries] at (3,-4.2) {A};
   \node at (4,-4.2) {$\cdots$};
-  \draw[->,line width=0.6pt] (1,-0.35) -- (1,-3.85);
-  \draw[->,line width=0.6pt] (2,-1.35) -- (2,-3.85);
-  \draw[->,line width=0.6pt] (3,-2.35) -- (3,-3.85);
+  \draw[->,line width=0.6pt] (1,-0.3) to[bend left=18] (1,-3.85);
+  \draw[->,line width=0.6pt] (2,-1.3) to[bend left=18] (2,-3.85);
+  \draw[->,line width=0.6pt] (3,-2.3) to[bend left=18] (3,-3.85);
   \node[font=\footnotesize,anchor=west] at (4.3,-4.2) {$D$ flips each boxed entry};
 \end{tikzpicture}
 \end{center}
@@ -31417,7 +31417,7 @@ $\SPACE(n^{a})\subsetneq\SPACE(n^{b})$ whenever $0\le a<b$.
 
 \begin{proof}
 $\SPACE(f_{1})\subseteq\SPACE(f_{2})$ since $f_{1}=o(f_{2})$ gives $f_{1}(n)\le f_{2}(n)$
-eventually. Theorem~\ref{thm:spacehier@c15} supplies $A\in\SPACE(f_{2})\setminus o(f_{2})$; as
+eventually. Theorem~\ref{thm:spacehier@c15} supplies $A\in\SPACE(f_{2})$ not decidable in $o(f_{2}(n))$ space; as
 $f_{1}=o(f_{2})$, $A\notin\SPACE(f_{1})$, so the inclusion is proper.
 \end{proof}
 
@@ -31451,7 +31451,7 @@ $\PSPACE$.
 \end{wex}
 
 \begin{corollary}\label{cor:nlpspace@c15}
-$\NL\subsetneq\PSPACE$, and consequently $\PSPACE\subsetneq\mathsf{EXPSPACE}$, where
+$\NL\subsetneq\PSPACE$, and similarly $\PSPACE\subsetneq\mathsf{EXPSPACE}$, where
 $\mathsf{EXPSPACE}=\bigcup_{k}\SPACE(2^{n^{k}})$.
 \end{corollary}
 
@@ -31526,12 +31526,12 @@ single-tape clock bookkeeping.
 \begin{tikzpicture}[x=0.5cm,y=0.5cm]
   \draw[->,line width=0.6pt] (0,0) -- (11,0) node[right,font=\small]{$n$};
   \draw[->,line width=0.6pt] (0,0) -- (0,7) node[above,font=\small]{cost};
-  \draw[line width=1pt] plot[domain=1:10,samples=40] (\x,{0.6*\x*log10(\x)*1.6});
-  \node[fill=white,inner sep=1pt,font=\footnotesize] at (8.6,6.1) {$n^{3}$};
-  \draw[line width=1pt,dashed] plot[domain=1.4:10,samples=40] (\x,{0.6*\x*log10(\x)*1.6/(3*ln(\x)/ln(10)+0.4)*3});
-  \node[fill=white,inner sep=1pt,font=\footnotesize] at (8.9,3.7) {$n^{3}/\log n^{3}$};
-  \draw[line width=1pt,dotted] plot[domain=1:10,samples=40] (\x,{0.42*\x*\x*0.32});
-  \node[fill=white,inner sep=1pt,font=\footnotesize] at (8.2,2.0) {$n^{2}$};
+  \draw[line width=1pt] plot[domain=1:10,samples=40] (\x,{0.0065*\x*\x*\x});
+  \node[inner sep=1pt,font=\footnotesize,anchor=west] at (10.1,6.5) {$n^{3}$};
+  \draw[line width=1pt,dashed] plot[domain=1:10,samples=40] (\x,{0.0065*\x*\x*\x/(1+0.5*ln(\x))});
+  \node[inner sep=1pt,font=\footnotesize,anchor=west] at (10.1,3.02) {$n^{3}/\log n^{3}$};
+  \draw[line width=1pt,dotted] plot[domain=1:10,samples=40] (\x,{0.018*\x*\x});
+  \node[inner sep=1pt,font=\footnotesize,anchor=west] at (10.1,1.8) {$n^{2}$};
 \end{tikzpicture}
 \end{center}
 \whichrule{The time corollary's hypothesis is $t_{1}=o(t_{2}/\log t_{2})$, so we must beat the
@@ -31573,7 +31573,7 @@ space $\bigO\!\bigl((n2^{n})^{2}\bigr)=2^{\bigO(n)}$, so
 $\mathit{EQREX}{\uparrow}\in\mathsf{EXPSPACE}$. \emph{Hardness.} Given an
 $\mathsf{EXPSPACE}$ machine $M$ running in space $2^{n^{k}}$ and an input $w$, a polynomial-time
 reduction outputs $R_{1}=\Delta^{*}$ (all strings over the history alphabet) and an $R_{2}$
-generating every string that is \emph{not} an accepting computation history of $M$ on $w$;
+generating every string that is \emph{not} a rejecting computation history of $M$ on $w$;
 then $R_{1}\equiv R_{2}$ iff $M$ accepts $w$. The exponentiation operator is what keeps
 $R_{2}$ polynomial-sized despite the $2^{n^{k}}$-length configurations: a gap of that width is
 written $\Delta\!\uparrow\!(2^{n^{k}})$ with the exponent in binary, length $\bigO(n^{k})$.
@@ -31603,9 +31603,9 @@ theorem, and that is all we need.
   \node[font=\small] at (-1.5,-0.3) {$\classP$};
   \node[font=\small] at (0.05,1.0) {$\PSPACE$};
   \node[font=\small] at (2.35,1.6) {$\mathsf{EXPSPACE}$};
-  \node[gv] (E) at (2.1,-0.5) {};
-  \node[font=\footnotesize,anchor=west] at (2.25,-0.5) {$\mathit{EQREX}{\uparrow}$};
-  \node[font=\footnotesize] at (0.05,-1.9) {top step proven strict; bottom step open};
+  \node[gv] (E) at (1.9,-0.5) {};
+  \node[font=\footnotesize,anchor=west] at (2.03,-0.5) {$\mathit{EQREX}{\uparrow}$};
+  \node[font=\footnotesize] at (0,-2.65) {top step proven strict; bottom step open};
 \end{tikzpicture}
 \end{center}
 \whichrule{An $\mathsf{EXPSPACE}$-complete language sits provably outside $\PSPACE$ precisely
@@ -31766,10 +31766,10 @@ polynomially many strings, each of polynomial length.
     $\str{1}$ & $\str{0}$ & $\str{1}$ & $\str{1}$ & $\sqcup$ & $\sqcup$ \\ };
   \node[font=\footnotesize,left=2mm of Q-1-1] {query tape};
   % oracle box
-  \node[procbox,minimum width=26mm,minimum height=12mm,right=20mm of ctrl] (or)
+  \node[procbox,minimum width=26mm,minimum height=12mm,right=30mm of ctrl] (or)
     {\small oracle for $A$};
   % flows
-  \draw[head] (ctrl.north) -- (W-1-1.south-|ctrl.north);
+  \draw[head] (ctrl.north) -- (Q.south-|ctrl.north);
   \draw[head] (ctrl.south) -- (W.north-|ctrl.south);
   \draw[flow] (Q.east) to[bend left=12]
     node[flowlbl,midway]{write $y$} (or.north west);
@@ -31916,9 +31916,9 @@ equality.
 \begin{center}
 \begin{tikzpicture}[x=1cm,y=1cm]
   \node[procbox,minimum width=20mm] (np) at (0,0) {$\classNP^{A}$};
-  \node[procbox,minimum width=22mm,right=10mm of np] (nps) {$\NPSPACE$};
-  \node[procbox,minimum width=20mm,right=10mm of nps] (ps) {$\PSPACE$};
-  \node[procbox,minimum width=18mm,right=10mm of ps] (pa) {$\classP^{A}$};
+  \node[procbox,minimum width=22mm,right=20mm of np] (nps) {$\NPSPACE$};
+  \node[procbox,minimum width=20mm,right=20mm of nps] (ps) {$\PSPACE$};
+  \node[procbox,minimum width=18mm,right=22mm of ps] (pa) {$\classP^{A}$};
   \draw[flow] (np) -- node[flowlbl]{inline $A$} (nps);
   \draw[flow] (nps) -- node[flowlbl]{Savitch} (ps);
   \draw[flow] (ps) -- node[flowlbl]{$A$ complete} (pa);
@@ -32058,13 +32058,13 @@ length-$5$ string, say $\str{11000}$, and commit $\str{11000}\in B$.
   \node[draw,minimum width=20mm,minimum height=7mm,font=\footnotesize] (q) at (0,0)
     {queried: $4$ strings};
   \node[font=\footnotesize,below=1mm of q] {all committed $\notin B$};
-  \node[draw,minimum width=22mm,minimum height=7mm,font=\footnotesize,right=14mm of q] (r)
+  \node[draw,minimum width=22mm,minimum height=7mm,font=\footnotesize,right=24mm of q] (r)
     {reserve $\str{11000}\in B$};
-  \node[font=\footnotesize,below=1mm of r] {unqueried $\Rightarrow$ consistent};
+  \node[font=\footnotesize,below=1mm of r] (rl) {unqueried $\Rightarrow$ consistent};
   \draw[flow] (q) -- node[flowlbl]{$M_i$ rejected} (r);
   \node[procbox,minimum width=26mm,below=12mm of $(q)!0.5!(r)$] (res)
     {\footnotesize now $\str1^{5}\in L_{B}$ but $M_i$ rejected it};
-  \draw[flow] (r.south) to[bend left=10] (res.east);
+  \draw[flow] (rl.south) to[bend left=10] (res.east);
 \end{tikzpicture}
 \end{center}
 Now $B$ has a length-$5$ string, so $\str1^{5}\in L_{B}$, yet
@@ -32096,10 +32096,10 @@ universe of computation.
 \begin{center}
 \begin{tikzpicture}[x=1cm,y=1cm]
   \node[procbox,minimum width=22mm] (a) at (0,0) {world $A$};
-  \node[font=\footnotesize,below=1mm of a] {$\classP^{A}=\classNP^{A}$};
+  \node[font=\footnotesize,above=1mm of a] {$\classP^{A}=\classNP^{A}$};
   \node[procbox,minimum width=22mm,right=16mm of a] (b) {world $B$};
-  \node[font=\footnotesize,below=1mm of b] {$\classP^{B}\neq\classNP^{B}$};
-  \node[procbox,minimum width=22mm,below=12mm of $(a)!0.5!(b)$] (real) {real world $\es$};
+  \node[font=\footnotesize,above=1mm of b] {$\classP^{B}\neq\classNP^{B}$};
+  \node[procbox,minimum width=22mm,below=16mm of $(a)!0.5!(b)$] (real) {real world $\es$};
   \node[font=\footnotesize,below=1mm of real] {$\classP$ vs $\classNP$ \emph{open}};
   \draw[flow] (real) -- node[flowlbl]{plug in $A$} (a);
   \draw[flow] (real) -- node[flowlbl]{plug in $B$} (b);
@@ -32224,7 +32224,7 @@ inclusion, and explain in one sentence why the \emph{first} inclusion needs $A$
 to be in $\PSPACE$ (not just $\PSPACE$-hard).
 
 \item In the separating construction, stage $i$ requires a length $n$ with
-$2^{n}>n^{i}$. For $i=4$ (time bound $n^{4}$), find the smallest integer $n$
+$2^{n}>n^{i}$. For $i=4$ (time bound $n^{4}$), find the smallest integer $n\ge 2$
 satisfying $2^{n}>n^{4}$, and explain why \emph{some} such $n$ exists for every
 fixed $i$.
 
@@ -32277,7 +32277,7 @@ about why $L_{B}$, not $U$, is the right language to diagonalize against?
 When a problem is $\classNP$-hard we cannot, unless $\classP=\classNP$, compute an exact optimum in
 polynomial time. The escape route this section explores is to lower our sights: aim for a solution
 \emph{provably close} to optimal, in polynomial time. The one idea that makes the analysis work is
-to bound our algorithm's output not against the (uncomputable) optimum directly, but against a
+to bound our algorithm's output not against the (hard-to-compute) optimum directly, but against a
 \emph{computable lower or upper bound} on the optimum -- a quantity we can hold in our hand. We
 develop this for three landmark cases (vertex cover, max-cut, max-3sat), and close with an honest
 word on the limits: for some problems even a modest approximation ratio is itself $\classNP$-hard.
@@ -32312,7 +32312,9 @@ $1$ would be exact; the closer $\rho$ is to $1$, the better.
 The convention $\rho\ge 1$ unifies both directions: a minimizer's output is at most $\rho$ times too
 \emph{large}, a maximizer's at least $1/\rho$ times the best -- in each case the gap from optimum is
 the factor $\rho$. We sometimes call a minimization algorithm with ratio $k$ a \emph{$k$-optimal}
-or \emph{factor-$k$} approximation.
+or \emph{factor-$k$} approximation. For maximization problems it is also customary to quote the
+fraction $1/\rho\le 1$ instead; in that form the MAX-CUT and MAX-3SAT algorithms below are called
+$\tfrac12$- and $\tfrac78$-approximations (that is, $\rho=2$ and $\rho=\tfrac87$).
 
 \begin{method}{The one move behind every guarantee in this section}
 You cannot compare $A(x)$ to $\mathrm{OPT}(x)$ directly -- $\mathrm{OPT}(x)$ is what you could not
@@ -32572,8 +32574,8 @@ row:
 $\begin{array}{ccc|ccc|c}
  x & y & z & C_1 & C_2 & C_3 & \#\text{sat}\\\hline
  0&0&0 & 0 & 1 & 1 & 2\\
- 0&0&1 & 1 & 1 & 0 & 2\\
- 0&1&0 & 1 & 1 & 1 & 3\\
+ 0&0&1 & 1 & 1 & 1 & 3\\
+ 0&1&0 & 1 & 1 & 0 & 2\\
  0&1&1 & 1 & 1 & 1 & 3\\
  1&0&0 & 1 & 1 & 1 & 3\\
  1&0&1 & 1 & 0 & 1 & 2\\
@@ -32585,7 +32587,7 @@ $\begin{array}{ccc|ccc|c}
 \begin{tikzpicture}[x=0.95cm,y=0.5cm]
   \draw[->,line width=0.6pt] (-0.3,0)--(8.6,0) node[right,font=\footnotesize]{assignment};
   \draw[->,line width=0.6pt] (-0.3,0)--(-0.3,3.6) node[above,font=\footnotesize]{\#sat};
-  \foreach \i/\h in {0/2,1/2,2/3,3/3,4/3,5/2,6/3,7/3}{
+  \foreach \i/\h in {0/2,1/3,2/2,3/3,4/3,5/2,6/3,7/3}{
     \fill[black!22] (\i+0.15,0) rectangle (\i+0.85,\h);
     \node[font=\scriptsize,above] at (\i+0.5,\h) {\h};}
   \draw[dashed,line width=0.8pt] (-0.3,2.625)--(8.4,2.625)
@@ -32594,8 +32596,8 @@ $\begin{array}{ccc|ccc|c}
 \end{center}
 The column totals: $C_1$ is satisfied by $7$ of $8$ assignments (it fails only at $x{=}y{=}z{=}0$),
 and likewise $C_2$ and $C_3$ each by $7$. Summing satisfied clauses across the $8$ rows gives
-$2+2+3+3+3+2+3+3=21$, so the average is $21/8=\tfrac78\cdot 3$, exactly the expectation. Any of the
-five rows with ``\#sat $=3$'' (e.g.\ $x{=}0,y{=}1,z{=}0$) beats the $\tfrac78m=2.625$ bound.
+$2+3+2+3+3+2+3+3=21$, so the average is $21/8=\tfrac78\cdot 3$, exactly the expectation. Any of the
+five rows with ``\#sat $=3$'' (e.g.\ $x{=}0,y{=}1,z{=}1$) beats the $\tfrac78m=2.625$ bound.
 \whichrule{Each clause fails on exactly one of the $8$ patterns of its three variables, so it is
 satisfied on $7/8$ of them; linearity averages these per-clause $7/8$'s into $\tfrac78m$ overall.}
 \emph{Check.} $21/8=2.625=\tfrac78\cdot 3$; and the maximum row value $3$ means $\varphi$ is in fact
@@ -32667,8 +32669,7 @@ starting cut where $B$ halts at a cut that is \emph{not} maximum, draw both the 
 strictly larger cut, and state precisely the weaker property $B$ actually guarantees.
 
 \item Let $\varphi$ be a 3CNF formula with $m$ clauses, each on three distinct variables. Using the
-random-assignment analysis, prove that \emph{if} $\varphi$ has more than $\tfrac18 m$ clauses
-(i.e.\ $m>8\cdot 0$, trivially $m\ge 1$ suffices), then some assignment satisfies at least one
+random-assignment analysis, prove that \emph{if} $m\ge 1$, then some assignment satisfies at least one
 clause; more sharply, prove that every such $\varphi$ has an assignment satisfying $\ge\lceil
 \tfrac78 m\rceil$ clauses. Where does linearity of expectation enter, and why is independence
 \emph{across} clauses not needed?
@@ -32698,9 +32699,9 @@ ordinary reductions preserve), and state what kind of reduction would be needed 
 approximation guarantee.
 
 \item Give a $2$-approximation algorithm for the following \emph{minimization} problem and prove its
-ratio by the Method of this section. \textsc{Min-Edge-Cover-by-Stars}: given a graph $G$ with no
-isolated vertices, choose a smallest set of vertices $C$ such that every \emph{vertex} of $G$ is
-either in $C$ or adjacent to a vertex in $C$ (a dominating-style cover). \emph{Hint:} you need a
+ratio by the Method of this section. \textsc{Min-Edge-Dominating-Set}: given a graph $G$,
+choose a smallest set of edges $F$ such that every \emph{edge} of $G$ is
+either in $F$ or shares an endpoint with an edge in $F$ (a dominating-style cover). \emph{Hint:} you need a
 computable lower bound on $\mathrm{OPT}$; relate it to a maximal set of pairwise non-adjacent edges
 or vertices, mirroring the vertex-cover argument, and state clearly which quantity plays the role of
 $\abs{M}$.
@@ -32713,8 +32714,8 @@ Every machine so far has been forced to commit to a single next move. A
 the outcome decide where to go -- so its answer on a fixed input is now a random
 variable, and ``deciding a language'' must be replaced by ``deciding it with high
 probability.'' The one key idea of this section is that a tiny, controllable chance of
-error buys real algorithmic power: problems with no known fast deterministic
-algorithm (testing primality, checking a polynomial identity, finding a small cut) fall
+error buys real algorithmic power: problems with no known deterministic
+algorithm nearly as simple (testing primality, checking a polynomial identity, finding a small cut) fall
 to short randomized procedures, and the error can be driven below any threshold by
 the cheap trick of repeating and voting. We make ``coin-flip machine'' precise, name
 the randomized classes $\mathsf{BPP}$, $\mathsf{RP}$, $\mathsf{coRP}$,
@@ -32803,7 +32804,7 @@ good as any other.
 \subsection*{Amplification}
 
 \begin{theorem}[Amplification for two-sided error]\label{thm:amp@c15}
-Fix a constant $\epsilon$ with $0\le\epsilon<\tfrac12$. If a language $A$ is decided
+Fix a constant $\epsilon$ with $0<\epsilon<\tfrac12$. If a language $A$ is decided
 by a probabilistic polynomial-time machine $\dfa_1$ with error $\epsilon$, then for
 every polynomial $p(n)$ there is a probabilistic polynomial-time machine $\dfa_2$
 deciding $A$ with error at most $2^{-p(n)}$.
@@ -32859,16 +32860,16 @@ $0.01$ line near $k=40$:
 \begin{tikzpicture}[x=0.15cm,y=0.95cm]
   \draw[->,line width=0.7pt] (0,0) -- (52,0) node[right,font=\small] {$k$};
   \draw[->,line width=0.7pt] (0,0) -- (0,5) node[above,font=\small]
-    {$\log_{10}\Pr[\text{err}]$};
-  \foreach \y in {0,-1,-2}{
-     \draw[black!18,line width=0.4pt] (0,{2+\y}) -- (50,{2+\y});
-     \node[left,font=\small] at (0,{2+\y}) {$10^{\y}$};}
+    {$\Pr[\text{err}]$ (log scale)};
+  \foreach \y in {0,-1,-2,-3}{
+     \draw[black!18,line width=0.4pt] (0,{3+\y}) -- (50,{3+\y});
+     \node[left,font=\small] at (0,{3+\y}) {$10^{\y}$};}
   \foreach \x in {10,20,30,40,50}{\node[below,font=\small] at (\x,0) {$\x$};}
   % log10 beta^k = k log10(8/9) = -0.05115 k ; shift so k=0 -> 10^0
   \draw[line width=1pt,dashed] (0,1) -- (50,1)
-     node[right,font=\footnotesize,fill=white,inner sep=1pt] at (35,1) {$0.01$};
-  \draw[line width=1pt] plot[domain=0:50,samples=2] (\x,{2-0.05115*\x});
-  \node[fill=white,inner sep=1pt,font=\footnotesize] at (12,1.7) {$(8/9)^{k}$};
+     node[right,font=\footnotesize,fill=white,inner sep=1pt] at (50,1) {$0.01$};
+  \draw[line width=1pt] plot[domain=0:50,samples=2] (\x,{3-0.05115*\x});
+  \node[fill=white,inner sep=1pt,font=\footnotesize] at (13,2.85) {$(8/9)^{k}$};
   \draw[dotted] (39,0) -- (39,1);
   \node[below,font=\footnotesize] at (39,0) {};
 \end{tikzpicture}
@@ -32879,7 +32880,7 @@ $\beta^{k}\le$ target by taking logs. The slow base $\tfrac89$ (because $\tfrac1
 close to $\tfrac12$) is why dozens of runs are needed, not a handful.}
 \emph{Check.} $(\tfrac89)^{40}=2^{40\log_2(8/9)}=2^{-6.79}\approx 0.0090\le 0.01$,
 while $(\tfrac89)^{39}\approx 0.0101>0.01$ -- so $k=40$ is exactly the first integer
-that works. (A sharp Chernoff count gives a smaller honest number around $t\approx 35$;
+that works. (An exact binomial count gives a smaller honest number, $t=47$;
 our self-contained bound is deliberately loose.)
 \end{wex}
 
@@ -32926,8 +32927,8 @@ prime are $\pm 1$ (a quadratic $x^2-1=(x-1)(x+1)$ has at most two roots in the f
 $\mathbb{Z}_n$); so the doubling sequence can only reach $1$ through $-1$, leaving no
 witness. If $n$ is odd composite, one constructs a single witness $t$ (using the Chinese
 remainder theorem to split $n$, or the binomial expansion for a prime power) and then
-shows $d\mapsto dt\bmod n$ injects nonwitnesses into witnesses, so witnesses outnumber
-nonwitnesses; hence at least half the bases are witnesses.
+shows $d\mapsto dt\bmod n$ injects nonwitnesses into witnesses, so witnesses are at least as
+numerous as nonwitnesses; hence at least half the bases are witnesses.
 \end{proof}
 
 \begin{wex}{Why MILLER--RABIN puts COMPOSITES in $\mathsf{RP}$}
@@ -32967,8 +32968,8 @@ complement), and so $\mathrm{PRIMES}\in\mathsf{BPP}$.
 \whichrule{One-sided error lives in $\mathsf{RP}$: the algorithm can only be wrong by
 \emph{missing} a composite (false ``prime''), never by falsely calling a prime
 composite; so accepting-if-any-witness amplifies with no majority vote.}
-\emph{Check.} On the Carmichael number $561$ the plain Fermat test would say ``prime,''
-but Miller--Rabin finds a nontrivial square root of $1$ for at least half the bases, so a
+\emph{Check.} On the Carmichael number $561$ the plain Fermat test would say ``prime'' for
+every base coprime to $561$, but Miller--Rabin finds a nontrivial square root of $1$ for at least half the bases, so a
 few random tries expose it -- exactly the gap Theorem~\ref{thm:mr@c15} closes.
 \end{wex}
 
@@ -33018,7 +33019,7 @@ polynomial of total degree $d=2$. Evaluate at $(3,5)$ over $\mathbb{Z}_{11}$:
 $q(3,5)=-3\cdot 5=-15\equiv -15+22=7\not\equiv 0\pmod{11}$. Since the value is nonzero,
 $q$ is not the zero polynomial and the identity is \emph{false}. Choosing the sample
 coordinates from $S=\mathbb{Z}_{11}$ ($\abs S=11$) bounds the error of a single point at
-$d/\abs S=2/11\approx 0.18$ when the identity actually \emph{holds}:
+$d/\abs S=2/11\approx 0.18$ when the identity actually \emph{fails}:
 \begin{center}
 \begin{tikzpicture}[node distance=9mm and 16mm]
   \node[procbox] (q) {$q=\text{LHS}-\text{RHS}$};
@@ -33094,7 +33095,8 @@ $2^{n}$ inputs $w$ of length $n$,
 \]
 so \emph{some} single $\rho^{*}$ is good for \emph{all} $2^{n}$ inputs of length $n$ at
 once. Hard-wire that $\rho^{*}$ into $\dfa$: the result is a deterministic
-polynomial-time computation, which (Section on circuits) compiles to a polynomial-size
+polynomial-time computation, which (via its tableau as in Section~13.2, each cell a
+constant-size circuit of the three cells above it) compiles to a polynomial-size
 circuit $C_n$. The family $(C_n)$ decides $A$.
 \end{proof}
 
@@ -33172,7 +33174,7 @@ and in which direction?
 
 \item Over the field $\mathbb{Z}_{13}$, use the Schwartz--Zippel method to test whether
 $(x+2y)^{2}\stackrel{?}{=}x^{2}+4xy+4y^{2}$ as formal polynomials. Form the difference
-$q$, give its total degree $d$, evaluate $q$ at the point $(x,y)=(4,1)$, and report the
+$q$, give a bound $d$ on its total degree, evaluate $q$ at the point $(x,y)=(4,1)$, and report the
 verdict. State the single-trial error bound $d/\abs S$ and say which verdict ($=0$ or
 $\ne 0$) can never be wrong.
 
@@ -33203,7 +33205,7 @@ piece of state that must persist across iterations.
 with error $\le\tfrac12$, I can boost confidence by running the one-base test $t$ times and
 taking the \emph{majority} vote, accepting `composite' iff most runs say composite.''
 Explain why majority voting is the wrong amplifier for this one-sided algorithm, what can
-go wrong on a \emph{prime} input, and state the correct $\mathsf{RP}$ amplification rule.
+go wrong on a \emph{composite} input, and state the correct $\mathsf{RP}$ amplification rule.
 
 \item \emph{Find the bug.} A note states: ``Theorem~\ref{thm:adleman@c15} shows
 $\mathsf{BPP}\subseteq\classP/\mathrm{poly}$ by fixing one good random string $\rho^{*}$;
@@ -33271,7 +33273,7 @@ languages are those, like graph non-isomorphism below, that seem to lie in neith
   \draw[flow] (coins) -- (V);
   \draw[flow] (V.north) to[bend right=22] node[flowlbl]{$m_1$ (challenge)} (P.north);
   \draw[flow] (P.south) to[bend right=22] node[flowlbl]{$m_2$ (response)} (V.south);
-  \node[above=8mm of $(P)!0.5!(V)$,font=\footnotesize] {$\vdots\ \le\poly(n)$ rounds $\vdots$};
+  \node[above=15mm of $(P)!0.5!(V)$,font=\footnotesize] {$\vdots\ \le\poly(n)$ rounds $\vdots$};
   \node[right=14mm of V,font=\footnotesize,align=left] (out)
     {\textbf{accept}\\ \textbf{reject}};
   \draw[flow] (V.east) -- (out.west);
@@ -33291,7 +33293,8 @@ Yet a prover can convince a skeptical verifier, by the following idea -- the ver
 one graph and dares the prover to say which one it scrambled.
 
 \begin{theorem}[$\mathit{NONISO}\in\mathsf{IP}$]\label{thm:noniso@c15}
-The protocol below is a complete and sound interactive proof system for $\mathit{NONISO}$.
+The protocol below, run twice in parallel with independent coins ($V$ accepting only if both
+guesses are right), is a complete and sound interactive proof system for $\mathit{NONISO}$.
 \par\smallskip
 \noindent\emph{Protocol.} On input $\enc{G_1,G_2}$ (same vertex set $\set{1,\dots,n}$):
 \begin{enumerate}[leftmargin=2em,topsep=1pt,itemsep=1pt]
@@ -33367,7 +33370,7 @@ The picture: $G_1$, $G_2$, and the relabeled challenge $H=\pi(G_2)$.
     \end{scope}
     \node at (0.6,-1.0) {$H=\pi(G_2)$};
   \end{scope}
-  \draw[flow] (2.2,0.6) -- (3.0,0.6);
+  \draw[flow] (5.9,0.6) -- (6.8,0.6);
 \end{tikzpicture}
 \end{center}
 $H$ is a triangle plus a pendant, hence $H\cong G_2$ and $H\not\cong G_1$ (the $4$-cycle has no
@@ -33392,8 +33395,8 @@ must guess.
 challenge is $\pi(G_1)$ for uniform $\pi$; when $b=2$ it is $\rho(G_2)=\rho\sigma(G_1)$ for uniform
 $\rho$. As $\pi$ and $\rho\sigma$ are both uniform over all $n!$ permutations, the two challenge
 distributions are \emph{identical}. The view of $\widetilde P$ is therefore statistically independent
-of $b$, so its output $b'$ satisfies $\Pr[b'=b]=\tfrac12$. The decision tree shows the four equally
-likely root-to-leaf outcomes of one round:
+of $b$, so its output $b'$ satisfies $\Pr[b'=b]=\tfrac12$. The decision tree shows the four possible
+root-to-leaf outcomes of one round:
 \begin{center}
 \begin{tikzpicture}[level distance=13mm,treenode,
    level 1/.style={sibling distance=56mm},
@@ -33509,11 +33512,11 @@ two parties drive down to a single evaluation.
 \begin{center}
 \begin{tikzpicture}[node distance=6mm and 7mm]
   \node[procbox,minimum width=12mm] (f0) {$f_0()$};
-  \node[procbox,minimum width=12mm,right=of f0] (f1) {$f_1(r_1)$};
+  \node[procbox,minimum width=12mm,right=26mm of f0] (f1) {$f_1(r_1)$};
   \node[procbox,minimum width=12mm,right=of f1] (f2) {$f_2(r_1,r_2)$};
   \node[right=5mm of f2,font=\small] (dots) {$\cdots$};
   \node[procbox,minimum width=14mm,right=5mm of dots] (fm) {$f_m(\vec r)$};
-  \node[procbox,minimum width=12mm,right=of fm] (p) {$p(\vec r)$};
+  \node[procbox,minimum width=12mm,right=15mm of fm] (p) {$p(\vec r)$};
   \draw[flow] (f0) -- node[flowlbl]{$=g(0){+}g(1)$} (f1);
   \draw[flow] (f1) -- (f2);
   \draw[flow] (f2) -- (dots);
@@ -33625,7 +33628,7 @@ theorems force $\Lclass\subsetneq\PSPACE$ and $\classP\subsetneq\EXP$.
   % coNP between P and PSPACE, parallel to NP
   \node[cls,above=10mm of NP] (coNP) {$\coNP$};
   \draw[flow] (P.north) to[bend left=12] (coNP.west);
-  \draw[flow] (coNP.east) to[bend left=12] (PS.north);
+  \draw[flow] (coNP.east) to[bend left=12] (PS.north west);
   \node[font=\footnotesize,below=2mm of L] {\,strict ends:};
   \node[font=\footnotesize,below=2mm of EXP] {$\classP\subsetneq\EXP$};
   \node[font=\footnotesize,below=5mm of NL] {$\Lclass\subsetneq\PSPACE$};
@@ -33656,7 +33659,7 @@ versus polynomial space is a genuine gap).
   \node[cls,right=of PS] (EXP) {$\EXP$};
   \draw[flow] (P)  -- node[flowlbl]{open} (NP);
   \draw[flow] (NP) -- node[flowlbl]{open} (PS);
-  \draw[flow] (PS) -- node[flowlbl]{strict} (EXP);
+  \draw[flow] (PS) -- node[flowlbl]{open} (EXP);
   \draw[->,line width=0.6pt,bend left=30] (P.north) to node[flowlbl]{strict (time hierarchy)} (EXP.north);
 \end{tikzpicture}
 \end{center}
