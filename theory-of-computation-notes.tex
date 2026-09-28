@@ -4827,7 +4827,7 @@ the $t_3=F_4=3$ tilings of a $1\times3$ strip (a shaded cell is half of a domino
 \end{tikzpicture}
 \end{center}
 \whichrule{Classifying by the last tile is a disjoint-union (Sum Rule) decomposition, and each class
-biject to a smaller tiling set, which manufactures the Fibonacci recurrence from pure counting.}
+bijects to a smaller tiling set, which manufactures the Fibonacci recurrence from pure counting.}
 \emph{Check.} Directly $\mathcal{T}_3=\set{\str{SSS},\str{DS},\str{SD}}$ has $3$ elements, and indeed
 $F_4=F_3+F_2=2+1=3$.
 \end{wex}
@@ -5046,15 +5046,15 @@ the pigeonhole principle you use and compute the guaranteed lower bound $\lceil 
 
 \item A machine has $5$ states. Argue that on every input of length $\ge 5$ the run visits some state
 at least twice, and explain in one sentence why this is the basic-pigeonhole case $m+1$ pigeons into
-$m$ holes. What is the shortest input length for which a repeat is \emph{not} yet forced?
+$m$ holes. What is the longest input length for which a repeat is \emph{not} yet forced?
 
 \item Show that any sequence of $10$ distinct integers contains two whose difference is divisible by
-$9$, and separately that it contains a value and a later value with the same last decimal digit.
-Identify the holes in each case.
+$9$, and separately that any sequence of $11$ distinct integers contains a value and a later value
+with the same last decimal digit. Identify the holes in each case.
 
-\item Prove the \emph{strong} pigeonhole bound directly: if $n$ items are placed in $m$ boxes, no box
-can have more than $\lceil n/m\rceil$ items in \emph{every} placement is false in general -- instead
-prove that \emph{some} box has at least $\lceil n/m\rceil$. Then give a placement of $n=7$ items into
+\item Prove the \emph{strong} pigeonhole bound directly: if $n$ items are placed in $m$ boxes, then
+\emph{some} box has at least $\lceil n/m\rceil$ items. (The claim that in \emph{every} placement no box
+has more than $\lceil n/m\rceil$ items is false in general.) Then give a placement of $n=7$ items into
 $m=3$ boxes meeting this bound with equality in the fullest box.
 
 \item \emph{Find the bug.} A student counts the strings over $\set{0,1}$ of length $3$ that
@@ -5293,7 +5293,7 @@ $4+6=10=\binom{5}{2}$.
   }
   \draw[->,gedge,shorten <=2.5pt,shorten >=2.5pt] (Q41.south) -- (Q52.north);
   \draw[->,gedge,shorten <=2.5pt,shorten >=2.5pt] (Q42.south) -- (Q52.north);
-  \node[font=\footnotesize] at (2.4,5) {$4+6=10$};
+  \node[font=\footnotesize] at (3.9,5) {$4+6=10$};
 \end{tikzpicture}
 \end{center}
 \whichrule{Conditioning on a single element ($5$ in or out) partitions the $k$-subsets into two disjoint
@@ -5385,7 +5385,7 @@ $2^n=\sum_k\binom{n}{k}$; the equality of two valid counts of one set is the ent
   \item \textbf{Repetition allowed?} Distinct items only, or may an item recur?
   \item \textbf{Pick the formula.} Ordered + distinct $\Rightarrow n^{\underline{k}}$. Ordered + repeats
   allowed $\Rightarrow n^{k}$. Unordered + distinct $\Rightarrow \binom{n}{k}$. (Unordered + repeats is
-  the multiset count $\binom{n+k-1}{k}$, taken up later.)
+  the multiset count $\binom{n+k-1}{k}$.)
   \item \textbf{For an identity, count a set twice.} To prove ``$A=B$,'' exhibit one finite set whose
   cardinality is plainly $A$ from one viewpoint and plainly $B$ from another (condition on an element,
   sort by size, or set up a bijection). Equal counts of one set force $A=B$.
@@ -5489,6 +5489,8 @@ is the $A\cap B$ that must be removed.
 
 \begin{center}
 \begin{tikzpicture}[scale=1]
+  \fill[black!8] (-0.9,0) circle (1.35);
+  \fill[black!8] (0.9,0) circle (1.35);
   \begin{scope}
     \clip (-0.9,0) circle (1.35);
     \fill[black!22] (0.9,0) circle (1.35);
@@ -5612,10 +5614,10 @@ sign of the index-set size. The lattice of index sets makes the cancellation vis
 \begin{tikzpicture}[xscale=2.0,yscale=1.35]
   \node[ltdot,label=below:{\footnotesize $\es\ (+)$}] (e) at (0,0) {};
   \node[ltdot,label=left:{\footnotesize $1\ (-)$}]  (a) at (-1,1) {};
-  \node[ltdot,label=below:{\footnotesize $2\ (-)$}] (b) at (0,1) {};
+  \node[ltdot,label=below right:{\footnotesize $2\ (-)$}] (b) at (0,1) {};
   \node[ltdot,label=right:{\footnotesize $3\ (-)$}] (c) at (1,1) {};
   \node[ltdot,label=left:{\footnotesize $12\ (+)$}]  (ab) at (-1,2) {};
-  \node[ltdot,label=above:{\footnotesize $13\ (+)$}] (ac) at (0,2) {};
+  \node[ltdot,label=above right:{\footnotesize $13\ (+)$}] (ac) at (0,2) {};
   \node[ltdot,label=right:{\footnotesize $23\ (+)$}] (bc) at (1,2) {};
   \node[ltdot,label=above:{\footnotesize $123\ (-)$}] (abc) at (0,3) {};
   \draw[ltedge] (e)--(a) (e)--(b) (e)--(c);
@@ -5625,9 +5627,9 @@ sign of the index-set size. The lattice of index sets makes the cancellation vis
 \end{center}
 
 The sign attached to each index set $I$ is $(-1)^{\abs{I}}$: the bottom (empty intersection $S$) is
-$+$, the singletons are $-$, the pairs are $+$, and the top triple is $-$. An element in exactly $m$
-subsets is counted with these signs over the bottom $2^m$ of these nodes, and the column sums of
-$\binom{m}{k}$ with alternating signs cancel.
+$+$, the singletons are $-$, the pairs are $+$, and the top triple is $-$. An element in exactly $m\ge1$
+subsets is counted with these signs over the $2^m$ nodes at or below the node of its $m$ indices, and
+the column sums of $\binom{m}{k}$ with alternating signs cancel.
 
 \subsection*{Application 1: derangements}
 
@@ -5697,7 +5699,7 @@ gets their own hat is $D_4/4!=9/24=3/8=0.375$.
 escape all of them is exactly $S\setminus\bigcup S_i$, and the constant intersection size $(n-k)!$
 collapses the sieve to the truncated $e^{-1}$ series.}
 \emph{Check.} The exact answer $9/24=0.375$ is already close to $e^{-1}=0.3679\ldots$; the next term
-would only adjust the fourth decimal, illustrating how fast the truncation converges.
+would change it by only $1/5!\approx0.008$, illustrating how fast the truncation converges.
 \end{wex}
 
 \subsection*{Application 2: surjections (onto functions)}
@@ -5751,18 +5753,19 @@ of the $243$ unrestricted assignments:
   \node[font=\footnotesize] at (-2.55,-1.35) {$S_B$};
   \node[font=\footnotesize] at (2.55,-1.35) {$S_C$};
   % only-regions pushed into the fat part of each lobe, clear of the centre
-  \node[font=\footnotesize] at (0,1.30) {$32$};
-  \node[font=\footnotesize] at (-1.30,-1.00) {$32$};
-  \node[font=\footnotesize] at (1.30,-1.00) {$32$};
+  \node[font=\footnotesize] at (0,1.30) {$30$};
+  \node[font=\footnotesize] at (-1.30,-1.00) {$30$};
+  \node[font=\footnotesize] at (1.30,-1.00) {$30$};
   % pairwise lenses
-  \node[font=\footnotesize] at (-0.78,-0.10) {$1$};
-  \node[font=\footnotesize] at (0.78,-0.10) {$1$};
+  \node[font=\footnotesize] at (-0.59,0.20) {$1$};
+  \node[font=\footnotesize] at (0.59,0.20) {$1$};
   \node[font=\footnotesize] at (0,-1.05) {$1$};
   % central triple intersection
-  \node[font=\footnotesize] at (0,-0.42) {$0$};
+  \node[font=\footnotesize] at (0,-0.11) {$0$};
 \end{tikzpicture}
 \end{center}
-Each single circle $S_A,S_B,S_C$ holds $2^5=32$ functions (into the other two servers); each pairwise
+Each single circle $S_A,S_B,S_C$ holds $2^5=32$ functions (into the other two servers), $30$ of them
+outside the lenses; each pairwise
 lens holds $1^5=1$ (into the single remaining server); the central triple intersection holds $0^5=0$
 (no server left). So
 \[
@@ -5857,8 +5860,8 @@ multiples of $\operatorname{lcm}(4,6)=12$, not of $24$: $\abs{S_1\cap S_2}=\lflo
   \end{scope}
   \draw[gedge] (-0.85,0) circle (1.3);
   \draw[gedge] (0.85,0) circle (1.3);
-  \node[font=\footnotesize] at (-1.5,1.05) {$S_1$ (mult.\ $4$)};
-  \node[font=\footnotesize] at (1.5,1.05) {$S_2$ (mult.\ $6$)};
+  \node[font=\footnotesize] at (-1.5,1.6) {$S_1$ (mult.\ $4$)};
+  \node[font=\footnotesize] at (1.5,1.6) {$S_2$ (mult.\ $6$)};
   \node[font=\footnotesize] at (-1.05,0) {$17$};
   \node[font=\footnotesize] at (1.05,0) {$8$};
   \node[font=\footnotesize] at (0,0) {$8$};
@@ -5866,7 +5869,7 @@ multiples of $\operatorname{lcm}(4,6)=12$, not of $24$: $\abs{S_1\cap S_2}=\lflo
 \end{tikzpicture}
 \end{center}
 \whichrule{For two non-coprime divisors the pairwise overlap counts multiples of the \emph{least
-common multiple}; using the product $4\cdot6=24$ would undercount the lens and inflate the answer.}
+common multiple}; using the product $4\cdot6=24$ would undercount the lens and deflate the answer.}
 \emph{Check.} Inside-the-circles count is $25+16-8=33$ divisible by $4$ or $6$; $100-33=67$ matches.
 Using $24$ wrongly would give $100-25-16+4=63$, a detectable error of $4$.
 \end{wex}
@@ -6025,11 +6028,11 @@ series and extract $[x^n]f(x)$. We carry it out on increasingly substantial exam
   \node[procbox,align=center,right=of b3] (b4) {solve:\\$f(x)=\tfrac{p}{q}$};
   \node[procbox,align=center,right=of b4] (b5) {extract\\$[x^n]f$};
   \node[procbox,align=center,right=of b5] (b6) {closed\\form $a_n$};
-  \path[flow] (b1)--(b2) node[flowlbl,midway,above]{(1)};
-  \path[flow] (b2)--(b3) node[flowlbl,midway,above]{(2)};
-  \path[flow] (b3)--(b4) node[flowlbl,midway,above]{(3)};
-  \path[flow] (b4)--(b5) node[flowlbl,midway,above]{(4)};
-  \path[flow] (b5)--(b6);
+  \draw[flow] (b1)--(b2) node[flowlbl,midway,above]{(1)};
+  \draw[flow] (b2)--(b3) node[flowlbl,midway,above]{(2)};
+  \draw[flow] (b3)--(b4) node[flowlbl,midway,above]{(3)};
+  \draw[flow] (b4)--(b5) node[flowlbl,midway,above]{(4)};
+  \draw[flow] (b5)--(b6);
 \end{tikzpicture}
 \end{center}
 
@@ -6151,12 +6154,12 @@ $\bigTheta(\varphi^n)$. The reciprocal-root structure is worth a picture:
   \node[font=\footnotesize] at (2,0.17){$2$};
   \node[font=\footnotesize] at (-1,0.17){$-1$};
   % unit-modulus boundary |z|=1 marked by short dashed guides at +-1
-  \draw[gedge,dashed] (1,-0.32)--(1,0.32);
-  \draw[gedge,dashed] (-1,-0.32)--(-1,0.32);
+  \draw[gedge,dashed] (1,-0.32)--(1,0.05);
+  \draw[gedge,dashed] (-1,-0.32)--(-1,0.05);
   \node[font=\footnotesize] at (1.0,-0.5){$|z|=1$};
   % phi approx 1.618, psi approx -0.618
   \filldraw (1.618,0) circle (1.4pt) node[below=3pt,font=\footnotesize]{$\varphi\approx1.618$};
-  \filldraw (-0.618,0) circle (1.4pt) node[below=3pt,font=\footnotesize]{$\psi\approx-0.618$};
+  \filldraw (-0.618,0) circle (1.4pt) node[below=12pt,font=\footnotesize]{$\psi\approx-0.618$};
   \node[font=\footnotesize,align=center] at (-0.62,0.7){$\abs{\psi}<1$:\\term dies};
   \node[font=\footnotesize,align=center] at (1.62,0.7){$\varphi>1$:\\term dominates};
 \end{tikzpicture}
@@ -6344,7 +6347,8 @@ $3^{n+1}-2^{n+1}$ gives $a_0=3-2=1$, the boundary value.
   Sum to read off $a_n$.
   \item \textbf{Check and read growth.} Verify the closed form on the boundary values and one or two
   computed terms. For asymptotics, the largest reciprocal root $r_i$ (the pole nearest the origin)
-  gives $a_n=\bigTheta(n^{d_i-1}r_i^{\,n})$.
+  gives $a_n=\bigTheta(n^{d_i-1}r_i^{\,n})$, provided $p/q$ is in lowest terms and no other reciprocal
+  root has the same modulus.
 \end{enumerate}
 \end{method}
 
@@ -6411,7 +6415,7 @@ denominator with both $(1-2x)$ and $(1-x)^2$.)
 
 \item (Find the bug.) A student wants to solve $a_0=1$, $a_n=2a_{n-1}$ ($n\ge1$). They write
 $\sum_{n\ge1}a_n x^n=2\sum_{n\ge1}a_{n-1}x^n$, then claim the left side equals $f(x)$ and conclude
-$f(x)=\dfrac{1}{1-2x}\cdot\dfrac{1}{?}$. Identify the exact step where they mishandled a boundary term,
+$f(x)=2x\,f(x)$, so that $f(x)=0$. Identify the exact step where they mishandled a boundary term,
 correct it, and give the right closed form.
 
 \item (Find the bug.) To solve $a_0=1$, $a_1=2$, $a_n=4a_{n-2}$ ($n\ge2$), a student factors the
@@ -6602,9 +6606,11 @@ differ from the $i$-th listed object at the $i$-th coordinate, so it cannot appe
 $1$ at $w_{2}$, so $D$ has $0$; and so on -- $D\ne\Lang_{i}$ for each shown $i$.
 \end{wex}
 
-The relationship between the classes is a chain of strict inclusions, all forced by counting: the
-regular languages sit inside the decidable ones, inside the recognizable ones, inside all languages,
-and each step leaves uncountably many languages behind.
+The relationship between the classes is a chain of strict inclusions: the regular languages sit
+inside the decidable ones, inside the recognizable ones, inside all languages. Counting alone forces
+only the last step to be strict, and that step leaves uncountably many languages behind; the first two
+steps compare countable classes, and their strictness needs explicit witnesses (a non-regular
+decidable language, and a recognizable undecidable one).
 
 \begin{center}
 \begin{tikzcd}[column sep=large,row sep=tiny]
@@ -6662,11 +6668,10 @@ so a function on $n$ variables exists that needs more than $2^{n}/(10n)$ gates.
 \begin{center}
 \begin{tabular}{l c c}
 \hline
-$n$ & \#functions $=2^{2^{n}}$ & rough \#circuits with $g\!\approx\! 2^{n}/(10n)$ gates\\\hline
-$2$ & $16$         & a handful\\
-$3$ & $256$        & dozens\\
-$4$ & $65{,}536$   & hundreds\\
-$5$ & $2^{32}$     & far fewer than $2^{32}$\\\hline
+$n$ & \#functions $=2^{2^{n}}$ & \#circuits with $g=\lfloor 2^{n}/(10n)\rfloor$ gates (at most)\\\hline
+$10$ & $2^{1{,}024}$         & $\approx 2^{102}$ \quad ($g=10$)\\
+$15$ & $2^{32{,}768}$        & $\approx 2^{3{,}774}$ \quad ($g=218$)\\
+$20$ & $2^{1{,}048{,}576}$   & $\approx 2^{137{,}905}$ \quad ($g=5{,}242$)\\\hline
 \end{tabular}
 \end{center}
 \whichrule{Counting argument for lower bounds (Shannon's method): the solvers are described by
@@ -6724,7 +6729,7 @@ $i+1 \pmod 4$.
     \draw[gedge] (b1)--(b2) (b2)--(b3) (b3)--(b4) (b4)--(b1);
   \end{scope}
   % rotation arc in the top-right, hugging the cycle, rho on the arc midpoint
-  \draw[->,gedge] (1.45,0.55) to[bend left=35]
+  \draw[<-,gedge] (1.45,0.55) to[bend left=35]
     node[font=\footnotesize,pos=0.5,above right=0pt and -1pt] {$\rho$} (0.55,1.45);
 \end{tikzpicture}
 \end{center}
